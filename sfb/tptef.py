@@ -27,10 +27,10 @@ def show(req):
             content=req.form['content'].translate(str.maketrans("\"\'\\/<>%`?;",'””￥_〈〉％”？；'))#Not_secure_filename!
         if 'pass' in req.form:
             passwd=secure_filename(req.form['pass'])
-#        if "remark" in req.form and secure_filename(req.form["remark"])=="True":
-#            session.add(table(room=room,user =user,content=content,
-#                            trip=hashlib.sha256(passwd.encode('utf-8')).hexdigest(),
-#                            date = datetime.now(pytz.UTC).strftime("%Y/%m/%d %H:%M:%S %f (UTC)")))
+        if "remark" in req.form and secure_filename(req.form["remark"])=="True":
+            doc_ref = wsgi_util.db.collection("tptef").document("room")
+            doc_ref.set({"user": user,"content": content,"trip":hashlib.sha256(passwd.encode('utf-8')).hexdigest(),
+                        "date":datetime.now(pytz.UTC).strftime("%Y/%m/%d %H:%M:%S %f (UTC)")})
 #        if "clear" in req.form and secure_filename(req.form["clear"])=="True":
 #            session.query(table).filter(table.trip == hashlib.sha256(passwd.encode('utf-8')).hexdigest(),table.room==room).delete()
     #show chat thread

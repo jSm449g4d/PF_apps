@@ -6,7 +6,6 @@ from flask import  redirect,request,render_template_string,render_template
 from werkzeug.utils import secure_filename
 import importlib
 import random
-import jsonschema.__main__
 
 #Flask_Startup
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))

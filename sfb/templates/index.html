@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+    <head>
+        <meta charset="utf-8">
+        <title>Flaskなお部屋</title>
+        <!--Bootstrap CSS -->
+        <!--CDN-->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" onload="window.bs4css= 1;">
+        <!--fallback by Flask-->
+        <script>
+            window.bs4css || document.write(
+                "<link rel=\"stylesheet\" href=\"{{ url_for('static', filename='bootstrap-4.4.1-dist/css/bootstrap.min.css') }}\"\
+    crossorigin=\"anonymous\">");
+        </script>
+        <!--/Bootstrap CSS -->
+    </head>
+
+    <body>
+        <div class="mx-3">
+            <form method="post" enctype="multipart/form-data" style="display:inline;">
+                <h1 style="color:#001900;font-family:serif">Flask_Index</h1>
+                <h5 style="color:darkgreen;font-family:''">Flask+SQLite3+Bootstrap4</h5>
+                <table class="table table-sm table-bordered" style="color: #555000;background-color: azure;">
+                    <thead>
+                        <tr>
+                            <th class="text-center" colspan="2">versions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Access Counter</td>
+                            <td>{{access_counter}}</td>
+                        </tr>
+                        {{STATUS_TABLE}}
+                    </tbody>
+                </table>
+
+                <table class="table table-sm table-bordered mt-2 table-success" style="color: navy;background-color: khaki;">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Link</th>
+                            <th class="text-center">Outline</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><a href="./22.py">Flaskで示す「鯖のスペック」</a></td>
+                            <td>Hello World 的なアプリ</td>
+                        </tr>
+                        <tr>
+                            <td><a href="./fud.py">Flaskなファイルストレージ</a></td>
+                            <td>勉強用に作ったファイル置き場です</td>
+                        </tr>
+                        <tr>
+                            <td><a href="./tptef.py">Flaskなチャットルーム</a></td>
+                            <td>↓を作ってる途中で、偶然出来たアプリです</td>
+                        </tr>
+                        <tr style="font-weight: bold;">
+                            <td><a href="./nicoapi.py">wrapper for NicoNicoAPI</a></td>
+                            <td>ニコニコAPIやなろうAPIとかを気軽に叩いて情報収集出来ます</td>
+                        </tr>
+                        <tr style="font-weight: bold;">
+                            <td><a href="./jm.py">Janome doe</a></td>
+                            <td>Janomeで形態素解析をします</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a class="btn btn-outline-success mt-2" href="/">戻る</a>
+                <a class="btn btn-warning mx-2 mt-2" href="./config.py">config</a>
+
+                <div class="m-2 p-2" style="color:#AAFEFE;border:3px double silver;background:#001111;">
+                    <h5 style="color:red;font-family:''">Firebaseの機能の実験</h5>
+                    <input type="button" value="auth_google" class="btn btn-success" onclick="auth_google();" />
+                    <input type="button" value="auth_guest" class="btn btn-success" onclick="auth_guest();" />
+                    <input type="button" value="logout" class="btn btn-success" onclick="auth_logout();" />
+                    <p id="authdoc">
+                        (´・ω・｀) Google_mailはAdmin用だから、登録しないでね</p>
+                </div>
+                <input type="hidden" id="fbtoken" name="fbtoken" value="">
+                <!--↑Firebase_token_keep-->
+            </form>
+        </div>
+
+        <!--Firebase -->
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-analytics.js"></script>
+        <!--<script src="/__/firebase/init.js"></script>
+    ↑ deploy on Firebase only  ↓ deploy on any platform-->
+        <script>
+            firebase.initializeApp({
+                apiKey: "AIzaSyCWzFat3oUpn_4TtOpDCMhcOD2Qf4u1Mr4",
+                authDomain: "crack-atlas-251509.firebaseapp.com",
+                databaseURL: "https://crack-atlas-251509.firebaseio.com",
+                projectId: "crack-atlas-251509",
+                storageBucket: "crack-atlas-251509.appspot.com",
+                messagingSenderId: "646437940818",
+                appId: "1:646437940818:web:a8f1315a41787cdfd3b98b",
+                measurementId: "G-JFF7YXX3B1"
+            });
+            firebase.analytics();
+
+            function auth_google() {
+                var provider = new firebase.auth.GoogleAuthProvider();
+                firebase.auth().signInWithPopup(provider).then(function(result) {}).catch(function(error) {});
+            }
+
+            function auth_guest() {
+                firebase.auth().signInAnonymously();
+            }
+
+            function auth_logout() {
+                firebase.auth().signOut();
+                var cx = document.getElementById("fbtoken");
+                cx.value = "";
+            }
+
+            firebase.auth().onAuthStateChanged(function(user) { //Firebase_token_keep
+                document.getElementById("authdoc").innerHTML = user.displayName + "<br>" + user.email + "<br>" +
+                    user.emailVerified + "<br>" + user.photoURL + "<br>" +
+                    user.isAnonymous + "<br>" + user.uid + "<br>" + user.providerData;
+
+                firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
+                    var cx = document.getElementById("fbtoken");
+                    cx.value = idToken;
+                })
+            })
+        </script>
+        <!--Firebase -->
+
+        <!--Bootstrap and jQuery JS -->
+        <!--CDN-->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
+        <!--fallback by Flask-->
+        <script>
+            window.jQuery || document.write(
+                "<script src=\"{{ url_for('static', filename='bootstrap-4.4.1-dist/js/jquery-3.4.1.min.js') }}\"\
+        crossorigin=\"anonymous\"><\/script>")
+        </script>
+        <script>
+            $.fn.modal || document.write(
+                "<script src=\"{{ url_for('static', filename='bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js') }}\"\
+    crossorigin=\"anonymous\"><\/script>")
+        </script>
+        <!--/Bootstrap and jQuery JS -->
+    </body>
+
+</html>

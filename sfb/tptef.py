@@ -27,19 +27,21 @@ def show(req):
             content=req.form['content'].translate(str.maketrans("\"\'\\/<>%`?;",'””￥_〈〉％”？；'))#Not_secure_filename!
         if 'pass' in req.form:
             passwd=secure_filename(req.form['pass'])
+            
+        doc_ref = wsgi_util.db.collection("tptef").document(room)
         if "remark" in req.form and secure_filename(req.form["remark"])=="True":
-            doc_ref = wsgi_util.db.collection("tptef").document("room")
             doc_ref.set({"user": user,"content": content,"trip":hashlib.sha256(passwd.encode('utf-8')).hexdigest(),
                         "date":datetime.now(pytz.UTC).strftime("%Y/%m/%d %H:%M:%S %f (UTC)")})
 #        if "clear" in req.form and secure_filename(req.form["clear"])=="True":
 #            session.query(table).filter(table.trip == hashlib.sha256(passwd.encode('utf-8')).hexdigest(),table.room==room).delete()
     #show chat thread
-#    for order in session.query(table).filter(table.room == room):
-#        orders+="<tr><td>"+order.user+"</td>"
-#        orders+="<td>"+order.content+"</td>"
-#        orders+="<td style=\"font-size: 12px;\">"+order.trip[:16]+"<br>"+order.trip[16:32]+\
-#        "<br>"+order.trip[32:48]+"<br>"+order.trip[48:64]+"</td>"
-#        orders+="<td style=\"font-size: 12px;\">"+order.date+"</td></tr>"
+    for order in doc_ref.stream():
+        1
+        orders+="<tr><td>"+order.to_dict("user")+"</td>"
+        orders+="<td>"+order.to_dict("content")+"</td>"
+        orders+="<td style=\"font-size: 12px;\">"+order.to_dict("trip")+"<br>"+order.to_dict("trip")[16:32]+\
+        "<br>"+order.to_dict("trip")[32:48]+"<br>"+order.to_dict("trip")[48:64]+"</td>"
+        orders+="<td style=\"font-size: 12px;\">"+order.to_dict("date")+"</td></tr>"
     
     
     return wsgi_util.render_template_2("tptef.html",ORDERS=orders,ROOM=room,USER=user,PASS=passwd)

@@ -35,12 +35,12 @@ def show(req):
         if "clear" in req.form and secure_filename(req.form["clear"])=="True":
             doc_ref.where("trip", "==", hashlib.sha256(passwd.encode('utf-8')).hexdigest()).delete()
     #show chat thread
-    for order in doc_ref.get():
-        orders+="<tr><td>"+order.to_dict()["user"]+"</td>"
+        for order in doc_ref.get():
+            orders+="<tr><td>"+order.to_dict()["user"]+"</td>"
 #        orders+="<td>"+order.to_dict("content")+"</td>"
 #        orders+="<td style=\"font-size: 12px;\">"+order.to_dict("trip")+"<br>"+order.to_dict("trip")[16:32]+\
 #        "<br>"+order.to_dict("trip")[32:48]+"<br>"+order.to_dict("trip")[48:64]+"</td>"
-        orders+="<td style=\"font-size: 12px;\">"+order.to_dict()["date"]+"</td></tr>"
+            orders+="<td style=\"font-size: 12px;\">"+order.to_dict()["date"]+"</td></tr>"
     
     
     return wsgi_util.render_template_2("tptef.html",ORDERS=orders,ROOM=room,USER=user,PASS=passwd)

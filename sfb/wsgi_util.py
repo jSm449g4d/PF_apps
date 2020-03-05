@@ -3,6 +3,9 @@ import sys
 import os
 import flask
 from flask import  render_template_string
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
 
 def render_template_2(dir,**kwargs):
     html=""
@@ -14,10 +17,12 @@ def render_template_2(dir,**kwargs):
 
 #AP_setting_management
 access_counter=0;status_table=""
+cred = firebase_admin.credentials.Certificate("FirebaseAdmin_Key.json")
+firebase_admin.initialize_app(cred)
+db = firestore.client()
 def add_status_table(title="",data="",color="navy"):
     global status_table
     status_table+="<tr><td style=\"color:"+color+";\">"+title+"</td><td style=\"color:"+color+";\">"+data+"</td></tr>"
 def Resource_Reload():
     add_status_table("Python",sys.version,color="#555000")
     add_status_table("Flask",flask.__version__,color="#555000")
-    

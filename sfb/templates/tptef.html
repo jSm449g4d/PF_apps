@@ -42,16 +42,17 @@
                     <thead>
                         <tr>
                             <th><input type="text" name="room" class="form-control mt-1" value="{{ROOM}}" placeholder="Room"></th>
-                            <th><input type="text" name="user" class="form-control mt-1" value="{{USER}}" placeholder="User"></th>
-                            <th><input type="submit" class="btn btn-success" value="Reload"></th>
+                            <th><input type="submit" class="btn btn-success" value="Goto_Room"></th>
                         </tr>
                     </thead>
                 </table>
 
-                <div class="form-group mt-2">
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="content" placeholder="Content"></textarea>
-                    <button name="remark" class="btn btn-success mt-1" value="True">Remark</button>
-                    <button name="clear" class="btn btn-outline-danger mt-1" value="True">Clear_your_Remarks</button>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="content" placeholder="Content"></textarea>
+                <div class="mt-2 row">
+                    <label for="name" class="mx-1">User_Name:</label>
+                    <input type="text" name="user" class="form-control col-4 mx-1" value="{{USER}}" placeholder="User">
+                    <button name="remark" class="btn btn-success mx-1" value="True">Remark</button>
+                    <button name="clear" class="btn btn-outline-danger mx-1" value="True">Clear_your_Remarks</button>
                 </div>
 
                 <table class="table table-sm bg-light">
@@ -66,7 +67,15 @@
                 </table>
 
                 <a class="btn btn-outline-success mt-2" href="./">Flask_Indexへ</a>
-                
+
+                <div class="m-2 p-2" style="color:#AAFEFE;border:3px double silver;background:#001111;">
+                    <h5 style="color:red;font-family:''">Firebaseの機能の実験</h5>
+                    <input type="button" value="auth_google" class="btn btn-success" onclick="auth_google();" />
+                    <input type="button" value="auth_guest" class="btn btn-success" onclick="auth_guest();" />
+                    <input type="button" value="logout" class="btn btn-success" onclick="auth_logout();" />
+                    <p id="authdoc">
+                        (´・ω・｀) Google_mailはAdmin用だから、登録しないでね</p>
+                </div>
                 <input type="hidden" id="fbtoken" name="fbtoken" value="">
                 <!--↑Firebase_token_keep-->
             </form>

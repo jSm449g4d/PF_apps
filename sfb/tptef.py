@@ -28,8 +28,8 @@ def show(req):
         if 'pass' in req.form:
             passwd=secure_filename(req.form['pass'])
             
-        doc_ref = wsgi_util.db.document("tptef/"+room)#collection(room).
-        doc_ref= doc_ref.document("SD/B") 
+        doc_ref1 = wsgi_util.db.document("tptef/B")#collection(room).
+        doc_ref= doc_ref1.document("SD/C") 
         if "remark" in req.form and secure_filename(req.form["remark"])=="True":
             doc_ref.set({"user": user,"content": content,"trip":hashlib.sha256(passwd.encode('utf-8')).hexdigest(),
                         "date":datetime.now(pytz.UTC).strftime("%Y/%m/%d %H:%M:%S %f (UTC)")})

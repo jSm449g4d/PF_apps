@@ -31,7 +31,7 @@ def show(req):
         if room=="":room="main_page"
         if user=="":user="john_doe"
         
-        doc_ref = wsgi_util.db.collection("tptef").document(room).set({});doc_ref.set({})
+        doc_ref = wsgi_util.db.collection("tptef").document(room);doc_ref.set({})
         if "remark" in req.form and secure_filename(req.form["remark"])=="True":
             doc_ref.collection(user).document(str(datetime.now(pytz.UTC).timestamp()).split(".")[0]).set({
                 "content": content,"trip":hashlib.sha256(passwd.encode('utf-8')).hexdigest(),

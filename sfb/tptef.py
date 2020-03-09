@@ -32,8 +32,7 @@ def show(req):
         
         doc_ref = wsgi_util.db.collection("tptef").document(room);doc_ref.set({},merge=True)
         if "remark" in req.form and secure_filename(req.form["remark"])=="True":
-            #doc_ref.update({int(datetime.now(pytz.UTC).timestamp()):{
-            doc_ref.update({"123":{
+            doc_ref.update({str(int(datetime.now(pytz.UTC).timestamp())):{
                 "user":user,
                 "content": content,
                 "trip":hashlib.sha256(passwd.encode('utf-8')).hexdigest(),
@@ -44,7 +43,7 @@ def show(req):
             doc_ref.where("trip", "==", hashlib.sha256(passwd.encode('utf-8')).hexdigest()).delete()
     #show chat thread
         doc=sorted(doc_ref.get().to_dict().items())
-        for order in doc.values():
+        for _,order in doc:
             orders+="<tr><td>"+order["user"]+"</td>"
             orders+="<td>"+order["content"]+"</td>"
 #            orders+="<td style=\"font-size: 12px;\">"+(order["trip"])[:16]+"<br>"+(order["trip"])[16:32]+\

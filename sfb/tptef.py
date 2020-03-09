@@ -32,8 +32,8 @@ def show(req):
         
         doc_ref = wsgi_util.db.collection("tptef").document(room);doc_ref.set({},merge=True)
         if "remark" in req.form and secure_filename(req.form["remark"])=="True":
-            #doc_ref.update({int(datetime.now(pytz.UTC).timestamp()):{
-            doc_ref.update({"chae":{
+            doc_ref.update({int(datetime.now(pytz.UTC).timestamp()):{
+            #doc_ref.update({"chae":{
                 "user":user,
                 "content": content,
                 "trip":hashlib.sha256(passwd.encode('utf-8')).hexdigest(),

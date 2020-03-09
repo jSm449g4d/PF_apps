@@ -29,25 +29,21 @@ def show(req):
             passwd=secure_filename(req.form['pass'])
         
         if room=="":room="main_page"
-        if user=="":user="john_doe"
         
-        doc_ref = wsgi_util.db.collection("tptef").document(room);doc_ref.set({})
+        doc_ref = wsgi_util.db.collection("tptef").document(room);
         if "remark" in req.form and secure_filename(req.form["remark"])=="True":
-            doc_ref.collection(user).document(str(datetime.now(pytz.UTC).timestamp()).split(".")[0]).set({
-                "content": content,"trip":hashlib.sha256(passwd.encode('utf-8')).hexdigest(),
-                "date":datetime.now(pytz.UTC).strftime("%Y/%m/%d %H:%M:%S %f (UTC)")
-            })
             doc_ref.set({str(datetime.now(pytz.UTC).timestamp()).split(".")[0]+"PS1":{
                 "user":user,
-                "content": content,"trip":hashlib.sha256(passwd.encode('utf-8')).hexdigest(),
+                "content": content,
+                "trip":hashlib.sha256(passwd.encode('utf-8')).hexdigest(),
                 "date":datetime.now(pytz.UTC).strftime("%Y/%m/%d %H:%M:%S %f (UTC)")
             }})
             
         if "clear" in req.form and secure_filename(req.form["clear"])=="True":
             doc_ref.where("trip", "==", hashlib.sha256(passwd.encode('utf-8')).hexdigest()).delete()
     #show chat thread
-#        for order in doc_ref.stream():
-#            1
+        for order in doc_ref.get():
+            1
 #            orders+="<tr><td>"+order.to_dict()["user"]+"</td>"
 #            orders+="<td>"+order.to_dict()["content"]+"</td>"
 #            orders+="<td style=\"font-size: 12px;\">"+(order.to_dict()["trip"])[:16]+"<br>"+(order.to_dict()["trip"])[16:32]+\

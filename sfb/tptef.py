@@ -32,7 +32,7 @@ def show(req):
         
         doc_ref = wsgi_util.db.collection("tptef").document(room);
         if "remark" in req.form and secure_filename(req.form["remark"])=="True":
-            doc_ref.set({str(datetime.now(pytz.UTC).timestamp()).split(".")[0]+"PS1":{
+            doc_ref.update({str(datetime.now(pytz.UTC).timestamp()).split(".")[0]+"PS1":{
                 "user":user,
                 "content": content,
                 "trip":hashlib.sha256(passwd.encode('utf-8')).hexdigest(),
@@ -42,15 +42,13 @@ def show(req):
         if "clear" in req.form and secure_filename(req.form["clear"])=="True":
             doc_ref.where("trip", "==", hashlib.sha256(passwd.encode('utf-8')).hexdigest()).delete()
     #show chat thread
-        orders=str(doc_ref.get().to_dict())
-        
-#        for order in orders:
-#            1
-#            orders+="<tr><td>"+order.to_dict()["user"]+"</td>"
-#            orders+="<td>"+order.to_dict()["content"]+"</td>"
+        orders=doc_ref.get().to_dict()
+        for order in orders.values():
+            orders+="<tr><td>"+order["user"]+"</td>"
+            orders+="<td>"+order["content"]+"</td>"
 #            orders+="<td style=\"font-size: 12px;\">"+(order.to_dict()["trip"])[:16]+"<br>"+(order.to_dict()["trip"])[16:32]+\
 #            "<br>"+(order.to_dict()["trip"])[32:48]+"<br>"+(order.to_dict()["trip"])[48:64]+"</td>"
-#            orders+="<td style=\"font-size: 12px;\">"+order.to_dict()["date"]+"</td></tr>"
+            orders+="<td style=\"font-size: 12px;\">"+order["date"]+"</td></tr>"
     
     
     return wsgi_util.render_template_2("tptef.html",ORDERS=orders,ROOM=room,USER=user,PASS=passwd)

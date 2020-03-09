@@ -60,12 +60,16 @@
                             <th style="width:15%;">user_name</th>
                             <th>content</th>
                             <th style="width:15%;">timestamp</th>
+                            <th style="width:15%;">uid</th>
                         </tr>
                     </thead>
                     <tbody>{{ORDERS}}</tbody>
                 </table>
 
                 <a class="btn btn-outline-success mt-2" href="./">Flask_Indexへ</a>
+                
+                <input type="hidden" id="fbtoken" name="fbtoken" value="">
+                <!--↑Firebase_token_keep-->
             </form>
         </div>
 

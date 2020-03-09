@@ -15,6 +15,9 @@ def render_template_2(dir,**kwargs):
             html=html.replace("{{"+kw+"}}",arg)
     return render_template_string(html)
 
+
+config_dict={"admin_uid":"1GYEMV6s2OWU9dR2cXCntSlR2op2"}
+
 #AP_setting_management
 access_counter=0;status_table=""
 cred = firebase_admin.credentials.Certificate("FirebaseAdmin_Key.json")

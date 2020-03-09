@@ -30,7 +30,7 @@ def show(req):
             
         doc_ref = wsgi_util.db.document("tptef/B")#collection(room).
         doc_ref.set({"T":"A"})
-        doc_ref1= doc_ref.collection("C").document("D")
+        doc_ref1= doc_ref.document("C/D")#collection("C").
         doc_ref1.set({"V":"B"})
         if "remark" in req.form and secure_filename(req.form["remark"])=="True":
             doc_ref.set({"user": user,"content": content,"trip":hashlib.sha256(passwd.encode('utf-8')).hexdigest(),

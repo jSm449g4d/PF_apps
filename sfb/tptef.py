@@ -37,6 +37,11 @@ def show(req):
                 "content": content,"trip":hashlib.sha256(passwd.encode('utf-8')).hexdigest(),
                 "date":datetime.now(pytz.UTC).strftime("%Y/%m/%d %H:%M:%S %f (UTC)")
             })
+            doc_ref.set({str(datetime.now(pytz.UTC).timestamp()).split(".")[0]+"PS1":{
+                "user":user,
+                "content": content,"trip":hashlib.sha256(passwd.encode('utf-8')).hexdigest(),
+                "date":datetime.now(pytz.UTC).strftime("%Y/%m/%d %H:%M:%S %f (UTC)")
+            }})
             
         if "clear" in req.form and secure_filename(req.form["clear"])=="True":
             doc_ref.where("trip", "==", hashlib.sha256(passwd.encode('utf-8')).hexdigest()).delete()

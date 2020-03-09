@@ -12,7 +12,7 @@ import wsgi_util
 def show(req):
     
     room=""
-    user=""
+    user="Jhon_Doe"
     uid=""
     content=""
     fbtoken=""
@@ -21,11 +21,11 @@ def show(req):
         if "fbtoken" in req.form:fbtoken=secure_filename(req.form["fbtoken"])#Firebase_Token_keep
         if 'room' in req.form:
             room=req.form['room'].translate(str.maketrans("","","\"\'\\/<>%`?;"))#Not_secure_filename!
+        if 'user' in req.form:
+            user=req.form['user'].translate(str.maketrans("","","\"\'\\/<>%`?;"))#Not_secure_filename!
         try:
-            user=firebase_admin.auth.verify_id_token(fbtoken)["uid"]
             uid=firebase_admin.auth.verify_id_token(fbtoken)["uid"]
         except:
-            user="Jhon_Doe"
             uid="Null"
         if 'content' in req.form:
             content=req.form['content'].translate(str.maketrans("\"\'\\/<>%`?;",'””￥_〈〉％”？；'))#Not_secure_filename!
@@ -48,9 +48,8 @@ def show(req):
     #show chat thread
         doc=sorted(doc_ref.get().to_dict().items())
         for _,order in doc:
-            orders+="<tr><td>"+order["user"]+"</td>"
+            orders+="<tr><td>"+order["user"]+"</br>"+order["uid"]+"</td>"
             orders+="<td>"+order["content"]+"</td>"
-            orders+="<td style=\"font-size: 12px;\">"+order["uid"]+"</td></tr>"
             orders+="<td style=\"font-size: 12px;\">"+order["date"]+"</td></tr>"
     
     

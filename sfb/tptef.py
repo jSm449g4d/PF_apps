@@ -29,6 +29,7 @@ def show(req):
             passwd=secure_filename(req.form['pass'])
             
         doc_ref1 = wsgi_util.db.document("tptef/B")#collection(room).
+        doc_ref1.set({"V":"a"})
         doc_ref= doc_ref1.document("SD/C") 
         if "remark" in req.form and secure_filename(req.form["remark"])=="True":
             doc_ref.set({"user": user,"content": content,"trip":hashlib.sha256(passwd.encode('utf-8')).hexdigest(),

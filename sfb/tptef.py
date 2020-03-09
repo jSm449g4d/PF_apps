@@ -42,8 +42,10 @@ def show(req):
         if "clear" in req.form and secure_filename(req.form["clear"])=="True":
             doc_ref.where("trip", "==", hashlib.sha256(passwd.encode('utf-8')).hexdigest()).delete()
     #show chat thread
-        for order in doc_ref.get():
-            1
+        orders=doc_ref.get().to_dict()
+        
+#        for order in orders:
+#            1
 #            orders+="<tr><td>"+order.to_dict()["user"]+"</td>"
 #            orders+="<td>"+order.to_dict()["content"]+"</td>"
 #            orders+="<td style=\"font-size: 12px;\">"+(order.to_dict()["trip"])[:16]+"<br>"+(order.to_dict()["trip"])[16:32]+\

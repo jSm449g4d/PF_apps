@@ -40,14 +40,17 @@ def show(req):
             }})
             
         if "clear" in req.form and secure_filename(req.form["clear"])=="True":
-            doc_ref.where("trip", "==", hashlib.sha256(passwd.encode('utf-8')).hexdigest()).delete()
+            doc=doc_ref.get().to_dict().item()
+            for k,v in doc:
+                if v["trip"]==hashlib.sha256(passwd.encode('utf-8')).hexdigest():
+                    doc_ref.update({k: firestore.DELETE_FIELD})
     #show chat thread
         doc=sorted(doc_ref.get().to_dict().items())
         for _,order in doc:
             orders+="<tr><td>"+order["user"]+"</td>"
             orders+="<td>"+order["content"]+"</td>"
-#            orders+="<td style=\"font-size: 12px;\">"+(order["trip"])[:16]+"<br>"+(order["trip"])[16:32]+\
-#            "<br>"+(order["trip"])[32:48]+"<br>"+(order["trip"])[48:64]+"</td>"
+            orders+="<td style=\"font-size: 12px;\">"+(order["trip"])[:16]+"<br>"+(order["trip"])[16:32]+\
+            "<br>"+(order["trip"])[32:48]+"<br>"+(order["trip"])[48:64]+"</td>"
             orders+="<td style=\"font-size: 12px;\">"+order["date"]+"</td></tr>"
     
     

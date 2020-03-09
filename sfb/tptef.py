@@ -42,7 +42,7 @@ def show(req):
         if "clear" in req.form and secure_filename(req.form["clear"])=="True":
             doc_ref.where("trip", "==", hashlib.sha256(passwd.encode('utf-8')).hexdigest()).delete()
     #show chat thread
-        orders=doc_ref.get().to_dict()
+        orders=str(doc_ref.get().to_dict())
         
 #        for order in orders:
 #            1

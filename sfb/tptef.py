@@ -30,7 +30,7 @@ def show(req):
         
         if room=="":room="main_page"
         
-        doc_ref = wsgi_util.db.collection("tptef").document(room);
+        doc_ref = wsgi_util.db.collection("tptef").document(room);doc_ref.set({},merge=True)
         if "remark" in req.form and secure_filename(req.form["remark"])=="True":
             doc_ref.update({int(datetime.now(pytz.UTC).timestamp()):{
                 "user":user,
@@ -42,8 +42,7 @@ def show(req):
         if "clear" in req.form and secure_filename(req.form["clear"])=="True":
             doc_ref.where("trip", "==", hashlib.sha256(passwd.encode('utf-8')).hexdigest()).delete()
     #show chat thread
-#        doc=sorted(doc_ref.get().to_dict().items())
-        doc=doc_ref.get().to_dict()
+        doc=sorted(doc_ref.get().to_dict().items())
         for order in doc.values():
             orders+="<tr><td>"+order["user"]+"</td>"
             orders+="<td>"+order["content"]+"</td>"

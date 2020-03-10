@@ -45,7 +45,7 @@ def show(req):
         if "clear" in req.form and secure_filename(req.form["clear"])=="True":
             doc=doc_ref.get().to_dict().items()
             for k,v in doc:
-                if k==uid and k!="Null":
+                if v["uid"]==uid and k!="Null":
                     doc_ref.update({k:firestore.DELETE_FIELD})
     #show chat thread
         doc=sorted(doc_ref.get().to_dict().items())
@@ -53,6 +53,5 @@ def show(req):
             orders+="<tr><td>"+order["user"]+"</td>"
             orders+="<td>"+order["content"]+"</td>"
             orders+="<td style=\"font-size: 12px;\">"+order["date"]+"</br>"+order["uid"]+"</td></tr>"
-    
     
     return wsgi_util.render_template_2("tptef.html",ORDERS=orders,ROOM=room,USER=user)

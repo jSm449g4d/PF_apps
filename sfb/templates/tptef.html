@@ -117,11 +117,18 @@
             }
 
             function auth_mail() {
-                firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {});
+                firebase.auth().signInWithEmailAndPassword("email", "password").catch(function(error) {
+
+                    document.getElementById("authdoc").innerHTML += error.code + "<br>"
+                    document.getElementById("authdoc").innerHTML += error.message + "<br>"
+                });
             }
 
             function auth_mail_add() {
-                firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {})
+                firebase.auth().createUserWithEmailAndPassword("email", "password").catch(function(error) {
+                    document.getElementById("authdoc").innerHTML += error.code + "<br>"
+                    document.getElementById("authdoc").innerHTML += error.message + "<br>"
+                })
             }
 
             function auth_logout() {

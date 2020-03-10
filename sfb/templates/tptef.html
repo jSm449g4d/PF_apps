@@ -47,13 +47,21 @@
                     </thead>
                 </table>
 
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="content" placeholder="Content"></textarea>
-                <h6 class="mt-2">user_name</h6>
-                <div class="mt-2 form-row">
-                    <input type="text" name="user" class="form-control mx-1 col-4" id="username-form" value="{{USER}}" placeholder="User">
-                    <button name="remark" class="btn btn-success mx-1" value="True">Remark</button>
-                    <button name="clear" class="btn btn-outline-danger mx-1" value="True">Clear_your_Remarks</button>
+
+                <div class="m-2 p-2" style="color:#AAFEFE;border:3px double silver;background:#001111;">
+                    <h5 style="color:white;font-family:''">入力フォーム</h5>
+
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="content" placeholder="Content"></textarea>
+                    <p id="authdoc2">
+                        工事中です
+                    </p>
+                    <div class="mt-2 form-row">
+                        <input type="text" name="user" class="form-control mx-1 col-4" id="username-form" value="{{USER}}" placeholder="User">
+                        <button name="remark" class="btn btn-success mx-1" value="True">Remark</button>
+                        <button name="clear" class="btn btn-danger mx-1" value="True">Clear_your_Remarks</button>
+                    </div>
                 </div>
+
 
                 <table class="table table-sm bg-light">
                     <thead>
@@ -89,8 +97,6 @@
         <script src="https://www.gstatic.com/firebasejs/7.10.0/firebase-auth.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.10.0/firebase-analytics.js"></script>
 
-        <!--<script src="/__/firebase/init.js"></script>
-    ↑ deploy on Firebase only  ↓ deploy on any platform-->
         <script>
             // Your web app's Firebase configuration
             var firebaseConfig = {
@@ -118,7 +124,6 @@
 
             function auth_mail() {
                 firebase.auth().signInWithEmailAndPassword("test@gmail.com", "password").catch(function(error) {
-
                     document.getElementById("authdoc").innerHTML += error.code + "<br>"
                     document.getElementById("authdoc").innerHTML += error.message + "<br>"
                 });
@@ -147,12 +152,15 @@
             })
         </script>
         <!--Firebase -->
-
         <!--Bootstrap and jQuery JS -->
         <!--CDN-->
         <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
         <!--/Bootstrap and jQuery JS -->
+        <!--React -->
+        <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+        <!--React -->
 
     </body>
 

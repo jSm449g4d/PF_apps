@@ -48,9 +48,9 @@ def show(req):
     #show chat thread
         doc=sorted(doc_ref.get().to_dict().items())
         for _,order in doc:
-            orders+="<tr><td>"+order["user"]+"</br>"+order["uid"]+"</td>"
+            orders+="<tr><td>"+order["user"]+"</td>"
             orders+="<td>"+order["content"]+"</td>"
-            orders+="<td style=\"font-size: 12px;\">"+order["date"]+"</td></tr>"
+            orders+="<td style=\"font-size: 12px;\">"+order["date"]+"</br>"+order["uid"]+"</td></tr>"
     
     
     return wsgi_util.render_template_2("tptef.html",ORDERS=orders,ROOM=room,USER=user)

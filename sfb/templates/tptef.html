@@ -49,7 +49,6 @@
 
                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="content" placeholder="Content"></textarea>
                 <div class="mt-2 row">
-                    <label for="name" class="mx-1">User_Name:</label>
                     <input type="text" name="user" class="form-control col-4 mx-1" value="{{USER}}" placeholder="User">
                     <button name="remark" class="btn btn-success mx-1" value="True">Remark</button>
                     <button name="clear" class="btn btn-outline-danger mx-1" value="True">Clear_your_Remarks</button>
@@ -58,9 +57,9 @@
                 <table class="table table-sm bg-light">
                     <thead>
                         <tr>
-                            <th style="width:15%;">user_name/uid</th>
+                            <th style="width:15%;">user_name</th>
                             <th>content</th>
-                            <th style="width:15%;">timestamp</th>
+                            <th style="width:15%;">timestamp/uid</th>
                         </tr>
                     </thead>
                     <tbody>{{ORDERS}}</tbody>

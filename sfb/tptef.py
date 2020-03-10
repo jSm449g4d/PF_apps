@@ -6,6 +6,7 @@ from datetime import datetime
 import pytz
 import firebase_admin
 from firebase_admin import auth
+from google.cloud import firestore
 import wsgi_util
 
 
@@ -44,6 +45,7 @@ def show(req):
         if "clear" in req.form and secure_filename(req.form["clear"])=="True":
             doc=doc_ref.get().to_dict().item()
             for k,v in doc:
+                doc.update({k:firestore.DELETE_FIELD})
                 1
     #show chat thread
         doc=sorted(doc_ref.get().to_dict().items())

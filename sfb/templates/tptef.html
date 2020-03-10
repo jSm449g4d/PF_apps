@@ -72,6 +72,7 @@
                     <h5 style="color:red;font-family:''">Firebaseの機能の実験</h5>
                     <input type="button" value="auth_google" class="btn btn-success" onclick="auth_google();" />
                     <input type="button" value="auth_guest" class="btn btn-success" onclick="auth_guest();" />
+                    <input type="button" value="auth_mail" class="btn btn-success" onclick="auth_mail();" />
                     <input type="button" value="logout" class="btn btn-success" onclick="auth_logout();" />
                     <p id="authdoc">
                         (´・ω・｀) Google_mailはAdmin用だから、登録しないでね</p>
@@ -114,6 +115,10 @@
                 firebase.auth().signInAnonymously();
             }
 
+            function auth_mail() {
+                firebase.auth().signInWithEmailAndPassword(email, password);
+            }
+
             function auth_logout() {
                 firebase.auth().signOut();
                 var cx = document.getElementById("fbtoken");
@@ -121,13 +126,11 @@
             }
 
             firebase.auth().onAuthStateChanged(function(user) { //Firebase_token_keep
-                document.getElementById("authdoc").innerHTML = user.displayName + "<br>" + user.email + "<br>" +
-                    user.emailVerified + "<br>" + user.photoURL + "<br>" +
-                    user.isAnonymous + "<br>" + user.uid + "<br>" + user.providerData;
 
                 firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
                     var cx = document.getElementById("fbtoken");
                     cx.value = idToken;
+                    document.getElementById("authdoc").innerHTML = idToken
                 })
             })
         </script>

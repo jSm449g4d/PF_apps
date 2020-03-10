@@ -117,11 +117,11 @@
             }
 
             function auth_mail() {
-                firebase.auth().signInWithEmailAndPassword(email, password);
+                firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {});
             }
 
             function auth_mail_add() {
-                firebase.auth().createUserWithEmailAndPassword(email, password)
+                firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {})
             }
 
             function auth_logout() {

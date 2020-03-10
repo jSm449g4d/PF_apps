@@ -11,7 +11,7 @@
     </head>
 
     <body>
-        <div class="mt-2 mx-2">
+        <div class="m-2">
             <form method="post" enctype="multipart/form-data" style="display:inline;">
                 <h2 style="color:black;font-family:serif;">Chat_room</h2>
                 <h5 style="color:red;font-family:'';">=Please use freely at your own risk=</h5>
@@ -48,8 +48,9 @@
                 </table>
 
                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="content" placeholder="Content"></textarea>
-                <div class="mt-2 row">
-                    <input type="text" name="user" class="form-control col-4 mx-1" value="{{USER}}" placeholder="User">
+                <h6 class="mt-2">user_name</h6>
+                <div class="mt-2 form-row">
+                    <input type="text" name="user" class="form-control mx-1 col-4" id="username-form" value="{{USER}}" placeholder="User">
                     <button name="remark" class="btn btn-success mx-1" value="True">Remark</button>
                     <button name="clear" class="btn btn-outline-danger mx-1" value="True">Clear_your_Remarks</button>
                 </div>

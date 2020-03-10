@@ -2,6 +2,7 @@
 import sys
 import os
 import flask
+import json
 from flask import  render_template_string
 import firebase_admin
 from firebase_admin import credentials
@@ -16,11 +17,12 @@ def render_template_2(dir,**kwargs):
     return render_template_string(html)
 
 
-config_dict={"admin_uid":"1GYEMV6s2OWU9dR2cXCntSlR2op2"}
 
 #AP_setting_management
-access_counter=0;status_table=""
+access_counter=0;status_table="";config_dict={}
 cred = firebase_admin.credentials.Certificate("FirebaseAdmin_Key.json")
+with open("config.json","r",encoding="utf-8") as fp:
+    config_dict=json.loads(fp)
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 def add_status_table(title="",data="",color="navy"):

@@ -45,10 +45,7 @@ def show(req):
         if "clear" in req.form and secure_filename(req.form["clear"])=="True":
             doc=doc_ref.get().to_dict().items()
             for k,v in doc:
-                
-                orders+=k
-#                doc.update({k:firestore.DELETE_FIELD})
-                1
+                doc.update({k:firestore.DELETE_FIELD})
     #show chat thread
         doc=sorted(doc_ref.get().to_dict().items())
         for _,order in doc:

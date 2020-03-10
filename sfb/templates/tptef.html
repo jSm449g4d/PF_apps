@@ -73,6 +73,7 @@
                     <input type="button" value="auth_google" class="btn btn-success" onclick="auth_google();" />
                     <input type="button" value="auth_guest" class="btn btn-success" onclick="auth_guest();" />
                     <input type="button" value="auth_mail" class="btn btn-success" onclick="auth_mail();" />
+                    <input type="button" value="auth_mail_add" class="btn btn-success" onclick="auth_mail_add();" />
                     <input type="button" value="logout" class="btn btn-success" onclick="auth_logout();" />
                     <p id="authdoc">
                         (´・ω・｀) Google_mailはAdmin用だから、登録しないでね</p>
@@ -117,6 +118,10 @@
 
             function auth_mail() {
                 firebase.auth().signInWithEmailAndPassword(email, password);
+            }
+
+            function auth_mail_add() {
+                firebase.auth().createUserWithEmailAndPassword(email, password)
             }
 
             function auth_logout() {

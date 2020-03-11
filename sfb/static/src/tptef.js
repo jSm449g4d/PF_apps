@@ -21,5 +21,4 @@ class App extends React.Component {
         );
     }
 }
-App.render()
 document.getElementById("authdoc").innerHTML="React"

@@ -9,3 +9,7 @@ ReactDOM.render(
     <tstreact />,
     document.getElementById('App')
 );
+ReactDOM.render(
+    <tstreact />,
+    document.getElementById('authdoc')
+);

@@ -7,7 +7,7 @@ class tstreact extends React.Component {
 }
 document.getElementById("authdoc").innerHTML="React"
 ReactDOM.render(
-    <tstreact />,
+    <h1>Hello,BABEL3</h1>,
     document.getElementById('authdoc')
 );
 ReactDOM.render(

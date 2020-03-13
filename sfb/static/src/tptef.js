@@ -16,7 +16,7 @@ class Tstreact extends React.Component {
                 <label>
                     Name:
                 </label>
-                <input type="button" value={this.state.value} onclick={al}/>
+                <input type="button" value={this.state.value} onClick={this.handleSubmit}/>
                 </p>
         );
             //<input type="text" value={this.state.value} onChange={this.handleChange} />

@@ -1,5 +1,7 @@
 //plz use React and Firebase
 
+function al(){alert('A name was submitted!: ');}
+
 class Tstreact extends React.Component {
     
     handleSubmit(event) {alert('A name was submitted: ');};//event.preventDefault();
@@ -14,7 +16,7 @@ class Tstreact extends React.Component {
                 <label>
                     Name:
                 </label>
-                <input type="button" value={this.state.value} onclick={this.handleSubmit}/>
+                <input type="button" value={this.state.value} onclick={al}/>
                 </p>
         );
             //<input type="text" value={this.state.value} onChange={this.handleChange} />

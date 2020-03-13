@@ -2,8 +2,11 @@
 
 function Popmaillogin() {
     return (
-        <div className='popup'>aaaaa</div>
+        <div className='popup'>aaaaa
 
+        <div className='popup'>
+            <div className='popup_inner'> aaacaa</div>
+        </div></div>
     )
 }
 
@@ -28,9 +31,9 @@ class Tstreact extends React.Component {
             <input type="button" value={this.state.value} onClick={this.handleSubmit.bind(this)} />
 
 
-        {this.state.showPopup ? 
-        <Popmaillogin text='Close Me' closePopup={this.handleSubmit.bind(this)} />
-        : null}
+            {this.state.showPopup ?
+                <Popmaillogin text='Close Me' closePopup={this.handleSubmit.bind(this)} />
+                : null}
         </p>
         );
 

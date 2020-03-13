@@ -1,12 +1,23 @@
 //plz use React and Firebase
 
+const customStyles = {
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)'
+    }
+};
+
 function Popmaillogin() {
     return (
         <div>
             <h1>ASASSASAS</h1>
 
-            <div class="modal" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document"> aaacaa</div>
+            <div style={customStyles}>
+                <div> aaacaa</div>
             </div>
 
         </div>
@@ -39,12 +50,6 @@ class Tstreact extends React.Component {
         </p>
         );
 
-    }
-};
-class Tstreact2 extends React.Component {
-    render() {
-        return (<input type="submit" value="Submit" />
-        );
     }
 };
 ReactDOM.render(

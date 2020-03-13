@@ -1,5 +1,10 @@
 //plz use react-bootstrap and Firebase
 
+function auth_google() {
+    var provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithPopup(provider).then(function(result) {}).catch(function(error) {});
+}
+
 class Tstreact extends React.Component {
 
     handleSubmit(event) {
@@ -30,7 +35,6 @@ class Tstreact extends React.Component {
                 </div>
             )
         }
-
     }
 };
 

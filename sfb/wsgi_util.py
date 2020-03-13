@@ -19,8 +19,8 @@ def render_template_2(dir,**kwargs):
 #AP_setting_management
 access_counter=0;status_table="";config_dict={}
 cred = firebase_admin.credentials.Certificate("FirebaseAdmin_Key.json")
-with open("config.json","r",encoding="utf-8") as fp:config_dict.update(json.load(fp))
 firebase_admin.initialize_app(cred)
+with open("config.json","r",encoding="utf-8") as fp:config_dict.update(json.load(fp))
 db = firestore.client()
 def add_status_table(title="",data="",color="navy"):
     global status_table

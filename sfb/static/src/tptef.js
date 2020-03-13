@@ -1,4 +1,5 @@
-document.getElementById('davra').innerHTML += "AAAAD";
+//plz use React and Firebase
+
 class Tstreact extends React.Component {
     
     handleSubmit(event) {alert('A name was submitted: ' + this.state.value); event.preventDefault(); };
@@ -13,7 +14,7 @@ class Tstreact extends React.Component {
                 <label>
                     Name:
                 </label>
-                <input type="submit" value="Submit" onclick={this.handleSubmit}/>
+                <input type="button" value="Submit" onclick={this.handleSubmit}/>
                 </p>
         );
             //<input type="text" value={this.state.value} onChange={this.handleChange} />

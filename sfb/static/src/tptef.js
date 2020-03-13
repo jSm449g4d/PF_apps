@@ -1,13 +1,5 @@
 //plz use React and Firebase
 
-
-function Popmaillogin() {
-    return (
-        <div>aswq
-        </div>
-    )
-}
-/*
 class Tstreact extends React.Component {
 
     handleSubmit(event) {
@@ -21,24 +13,27 @@ class Tstreact extends React.Component {
         this.state = { value: 'SUBmit', showPopup: false };
     };
     render() {
-        user=firebase.auth().currentUser
+        var user = firebase.auth().currentUser
         if (user) {
             return (
                 <div>
-                    bbbbb
+                    <input type="button" value="auth_google" class="btn btn-success" onclick="auth_google();" />
+                    <input type="button" value="auth_guest" class="btn btn-success" onclick="auth_guest();" />
+                    <input type="button" value="auth_mail" class="btn btn-success" onclick="auth_mail();" />
+                    <input type="button" value="auth_mail_add" class="btn btn-success" onclick="auth_mail_add();" />
                 </div>
-                )
+            )
 
         } else {
             return (
                 <div>
-                    aaaa
+                    <input type="button" value="logout" class="btn btn-success" onclick="auth_logout();" />
                 </div>
-                )
+            )
         }
 
     }
-};*/
+};
 
 ReactDOM.render(
-    <Popmaillogin />, document.getElementById('davra'));
+    <Tstreact />, document.getElementById('davra'));

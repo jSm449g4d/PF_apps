@@ -2,7 +2,7 @@
 
 class Tstreact extends React.Component {
     
-    handleSubmit(event) {alert('A name was submitted: ' + this.state.value);event.preventDefault(); };
+    handleSubmit(event) {alert('A name was submitted: ');};//event.preventDefault();
     constructor(props) {
         super(props);
         this.state = { value: 'SUBmit' };

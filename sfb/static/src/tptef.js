@@ -23,10 +23,10 @@ class Tstreact extends React.Component {
 }; 
 class Tstreact2 extends React.Component {
     render() {
-        return (<h1>React!</h1>        
+        return (<input type="submit" value="Submit" />        
         );
     }
 }; 
 ReactDOM.render(
-    <Tstreact />, document.getElementById('davra'));
+    <Tstreact2 />, document.getElementById('davra'));
     

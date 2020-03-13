@@ -1,10 +1,5 @@
 //plz use React and Firebase
 
-const customStyles = {
-    content: {
-        background:brack
-    }
-};
 
 function Popmaillogin() {
     return (
@@ -17,7 +12,7 @@ function Popmaillogin() {
         </div>
     )
 }
-
+/*
 class Tstreact extends React.Component {
 
     handleSubmit(event) {
@@ -47,20 +42,8 @@ class Tstreact extends React.Component {
                 )
         }
 
-
-        
-        return (<p>
-            <label>
-                Name:
-                </label>
-            <input type="button" class="btn btn-success mx-1" value={this.state.value} onClick={this.handleSubmit.bind(this)} />
-            {this.state.showPopup ?
-                <Popmaillogin text='Close Me' closePopup={this.handleSubmit.bind(this)} />
-                : null}
-        </p>
-        );
-
     }
-};
+};*/
+
 ReactDOM.render(
-    <Tstreact />, document.getElementById('davra'));
+    <Popmaillogin />, document.getElementById('davra'));

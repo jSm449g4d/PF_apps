@@ -1,34 +1,46 @@
 //plz use React and Firebase
 
-function al(){alert('A name was submitted!: ');}
+function Popmaillogin() {
+    return (
+        <div className='popup'>aaaaa</div>
+
+    )
+}
 
 class Tstreact extends React.Component {
-    
-    handleSubmit(event) {alert('A name was submitted: ');};//event.preventDefault();
+
+    handleSubmit(event) {
+        alert('A name was submitted: ');
+        this.setState({
+            showPopup: !this.state.showPopup
+        });
+    };
+
     constructor(props) {
         super(props);
-        this.state = { value: 'SUBmit' };
-        /*this.handleChange = this.handleChange.bind(this);*/
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.state = { value: 'SUBmit', showPopup: false };
     };
     render() {
         return (<p>
-                <label>
-                    Name:
+            <label>
+                Name:
                 </label>
-                <input type="button" value={this.state.value} onClick={this.handleSubmit}/>
-                </p>
+            <input type="button" value={this.state.value} onClick={this.handleSubmit.bind(this)} />
+
+
+        {this.state.showPopup ? 
+        <Popmaillogin text='Close Me' closePopup={this.handleSubmit.bind(this)} />
+        : null}
+        </p>
         );
-            //<input type="text" value={this.state.value} onChange={this.handleChange} />
-            
+
     }
-}; 
+};
 class Tstreact2 extends React.Component {
     render() {
-        return (<input type="submit" value="Submit" />        
+        return (<input type="submit" value="Submit" />
         );
     }
-}; 
+};
 ReactDOM.render(
     <Tstreact />, document.getElementById('davra'));
-    

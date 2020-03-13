@@ -1,4 +1,4 @@
-//plz use React and Firebase
+//plz use react-bootstrap and Firebase
 
 class Tstreact extends React.Component {
 
@@ -13,7 +13,7 @@ class Tstreact extends React.Component {
         this.state = { value: 'SUBmit', showPopup: false };
     };
     render() {
-        var user = firebase.auth().currentUser
+        var user = firebase.auth().currentUser;
         if (user) {
             return (
                 <div>

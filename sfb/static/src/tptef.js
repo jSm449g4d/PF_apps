@@ -9,17 +9,14 @@ class Tstreact extends React.Component {
     };*/
     render() {
         return (
-            <input type="submit" value="Submit" />
-            /*
             <form onSubmit={this.handleSubmit}>
                 <label>
                     Name:
-            <input type="text" value={this.state.value} onChange={this.handleChange} />
                 </label>
                 <input type="submit" value="Submit" />
-            </form>            
-            */
+            </form>
         );
+            //<input type="text" value={this.state.value} onChange={this.handleChange} />
     }
 }; 
 class Tstreact2 extends React.Component {

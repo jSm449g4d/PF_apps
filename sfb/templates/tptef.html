@@ -135,6 +135,7 @@
                     document.getElementById("authdoc").innerHTML += error.code + "<br>"
                     document.getElementById("authdoc").innerHTML += error.message + "<br>"
                 })
+                document.getElementById("authdoc").innerHTML += firebase.auth().currentUser
             }
 
             function auth_logout() {

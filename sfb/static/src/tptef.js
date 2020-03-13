@@ -8,10 +8,11 @@ class Tstreact extends React.Component {
     };
     render() {
         firebase.auth().onAuthStateChanged(function (user) {
-            if (user) {
+            if (user.uid) {
                 return (
                     <div>
                         <input type="button" value="logout" class="btn btn-success" onClick={auth_logout} />
+                        {user.uid}
                     </div>
                 )
             } else {
@@ -21,6 +22,7 @@ class Tstreact extends React.Component {
                         <input type="button" value="auth_guest" class="btn btn-success" onClick={auth_guest} />
                         <input type="button" value="auth_mail" class="btn btn-success" onClick={auth_mail} />
                         <input type="button" value="auth_mail_add" class="btn btn-success" onClick={auth_mail_add} />
+                        {user.uid}
                     </div>
                 )
             }

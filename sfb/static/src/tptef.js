@@ -8,6 +8,8 @@ class Tstreact extends React.Component {
     };
     render() {
         return (
+            <input type="submit" value="Submit" />
+            /*
             <form onSubmit={this.handleSubmit}>
                 <label>
                     Name:
@@ -15,6 +17,7 @@ class Tstreact extends React.Component {
                 </label>
                 <input type="submit" value="Submit" />
             </form>            
+            */
         );
     }
 }; 

@@ -25,5 +25,5 @@ class Tstreact2 extends React.Component {
     }
 }; 
 ReactDOM.render(
-    <Tstreact2 />, document.getElementById('davra'));
+    <Tstreact />, document.getElementById('davra'));
     

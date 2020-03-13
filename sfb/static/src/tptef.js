@@ -2,7 +2,7 @@
 
 function Popmaillogin() {
     return (
-        <div className='popup'>
+        <div className='popup' style="position: fixed;margin: auto;overflow-y: scroll;">
             <div className='popup_inner'> aaacaa</div>
         </div>
     )
@@ -18,58 +18,24 @@ class Tstreact extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { value: 'SUBmit', modalIsOpen: false };
+        this.state = { value: 'SUBmit', showPopup: false };
     };
-
-    openModal() {
-        this.setState({ modalIsOpen: true });
-    }
-
-    afterOpenModal() {
-        // references are now sync'd and can be accessed.
-        this.subtitle.style.color = '#f00';
-    }
-
-    closeModal() {
-        this.setState({ modalIsOpen: false });
-    }
-
     render() {
         return (<p>
             <label>
                 Name:
                 </label>
-            <input type="button" value={this.state.value} onClick={this.openModal} />
+            <input type="button" value={this.state.value} onClick={this.handleSubmit.bind(this)} />
 
 
-            {this.state.modalIsOpen ?
-
-                <Modal
-                    isOpen={this.state.modalIsOpen}
-                    onAfterOpen={this.afterOpenModal}
-                    onRequestClose={this.closeModal}
-                    style={customStyles}
-                    contentLabel="Example Modal"
-                >
-
-                    <h2 ref={subtitle => this.subtitle = subtitle}>Hello</h2>
-                    <button onClick={this.closeModal}>close</button>
-                    <div>I am a modal</div>
-                    <form>
-                        <input />
-                        <button>tab navigation</button>
-                        <button>stays</button>
-                        <button>inside</button>
-                        <button>the modal</button>
-                    </form>
-                </Modal>
+            {this.state.showPopup ?
+                <Popmaillogin text='Close Me' closePopup={this.handleSubmit.bind(this)} />
                 : null}
         </p>
         );
 
     }
 };
-//<Popmaillogin text='Close Me' closePopup={this.handleSubmit.bind(this)} />
 class Tstreact2 extends React.Component {
     render() {
         return (<input type="submit" value="Submit" />

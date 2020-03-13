@@ -2,19 +2,19 @@
 
 class Tstreact extends React.Component {
     
-    handleSubmit() {alert('A name was submitted: ' + this.state.value); };
+    handleSubmit(event) {alert('A name was submitted: ' + this.state.value);event.preventDefault(); };
     constructor(props) {
         super(props);
-        this.state = { value: '' };
-        /*this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);*/
+        this.state = { value: 'SUBmit' };
+        /*this.handleChange = this.handleChange.bind(this);*/
+        this.handleSubmit = this.handleSubmit.bind(this);
     };
     render() {
         return (<p>
                 <label>
                     Name:
                 </label>
-                <input type="button" onclick={this.handleSubmit}/>
+                <input type="button" value={this.state.value} onclick={this.handleSubmit}/>
                 </p>
         );
             //<input type="text" value={this.state.value} onChange={this.handleChange} />

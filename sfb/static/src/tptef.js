@@ -2,18 +2,15 @@
 
 function Popmaillogin() {
     return (
-        <div className='popup'>aaaaa
-
         <div className='popup'>
             <div className='popup_inner'> aaacaa</div>
-        </div></div>
+        </div>
     )
 }
 
 class Tstreact extends React.Component {
 
     handleSubmit(event) {
-        alert('A name was submitted: ');
         this.setState({
             showPopup: !this.state.showPopup
         });

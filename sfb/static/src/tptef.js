@@ -2,12 +2,7 @@
 
 const customStyles = {
     content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)'
+        background:brack
     }
 };
 
@@ -41,7 +36,7 @@ class Tstreact extends React.Component {
             <label>
                 Name:
                 </label>
-            <input type="button" value={this.state.value} onClick={this.handleSubmit.bind(this)} />
+            <input type="button" class="btn btn-success mx-1" value={this.state.value} onClick={this.handleSubmit.bind(this)} />
 
 
             {this.state.showPopup ?

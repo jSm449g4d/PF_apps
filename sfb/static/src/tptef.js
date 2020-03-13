@@ -18,6 +18,12 @@ class Tstreact extends React.Component {
         );
     }
 }; 
+class Tstreact2 extends React.Component {
+    render() {
+        return (<h1>React!</h1>        
+        );
+    }
+}; 
 ReactDOM.render(
-    <Tstreact />, document.getElementById('davra'));
+    <Tstreact2 />, document.getElementById('davra'));
     

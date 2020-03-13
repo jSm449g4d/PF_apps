@@ -5,7 +5,7 @@ function Popmaillogin() {
         <div>
             <h1>ASASSASAS</h1>
 
-            <div className='popup' style="background: #00ff00;">
+            <div className='popup' style="">
                 <div className='popup_inner' style=""> aaacaa</div>
             </div>
 

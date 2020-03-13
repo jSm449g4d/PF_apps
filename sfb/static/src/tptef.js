@@ -2,6 +2,8 @@
 
 function Popmaillogin() {
     return (
+    <div>
+    <h1>ASASSASAS</h1>
         <div className='popup' style="
         z-index:1;
         display:block;
@@ -12,12 +14,12 @@ function Popmaillogin() {
         height:100%;
         background-color:rgba(51,51,51,0.6);
         margin-top:0px;">
-            <div className='popup_inner' style="/* 位置 */
-	top:10%;
+            <div className='popup_inner' style="top:10%;
 	left:25%;
 	width:50%;
 	height:auto;"> aaacaa</div>
-        </div>
+    
+        </div></div>
     )
 }
 

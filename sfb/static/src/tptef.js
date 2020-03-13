@@ -5,8 +5,8 @@ function Popmaillogin() {
         <div>
             <h1>ASASSASAS</h1>
 
-            <div className='popup' style="">
-                <div className='popup_inner' style=""> aaacaa</div>
+            <div className='popup'>
+                <div className='popup_inner'> aaacaa</div>
             </div>
 
         </div>

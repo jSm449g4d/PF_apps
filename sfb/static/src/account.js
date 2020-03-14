@@ -65,7 +65,6 @@ class Account_tag extends React.Component {
                                             <input type="text" name="mail_pass" class="form-control m-1" placeholder="set_password" onChange={this.handleChange} />
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-warning" data-dismiss="modal" onClick={this.signin_easy}>Easy_login</button>
                                             <button type="button" class="btn btn-primary" data-dismiss="modal" onClick={this.signin}>Submit</button>
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                         </div>

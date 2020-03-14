@@ -1,7 +1,5 @@
-from flask import render_template_string, send_file
 from werkzeug.utils import secure_filename
 import os
-import hashlib
 from datetime import datetime
 import pytz
 import firebase_admin
@@ -9,10 +7,10 @@ from firebase_admin import auth
 from google.cloud import firestore
 import wsgi_util
 
-
 def show(req):
     room = "room_main"
     user = "窓の民は名無し"
+    orders = ""
     if req.method == 'POST' or req.method == "GET":
         if 'room' in req.form:
             room = "room_"+req.form['room'].translate(str.maketrans(
@@ -42,7 +40,6 @@ def show(req):
         except:
             False
         # show thread
-        orders = ""
         for _, order in sorted(doc_ref.get().to_dict().items()):
             orders += "<tr><td>"+order["user"]+"</td>"
             orders += "<td>"+order["content"]+"</td>"

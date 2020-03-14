@@ -5,7 +5,6 @@
         <meta charset="utf-8">
         <title>Flaskなチャットルーム</title>
         <!--Bootstrap CSS -->
-        <!--CDN-->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" onload="window.bs4css= 1;">
         <!--/Bootstrap CSS -->
     </head>
@@ -51,12 +50,9 @@
                 <div class="m-2 p-2" style="color:#AAFEFE;border:3px double silver;background:#001111;">
                     <h5 style="color:white;font-family:''">入力フォーム</h5>
 
-                    <div id="davra">plz use js</div>
+                    <div id="davra">cant use React</div>
 
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="content" placeholder="Content"></textarea>
-                    <p id="authdoc2">
-                        工事中です
-                    </p>
+                    <textarea class="form-control mt-2" id="exampleFormControlTextarea1" rows="5" name="content" placeholder="Content"></textarea>
                     <div class="mt-2 form-row">
                         <input type="text" name="user" class="form-control mx-1 col-4" id="username-form" value="{{USER}}" placeholder="User">
                         <button name="remark" class="btn btn-success mx-1" value="True">Remark</button>
@@ -114,37 +110,8 @@
             firebase.initializeApp(firebaseConfig);
             firebase.analytics();
 
-            function auth_google() {
-                var provider = new firebase.auth.GoogleAuthProvider();
-                firebase.auth().signInWithPopup(provider).then(function(result) {}).catch(function(error) {});
-            }
 
-            function auth_guest() {
-                firebase.auth().signInAnonymously();
-            }
-
-            function auth_mail() {
-                firebase.auth().signInWithEmailAndPassword("test@gmail.com", "password").catch(function(error) {
-                    document.getElementById("authdoc").innerHTML += error.code + "<br>"
-                    document.getElementById("authdoc").innerHTML += error.message + "<br>"
-                });
-            }
-
-            function auth_mail_add() {
-                firebase.auth().createUserWithEmailAndPassword("test@gmail.com", "password").catch(function(error) {
-                    document.getElementById("authdoc").innerHTML += error.code + "<br>"
-                    document.getElementById("authdoc").innerHTML += error.message + "<br>"
-                })
-                document.getElementById("authdoc").innerHTML += firebase.auth().currentUser
-            }
-
-            function auth_logout() {
-                firebase.auth().signOut();
-                var cx = document.getElementById("fbtoken");
-                cx.value = "";
-            }
-
-            firebase.auth().onAuthStateChanged(function(user) { //Firebase_token_keep
+            firebase.auth().onAuthStateChanged(function(user) {
                 firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
                     var cx = document.getElementById("fbtoken");
                     cx.value = idToken;
@@ -153,14 +120,13 @@
         </script>
         <!--Firebase -->
         <!--Bootstrap and jQuery JS -->
-        <!--CDN-->
         <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
         <!--/Bootstrap and jQuery JS -->
         <!--React -->
         <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
         <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
-        <script src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
+        <script crossorigin src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
         <script type="text/babel" src="{{ url_for('static', filename='src/tptef.js') }}"></script>
         <!--React -->

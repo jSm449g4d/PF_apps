@@ -13,7 +13,7 @@ import wsgi_util
 def show(req):
     
     room=""
-    user="Jhon_Doe"
+    user="窓の民は名無し"
     uid=""
     content=""
     fbtoken=""

@@ -14,8 +14,11 @@ def show(req):
         try:
             uid = auth.verify_id_token(
                 secure_filename(req.form["fbtoken"]))["uid"]
+            orders="T1"
             doc_ref = wsgi_util.db.collection("mypage").document(uid)
+            orders="T2"
             doc_ref.set({}, merge=True)
+            orders="T3"
             orders=uid
         except:
             False

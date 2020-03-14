@@ -18,7 +18,7 @@ def show(req):
         if 'user' in req.form:
             user = req.form['user'].translate(str.maketrans(
                 "", "", "\"\'\\/<>%`?;"))
-        # access firestore and get record
+        # access firestore
         doc_ref = wsgi_util.db.collection("tptef").document(room)
         doc_ref.set({}, merge=True)
         # Firebase_Token_keep

@@ -39,11 +39,8 @@ def show(req):
                     if v["uid"] == uid:
                         doc_ref.update({k: firestore.DELETE_FIELD})
             if "delete" in req.form:
-                debug += "AAA"
                 for k, _ in doc_ref.get().to_dict().items():
-                    debug += secure_filename(req.form["delete"])
                     if k == secure_filename(req.form["delete"]):
-                        debug += "CCC"
                         doc_ref.update({k: firestore.DELETE_FIELD})
         except:
             False
@@ -56,7 +53,7 @@ def show(req):
             orders += "<td style=\"font-size: 12px;\">" + \
                 v["date"]+"</br>"+v["uid"] + "</td>"
             if v["uid"] == uid:
-                orders += "<td>" + "<button name=\"delete\" \"value=\"" + \
+                orders += "<td>" + "<button name=\"delete\" value=\"" + \
                     k+"\">delete</button>"+"</td></tr>"
             else:
                 orders += "<td>_</td></tr>"

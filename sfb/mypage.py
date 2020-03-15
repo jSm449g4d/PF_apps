@@ -7,21 +7,25 @@ from firebase_admin import auth
 from google.cloud import firestore
 import wsgi_util
 
+
 def show(req):
-    orders=""
+    orders = ""
     if req.method == 'POST' or req.method == "GET":
         try:
-            orders="T0"
-            orders=req.form["fbtoken"]
             uid = auth.verify_id_token(
                 secure_filename(req.form["fbtoken"]))["uid"]
-            orders="T1"
             doc_ref = wsgi_util.db.collection("mypage").document(uid)
-            orders="T2"
             doc_ref.set({}, merge=True)
-            orders="T3"
-            orders=uid
+            orders += "<div>"+uid+"</div>"
+            doc_ref.update({
+                "topic1": "content1",
+                "topic2": "content2",
+                "topic3": "content3",
+                "topic4": "content4", })
+
+            for k, v in doc_ref.get().to_dict().items():
+                orders += "<div><h6>"+k+"</h6>"+v+"</div>"
         except:
             False
-            
-    return wsgi_util.render_template_2("mypage.html",ORDERS=orders,)
+
+    return wsgi_util.render_template_2("mypage.html", ORDERS=orders,)

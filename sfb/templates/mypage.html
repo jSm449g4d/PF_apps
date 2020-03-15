@@ -47,7 +47,6 @@
                 var storageRef = firebase.storage().ref('tptefs/images.html');
                 var uploadTask = storageRef.put(ev.files[0])
             }
-
             firebase.auth().onAuthStateChanged(function(user) {
                 if (user) {
                     user.getIdToken(true).then(function(idToken) {

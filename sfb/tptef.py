@@ -35,12 +35,15 @@ def show(req):
                     "user": user,
                     "uid": uid,
                     "content": req.form['content'].translate(str.maketrans("\"\'\\/<>%`?;", '””￥_〈〉％”？；')),
-                    "date": datetime.now(pytz.UTC).strftime("%Y/%m/%d %H:%M:%S %f (UTC)")
+                    "date": datetime.now(pytz.UTC).strftime("%Y/%m/%d %H:%M:%S %f (UTC)"),
+                    "attachment": "",
                 }})
             if "delete" in req.form:
-                for k, _ in doc_ref.get().to_dict().items():
-                    if k == secure_filename(req.form["delete"]):
-                        doc_ref.update({k: firestore.DELETE_FIELD})
+                doc_ref.update(
+                    {secure_filename(req.form["delete"]): firestore.DELETE_FIELD})
+#                for k, _ in doc_ref.get().to_dict().items():
+#                    if k == secure_filename(req.form["delete"]):
+#                        doc_ref.update({k: firestore.DELETE_FIELD})
             if 'attachment' in req.files:
                 tempfile = os.path.join(
                     wsgi_util.config_dict["temp_folder"], "attachment.tmp")
@@ -48,6 +51,9 @@ def show(req):
                 wsgi_util.GCS_bucket.blob(os.path.join(
                     "tptef", room, remark_key)).upload_from_filename(tempfile)
                 os.remove(tempfile)
+                doc_ref.update({remark_key: {
+                    "attachment": remark_key+secure_filename(req.files['attachment'].filename),
+                }})
         except:
             False
         # show thread
@@ -57,11 +63,13 @@ def show(req):
             orders += "<tr><td>"+v["user"]+"</td>"
             orders += "<td>"+v["content"]+"</td>"
             orders += "<td style=\"font-size: 12px;\">" + \
-                v["date"]+"</br>"+v["uid"] + "</td>"
+                v["date"]+"</br>"+v["uid"] + "</td><td>"
+            if v["attachment"] != "":
+                orders += "<button name=\"download\" value=\"" + \
+                    k+"\">"+v["attachment"]+"</button><br/>"
             if v["uid"] == uid:
-                orders += "<td>" + "<button name=\"delete\" value=\"" + \
-                    k+"\">delete</button>"+"</td></tr>"
-            else:
-                orders += "<td>_</td></tr>"
+                orders += "<button name=\"delete\" value=\"" + \
+                    k+"\">delete</button>"
+            orders += "</td></tr>"
         orders += "</tbody></table>"
     return wsgi_util.render_template_2("tptef.html", ORDERS=orders, ROOM=room[len("room_"):], USER=user, DEBUG=debug)

@@ -7,7 +7,6 @@ from firebase_admin import auth
 from google.cloud import firestore
 import wsgi_util
 
-
 def show(req):
     room = "room_main"
     user = "窓の民は名無し"
@@ -38,11 +37,15 @@ def show(req):
                 for k, v in doc_ref.get().to_dict().items():
                     if v["uid"] == uid:
                         doc_ref.update({k: firestore.DELETE_FIELD})
+            if "delete" in req.form:
+                for k, _ in doc_ref.get().to_dict().items():
+                    if k == secure_filename(req.form["delete"]):
+                        doc_ref.update({k: firestore.DELETE_FIELD})
         except:
             False
         # show thread
-        orders = "<table class=\"table table-sm bg-light\">\<thead>\<tr>\<th style=\"width: 15 %; \"> user_name < /th >" +\
-            "<th > content < /th > <th style = \"width: 15% > timestamp/uid < /th ></tr></thead><tbody>"
+        orders = "<table class=\"table table-sm bg-light\"><thead><tr><th style=\"width: 15 %; \"> user_name </th>" +\
+            "<th>content</th><th style = \"width: 15% > timestamp/uid </th><th>ops</th></tr></thead><tbody>"
         for k, v in sorted(doc_ref.get().to_dict().items()):
             orders += "<tr><td>"+v["user"]+"</td>"
             orders += "<td>"+v["content"]+"</td>"

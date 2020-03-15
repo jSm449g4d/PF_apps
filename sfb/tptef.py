@@ -51,9 +51,9 @@ def show(req):
                 wsgi_util.GCS_bucket.blob(os.path.join(
                     "tptef", room, remark_key)).upload_from_filename(tempfile)
                 os.remove(tempfile)
-                doc_ref.update({remark_key: {
-                    "attachment": remark_key+secure_filename(req.files['attachment'].filename),
-                }})
+                doc_ref.update({
+                    remark_key+".attachment": remark_key+secure_filename(req.files['attachment'].filename),
+                },)
         except:
             False
         # show thread
@@ -71,5 +71,5 @@ def show(req):
                 orders += "<button name=\"delete\" value=\"" + \
                     k+"\">delete</button>"
             orders += "</td></tr>"
-        orders += "</tbody></table>"
-    return wsgi_util.render_template_2("tptef.html", ORDERS=orders, ROOM=room[len("room_"):], USER=user, DEBUG=debug)
+            orders += "</tbody></table>"
+    return wsgi_util.render_template_2("tptef.html", ORDERS=orders, ROOM=room[len("room_"):], USER=user)

@@ -50,9 +50,8 @@ class Account_tag extends React.Component {
                                     var provider = new firebase.auth.GoogleAuthProvider();
                                     firebase.auth().signInWithPopup(provider).then(function (result) { }).catch(function (error) { });
                                 }} />
-                            <input type="button" value="Create_account" class="btn btn-success mx-1 btn-sm" data-toggle="modal" data-target="#Modal_create_acc" />
-                            <input type="button" value="Sign_in" class="btn btn-success mx-1 btn-sm" data-toggle="modal" data-target="#Modal_signin" />
-                            <button type="button" class="btn btn-warning mx-1 btn-sm" data-toggle="modal" data-target="#Modal_signin">Sign_in</button>
+                            <button type="button" class="btn btn-success mx-1 btn-sm" data-toggle="modal" data-target="#Modal_create_acc">Create_account</button>
+                            <button type="button" class="btn btn-success mx-1 btn-sm" data-toggle="modal" data-target="#Modal_signin">Sign_in</button>
                             <button type="button" class="btn btn-warning mx-1 btn-sm" onClick={this.signin_easy}>Easy_login</button>
 
                             <div class="modal fade" id="Modal_signin" role="dialog" aria-hidden="true">

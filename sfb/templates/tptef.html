@@ -102,12 +102,13 @@
         <script type="text/babel" src="{{ url_for('static', filename='src/account.js') }}"></script>
         <!--React -->
         <script>
-            if (document.getElementsByName("fbtoken")[0].value == "") {
-                document.getElementsByName("remark")[0].setAttribute("disabled", "True")
-                document.getElementsByName("remark")[0].innerHTML = "Plz login"
-            }
+            setTimeout(function() {
+                if (document.getElementsByName("fbtoken")[0].value == "") {
+                    document.getElementsByName("remark")[0].setAttribute("disabled", "True")
+                    document.getElementsByName("remark")[0].innerHTML = "Plz login"
+                }
+            }, 1000)
         </script>
-
 
     </body>
 

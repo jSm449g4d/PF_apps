@@ -14,6 +14,7 @@
         <div class="m-2">
             <form method="post" enctype="multipart/form-data" style="display:inline;">
                 <div>{{ORDERS}}</div>
+                <input type="file" id="btnUpload" value="aaa" onchange="submit_file(this)">
                 <input type="hidden" id="fbtoken" name="fbtoken" value="">
                 <!--↑Firebase_token_keep-->
             </form>
@@ -25,6 +26,7 @@
         <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-auth.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-analytics.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-storage.js"></script>
         <script>
             // Your web app's Firebase configuration
             var firebaseConfig = {
@@ -40,6 +42,12 @@
             // Initialize Firebase
             firebase.initializeApp(firebaseConfig);
             firebase.analytics();
+            //document.getElementById("btnUpload").onchange =
+            function submit_file(ev) {
+                var storageRef = firebase.storage().ref('tptefs/images.html');
+                var uploadTask = storageRef.put(ev.files[0])
+            }
+
             firebase.auth().onAuthStateChanged(function(user) {
                 if (user) {
                     user.getIdToken(true).then(function(idToken) {

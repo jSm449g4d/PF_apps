@@ -4,8 +4,10 @@ from datetime import datetime
 import pytz
 import firebase_admin
 from firebase_admin import auth
-from google.cloud import firestore
+from firebase_admin import firestore
 import wsgi_util
+
+os.makedirs("wsgi_temp", exist_ok=True)
 
 
 def show(req):
@@ -42,6 +44,13 @@ def show(req):
                 for k, _ in doc_ref.get().to_dict().items():
                     if k == secure_filename(req.form["delete"]):
                         doc_ref.update({k: firestore.DELETE_FIELD})
+            if 'attachment' in req.files:
+                target = req.files['attachment'].filename.translate(
+                    str.maketrans("\"\'\\/<>%`?;", '__________'))
+                req.files['attachment'].save(os.path.join(
+                    wsgi_util.config_dict["temp_folder"], "attachment.tmp"))
+                wsgi_util.GCS_bucket.blob("tptef").upload_from_filename(
+                    os.path.join(wsgi_util.config_dict["temp_folder"], "attachment.tmp"))
         except:
             False
         # show thread

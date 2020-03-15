@@ -28,29 +28,26 @@ def show(req):
         try:
             uid = auth.verify_id_token(
                 secure_filename(req.form["fbtoken"]))["uid"]
+            remark_key = str(int(datetime.now(pytz.UTC).timestamp()*1000))
             # Remark
             if 'content' in req.form and "remark" in req.form and secure_filename(req.form["remark"]) == "True":
-                doc_ref.update({str(int(datetime.now(pytz.UTC).timestamp()*1000)): {
+                doc_ref.update({remark_key: {
                     "user": user,
                     "uid": uid,
                     "content": req.form['content'].translate(str.maketrans("\"\'\\/<>%`?;", '””￥_〈〉％”？；')),
                     "date": datetime.now(pytz.UTC).strftime("%Y/%m/%d %H:%M:%S %f (UTC)")
                 }})
-            if "clear" in req.form and secure_filename(req.form["clear"]) == "True":
-                for k, v in doc_ref.get().to_dict().items():
-                    if v["uid"] == uid:
-                        doc_ref.update({k: firestore.DELETE_FIELD})
             if "delete" in req.form:
                 for k, _ in doc_ref.get().to_dict().items():
                     if k == secure_filename(req.form["delete"]):
                         doc_ref.update({k: firestore.DELETE_FIELD})
             if 'attachment' in req.files:
-                target = req.files['attachment'].filename.translate(
-                    str.maketrans("\"\'\\/<>%`?;", '__________'))
-                req.files['attachment'].save(os.path.join(
-                    wsgi_util.config_dict["temp_folder"], "attachment.tmp"))
-                wsgi_util.GCS_bucket.blob("tptef").upload_from_filename(
-                    os.path.join(wsgi_util.config_dict["temp_folder"], "attachment.tmp"))
+                tempfile = os.path.join(
+                    wsgi_util.config_dict["temp_folder"], "attachment.tmp")
+                req.files['attachment'].save(tempfile)
+                wsgi_util.GCS_bucket.blob(os.path.join(
+                    "tptef", room, remark_key)).upload_from_filename(tempfile)
+                os.remove(tempfile)
         except:
             False
         # show thread

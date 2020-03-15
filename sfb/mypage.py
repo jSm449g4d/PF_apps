@@ -13,7 +13,6 @@ def show(req):
         try:
             orders="T0"
             orders=req.form["fbtoken"]
-            
             uid = auth.verify_id_token(
                 secure_filename(req.form["fbtoken"]))["uid"]
             orders="T1"

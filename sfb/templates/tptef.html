@@ -80,12 +80,6 @@
             firebase.initializeApp(firebaseConfig);
             firebase.analytics();
             var user = firebase.auth().currentUser
-            if (user) {
-                user.getIdToken(true).then(function(idToken) {
-                    var cx = document.getElementById("fbtoken");
-                    cx.value = idToken;
-                })
-            }
             firebase.auth().onAuthStateChanged(function(user) {
                 firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
                     var cx = document.getElementById("fbtoken");

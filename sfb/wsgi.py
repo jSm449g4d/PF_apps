@@ -30,7 +30,10 @@ def html_show(name):
 
 @app.route("/<name>.py",methods=['GET', 'POST'])
 def py_show(name):
-    try :return importlib.import_module(name).show(request)
+    try :
+        if  request.method=="GET":
+            return wsgi_util.render_template_2('Redirect_Get_2_Post.html')
+        return importlib.import_module(name).show(request)
     except Exception as e:
         return wsgi_util.render_template_2("error.html",
         form_error_code="500",form_error_text=str(e)),500

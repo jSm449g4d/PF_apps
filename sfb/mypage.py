@@ -12,6 +12,7 @@ def show(req):
     if req.method == 'POST' or req.method == "GET":
         
         try:
+            orders="T0"
             uid = auth.verify_id_token(
                 secure_filename(req.form["fbtoken"]))["uid"]
             orders="T1"

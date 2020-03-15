@@ -11,7 +11,7 @@ import wsgi_util
 def show(req):
     room = "room_main"
     user = "窓の民は名無し"
-    orders = ""
+    uid = ""
     if req.method == 'POST' or req.method == "GET":
         if 'room' in req.form:
             room = "room_"+req.form['room'].translate(str.maketrans(
@@ -41,11 +41,17 @@ def show(req):
         except:
             False
         # show thread
-        for k, order in sorted(doc_ref.get().to_dict().items()):
-            orders += "<tr><td>"+order["user"]+"</td>"
-            orders += "<td>"+order["content"]+"</td>"
+        orders = "<table class=\"table table-sm bg-light\">\<thead>\<tr>\<th style=\"width: 15 %; \"> user_name < /th >" +\
+            "<th > content < /th > <th style = \"width: 15% > timestamp/uid < /th ></tr></thead><tbody>"
+        for k, v in sorted(doc_ref.get().to_dict().items()):
+            orders += "<tr><td>"+v["user"]+"</td>"
+            orders += "<td>"+v["content"]+"</td>"
             orders += "<td style=\"font-size: 12px;\">" + \
-                order["date"]+"</br>"+order["uid"] + \
-                "<button name=\"delete\" \"value=\""+k+"\">delete</button>"+"</td></tr>"
-
+                v["date"]+"</br>"+v["uid"] + "</td>"
+            if v["uid"] == uid:
+                orders += "<td>" + "<button name=\"delete\" \"value=\"" + \
+                    k+"\">delete</button>"+"</td></tr>"
+            else:
+                orders += "<td>_</td></tr>"
+        orders += "</tbody></table>"
     return wsgi_util.render_template_2("tptef.html", ORDERS=orders, ROOM=room[len("room_"):], USER=user)

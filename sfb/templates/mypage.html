@@ -11,9 +11,13 @@
 
     <body>
         <div id="account_tag">Cant use React+Bootstrap4</div>
-        <div>{{ORDERS}}</div>
-        <input type="hidden" id="fbtoken" name="fbtoken" value="">
-        <!--↑Firebase_token_keep-->
+        <div class="m-2">
+            <form method="post" enctype="multipart/form-data" style="display:inline;">
+                <div>{{ORDERS}}</div>
+                <input type="hidden" id="fbtoken" name="fbtoken" value="">
+                <!--↑Firebase_token_keep-->
+            </form>
+        </div>
 
         <!--Firebase -->
         <!-- The core Firebase JS SDK is always required and must be listed first -->

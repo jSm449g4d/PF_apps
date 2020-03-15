@@ -21,7 +21,6 @@ def show(req):
         # access firestore
         doc_ref = wsgi_util.db.collection("tptef").document(room)
         doc_ref.set({}, merge=True)
-        # Firebase_Token_keep
         try:
             uid = auth.verify_id_token(
                 secure_filename(req.form["fbtoken"]))["uid"]
@@ -45,7 +44,7 @@ def show(req):
             False
         # show thread
         orders = "<table class=\"table table-sm bg-light\"><thead><tr><th style=\"width: 15 %; \"> user_name </th>" +\
-            "<th>content</th><th style = \"width: 15% > timestamp/uid </th><th>ops</th></tr></thead><tbody>"
+            "<th>content</th><th style = \"width: 15%\" > timestamp/uid </th><th>ops</th></tr></thead><tbody>"
         for k, v in sorted(doc_ref.get().to_dict().items()):
             orders += "<tr><td>"+v["user"]+"</td>"
             orders += "<td>"+v["content"]+"</td>"

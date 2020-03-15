@@ -10,7 +10,6 @@ import wsgi_util
 def show(req):
     orders=""
     if req.method == 'POST' or req.method == "GET":
-        
         try:
             orders="T0"
             orders=req.form["fbtoken"]

@@ -41,7 +41,7 @@ def show(req):
         except:
             False
         # show thread
-        for Firebase_Token_keep, order in sorted(doc_ref.get().to_dict().items()):
+        for k, order in sorted(doc_ref.get().to_dict().items()):
             orders += "<tr><td>"+order["user"]+"</td>"
             orders += "<td>"+order["content"]+"</td>"
             orders += "<td style=\"font-size: 12px;\">" + \

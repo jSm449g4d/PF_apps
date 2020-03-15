@@ -50,7 +50,7 @@
                     <div class="mt-2 form-row btn-right">
                         <label class="col-2 col-form-label">handle_name:</label>
                         <input type="text" name="user" class="form-control form-control-sm mx-1 col-3" value="{{USER}}">
-                        <button name="remark" class="btn btn-sm btn-success mx-1" value="True" disabled>Plz login</button>
+                        <button name="remark" class="btn btn-sm btn-success mx-1" value="True">remark</button>
                     </div>
                 </div>
 
@@ -102,7 +102,7 @@
         <script type="text/babel" src="{{ url_for('static', filename='src/account.js') }}"></script>
         <!--React -->
         <script>
-            setTimeout(function() {
+            setInterval(function() {
                 if (document.getElementsByName("fbtoken")[0].value == "") {
                     document.getElementsByName("remark")[0].setAttribute("disabled", "True")
                     document.getElementsByName("remark")[0].innerHTML = "Plz login"

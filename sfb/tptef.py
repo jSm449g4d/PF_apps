@@ -7,10 +7,12 @@ from firebase_admin import auth
 from google.cloud import firestore
 import wsgi_util
 
+
 def show(req):
     room = "room_main"
     user = "窓の民は名無し"
     uid = ""
+    debug=""
     if req.method == 'POST' or req.method == "GET":
         if 'room' in req.form:
             room = "room_"+req.form['room'].translate(str.maketrans(
@@ -37,13 +39,17 @@ def show(req):
                     if v["uid"] == uid:
                         doc_ref.update({k: firestore.DELETE_FIELD})
             if "delete" in req.form:
+                debug+="AAA"
                 for k, _ in doc_ref.get().to_dict().items():
+                    debug+="BBB"
+                    
                     if k == secure_filename(req.form["delete"]):
+                        debug+="CCC"
                         doc_ref.update({k: firestore.DELETE_FIELD})
         except:
             False
         # show thread
-        orders = "<table class=\"table table-sm bg-light\"><thead><tr><th style=\"width: 15 %; \"> user_name </th>" +\
+        orders = "<table class=\"table table-sm bg-light\"><thead><tr><th style=\"width:15%\"> user_name </th>" +\
             "<th>content</th><th style = \"width: 15%\" > timestamp/uid </th><th>ops</th></tr></thead><tbody>"
         for k, v in sorted(doc_ref.get().to_dict().items()):
             orders += "<tr><td>"+v["user"]+"</td>"
@@ -56,4 +62,4 @@ def show(req):
             else:
                 orders += "<td>_</td></tr>"
         orders += "</tbody></table>"
-    return wsgi_util.render_template_2("tptef.html", ORDERS=orders, ROOM=room[len("room_"):], USER=user)
+    return wsgi_util.render_template_2("tptef.html", ORDERS=orders, ROOM=room[len("room_"):], USER=user,DEBUG=debug)

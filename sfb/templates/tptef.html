@@ -50,7 +50,7 @@
                         <button name="clear" class="btn btn-danger mx-1" value="True">Clear_your_Remarks</button>
                     </div>
                 </div>
-                {{ORDERS}}
+                {{DEBUG}} {{ORDERS}}
 
                 <a class="btn btn-outline-success mt-2" href="./">Flask_Indexへ</a>
 
@@ -79,6 +79,13 @@
             // Initialize Firebase
             firebase.initializeApp(firebaseConfig);
             firebase.analytics();
+            var user = firebase.auth().currentUser
+            if (user) {
+                user.getIdToken(true).then(function(idToken) {
+                    var cx = document.getElementById("fbtoken");
+                    cx.value = idToken;
+                })
+            }
             firebase.auth().onAuthStateChanged(function(user) {
                 firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
                     var cx = document.getElementById("fbtoken");

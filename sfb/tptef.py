@@ -7,6 +7,7 @@ from firebase_admin import auth
 from google.cloud import firestore
 import wsgi_util
 
+
 def show(req):
     room = "room_main"
     user = "窓の民は名無し"
@@ -27,7 +28,7 @@ def show(req):
                 secure_filename(req.form["fbtoken"]))["uid"]
             # Remark
             if 'content' in req.form and "remark" in req.form and secure_filename(req.form["remark"]) == "True":
-                doc_ref.update({str(int(datetime.now(pytz.UTC).timestamp())): {
+                doc_ref.update({str(int(datetime.now(pytz.UTC).timestamp()*1000)): {
                     "user": user,
                     "uid": uid,
                     "content": req.form['content'].translate(str.maketrans("\"\'\\/<>%`?;", '””￥_〈〉％”？；')),
@@ -40,10 +41,11 @@ def show(req):
         except:
             False
         # show thread
-        for _, order in sorted(doc_ref.get().to_dict().items()):
+        for Firebase_Token_keep, order in sorted(doc_ref.get().to_dict().items()):
             orders += "<tr><td>"+order["user"]+"</td>"
             orders += "<td>"+order["content"]+"</td>"
             orders += "<td style=\"font-size: 12px;\">" + \
-                order["date"]+"</br>"+order["uid"]+"</td></tr>"
+                order["date"]+"</br>"+order["uid"] + \
+                "<button name=\"delete\" \"value=\""+k+"\">delete</button>"+"</td></tr>"
 
     return wsgi_util.render_template_2("tptef.html", ORDERS=orders, ROOM=room[len("room_"):], USER=user)

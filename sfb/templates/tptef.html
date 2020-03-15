@@ -40,7 +40,6 @@
                     </thead>
                 </table>
 
-
                 <div class="m-2 p-2" style="color:#AAFEFE;border:3px double silver;background:#001111;">
                     <h5 style="color:white;font-family:''">入力フォーム</h5>
                     <textarea class="form-control mt-2" id="exampleFormControlTextarea1" rows="5" name="content" placeholder="Content"></textarea>
@@ -79,12 +78,13 @@
             // Initialize Firebase
             firebase.initializeApp(firebaseConfig);
             firebase.analytics();
-            var user = firebase.auth().currentUser
             firebase.auth().onAuthStateChanged(function(user) {
-                firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
-                    var cx = document.getElementById("fbtoken");
-                    cx.value = idToken;
-                })
+                if (user) {
+                    user.getIdToken(true).then(function(idToken) {
+                        var cx = document.getElementById("fbtoken");
+                        cx.value = idToken;
+                    })
+                }
             })
         </script>
         <!--Firebase -->

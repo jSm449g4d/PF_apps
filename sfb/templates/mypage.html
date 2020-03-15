@@ -40,10 +40,12 @@
             firebase.initializeApp(firebaseConfig);
             firebase.analytics();
             firebase.auth().onAuthStateChanged(function(user) {
-                firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
-                    var cx = document.getElementById("fbtoken");
-                    cx.value = idToken;
-                })
+                if (user) {
+                    user.getIdToken(true).then(function(idToken) {
+                        var cx = document.getElementById("fbtoken");
+                        cx.value = idToken;
+                    })
+                }
             })
         </script>
         <!--Firebase -->

@@ -6,14 +6,7 @@
         <title>Error_Page</title>
 
         <!--Bootstrap CSS -->
-        <!--CDN-->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" onload="window.bs4css= 1;">
-        <!--fallback by Flask-->
-        <script>
-            window.bs4css || document.write(
-                "<link rel=\"stylesheet\" href=\"{{ url_for('static', filename='bootstrap-4.4.1-dist/css/bootstrap.min.css') }}\"\
-    crossorigin=\"anonymous\">");
-        </script>
         <!--/Bootstrap CSS -->
     </head>
 
@@ -30,20 +23,8 @@
 
 
         <!--Bootstrap and jQuery JS -->
-        <!--CDN-->
         <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
-        <!--fallback by Flask-->
-        <script>
-            window.jQuery || document.write(
-                "<script src=\"{{ url_for('static', filename='bootstrap-4.4.1-dist/js/jquery-3.4.1.min.js') }}\"\
-        crossorigin=\"anonymous\"><\/script>")
-        </script>
-        <script>
-            $.fn.modal || document.write(
-                "<script src=\"{{ url_for('static', filename='bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js') }}\"\
-    crossorigin=\"anonymous\"><\/script>")
-        </script>
         <!--/Bootstrap and jQuery JS -->
     </body>
 

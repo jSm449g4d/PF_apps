@@ -9,7 +9,7 @@
     <body>
         <div>
             <form method="post" id="fbtokenform" enctype="multipart/form-data">
-                <input type="hidden" id="fbtoken" name="fbtoken" value="">
+                <input type="hidden" name="fbtoken" value="">
                 <!--↑Firebase_token_keep-->
             </form>
         </div>
@@ -37,9 +37,10 @@
             firebase.auth().onAuthStateChanged(function(user) {
                 if (user) {
                     user.getIdToken(true).then(function(idToken) {
-                        var cx = document.getElementById("fbtoken");
-                        cx.value = idToken;
+                        document.getElementsByName("fbtoken")[0].setAttribute("value", idToken);
                     })
+                } else {
+                    document.getElementsByName("fbtoken")[0].setAttribute("value", "");
                 }
             })
         </script>

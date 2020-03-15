@@ -15,7 +15,7 @@
             <form method="post" enctype="multipart/form-data" style="display:inline;">
                 <div>{{ORDERS}}</div>
                 <input type="file" id="btnUpload" value="aaa" onchange="submit_file(this)">
-                <input type="hidden" id="fbtoken" name="fbtoken" value="">
+                <input type="hidden" name="fbtoken" value="">
                 <!--↑Firebase_token_keep-->
             </form>
             <a class="btn btn-outline-success m-2" href="./">Indexへ</a>
@@ -26,7 +26,6 @@
         <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-auth.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-analytics.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-storage.js"></script>
         <script>
             // Your web app's Firebase configuration
             var firebaseConfig = {
@@ -42,17 +41,13 @@
             // Initialize Firebase
             firebase.initializeApp(firebaseConfig);
             firebase.analytics();
-            //document.getElementById("btnUpload").onchange =
-            function submit_file(ev) {
-                var storageRef = firebase.storage().ref('tptefs/images.html');
-                var uploadTask = storageRef.put(ev.files[0])
-            }
             firebase.auth().onAuthStateChanged(function(user) {
                 if (user) {
                     user.getIdToken(true).then(function(idToken) {
-                        var cx = document.getElementById("fbtoken");
-                        cx.value = idToken;
+                        document.getElementsByName("fbtoken")[0].setAttribute("value", idToken);
                     })
+                } else {
+                    document.getElementsByName("fbtoken")[0].setAttribute("value", "");
                 }
             })
         </script>
@@ -67,7 +62,7 @@
         <script crossorigin src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
         <script type="text/babel" src="{{ url_for('static', filename='src/account.js') }}"></script>
-        <!--React-->
+        <!--React -->
     </body>
 
 </html>

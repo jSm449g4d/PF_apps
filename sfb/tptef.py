@@ -6,6 +6,7 @@ import firebase_admin
 from firebase_admin import auth
 from firebase_admin import firestore
 import wsgi_util
+from flask import send_file
 
 os.makedirs("wsgi_temp", exist_ok=True)
 
@@ -15,6 +16,8 @@ def show(req):
     user = "窓の民は名無し"
     uid = ""
     debug = ""
+    tempfile = os.path.join(
+        wsgi_util.config_dict["temp_folder"], "attachment.tmp")
     if req.method == 'POST' or req.method == "GET":
         if 'room' in req.form:
             room = "room_"+req.form['room'].translate(str.maketrans(
@@ -31,12 +34,19 @@ def show(req):
             remark_key = str(int(datetime.now(pytz.UTC).timestamp()*1000))
             # Remark
             if 'content' in req.form and "remark" in req.form and secure_filename(req.form["remark"]) == "True":
+                attachment = ""
+                if 'attachment' in req.files:
+                    req.files['attachment'].save(tempfile)
+                    wsgi_util.GCS_bucket.blob(os.path.join(
+                        "tptef", room, remark_key)).upload_from_filename(tempfile)
+                    attachment = secure_filename(
+                        req.files['attachment'].filename)
                 doc_ref.update({remark_key: {
                     "user": user,
                     "uid": uid,
                     "content": req.form['content'].translate(str.maketrans("\"\'\\/<>%`?;", '””￥_〈〉％”？；')),
                     "date": datetime.now(pytz.UTC).strftime("%Y/%m/%d %H:%M:%S %f (UTC)"),
-                    "attachment": "",
+                    "attachment": "_"+attachment,
                 }})
             if "delete" in req.form:
                 doc_ref.update(
@@ -44,18 +54,13 @@ def show(req):
 #                for k, _ in doc_ref.get().to_dict().items():
 #                    if k == secure_filename(req.form["delete"]):
 #                        doc_ref.update({k: firestore.DELETE_FIELD})
-            if 'attachment' in req.files:
-                tempfile = os.path.join(
-                    wsgi_util.config_dict["temp_folder"], "attachment.tmp")
-                req.files['attachment'].save(tempfile)
-                wsgi_util.GCS_bucket.blob(os.path.join(
-                    "tptef", room, remark_key)).upload_from_filename(tempfile)
-                os.remove(tempfile)
-                doc_ref.update({
-                    remark_key+".attachment": remark_key+secure_filename(req.files['attachment'].filename),
-                },)
         except:
             False
+        # download_attachment
+        if "download" in req.form:
+            wsgi_util.GCS_bucket.blob(os.path.join(
+                "tptef", room, secure_filename(req.form["download"]))).download_to_filename(tempfile)
+            return send_file(tempfile, as_attachment=True)
         # show thread
         orders = "<table class=\"table table-sm bg-light\"><thead><tr><th style=\"width:15%\"> user_name </th>" +\
             "<th>content</th><th style = \"width: 15%\" > timestamp/uid </th><th style=\"width:15%\">ops</th></tr></thead><tbody>"
@@ -64,7 +69,7 @@ def show(req):
             orders += "<td>"+v["content"]+"</td>"
             orders += "<td style=\"font-size: 12px;\">" + \
                 v["date"]+"</br>"+v["uid"] + "</td><td>"
-            if v["attachment"] != "":
+            if v["attachment"] != "_":
                 orders += "<button name=\"download\" value=\"" + \
                     k+"\">"+v["attachment"]+"</button><br/>"
             if v["uid"] == uid:
@@ -72,4 +77,7 @@ def show(req):
                     k+"\">delete</button>"
             orders += "</td></tr>"
             orders += "</tbody></table>"
+        # clear_tempfile
+        if os.path.exists(tempfile):
+            os.remove(tempfile)
     return wsgi_util.render_template_2("tptef.html", ORDERS=orders, ROOM=room[len("room_"):], USER=user)

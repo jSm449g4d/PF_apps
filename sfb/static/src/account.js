@@ -52,7 +52,8 @@ class Account_tag extends React.Component {
                                 }} />
                             <input type="button" value="Create_account" class="btn btn-success mx-1 btn-sm" data-toggle="modal" data-target="#Modal_create_acc" />
                             <input type="button" value="Sign_in" class="btn btn-success mx-1 btn-sm" data-toggle="modal" data-target="#Modal_signin" />
-                            <input type="button" value="Easy_login" class="btn btn-warning mx-1 btn-sm" onClick={this.signin_easy} />
+                            <button type="button" class="btn btn-warning mx-1 btn-sm" data-toggle="modal" data-target="#Modal_signin">Sign_in</button>
+                            <button type="button" class="btn btn-warning mx-1 btn-sm" onClick={this.signin_easy}>Easy_login</button>
 
                             <div class="modal fade" id="Modal_signin" role="dialog" aria-hidden="true">
                                 <div class="modal-dialog" role="document">

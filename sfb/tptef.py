@@ -9,15 +9,13 @@ import wsgi_util
 from flask import send_file
 
 os.makedirs("wsgi_temp", exist_ok=True)
+tempfile = os.path.join(wsgi_util.config_dict["temp_folder"], "attachment.tmp")
 
 
 def show(req):
     room = "room_main"
     user = "窓の民は名無し"
     uid = ""
-    debug = ""
-    tempfile = os.path.join(
-        wsgi_util.config_dict["temp_folder"], "attachment.tmp")
     if req.method == 'POST' or req.method == "GET":
         if 'room' in req.form:
             room = "room_"+req.form['room'].translate(str.maketrans(
@@ -51,9 +49,6 @@ def show(req):
             if "delete" in req.form:
                 doc_ref.update(
                     {secure_filename(req.form["delete"]): firestore.DELETE_FIELD})
-#                for k, _ in doc_ref.get().to_dict().items():
-#                    if k == secure_filename(req.form["delete"]):
-#                        doc_ref.update({k: firestore.DELETE_FIELD})
         except:
             False
         # download_attachment
@@ -65,18 +60,16 @@ def show(req):
         orders = "<table class=\"table table-sm bg-light\"><thead><tr><th style=\"width:15%\"> user_name </th>" +\
             "<th>content</th><th style = \"width: 15%\" > timestamp/uid </th><th style=\"width:15%\">ops</th></tr></thead><tbody>"
         for k, v in sorted(doc_ref.get().to_dict().items()):
-            orders += "<tr><td>"+v["user"]+"</td>"
-            orders += "<td>"+v["content"]+"</td>"
+            orders += "<tr><td>"+v["user"]+"</td><td>"+v["content"]+"</td>"
             orders += "<td style=\"font-size: 12px;\">" + \
                 v["date"]+"</br>"+v["uid"] + "</td><td>"
             if v["attachment"] != "_":
                 orders += "<button name=\"download\" value=\"" + \
                     k+"\">"+v["attachment"]+"</button><br/>"
             if v["uid"] == uid:
-                orders += "<button name=\"delete\" value=\"" + \
-                    k+"\">delete</button>"
+                orders += "<button name=\"delete\" value=\"" + k+"\">delete</button>"
             orders += "</td></tr>"
-            orders += "</tbody></table>"
+        orders += "</tbody></table>"
         # clear_tempfile
         if os.path.exists(tempfile):
             os.remove(tempfile)

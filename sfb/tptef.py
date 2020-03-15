@@ -47,6 +47,8 @@ def show(req):
                     "attachment": "_"+attachment,
                 }})
             if "delete" in req.form:
+                wsgi_util.GCS_bucket.blob(os.path.join(
+                    "tptef", room, secure_filename(req.form["delete"]))).delete()
                 doc_ref.update(
                     {secure_filename(req.form["delete"]): firestore.DELETE_FIELD})
         except:
@@ -65,7 +67,7 @@ def show(req):
                 v["date"]+"</br>"+v["uid"] + "</td><td>"
             if v["attachment"] != "_":
                 orders += "<button name=\"download\" value=\"" + \
-                    k+"\">"+v["attachment"]+"</button><br/>"
+                    k+"\">"+v["attachment"].lstrip("_")+"</button><br/>"
             if v["uid"] == uid:
                 orders += "<button name=\"delete\" value=\"" + k+"\">delete</button>"
             orders += "</td></tr>"

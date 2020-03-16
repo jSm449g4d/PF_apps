@@ -79,13 +79,16 @@
                     }, {
                         merge: true
                     })
-                    alert("A")
+
                     db.collection("mypage").doc(user.uid).get().then(
                         function(doc) {
-                            document.getElementById("cont").innerHTML += doc.data()
+                            if (doc.exists) {
+                                alert("A")
+                                document.getElementById("cont").innerHTML += doc.data()
+                                alert("B")
+                            }
                         }
                     )
-                    alert("B")
                 } else {
                     document.getElementById("cont").innerHTML = "None"
                 }

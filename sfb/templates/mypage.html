@@ -79,7 +79,9 @@
                     }, {
                         merge: true
                     })
-                    document.getElementById("cont").innerHTML += db.collection("mypage").doc(firebase.auth().currentUser.uid).get().data()
+                    alert("A")
+                    document.getElementById("cont").innerHTML += db.collection("mypage").doc(user.uid).get().data()
+                    alert("B")
                 } else {
                     document.getElementById("cont").innerHTML = "None"
                 }

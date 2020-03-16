@@ -51,7 +51,6 @@
                 } else {
                     document.getElementsByName("fbtoken")[0].setAttribute("value", "");
                 }
-                alert("AAA")
             })
         </script>
         <!--Firebase -->
@@ -70,8 +69,10 @@
             var db = firebase.firestore();
             firebase.auth().onAuthStateChanged(function(user) {
                 if (user) {
-                    db.collection("mypage").doc(user.uid).set({}, merge = true)
-                    document.getElementById("cont").innerHTML = db.collection("mypage").doc(firebase.auth().currentUser.uid).get()
+                    db.collection("mypage").doc(user.uid).set({}, {
+                        merge: true
+                    })
+                    document.getElementById("cont").innerHTML = db.collection("mypage").doc(firebase.auth().currentUser.uid).get().data()
                 } else {
                     document.getElementById("cont").innerHTML = "None"
                 }

@@ -84,7 +84,7 @@
                         function(doc) {
                             if (doc.exists) {
                                 alert("A")
-                                document.getElementById("cont").innerHTML += doc.data()
+                                document.getElementById("cont").innerHTML += doc.data()["timestamp"]
                                 alert("B")
                             }
                         }

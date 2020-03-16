@@ -13,8 +13,7 @@
         <div id="account_tag">Cant use React+Bootstrap4</div>
         <div class="m-2">
             <form method="post" enctype="multipart/form-data" style="display:inline;">
-                <div>{{ORDERS}}</div>
-                <div id="cont"></div>
+                <div id="mypage_tag"></div>
                 <input type="file" id="btnUpload" value="aaa" onchange="submit_file(this)">
                 <input type="hidden" name="fbtoken" value="">
                 <!--↑Firebase_token_keep-->
@@ -64,9 +63,9 @@
         <script crossorigin src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
         <script type="text/babel" src="{{ url_for('static', filename='src/account.js') }}"></script>
+        <script type="text/babel" src="{{ url_for('static', filename='src/mypage.js') }}"></script>
         <!--React -->
         <script>
-            document.getElementById("cont").innerHTML = "None0"
             var db = firebase.firestore();
             firebase.auth().onAuthStateChanged(function(user) {
                 if (user) {
@@ -79,19 +78,7 @@
                     }, {
                         merge: true
                     })
-
-                    db.collection("mypage").doc(user.uid).get().then(
-                        function(doc) {
-                            if (doc.exists) {
-                                alert("A")
-                                document.getElementById("cont").innerHTML += doc.data()["timestamp"]
-                                alert("B")
-                            }
-                        }
-                    )
-                } else {
-                    document.getElementById("cont").innerHTML = "None"
-                }
+                } else {}
             })
         </script>
     </body>

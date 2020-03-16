@@ -35,7 +35,7 @@ class Account_tag extends React.Component {
         var user = firebase.auth().currentUser
         return (
             <div class=""><nav class="navbar navbar-expand-lg navbar-light bg-light">
-                {firebase.auth().currentUser ?
+                {user ?
                     <div class="navber-brand navbar-left">
                         {user.displayName ?
                             <h6>ようこそ {user.displayName} さん</h6> : <h6>ようこそ {user.email} さん</h6>}
@@ -53,7 +53,6 @@ class Account_tag extends React.Component {
                             <button type="button" class="btn btn-success mx-1 btn-sm" data-toggle="modal" data-target="#Modal_create_acc">Create_account</button>
                             <button type="button" class="btn btn-success mx-1 btn-sm" data-toggle="modal" data-target="#Modal_signin">Sign_in</button>
                             <button type="button" class="btn btn-warning mx-1 btn-sm" onClick={this.signin_easy}>Easy_login</button>
-
                             <div class="modal fade" id="Modal_signin" role="dialog" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
@@ -92,12 +91,13 @@ class Account_tag extends React.Component {
                     </div>
                 }
             </nav></div>
-
         );
     };
 };
-function renders() {
+
+ReactDOM.render(
+    <Account_tag />, document.getElementById('account_tag'))
+firebase.auth().onAuthStateChanged(function (user) {
     ReactDOM.render(
         <Account_tag />, document.getElementById('account_tag'))
-}
-setInterval(renders, 200);
+})

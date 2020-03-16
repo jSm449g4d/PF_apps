@@ -66,15 +66,16 @@
         <script type="text/babel" src="{{ url_for('static', filename='src/account.js') }}"></script>
         <!--React -->
         <script>
+            document.getElementById("cont").innerHTML = "None0"
             var db = firebase.firestore();
             firebase.auth().onAuthStateChanged(function(user) {
-                alert("AAAA")
                 if (user) {
+                    tm = new Date()
                     db.collection("mypage").doc(user.uid).set({
                         "nickname": "風の民は名無し",
-                        //                        "uid": user.uid,
+                        "uid": user.uid,
                         "accessed_by": "FB",
-                        //                        "timestamp": Date().getTime()
+                        "timestamp": tm.getTime()
                     }, {
                         merge: true
                     })

@@ -68,6 +68,7 @@
         <script>
             var db = firebase.firestore();
             firebase.auth().onAuthStateChanged(function(user) {
+                alert("AAAA")
                 if (user) {
                     db.collection("mypage").doc(user.uid).set({
                         "nickname": "風の民は名無し",

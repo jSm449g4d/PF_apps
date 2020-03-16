@@ -104,15 +104,15 @@
         <script type="text/babel" src="{{ url_for('static', filename='src/account.js') }}"></script>
         <!--React -->
         <script>
-            setInterval(function() {
-                if (document.getElementsByName("fbtoken")[0].value == "") {
-                    document.getElementsByName("remark")[0].setAttribute("disabled", "True")
-                    document.getElementsByName("remark")[0].innerHTML = "Plz login"
-                } else {
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
                     document.getElementsByName("remark")[0].removeAttribute("disabled")
                     document.getElementsByName("remark")[0].innerHTML = "remark"
+                } else {
+                    document.getElementsByName("remark")[0].setAttribute("disabled", "True")
+                    document.getElementsByName("remark")[0].innerHTML = "Plz login"
                 }
-            }, 200)
+            })
         </script>
 
     </body>

@@ -14,6 +14,7 @@
         <div class="m-2">
             <form method="post" enctype="multipart/form-data" style="display:inline;">
                 <div>{{ORDERS}}</div>
+                <div id="cont"></div>
                 <input type="file" id="btnUpload" value="aaa" onchange="submit_file(this)">
                 <input type="hidden" name="fbtoken" value="">
                 <!--↑Firebase_token_keep-->
@@ -50,6 +51,7 @@
                 } else {
                     document.getElementsByName("fbtoken")[0].setAttribute("value", "");
                 }
+                alert("AAA")
             })
         </script>
         <!--Firebase -->
@@ -64,16 +66,16 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
         <script type="text/babel" src="{{ url_for('static', filename='src/account.js') }}"></script>
         <!--React -->
-
         <script>
             var db = firebase.firestore();
-            setInterval(function() {
-                if (document.getElementsByName("fbtoken")[0].value != "") {
-                    db.collection("mypage").doc(firebase.auth().currentUser.uid).set({}, {
-                        merge: true
-                    })
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    db.collection("mypage").doc(user.uid).set({}, merge = true)
+                    document.getElementById("cont").innerHTML = db.collection("mypage").doc(firebase.auth().currentUser.uid).get()
+                } else {
+                    document.getElementById("cont").innerHTML = "None"
                 }
-            }, 5000)
+            })
         </script>
     </body>
 

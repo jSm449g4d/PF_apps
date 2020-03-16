@@ -93,10 +93,9 @@ class Account_tag extends React.Component {
                 }
             </nav></div>
 
-        )
-    }
+        );
+    };
 };
-//
 function renders() {
     ReactDOM.render(
         <Account_tag />, document.getElementById('account_tag'))

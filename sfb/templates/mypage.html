@@ -26,6 +26,7 @@
         <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-auth.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-analytics.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-firestore.js"></script>
         <script>
             // Your web app's Firebase configuration
             var firebaseConfig = {
@@ -63,6 +64,17 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
         <script type="text/babel" src="{{ url_for('static', filename='src/account.js') }}"></script>
         <!--React -->
+
+        <script>
+            var db = firebase.firestore();
+            setInterval(function() {
+                if (document.getElementsByName("fbtoken")[0].value != "") {
+                    db.collection("mypage").doc(firebase.auth().currentUser.uid).set({}, {
+                        merge: true
+                    })
+                }
+            }, 200)
+        </script>
     </body>
 
 </html>

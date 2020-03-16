@@ -19,9 +19,6 @@ class Mypage_tag extends React.Component {
     constructor(props) {
         super(props);
         this.state = { uid: "", profile: null };
-        this.handleChange = this.handleChange.bind(this);
-        this.signin = this.signin.bind(this);
-        this.create_account = this.create_account.bind(this);
     };
 
     render() {

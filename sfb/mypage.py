@@ -18,11 +18,11 @@ def show(req):
             doc_ref = wsgi_util.db.collection("mypage").document(uid)
             doc_ref.set({}, merge=True)
             orders += "<div>"+uid+"</div>"
-            doc_ref.update({
-                "topic1": "content1",
-                "topic2": "content2",
-                "topic3": "content3",
-                "topic4": "content4", })
+            #doc_ref.update({
+            #    "topic1": "content1",
+            #    "topic2": "content2",
+            #    "topic3": "content3",
+            #    "topic4": "content4", })
 
             for k, v in sorted(doc_ref.get().to_dict().items()):
                 orders += "<div><h6>"+k+"</h6>"+v+"</div>"

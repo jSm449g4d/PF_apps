@@ -69,7 +69,11 @@
             var db = firebase.firestore();
             firebase.auth().onAuthStateChanged(function(user) {
                 if (user) {
-                    db.collection("mypage").doc(user.uid).set({}, {
+                    db.collection("mypage").doc(user.uid).set({
+                        "nickname": "風の民は名無し",
+                        "uid": "",
+                        "accessed_by": "FB"
+                    }, {
                         merge: true
                     })
                     document.getElementById("cont").innerHTML = db.collection("mypage").doc(firebase.auth().currentUser.uid).get().data()

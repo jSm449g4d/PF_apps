@@ -54,15 +54,14 @@ class Account_tag extends React.Component {
         }, 100)
     };
     render() {
-        var user = auth.currentUser
         return (
             <div class=""><nav class="navbar navbar-expand-lg navbar-light bg-light">
                 {this.state.uid != "" ?
                     <div class="navber-brand navbar-left form-inline">
-                        <div>{user.photoURL ?
-                            <div><img src={user.photoURL} alt="user.photoURL" border="1" width="64" height="64" /></div> : <div></div>}
-                            {user.displayName ?
-                                <div>ようこそ {user.displayName} さん</div> : <div>ようこそ {user.email} さん</div>}
+                        <div>{auth.currentUser.photoURL ?
+                            <div><img src={auth.currentUser.photoURL} alt="user.photoURL" border="1" width="64" height="64" /></div> : <div></div>}
+                            {auth.currentUser.displayName ?
+                                <div>ようこそ {auth.currentUser.displayName} さん</div> : <div>ようこそ {auth.currentUser.email} さん</div>}
                         </div>
                         <button type="button" class="btn btn-secondary btn-sm mx-1" onClick={() => { firebase.auth().signOut(); }}>logout</button>
                         <button type="button" class="btn btn-warning btn-sm mx-1" data-toggle="modal" data-target="#account_modal_config">config</button>

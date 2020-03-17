@@ -66,6 +66,7 @@
         <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-auth.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-analytics.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-firestore.js"></script>
         <script>
             // Your web app's Firebase configuration
             var firebaseConfig = {
@@ -81,7 +82,8 @@
             // Initialize Firebase
             firebase.initializeApp(firebaseConfig);
             firebase.analytics();
-            firebase.auth().onAuthStateChanged((user) => {
+            var auth = firebase.auth();
+            auth.onAuthStateChanged((user) => {
                 if (user) {
                     user.getIdToken(true).then((idToken) => {
                         document.getElementsByName("fbtoken")[0].setAttribute("value", idToken);
@@ -90,6 +92,7 @@
                     document.getElementsByName("fbtoken")[0].setAttribute("value", "");
                 }
             })
+            var db = firebase.firestore();
         </script>
         <!--Firebase -->
         <!--Bootstrap and jQuery JS -->
@@ -102,9 +105,10 @@
         <script crossorigin src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
         <script type="text/babel" src="{{ url_for('static', filename='src/account.js') }}"></script>
+        <script type="text/babel" src="{{ url_for('static', filename='src/mypage.js') }}"></script>
         <!--React -->
         <script>
-            firebase.auth().onAuthStateChanged(function(user) {
+            auth.onAuthStateChanged(function(user) {
                 if (user) {
                     document.getElementsByName("remark")[0].removeAttribute("disabled")
                     document.getElementsByName("remark")[0].innerHTML = "remark"

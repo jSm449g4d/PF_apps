@@ -1,5 +1,7 @@
 //plz use react-bootstrap and Firebase
 
+
+
 class Mypage_tag extends React.Component {
     load_profile() {
         if (this.state.uid != "") {
@@ -49,7 +51,6 @@ class Mypage_tag extends React.Component {
     }
 
     render() {
-        var user = auth.currentUser
         return (
             <div>
                 {this.state.uid != "" ?
@@ -58,6 +59,7 @@ class Mypage_tag extends React.Component {
                         <h5>{this.state.pr}</h5>
                         <h5>{this.state.timestamp}</h5>
                         <button type="button" class="btn btn-warning btn-sm mx-1" data-toggle="modal" data-target="#mygape_modal_test">Test</button>
+                        {this.button_render}
                     </div>
                     :
                     <h4>This application cant use without login</h4>

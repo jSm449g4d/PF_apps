@@ -2,35 +2,38 @@
 
 class Account_tag extends React.Component {
     create_account() {
-        firebase.auth().createUserWithEmailAndPassword(this.state.mail_addr, this.state.mail_pass).catch((error) => {
+        auth.createUserWithEmailAndPassword(this.state.mail_addr, this.state.mail_pass).catch(error =>
             alert("error_code:" + error.code + "\nerror_message:" + error.message)
-        })
+        )
     }
     signin() {
-        firebase.auth().signInWithEmailAndPassword(this.state.mail_addr, this.state.mail_pass).catch((error) => {
+        auth.signInWithEmailAndPassword(this.state.mail_addr, this.state.mail_pass).catch(error =>
             alert("error_code:" + error.code + "\nerror_message:" + error.message)
-        })
+        )
     }
     pass_reset() {
-        firebase.auth().sendPasswordResetEmail(this.state.mail_addr).then(() => {
+        auth.sendPasswordResetEmail(this.state.mail_addr).then(() => {
             alert("SEND_EMAIL!")
-        }).catch((error) => {
-            alert("error_code:" + error.code + "\nerror_message:" + error.message);
-        });
+        }).catch(error => alert("error_code:" + error.code + "\nerror_message:" + error.message)
+        );
     }
     account_delete() {
-        firebase.auth().currentUser.delete().then(() => {
+        auth.currentUser.delete().then(() => {
             alert("ACCOUNT_DELETED!")
-        }).catch((error) => {
-            alert("error_code:" + error.code + "\nerror_message:" + error.message);
-        });
+        }).catch(error =>
+            alert("error_code:" + error.code + "\nerror_message:" + error.message)
+        );
     }
     signin_easy() {
-        firebase.auth().signInWithEmailAndPassword("a@b.com", "asdfgh").catch(() => {
-            firebase.auth().createUserWithEmailAndPassword("a@b.com", "asdfgh").catch((error) => {
+        auth.signInWithEmailAndPassword("a@b.com", "asdfgh").catch(() => {
+            auth.createUserWithEmailAndPassword("a@b.com", "asdfgh").catch(error =>
                 alert("error_code:" + error.code + "\nerror_message:" + error.message)
-            })
+            )
         })
+    }
+    google_login() {
+        auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then((result) => { }).catch(error =>
+            alert("error_code:" + error.code + "\nerror_message:" + error.message));
     }
     handleChange(e) {
         let name = e.target.name;
@@ -41,11 +44,9 @@ class Account_tag extends React.Component {
         super(props);
         this.state = { uid: "", mail_addr: "", mail_pass: "" };
         this.handleChange = this.handleChange.bind(this);
-        this.signin = this.signin.bind(this);
-        this.create_account = this.create_account.bind(this);
         setInterval(() => {
-            if (firebase.auth().currentUser) {
-                this.setState({ uid: firebase.auth().currentUser.uid });
+            if (auth.currentUser) {
+                this.setState({ uid: auth.currentUser.uid });
             }
             else {
                 this.setState({ uid: "" });
@@ -53,7 +54,7 @@ class Account_tag extends React.Component {
         }, 100)
     };
     render() {
-        var user = firebase.auth().currentUser
+        var user = auth.currentUser
         return (
             <div class=""><nav class="navbar navbar-expand-lg navbar-light bg-light">
                 {this.state.uid != "" ?
@@ -86,11 +87,7 @@ class Account_tag extends React.Component {
                     :
                     <div class="navber-brand">
                         <div class="navbar-right form-inline">サービスを利用するには、ログインしてください
-                            <input type="button" value="Googleでログイン" class="btn btn-success mx-1 btn-sm"
-                                onClick={function () {
-                                    var provider = new firebase.auth.GoogleAuthProvider();
-                                    firebase.auth().signInWithPopup(provider).then(function (result) { }).catch(function (error) { });
-                                }} />
+                            <input type="button" value="Googleでログイン" class="btn btn-success mx-1 btn-sm" onClick={google_login} />
                             <button type="button" class="btn btn-success mx-1 btn-sm" data-toggle="modal" data-target="#Modal_create_acc">Create_account</button>
                             <button type="button" class="btn btn-success mx-1 btn-sm" data-toggle="modal" data-target="#Modal_signin">Sign_in</button>
                             <button type="button" class="btn btn-warning mx-1 btn-sm" onClick={this.signin_easy}>Easy_login</button>

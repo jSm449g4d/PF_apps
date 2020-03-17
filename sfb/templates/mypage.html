@@ -13,8 +13,7 @@
         <div id="account_tag">Cant use React+Bootstrap4</div>
         <div class="m-2">
             <form method="post" enctype="multipart/form-data" style="display:inline;">
-                <div id="mypage_tag"></div>
-                <input type="file" id="btnUpload" value="aaa" onchange="submit_file(this)">
+                <div id="mypage_tag">Now_loading...</div>
                 <input type="hidden" name="fbtoken" value="">
                 <!--↑Firebase_token_keep-->
             </form>
@@ -42,7 +41,8 @@
             // Initialize Firebase
             firebase.initializeApp(firebaseConfig);
             firebase.analytics();
-            firebase.auth().onAuthStateChanged((user) => {
+            var auth = firebase.auth();
+            auth.onAuthStateChanged((user) => {
                 if (user) {
                     user.getIdToken(true).then((idToken) => {
                         document.getElementsByName("fbtoken")[0].setAttribute("value", idToken);
@@ -51,6 +51,7 @@
                     document.getElementsByName("fbtoken")[0].setAttribute("value", "");
                 }
             })
+            var db = firebase.firestore();
         </script>
         <!--Firebase -->
         <!--Bootstrap and jQuery JS -->
@@ -61,8 +62,6 @@
         <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
         <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
         <script crossorigin src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.5/redux.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/react-redux/7.2.0/react-redux.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
         <script type="text/babel" src="{{ url_for('static', filename='src/account.js') }}"></script>
         <script type="text/babel" src="{{ url_for('static', filename='src/mypage.js') }}"></script>

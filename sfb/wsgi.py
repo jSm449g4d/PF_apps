@@ -26,7 +26,9 @@ def indexpage_show():
 @app.route("/<name>.html")
 def html_show(name):
     try :return wsgi_util.render_template_2('./'+name+'.html')
-    except:return redirect('./'),404
+    except Exception as e:
+        return wsgi_util.render_template_2("error.html",
+        form_error_code="500",form_error_text=str(e)),500
 
 @app.route("/<name>.py",methods=['GET', 'POST'])
 def py_show(name):

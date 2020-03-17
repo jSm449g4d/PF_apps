@@ -11,6 +11,20 @@ class Account_tag extends React.Component {
             alert("error_code:" + error.code + "\nerror_message:" + error.message)
         })
     }
+    pass_reset() {
+        firebase.auth().sendPasswordResetEmail(this.state.mail_addr).then(() => {
+            alert("SEND_EMAIL!")
+        }).catch((error) => {
+            alert("error_code:" + error.code + "\nerror_message:" + error.message);
+        });
+    }
+    account_delete() {
+        firebase.auth().currentUser.delete().then(() => {
+            alert("ACCOUNT_DELETED!")
+        }).catch(function (error) {
+            alert("error_code:" + error.code + "\nerror_message:" + error.message);
+        });
+    }
     signin_easy() {
         firebase.auth().signInWithEmailAndPassword("a@b.com", "asdfgh").catch(function (_) {
             firebase.auth().createUserWithEmailAndPassword("a@b.com", "asdfgh").catch(function (error) {
@@ -25,26 +39,53 @@ class Account_tag extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { shows: false, mail_addr: "", mail_pass: "" };
+        this.state = { uid: "", mail_addr: "", mail_pass: "" };
         this.handleChange = this.handleChange.bind(this);
         this.signin = this.signin.bind(this);
         this.create_account = this.create_account.bind(this);
+        setInterval(() => {
+            if (firebase.auth().currentUser) {
+                this.setState({ uid: firebase.auth().currentUser.uid });
+            }
+            else {
+                this.setState({ uid: "" });
+            }
+        }, 100)
     };
-
     render() {
         var user = firebase.auth().currentUser
         return (
             <div class=""><nav class="navbar navbar-expand-lg navbar-light bg-light">
-                {user ?
-                    <div class="navber-brand navbar-left">
-                        {user.displayName ?
-                            <h6>ようこそ {user.displayName} さん</h6> : <h6>ようこそ {user.email} さん</h6>}
-                        <input type="button" value="logout" class="btn btn-success btn-sm" onClick={function () { firebase.auth().signOut(); }} />
+                {this.state.uid != "" ?
+                    <div class="navber-brand navbar-left form-inline">
+                        <div>{user.photoURL ?
+                            <div><img src={user.photoURL} alt="user.photoURL" border="1" /></div> : <div></div>}
+                            {user.displayName ?
+                                <div>ようこそ {user.displayName} さん</div> : <div>ようこそ {user.email} さん</div>}
+                        </div>
+                        <button type="button" class="btn btn-success btn-sm mx-1" onClick={()=>{ firebase.auth().signOut(); }}>logout</button>
+                        <button type="button" class="btn btn-warning btn-sm mx-1" data-toggle="modal" data-target="#Modal_config">config</button>
+                        <div class="modal fade" id="Modal_config" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Config</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="text" name="mail_addr" class="form-control m-1" placeholder="send mail for password_reset" onChange={this.handleChange} />
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-sm btn-warning" data-dismiss="modal" onClick={this.pass_reset}>password_reset</button>
+                                        <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" onClick={this.account_delete}>account_delete</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     :
                     <div class="navber-brand">
-                        <div class="navbar-right">サービスを利用するには、ログインしてください</div>
-                        <div class="form-inline">
+                        <div class="navbar-right form-inline">サービスを利用するには、ログインしてください
                             <input type="button" value="Googleでログイン" class="btn btn-success mx-1 btn-sm"
                                 onClick={function () {
                                     var provider = new firebase.auth.GoogleAuthProvider();
@@ -97,7 +138,3 @@ class Account_tag extends React.Component {
 
 ReactDOM.render(
     <Account_tag />, document.getElementById('account_tag'))
-firebase.auth().onAuthStateChanged(function (user) {
-    ReactDOM.render(
-        <Account_tag />, document.getElementById('account_tag'))
-})

@@ -42,9 +42,9 @@
             // Initialize Firebase
             firebase.initializeApp(firebaseConfig);
             firebase.analytics();
-            firebase.auth().onAuthStateChanged(function(user) {
+            firebase.auth().onAuthStateChanged((user) => {
                 if (user) {
-                    user.getIdToken(true).then(function(idToken) {
+                    user.getIdToken(true).then((idToken) => {
                         document.getElementsByName("fbtoken")[0].setAttribute("value", idToken);
                     })
                 } else {

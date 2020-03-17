@@ -1,7 +1,7 @@
 //plz use react-bootstrap and Firebase
 
 class Mypage_tag extends React.Component {
-    load_profile(e) {
+    load_profile() {
         db.collection("mypage").doc(this.state.uid).get().then(
             function (doc) {
                 if (doc.exists) {
@@ -11,36 +11,39 @@ class Mypage_tag extends React.Component {
         )
     }
 
-    handleChange(e) {
-        let name = e.target.name;
-        this.setState({ [name]: e.target.value })
-    }
-
     constructor(props) {
         super(props);
-        this.state = { uid: "", profile: null };
+        this.state = { uid: "", pr: "", profile: null };
+        firebase.auth().onAuthStateChanged(function (user) {
+            this.setState({})
+        })
+        setInterval(() => {
+            if (firebase.auth().currentUser) {
+                this.setState({ uid: firebase.auth().currentUser.uid });
+            }
+            else {
+                this.setState({ uid: "" });
+            }
+        }, 100)
     };
 
     render() {
         var user = firebase.auth().currentUser
-        this.load_profile()
         return (
             <div>
-                {user ?
+                {this.state.uid != "" ?
                     <div>
-                        {this.state.profile["uid"]}<br />
-                        {this.state.profile["timestamp"]}
+                        {this.load_profile}
+                        aaaaas
                     </div>
-                    : <p>Plz login</p>}
+                    : <div>Plz login</div>}
             </div>
-
         );
     };
+
 };
+
+
 
 ReactDOM.render(
     <Mypage_tag />, document.getElementById('mypage_tag'))
-firebase.auth().onAuthStateChanged(function (user) {
-    ReactDOM.render(
-        <Mypage_tag />, document.getElementById('mypage_tag'))
-})

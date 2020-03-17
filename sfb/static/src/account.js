@@ -2,38 +2,38 @@
 
 class Account_tag extends React.Component {
     create_account() {
-        auth.createUserWithEmailAndPassword(this.state.mail_addr, this.state.mail_pass).catch(error =>
-            alert("error_code:" + error.code + "\nerror_message:" + error.message)
+        auth.createUserWithEmailAndPassword(this.state.mail_addr, this.state.mail_pass).catch((error) =>
+            {alert("error_code:" + error.code + "\nerror_message:" + error.message)}
         )
     }
     signin() {
-        auth.signInWithEmailAndPassword(this.state.mail_addr, this.state.mail_pass).catch(error =>
-            alert("error_code:" + error.code + "\nerror_message:" + error.message)
+        auth.signInWithEmailAndPassword(this.state.mail_addr, this.state.mail_pass).catch((error) =>
+            {alert("error_code:" + error.code + "\nerror_message:" + error.message)}
         )
     }
     pass_reset() {
         auth.sendPasswordResetEmail(this.state.mail_addr).then(() => {
             alert("SEND_EMAIL!")
-        }).catch(error => alert("error_code:" + error.code + "\nerror_message:" + error.message)
+        }).catch((error) => {alert("error_code:" + error.code + "\nerror_message:" + error.message)}
         );
     }
     account_delete() {
         auth.currentUser.delete().then(() => {
             alert("ACCOUNT_DELETED!")
-        }).catch(error =>
-            alert("error_code:" + error.code + "\nerror_message:" + error.message)
+        }).catch((error) =>
+            {alert("error_code:" + error.code + "\nerror_message:" + error.message)}
         );
     }
     signin_easy() {
         auth.signInWithEmailAndPassword("a@b.com", "asdfgh").catch(() => {
-            auth.createUserWithEmailAndPassword("a@b.com", "asdfgh").catch(error =>
-                alert("error_code:" + error.code + "\nerror_message:" + error.message)
+            auth.createUserWithEmailAndPassword("a@b.com", "asdfgh").catch((error) =>
+                {alert("error_code:" + error.code + "\nerror_message:" + error.message)}
             )
         })
     }
     google_login() {
-        auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then((result) => { }).catch(error =>
-            alert("error_code:" + error.code + "\nerror_message:" + error.message));
+        auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then().catch((error) =>
+            {alert("error_code:" + error.code + "\nerror_message:" + error.message);})
     }
     handleChange(e) {
         let name = e.target.name;
@@ -65,8 +65,8 @@ class Account_tag extends React.Component {
                                 <div>ようこそ {user.displayName} さん</div> : <div>ようこそ {user.email} さん</div>}
                         </div>
                         <button type="button" class="btn btn-secondary btn-sm mx-1" onClick={() => { firebase.auth().signOut(); }}>logout</button>
-                        <button type="button" class="btn btn-warning btn-sm mx-1" data-toggle="modal" data-target="#Modal_config">config</button>
-                        <div class="modal fade" id="Modal_config" role="dialog" aria-hidden="true">
+                        <button type="button" class="btn btn-warning btn-sm mx-1" data-toggle="modal" data-target="#account_modal_config">config</button>
+                        <div class="modal fade" id="account_modal_config" role="dialog" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -87,11 +87,11 @@ class Account_tag extends React.Component {
                     :
                     <div class="navber-brand">
                         <div class="navbar-right form-inline">サービスを利用するには、ログインしてください
-                            <input type="button" value="Googleでログイン" class="btn btn-success mx-1 btn-sm" onClick={google_login} />
-                            <button type="button" class="btn btn-success mx-1 btn-sm" data-toggle="modal" data-target="#Modal_create_acc">Create_account</button>
-                            <button type="button" class="btn btn-success mx-1 btn-sm" data-toggle="modal" data-target="#Modal_signin">Sign_in</button>
+                            <input type="button" value="Googleでログイン" class="btn btn-success mx-1 btn-sm" onClick={this.google_login} />
+                            <button type="button" class="btn btn-success mx-1 btn-sm" data-toggle="modal" data-target="#account_modal_create_acc">Create_account</button>
+                            <button type="button" class="btn btn-success mx-1 btn-sm" data-toggle="modal" data-target="#account_modal_signin">Sign_in</button>
                             <button type="button" class="btn btn-warning mx-1 btn-sm" onClick={this.signin_easy}>Easy_login</button>
-                            <div class="modal fade" id="Modal_signin" role="dialog" aria-hidden="true">
+                            <div class="modal fade" id="account_modal_signin" role="dialog" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -109,7 +109,7 @@ class Account_tag extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div class="modal fade" id="Modal_create_acc" role="dialog" aria-hidden="true">
+                        <div class="modal fade" id="account_modal_create_acc" role="dialog" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -129,6 +129,7 @@ class Account_tag extends React.Component {
                     </div>
                 }
             </nav></div>
+            
         );
     };
 };

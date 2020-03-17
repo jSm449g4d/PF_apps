@@ -2,21 +2,38 @@
 
 class Mypage_tag extends React.Component {
     load_profile() {
-        db.collection("mypage").doc(this.state.uid).get().then(
-            function (doc) {
+        alert("CD");
+        db.collection("mypage").doc(firebase.auth().currentUser.uid).get().then(
+            (doc)=> {
+                alert("CC");
                 if (doc.exists) {
-                    this.setState({ profile: doc.data() })
-                } else { alert("Error:" + this.state.uid + "_document_doesnt_exist") }
+                    alert("Hello World!1");
+                    this.setState({ pr: doc.data()["pr"] });
+                } else {
+                    alert("Hello World!");
+                    tm = new Date();
+                    doc.set({
+                        "nickname": "窓の民は名無し",
+                        "pr": "私はJhon_Doe。窓の蛇遣いです。",
+                        "accessed_by": "FB",
+                        "timestamp": tm.getTime()
+                    });
+                }
             }
         )
+    }
+    componentDidMount(prevProps, prevState) {
+        load_profile()
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.uid != prevState.uid) {load_profile()}
     }
 
     constructor(props) {
         super(props);
         this.state = { uid: "", pr: "", profile: null };
-        firebase.auth().onAuthStateChanged(function (user) {
-            this.setState({})
-        })
+        this.load_profile = this.load_profile.bind(this);
         setInterval(() => {
             if (firebase.auth().currentUser) {
                 this.setState({ uid: firebase.auth().currentUser.uid });
@@ -25,6 +42,7 @@ class Mypage_tag extends React.Component {
                 this.setState({ uid: "" });
             }
         }, 100)
+        
     };
 
     render() {
@@ -33,17 +51,16 @@ class Mypage_tag extends React.Component {
             <div>
                 {this.state.uid != "" ?
                     <div>
-                        {this.load_profile}
-                        aaaaas
+                        {this.state.pr}
                     </div>
-                    : <div>Plz login</div>}
+                    : 
+                    
+                    <div>Plz login<button onload="()=>alert('b')"/></div>}
             </div>
         );
     };
-
 };
-
-
-
 ReactDOM.render(
     <Mypage_tag />, document.getElementById('mypage_tag'))
+
+                    //    {this.state.pr}

@@ -2,12 +2,12 @@
 
 class Account_tag extends React.Component {
     create_account() {
-        firebase.auth().createUserWithEmailAndPassword(this.state.mail_addr, this.state.mail_pass).catch(function (error) {
+        firebase.auth().createUserWithEmailAndPassword(this.state.mail_addr, this.state.mail_pass).catch((error) => {
             alert("error_code:" + error.code + "\nerror_message:" + error.message)
         })
     }
     signin() {
-        firebase.auth().signInWithEmailAndPassword(this.state.mail_addr, this.state.mail_pass).catch(function (error) {
+        firebase.auth().signInWithEmailAndPassword(this.state.mail_addr, this.state.mail_pass).catch((error) => {
             alert("error_code:" + error.code + "\nerror_message:" + error.message)
         })
     }
@@ -21,13 +21,13 @@ class Account_tag extends React.Component {
     account_delete() {
         firebase.auth().currentUser.delete().then(() => {
             alert("ACCOUNT_DELETED!")
-        }).catch(function (error) {
+        }).catch((error) => {
             alert("error_code:" + error.code + "\nerror_message:" + error.message);
         });
     }
     signin_easy() {
-        firebase.auth().signInWithEmailAndPassword("a@b.com", "asdfgh").catch(function (_) {
-            firebase.auth().createUserWithEmailAndPassword("a@b.com", "asdfgh").catch(function (error) {
+        firebase.auth().signInWithEmailAndPassword("a@b.com", "asdfgh").catch(() => {
+            firebase.auth().createUserWithEmailAndPassword("a@b.com", "asdfgh").catch((error) => {
                 alert("error_code:" + error.code + "\nerror_message:" + error.message)
             })
         })
@@ -59,11 +59,11 @@ class Account_tag extends React.Component {
                 {this.state.uid != "" ?
                     <div class="navber-brand navbar-left form-inline">
                         <div>{user.photoURL ?
-                            <div><img src={user.photoURL} alt="user.photoURL" border="1" /></div> : <div></div>}
+                            <div><img src={user.photoURL} alt="user.photoURL" border="1" width="64" height="64" /></div> : <div></div>}
                             {user.displayName ?
                                 <div>ようこそ {user.displayName} さん</div> : <div>ようこそ {user.email} さん</div>}
                         </div>
-                        <button type="button" class="btn btn-success btn-sm mx-1" onClick={()=>{ firebase.auth().signOut(); }}>logout</button>
+                        <button type="button" class="btn btn-secondary btn-sm mx-1" onClick={() => { firebase.auth().signOut(); }}>logout</button>
                         <button type="button" class="btn btn-warning btn-sm mx-1" data-toggle="modal" data-target="#Modal_config">config</button>
                         <div class="modal fade" id="Modal_config" role="dialog" aria-hidden="true">
                             <div class="modal-dialog" role="document">

@@ -46,10 +46,10 @@ class Account_tag extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         setInterval(() => {
             if (auth.currentUser) {
-                this.setState({ uid: auth.currentUser.uid });
+                if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid })
             }
             else {
-                this.setState({ uid: "" });
+                if (this.state.uid !="") this.setState({ uid: "" });
             }
         }, 100)
     };

@@ -61,7 +61,7 @@ class Mypage_tag extends React.Component {
     changebutton_render(title, state_element) {
         let modal_id = "mygape_modal_" + title; let modal_id_s = "#" + modal_id;
         return (
-            <div class="">
+            <div>
                 <button type="button" class="btn btn-outline-success btn-sm mx-1" data-toggle="modal" data-target={modal_id_s}>change</button>
                 <div class="modal fade" id={modal_id} role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
@@ -83,15 +83,22 @@ class Mypage_tag extends React.Component {
             </div>
         )
     }
-    //custom-file custom-file-input
-    display_data() {
+
+    icon_download() {
         let storageRef = storage.ref("mypage/" + this.state.uid + "/icon.img");
         storageRef.getDownloadURL().then((url) => {
             if (this.state.image_url != url) this.setState({ image_url: url });
         }).catch(() => { if (this.state.image_url != url) this.setState({ image_url: "no image" }); })
         return (
             <div>
-                <img src={this.state.image_url} alt={this.state.image_url} border="1" width="128" height="128" />
+                <img src={this.state.image_url} alt={this.state.image_url} width="200" height="200" />
+            </div>
+        )
+    }
+    icon_upload() {
+        let storageRef = storage.ref("mypage/" + this.state.uid + "/icon.img");
+        return (
+            <div>
                 <button type="button" class="btn btn-outline-success btn-sm" onClick={() => {
                     $(event.target).children()[0].click();
                 }}>Upload_Icon
@@ -103,19 +110,35 @@ class Mypage_tag extends React.Component {
             </div>
         )
     }
-
     render() {
         return (
             <div>
                 {this.state.uid != "" ?
                     <div>
-                        <h5 class="form-inline">{this.state.nickname}{this.changebutton_render("nickname", "nickname")}</h5>
-                        <div>{this.display_data()}</div>
-                        <h5 class="form-inline">{this.state.pr}{this.changebutton_render("PR", "pr")}</h5>
-                        <h5 class="form-inline">{this.state.timestamp}</h5>
+                        <div class="m-2 p-1" style={{background:"khaki"}}>
+                            <h4 class="d-flex justify-content-between">
+                                <div>{this.state.nickname}</div>
+                                <div class="ml-auto">
+                                    <div class="form-inline">
+                                        {this.changebutton_render("nickname", "nickname")}{this.icon_upload()}
+                                    </div>
+                                </div>
+                            </h4>
+                            <div class="d-flex">
+                                <div class="">{this.icon_download()}</div>
+                                <div class="bg-light m-1">
+                                    <div class="d-flex justify-content-between bg-white m-1">
+                                        <h5 class="">PR</h5>
+                                        <div class="ml-auto">{this.changebutton_render("PR", "pr")}</div>
+                                    </div>
+                                    <h6 class="">{this.state.pr}</h6>
+                                    <div class="">{this.state.timestamp}</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     :
-                    <h4>This application cant use without login</h4>
+                    <h4 class="m-2">This application cant use without login</h4>
                 }
             </div>
         );

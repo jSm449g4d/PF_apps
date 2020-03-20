@@ -77,46 +77,50 @@ class Account_tag extends React.Component {
 
     render() {
         return (
-            <div class=""><nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="bg-light p-2">
                 {this.state.uid != "" ?
-                    <div class="navber-brand navbar-left form-inline">
+                    <div class="d-flex justify-content-between">
                         <div>{auth.currentUser.photoURL ?
-                            <img src={auth.currentUser.photoURL} alt="user.photoURL" border="1" width="64" height="64" /> : <div/>}
+                            <img src={auth.currentUser.photoURL} alt="user.photoURL" border="1" width="64" height="64" /> : <div />}
                             {auth.currentUser.displayName ?
-                                <div>ようこそ {auth.currentUser.displayName} さん</div> : <div>ようこそ {auth.currentUser.email} さん</div>}
+                                <h6>ようこそ {auth.currentUser.displayName} さん</h6> : <h6>ようこそ {auth.currentUser.email} さん</h6>}
                         </div>
-                        <button type="button" class="btn btn-secondary btn-sm mx-1" onClick={() => { firebase.auth().signOut(); }}>logout</button>
-                        <button type="button" class="btn btn-warning btn-sm mx-1" data-toggle="modal" data-target="#account_modal_config">config</button>
-                        <div class="modal fade" id="account_modal_config" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Config</h5>
-                                    </div>
-                                    <div class="modal-body row">
-                                        <input type="text" name="mail_addr" class="form-control col-12" placeholder="send mail for password_reset" onChange={this.handleChange} />
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-sm btn-warning" data-dismiss="modal" onClick={this.pass_reset}>password_reset</button>
-                                        <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" onClick={this.account_delete}>account_delete</button>
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <div class="form-inline">
+                            <button type="button" class="btn btn-secondary btn-sm mx-1" onClick={() => { firebase.auth().signOut(); }}>logout</button>
+                            <button type="button" class="btn btn-warning btn-sm mx-1" data-toggle="modal" data-target="#account_modal_config">config</button>
+                            <div class="modal fade" id="account_modal_config" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Config</h5>
+                                        </div>
+                                        <div class="modal-body row">
+                                            <input type="text" name="mail_addr" class="form-control col-12" placeholder="send mail for password_reset" onChange={this.handleChange} />
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-sm btn-warning" data-dismiss="modal" onClick={this.pass_reset}>password_reset</button>
+                                            <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" onClick={this.account_delete}>account_delete</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     :
-                    <div class="navber-brand">
-                        <div class="navbar-right form-inline">サービスを利用するには、ログインしてください
+                    <div class="d-flex justify-content-between">
+                        <h5>サービスを利用するには、ログインしてください</h5>
+                        <div class="ml-auto">
+                            <div class="form-inline">
                                 <input type="button" value="Googleでログイン" class="btn btn-success mx-1 btn-sm" onClick={this.google_login} />
-                            {this.accountmodal_render("Sign_in", this.signin)}
-                            {this.accountmodal_render("Sign_up", this.signup)}
-                            <button type="button" class="btn btn-warning mx-1 btn-sm" onClick={this.signin_easy}>Easy_login</button>
+                                {this.accountmodal_render("Sign_in", this.signin)}
+                                {this.accountmodal_render("Sign_up", this.signup)}
+                                <button type="button" class="btn btn-warning mx-1 btn-sm" onClick={this.signin_easy}>Easy_login</button>
+                            </div>
                         </div>
                     </div>
                 }
-            </nav></div>
-
+            </div>
         );
     };
 };

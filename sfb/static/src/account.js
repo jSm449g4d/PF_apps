@@ -49,8 +49,7 @@ class Account_tag extends React.Component {
     };
 
     accountmodal_render(title, func) {
-        let modal_id = "mygape_modal_" + title;
-        let modal_id_s = "#" + modal_id;
+        let modal_id = "mygape_modal_" + title; let modal_id_s = "#" + modal_id;
         func = func.bind(this)
         return (
             <div>
@@ -82,7 +81,7 @@ class Account_tag extends React.Component {
                 {this.state.uid != "" ?
                     <div class="navber-brand navbar-left form-inline">
                         <div>{auth.currentUser.photoURL ?
-                            <div><img src={auth.currentUser.photoURL} alt="user.photoURL" border="1" width="64" height="64" /></div> : <div></div>}
+                            <img src={auth.currentUser.photoURL} alt="user.photoURL" border="1" width="64" height="64" /> : <div/>}
                             {auth.currentUser.displayName ?
                                 <div>ようこそ {auth.currentUser.displayName} さん</div> : <div>ようこそ {auth.currentUser.email} さん</div>}
                         </div>

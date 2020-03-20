@@ -11,9 +11,9 @@
 
     <body>
         <div id="account_tag">Cant use React+Bootstrap4</div>
+        <div id="mypage_tag">Now_loading...</div>
         <div class="m-2">
             <form method="post" enctype="multipart/form-data" style="display:inline;">
-                <div id="mypage_tag">Now_loading...</div>
                 <input type="hidden" name="fbtoken" value="">
                 <!--↑Firebase_token_keep-->
             </form>
@@ -26,6 +26,7 @@
         <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-auth.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-analytics.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-firestore.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-storage.js"></script>
         <script>
             // Your web app's Firebase configuration
             var firebaseConfig = {
@@ -42,6 +43,8 @@
             firebase.initializeApp(firebaseConfig);
             firebase.analytics();
             var auth = firebase.auth();
+            var db = firebase.firestore();
+            var storage = firebase.storage();
             auth.onAuthStateChanged((user) => {
                 if (user) {
                     user.getIdToken(true).then((idToken) => {
@@ -51,7 +54,6 @@
                     document.getElementsByName("fbtoken")[0].setAttribute("value", "");
                 }
             })
-            var db = firebase.firestore();
         </script>
         <!--Firebase -->
         <!--Bootstrap and jQuery JS -->

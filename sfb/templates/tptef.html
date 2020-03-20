@@ -110,9 +110,9 @@
         <script>
             auth.onAuthStateChanged(function(user) {
                 if (user) {
-                    document.getElementById("submits")[0].removeAttribute("style")
+                    document.getElementById("submits").removeAttribute("style")
                 } else {
-                    document.getElementById("submits")[0].setAttribute("style", "display:none")
+                    document.getElementById("submits").setAttribute("style", "display:none")
                 }
             })
         </script>

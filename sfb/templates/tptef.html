@@ -43,21 +43,17 @@
                 <div class="m-2 p-2" style="color:#AAFEFE;border:3px double silver;background:#001111;">
                     <h5 style="color:white;font-family:''">入力フォーム</h5>
                     <textarea class="form-control mt-2" id="exampleFormControlTextarea1" rows="5" name="content" placeholder="Content"></textarea>
-                    <div class="mt-2 form-row">
-                        <label class="col-2 col-form-label">attachment:</label>
-                        <div>
-                            <button type="button" class="btn btn-primary btn-sm mx-1" onclick=" $(event.target).children()[0].click();">Upload_Icon
-                            <input name="attachment" type="file" class="d-none" /></button>
-                        </div>
-                    </div>
                     <div class="mt-2 form-row btn-right ">
                         <label class="col-2 col-form-label ">handle_name:</label>
-                        <input type="text " name="user " class="form-control form-control-sm mx-1 col-3 " value="{{USER}} ">
-                        <button name="remark " class="btn btn-sm btn-success mx-1" value="True " disabled>remark</button>
+                        <input type="text" name="user" class="form-control form-control-sm mx-1 col-3 " value="{{USER}} ">
+                        <button name="remark" class="btn btn-sm btn-success mx-1" value="True" disabled>remark</button>
+                        <button type="button" class="btn btn-primary btn-sm mx-1" onclick="
+                        $(event.target).children()[0].click();document.getElementsByName('remark')[0].click();">remark_with_attachment
+                        <input name="attachment" type="file" class="d-none" /></button>
                     </div>
                 </div>
 
-                <a class="btn btn-outline-success m-2" href="./ ">Indexへ</a>
+                <a class="btn btn-outline-success m-2 " href="./ ">Indexへ</a>
 
                 <input type="hidden " name="fbtoken " value=" ">
                 <!--↑Firebase_token_keep-->
@@ -66,22 +62,22 @@
 
         <!--Firebase -->
         <!-- The core Firebase JS SDK is always required and must be listed first -->
-        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-auth.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-analytics.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-firestore.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-storage.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-app.js "></script>
+        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-auth.js "></script>
+        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-analytics.js "></script>
+        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-firestore.js "></script>
+        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-storage.js "></script>
         <script>
             // Your web app's Firebase configuration
             var firebaseConfig = {
-                apiKey: "AIzaSyCWzFat3oUpn_4TtOpDCMhcOD2Qf4u1Mr4",
-                authDomain: "crack-atlas-251509.firebaseapp.com",
-                databaseURL: "https://crack-atlas-251509.firebaseio.com",
-                projectId: "crack-atlas-251509",
-                storageBucket: "crack-atlas-251509.appspot.com",
-                messagingSenderId: "646437940818",
-                appId: "1:646437940818:web:080ff48019a68c74d3b98b",
-                measurementId: "G-QLHKJ38SWW"
+                apiKey: "AIzaSyCWzFat3oUpn_4TtOpDCMhcOD2Qf4u1Mr4 ",
+                authDomain: "crack-atlas-251509.firebaseapp.com ",
+                databaseURL: "https://crack-atlas-251509.firebaseio.com ",
+                projectId: "crack-atlas-251509 ",
+                storageBucket: "crack-atlas-251509.appspot.com ",
+                messagingSenderId: "646437940818 ",
+                appId: "1:646437940818:web:080ff48019a68c74d3b98b ",
+                measurementId: "G-QLHKJ38SWW "
             };
             // Initialize Firebase
             firebase.initializeApp(firebaseConfig);
@@ -92,25 +88,25 @@
             auth.onAuthStateChanged((user) => {
                 if (user) {
                     user.getIdToken(true).then((idToken) => {
-                        document.getElementsByName("fbtoken")[0].setAttribute("value", idToken);
+                        document.getElementsByName("fbtoken ")[0].setAttribute("value ", idToken);
                     })
                 } else {
-                    document.getElementsByName("fbtoken")[0].setAttribute("value", "");
+                    document.getElementsByName("fbtoken ")[0].setAttribute("value ", " ");
                 }
             })
         </script>
         <!--Firebase -->
         <!--Bootstrap and jQuery JS -->
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js " crossorigin="anonymous "></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js " integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm " crossorigin="anonymous "></script>
         <!--/Bootstrap and jQuery JS -->
         <!--React -->
-        <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
-        <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
-        <script crossorigin src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
-        <script type="text/babel" src="{{ url_for('static', filename='src/account.js') }}"></script>
-        <script type="text/babel" src="{{ url_for('static', filename='src/mypage.js') }}"></script>
+        <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js "></script>
+        <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js "></script>
+        <script crossorigin src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js "></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js "></script>
+        <script type="text/babel " src="{{ url_for( 'static', filename='src/account.js' ) }} "></script>
+        <script type="text/babel " src="{{ url_for( 'static', filename='src/mypage.js' ) }} "></script>
         <!--React -->
         <script>
             auth.onAuthStateChanged(function(user) {

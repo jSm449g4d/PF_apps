@@ -12,7 +12,7 @@
     <body>
         <div id="account_tag">cant use React</div>
         <div class="m-2">
-            <form method="post" enctype="multipart/form-data" style="display:inline;">
+            <form method="post" enctype="multipart/form-data">
                 <h2 style="color:black;font-family:serif;">Chat_room</h2>
                 <nav>
                     <div class="navbar navbar-default form-inline">
@@ -44,13 +44,17 @@
                     <div id="submits" style="display:none;">
                         <h5 style="color:white;font-family:''">入力フォーム</h5>
                         <textarea class="form-control mt-2" rows="5" name="content" placeholder="Content"></textarea>
-                        <div class="mt-2 form-row btn-right">
-                            <label class="col-2 col-form-label ">handle_name:</label>
-                            <input type="text" name="user" class="form-control form-control-sm mx-1 col-3 " value="{{USER}} ">
-                            <button name="remark" class="btn btn-sm btn-success mx-1" value="True">remark</button>
-                            <button type="button" class="btn btn-primary btn-sm mx-1" onclick="
+                        <div class="d-flex justify-content-between">
+                            <h5>handle_name:</h5>
+                            <div class="ml-auto">
+                                <div class="mt-2 form-inline">
+                                    <input type="text" name="user" class="form-control form-control-sm mx-1" value="{{USER}} ">
+                                    <button name="remark" class="btn btn-sm btn-success mx-1" value="True">remark</button>
+                                    <button type="button" class="btn btn-primary btn-sm mx-1" onclick="
                         $(event.target).children()[0].click();document.getElementsByName('remark')[0].click();">remark_with_attachment
                         <input name="attachment" type="file" class="d-none" /></button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

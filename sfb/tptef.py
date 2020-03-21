@@ -30,16 +30,16 @@ def show(req):
             uid = auth.verify_id_token(
                 secure_filename(req.form["fbtoken"]))["uid"]
             remark_key = str(int(datetime.now(pytz.UTC).timestamp()*1000))
+            doc_ref.update({remark_key: {
+                "user": "user",
+                "uid": "uid",
+                "content": "CONTENT",
+                "date": datetime.now(pytz.UTC).strftime("%Y/%m/%d %H:%M:%S %f (UTC)"),
+                "attachment": "",
+            }})
             # Remark
             if 'content' in req.form and "remark" in req.form and secure_filename(req.form["remark"]) == "True":
                 attachment = ""
-                doc_ref.update({remark_key: {
-                    "user": "user",
-                    "uid": "uid",
-                    "content": "CONTENT",
-                    "date": datetime.now(pytz.UTC).strftime("%Y/%m/%d %H:%M:%S %f (UTC)"),
-                    "attachment": "",
-                }})
                 if 'attachment' in req.files:
                     req.files['attachment'].save(tempfile)
                     wsgi_util.GCS_bucket.blob(os.path.join(

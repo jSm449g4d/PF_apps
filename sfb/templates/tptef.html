@@ -43,7 +43,7 @@
                 <div class="mt-2 p-2" style="color:#AAFEFE;border:3px double silver;background:#001111;">
                     <div id="submits" style="display:none;">
                         <h5 style="color:white;font-family:''">入力フォーム</h5>
-                        <textarea class="form-control mt-2" id="exampleFormControlTextarea1" rows="5" name="content" placeholder="Content"></textarea>
+                        <textarea class="form-control mt-2" rows="5" name="content" placeholder="Content"></textarea>
                         <div class="mt-2 form-row btn-right">
                             <label class="col-2 col-form-label ">handle_name:</label>
                             <input type="text" name="user" class="form-control form-control-sm mx-1 col-3 " value="{{USER}} ">
@@ -56,7 +56,6 @@
                 </div>
 
                 <a class="btn btn-outline-success m-2" href="./ ">Indexへ</a>
-
                 <input type="hidden" name="fbtoken" value=" ">
                 <!--↑Firebase_token_keep-->
             </form>
@@ -117,6 +116,10 @@
                     document.getElementById("submits").setAttribute("style", "display:none")
                 }
             })
+        </script>
+        <script type="text/babel">
+            ReactDOM.render(
+            < Account_tag /> , document.getElementById('account_tag'))
         </script>
 
     </body>

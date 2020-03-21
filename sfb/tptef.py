@@ -16,7 +16,7 @@ def show(req):
     room = "room_main"
     user = "窓の民は名無し"
     uid = ""
-    if req.method == 'POST' or req.method == "GET":
+    if req.method == 'POST':
         if 'room' in req.form:
             room = "room_"+req.form['room'].translate(str.maketrans(
                 "", "", "\"\'\\/<>%`?;"))

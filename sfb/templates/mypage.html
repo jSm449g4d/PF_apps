@@ -68,6 +68,13 @@
         <!--React -->
         <script type="text/babel" src="{{ url_for('static', filename='src/account.js') }}"></script>
         <script type="text/babel" src="{{ url_for('static', filename='src/mypage.js') }}"></script>
+        <script type="text/babel">
+            ReactDOM.render(
+            < Account_tag /> , document.getElementById('account_tag')); ReactDOM.render(
+            <Mypage_tag />, document.getElementById('mypage_tag'))
+
+        </script>
+
     </body>
 
 </html>

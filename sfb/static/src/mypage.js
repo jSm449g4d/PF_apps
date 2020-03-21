@@ -144,5 +144,3 @@ class Mypage_tag extends React.Component {
         );
     };
 };
-ReactDOM.render(
-    <Mypage_tag />, document.getElementById('mypage_tag'))

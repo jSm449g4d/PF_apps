@@ -26,13 +26,6 @@ def show(req):
         # access firestore
         doc_ref = wsgi_util.db.collection("tptef").document(room)
         doc_ref.set({}, merge=True)
-        doc_ref.update({"SATA": {
-            "user": "userA",
-            "uid": "uid",
-            "content": "CONTENT",
-            "date": datetime.now(pytz.UTC).strftime("%Y/%m/%d %H:%M:%S %f (UTC)"),
-            "attachment": "",
-        }})
         try:
             uid = auth.verify_id_token(
                 secure_filename(req.form["fbtoken"]))["uid"]

@@ -43,15 +43,13 @@
                 <div class="mt-2 p-2" style="color:#AAFEFE;border:3px double silver;background:#001111;">
                     <div id="submits" style="display:none;">
                         <h5 style="color:white;font-family:''">入力フォーム</h5>
-                        <textarea class="form-control mt-2" rows="5" name="content" placeholder="Content"></textarea>
-                        <div class="d-flex justify-content-between">
+                        <textarea class="form-control my-1" rows="5" name="content" placeholder="Content"></textarea>
+                        <div class="my-1 d-flex justify-content-between">
                             <div class="ml-auto">
-                                <div class="mt-2 form-inline">
+                                <div class="form-inline">
                                     <input type="text" name="user" class="form-control form-control-sm mx-1" value="{{USER}} ">
-                                    <button name="remark" class="btn btn-sm btn-success mx-1" value="True">remark</button>
-                                    <button type="button" class="btn btn-primary btn-sm mx-1" onclick="
-                        $(event.target).children()[0].click();document.getElementsByName('remark')[0].click();">remark_with_attachment
-                        <input name="attachment" type="file" class="d-none" /></button>
+                                    <input name="attachment" type="file" />
+                                    <button name="remark" class="btn btn-success mx-1" value="True">remark</button>
                                 </div>
                             </div>
                         </div>
@@ -59,7 +57,7 @@
                 </div>
 
                 <a class="btn btn-outline-success m-2" href="./ ">Indexへ</a>
-                <input type="hidden" name="fbtoken" value=" ">
+                <input type="hidden" name="fbtoken" value="">
                 <!--↑Firebase_token_keep-->
             </form>
         </div>
@@ -92,10 +90,10 @@
             auth.onAuthStateChanged((user) => {
                 if (user) {
                     user.getIdToken(true).then((idToken) => {
-                        document.getElementsByName("fbtoken ")[0].setAttribute("value ", idToken);
+                        document.getElementsByName("fbtoken")[0].setAttribute("value", idToken);
                     })
                 } else {
-                    document.getElementsByName("fbtoken ")[0].setAttribute("value ", " ");
+                    document.getElementsByName("fbtoken")[0].setAttribute("value", "");
                 }
             })
         </script>

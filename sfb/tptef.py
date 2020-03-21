@@ -82,4 +82,5 @@ def show(req):
         # clear_tempfile
         if os.path.exists(tempfile):
             os.remove(tempfile)
-    return wsgi_util.render_template_2("tptef.html", ORDERS=orders, ROOM=room[len("room_"):], USER=user)
+        return wsgi_util.render_template_2("tptef.html", ORDERS=orders, ROOM=room[len("room_"):], USER=user)
+    return "<h5>Plz access by POST</h5>"

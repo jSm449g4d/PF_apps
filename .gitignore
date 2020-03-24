@@ -128,6 +128,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# keys
+# custom
 FirebaseAdmin_Key.json
-node_modules
+node_modules/

@@ -8,7 +8,6 @@ import * as firebase from 'firebase/app';
 import "firebase/auth";
 */
 import * as firebase from 'firebase/app';
-import "firebase/auth";
 firebase.initializeApp({
     apiKey: "AIzaSyCWzFat3oUpn_4TtOpDCMhcOD2Qf4u1Mr4",
     authDomain: "crack-atlas-251509.firebaseapp.com",
@@ -22,7 +21,7 @@ firebase.initializeApp({
 
 // Initialize Firebase
 firebase.analytics();
-var auth = firebase.auth();
+let auth = firebase.auth();
 auth.onAuthStateChanged((user) => {
     if (user) {
         user.getIdToken(true).then((idToken) => {

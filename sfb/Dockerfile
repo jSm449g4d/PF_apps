@@ -21,6 +21,7 @@ RUN npx webpack
 
 #pip
 WORKDIR $APP
+RUN apt install -yq pip
 RUN apt install -yq gcc
 RUN pip install -U pip
 RUN pip install -U flask waitress janome werkzeug psutil urllib3 certifi pytz neologdn \

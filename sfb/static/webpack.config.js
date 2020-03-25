@@ -1,5 +1,5 @@
 const path = require('path')
-var entry = require('webpack-glob-entry')
+const entry = require('webpack-glob-entry')
 
 module.exports = {
     entry: entry('./ts/*.tsx'),

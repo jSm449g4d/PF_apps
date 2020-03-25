@@ -12,7 +12,6 @@ WORKDIR $APP/static
 RUN apt install -yq npm
 RUN npm install -g npm
 RUN npm install typescript -g
-WORKDIR /var/lib/app
 RUN npm install --save react react-dom && \
     npm install --save-dev @types/react @types/react-dom && \
     npm install --save-dev typescript ts-loader source-map-loader && \

@@ -1,7 +1,7 @@
 const path = require('path')
 
 module.exports = {
-    entry: "./ts/index2.tsx",
+    entry: ["./ts/index2.tsx", "./ts/mypage.tsx"],
     output: {
         path: path.resolve(__dirname, './src'),
         filename: 'index2.js'

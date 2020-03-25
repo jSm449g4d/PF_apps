@@ -8,7 +8,6 @@ from firebase_admin import firestore
 import wsgi_util
 from flask import send_file
 
-os.makedirs("wsgi_temp", exist_ok=True)
 tempfile = os.path.join(wsgi_util.config_dict["temp_folder"], "attachment.tmp")
 
 

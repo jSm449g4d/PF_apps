@@ -1,5 +1,14 @@
 const path = require('path')
 
+//const entries = glob.sync("./ts/**/*.js");
+//var entries = {}
+//print("entries")
+//glob.sync("./src/**/*.js").map(function(file) {
+//entries[file] = file
+//})
+
+//print(entries)
+
 module.exports = {
     entry: ["./ts/index2.tsx", "./ts/mypage.tsx"],
     output: {

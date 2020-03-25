@@ -2,8 +2,9 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import {Acc} from "./acc";
-import {Hello} from "./index2";
+import {Acc} from "./component/acc";
+import {Hello} from "./component/index2";
+
 
 ReactDOM.render(<Acc />, document.getElementById("acc"));
 

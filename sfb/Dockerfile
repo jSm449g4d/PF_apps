@@ -23,7 +23,7 @@ RUN npx webpack
 WORKDIR $APP
 RUN apt install -yq gcc python3-pip
 RUN pip3 install -U pip
-RUN pip install -U flask waitress janome werkzeug psutil urllib3 certifi pytz neologdn \
+RUN pip install -U setuptools flask waitress janome werkzeug psutil urllib3 certifi pytz neologdn \
 firebase-admin google-cloud-firestore google-cloud-storage BeautifulSoup4 requests urllib3 \
 SQLAlchemy mysqlclient
 

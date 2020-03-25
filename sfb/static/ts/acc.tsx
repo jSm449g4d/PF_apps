@@ -21,8 +21,6 @@ firebase.initializeApp({
 // Initialize Firebase
 firebase.analytics();
 var auth = firebase.auth();
-var db = firebase.firestore();
-var storage = firebase.storage();
 auth.onAuthStateChanged((user) => {
     if (user) {
         user.getIdToken(true).then((idToken) => {
@@ -33,20 +31,20 @@ auth.onAuthStateChanged((user) => {
     }
 })
 */
+export interface Props { auth: null; }
 interface State {
     uid: "", mail_addr: "", mail_pass: "";
 }
 
 export class Acc extends React.Component<{}, State> {
-    
+    //    signup() {
+    //        auth.createUserWithEmailAndPassword(this.state.mail_addr, this.state.mail_pass).catch((error) => { alert("error_code:" + error.code + "\nerror_message:" + error.message) }
+    //        )
+    //    }
     render() {
         return <div className="bg-light p-2">acc</div>;
     }
 
 }
 
-ReactDOM.render(
-    <Acc />,
-    document.getElementById("acc")
-);
-
+ReactDOM.render(<Acc />, document.getElementById("acc"));

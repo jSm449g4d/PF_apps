@@ -10,13 +10,15 @@
         <div id="example"></div>
         <div id="acc"></div>
 
-        <!-- Dependencies -->
+        <!-- Dependencies-->
         <script src="{{ url_for('static', filename='node_modules/react/umd/react.development.js') }}"></script>
         <script src="{{ url_for('static', filename='node_modules/react-dom/umd/react-dom.development.js') }}"></script>
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+        <script src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigi></script>
         <!-- Main -->
-        <script type="module" src="{{ url_for('static', filename='src/index2.js') }}"></script>
-        <script type="module" src="{{ url_for('static', filename='src/acc.js') }}"></script>
+        <script src="{{ url_for('static', filename='src/index2.js') }}"></script>
+        <script src="{{ url_for('static', filename='src/acc.js') }}"></script>
     </body>
 
 </html>

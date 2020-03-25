@@ -5,14 +5,14 @@ import * as ReactDOM from "react-dom";
 import { Nav, NavItem, Navbar, Row, Col} from "react-bootstrap";
 import * as firebase from 'firebase/app';
 
-export class Mypage extends React.Component{
+export class Acc extends React.Component{
     render() {
-        return <h1>maipezi</h1>;
+        return <h1>acc</h1>;
     }
     
 }
 
 ReactDOM.render(
-    <Mypage />,
-    document.getElementById("mypage")
+    <Acc />,
+    document.getElementById("acc")
 );

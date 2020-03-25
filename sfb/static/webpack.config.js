@@ -1,19 +1,11 @@
 const path = require('path')
-
-//const entries = glob.sync("./ts/**/*.js");
-//var entries = {}
-//print("entries")
-//glob.sync("./src/**/*.js").map(function(file) {
-//entries[file] = file
-//})
-
-//print(entries)
+var entry = require('webpack-glob-entry')
 
 module.exports = {
-    entry: ["./ts/index2.tsx", "./ts/mypage.tsx"],
+    entry: entry('./ts/*.tsx'),
     output: {
         path: path.resolve(__dirname, './src'),
-        filename: 'index2.js'
+        filename: '[name].js'
     },
 
     mode: "production",

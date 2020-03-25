@@ -8,6 +8,7 @@ import * as firebase from 'firebase/app';
 import "firebase/auth";
 */
 import * as firebase from 'firebase/app';
+import "firebase/auth";
 firebase.initializeApp({
     apiKey: "AIzaSyCWzFat3oUpn_4TtOpDCMhcOD2Qf4u1Mr4",
     authDomain: "crack-atlas-251509.firebaseapp.com",
@@ -18,7 +19,7 @@ firebase.initializeApp({
     appId: "1:646437940818:web:080ff48019a68c74d3b98b",
     measurementId: "G-QLHKJ38SWW"
 })
-/*
+
 // Initialize Firebase
 firebase.analytics();
 var auth = firebase.auth();
@@ -31,7 +32,7 @@ auth.onAuthStateChanged((user) => {
         document.getElementsByName("fbtoken")[0].setAttribute("value", "");
     }
 })
-*/
+/**/
 export interface Props { auth: null; }
 interface State {
     uid: "", mail_addr: "", mail_pass: "";

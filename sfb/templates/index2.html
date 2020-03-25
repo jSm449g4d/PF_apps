@@ -10,60 +10,15 @@
         <div id="example"></div>
         <div id="acc"></div>
 
-        <!-- Dependencies-->
+        <!-- Dependencies
         <script src="{{ url_for('static', filename='node_modules/react/umd/react.development.js') }}"></script>
-        <script src="{{ url_for('static', filename='node_modules/react-dom/umd/react-dom.development.js') }}"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
-        <script src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigi></script>
-
-        <!--Firebase -->
-        <!-- The core Firebase JS SDK is always required and must be listed first -->
-        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-app.js "></script>
-        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-auth.js "></script>
-        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-analytics.js "></script>
-        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-firestore.js "></script>
-        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-storage.js "></script>
-        <script>
-            // Your web app's Firebase configuration
-            var firebaseConfig = {
-                apiKey: "AIzaSyCWzFat3oUpn_4TtOpDCMhcOD2Qf4u1Mr4 ",
-                authDomain: "crack-atlas-251509.firebaseapp.com ",
-                databaseURL: "https://crack-atlas-251509.firebaseio.com ",
-                projectId: "crack-atlas-251509 ",
-                storageBucket: "crack-atlas-251509.appspot.com ",
-                messagingSenderId: "646437940818 ",
-                appId: "1:646437940818:web:080ff48019a68c74d3b98b ",
-                measurementId: "G-QLHKJ38SWW "
-            };
-            // Initialize Firebase
-            firebase.initializeApp(firebaseConfig);
-            firebase.analytics();
-            var auth = firebase.auth();
-            var db = firebase.firestore();
-            var storage = firebase.storage();
-            auth.onAuthStateChanged((user) => {
-                if (user) {
-                    user.getIdToken(true).then((idToken) => {
-                        document.getElementsByName("fbtoken")[0].setAttribute("value", idToken);
-                    })
-                } else {
-                    document.getElementsByName("fbtoken")[0].setAttribute("value", "");
-                }
-            })
-        </script>
-        <!--Firebase -->
-
-
-
-
+        <script src="{{ url_for('static', filename='node_modules/react-dom/umd/react-dom.development.js') }}"></script>-->
+        <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+        <!-- Dependencies-->
         <!-- Main -->
-        <script src="{{ url_for('static', filename='src/index2.js') }}"></script>
-        <script type="text/babel" src="{{ url_for('static', filename='src/acc.js') }}"></script>
-        <!-- Main 
-        <script type="text/babel">
-            ReactDOM.render(
-            < Acc /> , document.getElementById("acc"));
-        </script>-->
+        <script src="{{ url_for('static', filename='src/bind.js') }}"></script>
+        <!-- Main -->
 
     </body>
 

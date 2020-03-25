@@ -1,7 +1,6 @@
 //plz use react-bootstrap and Firebase
 
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 //import { Nav, NavItem, Navbar, Row, Col } from "react-bootstrap";
 /*
@@ -47,4 +46,4 @@ export class Acc extends React.Component<{}, State> {
 
 }
 
-ReactDOM.render(<Acc />, document.getElementById("acc"));
+//ReactDOM.render(<Acc />, document.getElementById("acc"));

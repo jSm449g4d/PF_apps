@@ -2,10 +2,12 @@ const path = require('path')
 var entry = require('webpack-glob-entry')
 
 module.exports = {
-    entry: entry('./ts/*.tsx'),
+    //entry: entry('./ts/*.tsx'),
+    entry: "./ts/bind.tsx",
     output: {
         path: path.resolve(__dirname, './src'),
-        filename: '[name].js'
+        //filename: '[name].js'
+        filename: 'bind.js'
     },
 
     mode: "production",

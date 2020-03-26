@@ -16,10 +16,13 @@ firebase.initializeApp({
 firebase.analytics();
 let auth = firebase.auth();
 
+interface Probs {
+    auther: any
+}
 interface State {
     uid: string, mail_addr: string, mail_pass: string
 }
-export class Account_tsx extends React.Component<{}, State> {
+export class Account_tsx extends React.Component<Probs, State> {
     signup() {
         auth.createUserWithEmailAndPassword(this.state.mail_addr, this.state.mail_pass).catch((error) => { alert("error_code:" + error.code + "\nerror_message:" + error.message) }
         )

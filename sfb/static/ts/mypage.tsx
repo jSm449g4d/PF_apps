@@ -52,8 +52,8 @@ export class Mypage_tsx extends React.Component<{}, State> {
     };
 };
 
-
-ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
+var aaa=""
+ReactDOM.render(<Account_tsx auther="aaa"/>, document.getElementById("account_tsx"));
 
 ReactDOM.render(
     <Mypage_tsx />,

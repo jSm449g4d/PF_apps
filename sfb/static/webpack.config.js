@@ -1,5 +1,6 @@
 const path = require('path')
 const entry = require('webpack-glob-entry')
+const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
     entry: entry('./ts/*.tsx'),
@@ -46,6 +47,12 @@ module.exports = {
     // dependencies, which allows browsers to cache those libraries between builds.
     externals: {
         "react": "React",
-        "react-dom": "ReactDOM"
+        "react-dom": "ReactDOM",
+        "firebase/app": "firebase",
+        "firebase/analytics": "firebase",
+        "firebase/auth": "firebase",
+        "firebase/storage": "firebase",
+        "firebase/firestore": "firebase"
     }
+    //externals: [nodeExternals()]
 };

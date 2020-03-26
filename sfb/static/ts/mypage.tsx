@@ -13,7 +13,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
 
     load_profile() {
         if (this.state.uid == "") return;
-        var docRef = db.collection("mypage").doc(this.state.uid);
+        let docRef = db.collection("mypage").doc(this.state.uid);
         docRef.get().then((doc) => {
             let profile = JSON.parse(JSON.stringify(this.state)); delete profile["uid"];
             if (!doc.exists) {

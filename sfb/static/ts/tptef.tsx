@@ -12,14 +12,18 @@ export class Tptef_tsx extends React.Component<{}, State> {
 
     load_room() {
         if (this.state.room == "") return;
-        var docRef = db.collection("tptef").doc(this.state.room);
+        let docRef = db.collection("tptef").doc(this.state.room);
         docRef.get().then((doc) => {
             if (!doc.exists) {
                 docRef.set({});
                 this.setState({thread:"Creat!"})
             }
-            else {
-                this.setState({thread:"Exist!"})
+            else {doc.data()
+                let thread="s";
+                for(let i=0;i<doc.data().length;i++){
+                    thread+=doc.data()["content"]
+                }
+                this.setState({thread:thread})
             }
         });
     }
@@ -57,7 +61,9 @@ export class Tptef_tsx extends React.Component<{}, State> {
                             <th style={{ width: "15%" }}>ops</th>
                         </tr>
                     </thead>
+                    <tbody>
                     {this.state.thread}
+                    </tbody>
                 </table>
 
                 <div className="mt-2 p-2" style={{ color: "#AAFEFE", border: "3px double silver", background: "#001111" }}>

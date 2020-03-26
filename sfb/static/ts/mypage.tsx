@@ -57,6 +57,6 @@ ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
 
 ReactDOM.render(
     <Mypage_tsx />,
-    document.getElementById("example")
+    document.getElementById("mypage_tsx")
 );
 

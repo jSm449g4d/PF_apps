@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 /*
 import * as firebase from 'firebase/app';
 import "firebase/auth";
-*/
+
 import * as firebase from 'firebase/app';
 firebase.initializeApp({
     apiKey: "AIzaSyCWzFat3oUpn_4TtOpDCMhcOD2Qf4u1Mr4",
@@ -31,7 +31,7 @@ auth.onAuthStateChanged((user) => {
         document.getElementsByName("fbtoken")[0].setAttribute("value", "");
     }
 })
-/**/
+*/
 export interface Props { auth: null; }
 interface State {
     uid: "", mail_addr: "", mail_pass: "";

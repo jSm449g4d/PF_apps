@@ -2,7 +2,7 @@
 import React from 'react';
 import ReactDOM from "react-dom";
 
-import { Account_tsx,auth} from "./component/account";
+import { Account_tsx,auth,storage} from "./component/account";
 
 interface State {
     uid: string, image_url: string, nickname: string, pr: string, accessed_by: string
@@ -27,6 +27,22 @@ export class Mypage_tsx extends React.Component<{}, State> {
         }, 100)
     }
 
+    
+    icon_upload() {
+        let storageRef = storage.ref("mypage/" + this.state.uid + "/icon.img");
+        return (
+            <div>
+                <button type="button" className="btn btn-outline-success btn-sm" onClick={(evt) => {
+                    $(evt.currentTarget.children[0]).click()
+                }}>Upload_Icon
+                <input type="file" className="d-none" onChange={(evt) => {
+                        if (window.confirm('Are you really submitting?\n' + evt.target.files[0].name)) {
+                            storageRef.put(evt.target.files[0]);
+                        }; this.setState({});
+                    }} accept="image/jpeg,image/png" /></button>
+            </div>
+        )
+    }
     render() {
         return (
             <div>
@@ -36,7 +52,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
                             <h4 className="d-flex justify-content-between">
                                 <div>{this.state.nickname}</div>
                                 <div className="ml-auto">
-                                    <div className="form-inline">
+                                    <div className="form-inline">{this.icon_upload()}
                                     </div>
                                 </div>
                             </h4>

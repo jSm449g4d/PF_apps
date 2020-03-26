@@ -3,6 +3,7 @@ import React from 'react';
 import firebase from 'firebase/app';
 import "firebase/analytics";
 import "firebase/auth";
+import "firebase/storage";
 firebase.initializeApp({
     apiKey: "AIzaSyCWzFat3oUpn_4TtOpDCMhcOD2Qf4u1Mr4",
     authDomain: "crack-atlas-251509.firebaseapp.com",
@@ -15,6 +16,7 @@ firebase.initializeApp({
 })
 firebase.analytics();
 export var auth = firebase.auth();
+export var storage = firebase.storage();
 
 interface State {
     uid: string, mail_addr: string, mail_pass: string

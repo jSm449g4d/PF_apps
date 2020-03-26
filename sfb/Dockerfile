@@ -1,6 +1,6 @@
 
-#FROM python:3.7
-FROM ubuntu:19.10
+FROM python:3.7
+#FROM ubuntu:19.10
 
 #server initialize
 ENV APP /web_app
@@ -25,8 +25,7 @@ RUN apt install -yq gcc python3-pip
 RUN pip3 install -U pip
 RUN pip install -U setuptools flask waitress janome werkzeug psutil urllib3 certifi pytz neologdn \
 firebase-admin google-cloud-firestore google-cloud-storage BeautifulSoup4 requests urllib3 \
-SQLAlchemy
-# mysqlclient
+SQLAlchemy mysqlclient
 
 #server hosting
 WORKDIR $APP

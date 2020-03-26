@@ -1,6 +1,6 @@
 const path = require('path')
 const entry = require('webpack-glob-entry')
-const nodeExternals = require('webpack-node-externals');
+    //const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
     entry: entry('./ts/*.tsx'),

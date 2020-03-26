@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from "react-dom";
-
 import { Account_tsx, auth, storage, db } from "./component/account";
 
 interface State {
-    room: string;thread:string;
+    room: string; thread: string;
     [key: string]: string;
 }
 
@@ -16,14 +15,19 @@ export class Tptef_tsx extends React.Component<{}, State> {
         docRef.get().then((doc) => {
             if (!doc.exists) {
                 docRef.set({});
-                this.setState({thread:"Creat!"})
+                this.setState({ thread: "Creat!" })
             }
-            else {doc.data()
-                let thread="s";
-                for(let i=0;i<doc.data().length;i++){
-                    thread+=doc.data()["content"]
+            else {
+                let thread = "<tbody>"; //JSON.stringify(doc.data());
+
+                let keys = Object.keys(doc.data()).sort();
+                for (var i = 0; i < keys.length; i++) {
+                    thread += "<tr><td>"
+                    thread += doc.data()[keys[i]]["user"];
+                    thread += "</td></tr>"
                 }
-                this.setState({thread:thread})
+                thread += "</tbody>"
+                this.setState({ thread: thread })
             }
         });
     }
@@ -31,7 +35,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            room: "main",thread:""
+            room: "main", thread: "<tbody></tbody>",
         };
         setInterval(() => {
             if (auth.currentUser) {
@@ -61,9 +65,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                             <th style={{ width: "15%" }}>ops</th>
                         </tr>
                     </thead>
-                    <tbody>
                     {this.state.thread}
-                    </tbody>
                 </table>
 
                 <div className="mt-2 p-2" style={{ color: "#AAFEFE", border: "3px double silver", background: "#001111" }}>

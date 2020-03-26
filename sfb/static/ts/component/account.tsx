@@ -18,7 +18,7 @@ firebase.initializeApp({
 firebase.analytics();
 export var auth = firebase.auth();
 export var storage = firebase.storage();
-export var db=firebase.firestore()
+export var db = firebase.firestore()
 
 interface State {
     uid: string, mail_addr: string, mail_pass: string

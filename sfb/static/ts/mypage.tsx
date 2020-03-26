@@ -2,7 +2,7 @@
 import React from 'react';
 import ReactDOM from "react-dom";
 
-import { Account_tsx } from "./component/account";
+import { Account_tsx,auth} from "./component/account";
 
 interface State {
     uid: string, image_url: string, nickname: string, pr: string, accessed_by: string
@@ -17,6 +17,14 @@ export class Mypage_tsx extends React.Component<{}, State> {
             pr: "私はJhon_Doe。窓の蛇遣いです。",
             accessed_by: "FB"
         };
+        setInterval(() => {
+            if (auth.currentUser) {
+                if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid });
+            }
+            else {
+                if (this.state.uid != "") this.setState({ uid: "" });
+            }
+        }, 100)
     }
 
     render() {
@@ -52,8 +60,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
     };
 };
 
-var aaa=""
-ReactDOM.render(<Account_tsx auther="aaa"/>, document.getElementById("account_tsx"));
+ReactDOM.render(<Account_tsx/>, document.getElementById("account_tsx"));
 
 ReactDOM.render(
     <Mypage_tsx />,

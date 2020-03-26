@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 
 import { Account_tsx, auth, storage, db } from "./component/account";
 
-interface State {
+interface State {room:string;
     [key: string]: string;
 }
 
@@ -12,7 +12,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
 
     constructor(props: any) {
         super(props);
-        this.state = {
+        this.state = {room:"main",
         };
         setInterval(() => {
             if (auth.currentUser) {
@@ -27,10 +27,12 @@ export class Tptef_tsx extends React.Component<{}, State> {
     render() {
         return (
             <div className="m-2">
-                <h2 style={{ color: "black" }}>Chat_room</h2>
+                <h2 style={{ color: "black" }}>Chat_Room</h2>
                 <div className="d-flex justify-content-between">
-                    <input type="text" name="room" className="form-control" value="main" placeholder="Room" />
-                    <input type="submit" className="btn btn-success btn-sm ml-auto" value="Goto_Room" />
+                    <input type="text" id="room_name" className="form-control" value={this.state.room}  placeholder="Room" 
+                    onChange={(evt)=>{this.setState({ room: evt.target.value })}}/>
+                    <button type="button" className="btn btn-success btn-sm ml-auto" onClick={()=>
+                    {alert(this.state.room)}}>Goto_Room</button>
                 </div>
                 <div className="mt-2 p-2" style={{ color: "#AAFEFE", border: "3px double silver", background: "#001111" }}>
                     <div id="submits" style={{ display: "none" }}>

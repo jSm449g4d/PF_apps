@@ -1,7 +1,4 @@
-//plz use react-bootstrap and Firebase
-
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 import firebase from 'firebase/app';
 import "firebase/analytics";
@@ -52,16 +49,12 @@ export class Acc extends React.Component<{}, State> {
     google_login() {
         auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then().catch((error) => { alert("error_code:" + error.code + "\nerror_message:" + error.message); })
     }
-    handleChange(e:any) {
-//        this.setState({ [e.target.name]: e.target.value })
-    }
 
     constructor(props: any) {
         super(props);
         this.state = {
             uid: "", mail_addr: "", mail_pass: ""
         };
-        this.handleChange = this.handleChange.bind(this);
         setInterval(() => {
             if (auth.currentUser) {
                 if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid })
@@ -72,8 +65,8 @@ export class Acc extends React.Component<{}, State> {
         }, 100)
     }
 
-    
-    accountmodal_render(title:string, func:any) {
+
+    accountmodal_render(title: string, func: any) {
         let modal_id = "mygape_modal_" + title; let modal_id_s = "#" + modal_id;
         func = func.bind(this)
         return (
@@ -86,8 +79,10 @@ export class Acc extends React.Component<{}, State> {
                                 <h5 className="modal-title">{title}</h5>
                             </div>
                             <div className="modal-body row">
-                                <input type="text" name="mail_addr" className="form-control col-6" placeholder="mail_address" onChange={this.handleChange} />
-                                <input type="text" name="mail_pass" className="form-control col-6" placeholder="set_password" onChange={this.handleChange} />
+                                <input type="text" name="mail_addr" className="form-control col-6" placeholder="mail_address"
+                                    onChange={(evt: any) => { this.setState({ mail_addr: evt.target.value }); }} />
+                                <input type="text" name="mail_pass" className="form-control col-6" placeholder="set_password"
+                                    onChange={(evt: any) => { this.setState({ mail_pass: evt.target.value }); }} />
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={func}>Submit</button>
@@ -111,7 +106,7 @@ export class Acc extends React.Component<{}, State> {
                                 <h6>ようこそ {auth.currentUser.displayName} さん</h6> : <h6>ようこそ {auth.currentUser.email} さん</h6>}
                         </div>
                         <div className="form-inline">
-                            <button type="button" className="btn btn-secondary btn-sm mx-1" onClick={() => { firebase.auth().signOut(); }}>logout</button>
+                            <button type="button" className="btn btn-secondary btn-sm mx-1" onClick={() => { auth.signOut(); }}>logout</button>
                             <button type="button" className="btn btn-warning btn-sm mx-1" data-toggle="modal" data-target="#account_modal_config">config</button>
                             <div className="modal fade" id="account_modal_config" role="dialog" aria-hidden="true">
                                 <div className="modal-dialog" role="document">
@@ -137,7 +132,7 @@ export class Acc extends React.Component<{}, State> {
                         <h5>サービスを利用するには、ログインしてください</h5>
                         <div className="ml-auto">
                             <div className="form-inline">
-                                <input type="button" value="Googleでログイン" className="btn btn-success mx-1 btn-sm" onClick={this.google_login}/>
+                                <input type="button" value="Googleでログイン" className="btn btn-success mx-1 btn-sm" onClick={this.google_login} />
                                 {this.accountmodal_render("Sign_in", this.signin)}
                                 {this.accountmodal_render("Sign_up", this.signup)}
                                 <button type="button" className="btn btn-warning mx-1 btn-sm" onClick={this.signin_easy}>Easy_login</button>

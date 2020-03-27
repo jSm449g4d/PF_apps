@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { Account_tsx, auth, storage, db } from "./component/account";
 
 interface State {
-    room: string; thread:any;
+    room: string; thread:string;
     [key: string]: string;
 }
 
@@ -15,31 +15,30 @@ export class Tptef_tsx extends React.Component<{}, State> {
         docRef.get().then((doc) => {
             if (!doc.exists) {
                 docRef.set({});
-                this.setState({ thread: {}})
+                this.setState({ thread: JSON.stringify({})})
             }
             else {
-                this.setState({ thread: doc.data() })
+                this.setState({ thread: JSON.stringify(doc.data()) })
             }
         });
     }
-    thread_table_render(doc_data:any){
-        alert("A")
+
+    thread_table_render(){
+        const doc_data = JSON.parse(this.state.thread);
         const thread_record= [];
         let keys = Object.keys(doc_data).sort();
-        alert("B")
         for (var i = 0; i < keys.length; i++) {
             const thread_data= [];
             thread_data.push(<td>{doc_data[keys[i]]["user"]}</td>)
             thread_record.push(<tr>{thread_data}</tr>)
         }
-        alert("V")
         return(<tbody>{thread_record}</tbody>)
     }
 
     constructor(props: any) {
         super(props);
         this.state = {
-            room: "main", thread: null
+            room: "main", thread:JSON.stringify({})
         };
         setInterval(() => {
             if (auth.currentUser) {
@@ -69,7 +68,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                             <th style={{ width: "15%" }}>ops</th>
                         </tr>
                     </thead>
-                    {this.thread_table_render({})}
+                    {this.thread_table_render()}
                 </table>
 
                 <div className="mt-2 p-2" style={{ color: "#AAFEFE", border: "3px double silver", background: "#001111" }}>

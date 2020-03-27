@@ -20,7 +20,8 @@ export class Tptef_tsx extends React.Component<{}, State> {
                             uid: "NULL",
                             content: "Thread is not exist",
                             date: Date.now().toString(),
-                            attachment: ""
+                            attachment_name: "",
+                            attachment_dir: "",
                         }
                     })
                 })
@@ -35,13 +36,13 @@ export class Tptef_tsx extends React.Component<{}, State> {
         if (submit_content == "") { alert("Plz input content"); return; };
         const docRef = db.collection("tptef").doc(this.state.room);
         const remark_key = Date.now().toString();
-        let attachment_name = ""
+        let attachment_name = ""; let attachment_dir = ""
         docRef.get().then((doc) => {
             if (!doc.exists) docRef.set({});
             if (attach_a_file) {
-                attachment_name = attach_a_file.name
-                const storageRef = storage.ref("tptef/" + this.state.room + "/" + remark_key)
-                storageRef.put(attach_a_file)
+                attachment_name = attach_a_file.name;
+                attachment_dir = "tptef/" + this.state.room + "/" + remark_key;
+                storage.ref(attachment_dir).put(attach_a_file);
             }
             docRef.update({
                 [remark_key]: {
@@ -49,7 +50,8 @@ export class Tptef_tsx extends React.Component<{}, State> {
                     uid: this.state.uid,
                     content: submit_content,
                     date: Date.now().toString(),
-                    attachment: attachment_name
+                    attachment_name: attachment_name,
+                    attachment_dir: attachment_dir,
                 }
             })
         });
@@ -69,6 +71,13 @@ export class Tptef_tsx extends React.Component<{}, State> {
         setTimeout(this.db_load_room, 500);
     }
 
+    storage_download(attachment_dir: string) {
+        storage.ref(attachment_dir).getDownloadURL().then((url) => {
+            alert(url)
+        }).catch(() => { alert("cant download") })
+        setTimeout(this.db_load_room, 500);
+    }
+
     thread_table_render() {
         const doc_data = JSON.parse(this.state.thread);
         const thread_record = [];
@@ -81,13 +90,17 @@ export class Tptef_tsx extends React.Component<{}, State> {
             thread_data.push(<td style={{ fontSize: "12px" }}>{doc_data[keys[i]]["date"]}<br />{doc_data[keys[i]]["uid"]}</td>)
             {//Data which is operation of Remark
                 const thread_data_ops = [];
-                if (doc_data[keys[i]]["attachment"] != "") {
+                if (doc_data[keys[i]]["attachment_name"] != "") {
                     thread_data_ops.push(
-                        <button className="btn btn-primary btn-sm">{doc_data[keys[i]]["attachment"]}</button>)
+                        <button className="btn btn-primary btn-sm mx-1" onClick={(evt) => {
+                            this.storage_download(evt.currentTarget.children[0].innerHTML)
+                        }}>{doc_data[keys[i]]["attachment_name"]}
+                            <div style={{ display: "none" }}>{doc_data[keys[i]]["attachment_dir"]}</div>
+                        </button>)
                 }
                 if (doc_data[keys[i]]["uid"] == this.state.uid) {
                     thread_data_ops.push(
-                        <button className="btn btn-danger btn-sm"
+                        <button className="btn btn-danger btn-sm mx-1"
                             onClick={(evt) => { this.db_update_remark_del(evt.currentTarget.children[0].innerHTML) }}>delete
                         <div style={{ display: "none" }}>{keys[i]}</div>
                         </button>)
@@ -166,9 +179,6 @@ export class Tptef_tsx extends React.Component<{}, State> {
         );
     };
 };
-//(document.getElementById("tptef_attachment") as HTMLInputElement).value = "";
-/*
-*/
 
 ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
 

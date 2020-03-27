@@ -34,7 +34,7 @@ def html_show(name):
 def py_show(name):
     try :
         if  request.method=="GET":
-            return wsgi_util.render_template_2('Redirect_Get_2_Post.html')
+            return render_template('Redirect_Get_2_Post.html')
         return importlib.import_module(name).show(request)
     except Exception as e:
         return render_template("error.html",

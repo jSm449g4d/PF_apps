@@ -30,29 +30,29 @@ export class Tptef_tsx extends React.Component<{}, State> {
         });
     };
 
-    db_update_remark_add(submit_content: string, attach_files: FileList) {
+    db_update_remark_add(submit_content: string, attach_a_file: any) {
         if (this.state.uid == "" || this.state.room == "") return;
         if (submit_content == "") { alert("Plz input content"); return; };
         const docRef = db.collection("tptef").doc(this.state.room);
         const remark_key = Date.now().toString();
+        let attachment_name = ""
         docRef.get().then((doc) => {
             if (!doc.exists) docRef.set({});
+            if (attach_a_file) {
+                attachment_name = attach_a_file.name
+                const storageRef = storage.ref("tptef/" + this.state.room + "/" + remark_key)
+                storageRef.put(attach_a_file)
+            }
             docRef.update({
                 [remark_key]: {
                     handlename: this.state.handlename,
                     uid: this.state.uid,
                     content: submit_content,
                     date: Date.now().toString(),
-                    attachment: ""
+                    attachment: attachment_name
                 }
             })
-            if (attach_files[0]) { alert("Exist") }
-            else { alert("NotExist") }
         });
-        (document.getElementById("tptef_attachment") as HTMLInputElement).value = "";
-        //let storageRef = storage.ref("tptef/" + this.state.room + "/"+remark_key);
-        //storageRef.put(upload_files[0])
-
         setTimeout(this.db_load_room, 500);
     }
 
@@ -81,15 +81,16 @@ export class Tptef_tsx extends React.Component<{}, State> {
             thread_data.push(<td style={{ fontSize: "12px" }}>{doc_data[keys[i]]["date"]}<br />{doc_data[keys[i]]["uid"]}</td>)
             {//Data which is operation of Remark
                 const thread_data_ops = [];
-                if (doc_data[keys[i]]["attachment"] != "") { thread_data_ops.push(<div>{doc_data[keys[i]]["attachment"]}</div>) }
+                if (doc_data[keys[i]]["attachment"] != "") {
+                    thread_data_ops.push(
+                        <button className="btn btn-primary btn-sm">{doc_data[keys[i]]["attachment"]}</button>)
+                }
                 if (doc_data[keys[i]]["uid"] == this.state.uid) {
                     thread_data_ops.push(
-                        <div>
-                            <button className="btn btn-danger btn-sm"
-                                onClick={(evt) => { this.db_update_remark_del(evt.currentTarget.children[0].innerHTML) }}>delete
+                        <button className="btn btn-danger btn-sm"
+                            onClick={(evt) => { this.db_update_remark_del(evt.currentTarget.children[0].innerHTML) }}>delete
                         <div style={{ display: "none" }}>{keys[i]}</div>
-                            </button>
-                        </div>)
+                        </button>)
                 }
                 thread_data.push(<td>{thread_data_ops}</td>)
             }
@@ -150,10 +151,9 @@ export class Tptef_tsx extends React.Component<{}, State> {
                                     <button className="btn btn-success mx-1" onClick={() => {
                                         this.db_update_remark_add(
                                             (document.getElementById("tptef_content") as HTMLInputElement).value,
-                                            (document.getElementById("tptef_attachment") as HTMLInputElement).files);
+                                            (document.getElementById("tptef_attachment") as HTMLInputElement).files[0]);
                                         (document.getElementById("tptef_content") as HTMLInputElement).value = "";
-                                        
-
+                                        (document.getElementById("tptef_attachment") as HTMLInputElement).value = "";
                                     }}>remark</button>
                                 </div>
                             </div>
@@ -167,6 +167,9 @@ export class Tptef_tsx extends React.Component<{}, State> {
     };
 };
 //(document.getElementById("tptef_attachment") as HTMLInputElement).value = "";
+/*
+*/
+
 ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
 
 ReactDOM.render(<Tptef_tsx />,

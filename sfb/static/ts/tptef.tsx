@@ -1,11 +1,9 @@
 import React from 'react';
 import ReactDOM from "react-dom";
 import { Account_tsx, auth, storage, db, fb } from "./component/account";
-import { SSL_OP_EPHEMERAL_RSA } from 'constants';
-import { watchFile } from 'fs';
 
 interface State {
-    uid: string, room: string; thread: string;
+    uid: string; room: string; thread: string; handlename: string;
 }
 
 export class Tptef_tsx extends React.Component<{}, State> {
@@ -15,22 +13,24 @@ export class Tptef_tsx extends React.Component<{}, State> {
         const docRef = db.collection("tptef").doc(this.state.room);
         docRef.get().then((doc) => {
             if (!doc.exists) {
-                this.setState({ thread: JSON.stringify({
-                    "NULL": {
-                        user: "NULL",
-                        uid: "NULL",
-                        content: "Thread is not exist",
-                        date: Date.now().toString(),
-                        attachment: ""
-                    }
-                }) })
+                this.setState({
+                    thread: JSON.stringify({
+                        "NULL": {
+                            handlename: "NULL",
+                            uid: "NULL",
+                            content: "Thread is not exist",
+                            date: Date.now().toString(),
+                            attachment: ""
+                        }
+                    })
+                })
             } else {
                 this.setState({ thread: JSON.stringify(doc.data()) })
             }
         });
     };
 
-    db_update_remark_add(remark_username: string, remark_content: string) {
+    db_update_remark_add(remark_content: string) {
         if (this.state.uid == "" || this.state.room == "") return;
         const docRef = db.collection("tptef").doc(this.state.room);
         const remark_key = Date.now().toString();
@@ -38,7 +38,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
             if (!doc.exists) docRef.set({});
             docRef.update({
                 [remark_key]: {
-                    user: remark_username,
+                    handlename:this.state.handlename,
                     uid: this.state.uid,
                     content: remark_content,
                     date: Date.now().toString(),
@@ -69,7 +69,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
         for (var i = 0; i < keys.length; i++) {
             const thread_data = [];
             thread_data.push(<div style={{ display: "none" }}>{keys[i]}</div>)
-            thread_data.push(<td>{doc_data[keys[i]]["user"]}</td>)
+            thread_data.push(<td>{doc_data[keys[i]]["handlename"]}</td>)
             thread_data.push(<td>{doc_data[keys[i]]["content"]}</td>)
             thread_data.push(<td style={{ fontSize: "12px" }}>{doc_data[keys[i]]["date"]}<br />{doc_data[keys[i]]["uid"]}</td>)
             {//Data which is operation of Remark
@@ -94,13 +94,13 @@ export class Tptef_tsx extends React.Component<{}, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            uid: "", room: "main", thread: JSON.stringify({})
+            uid: "", room: "main", handlename: "窓の民は名無し", thread: JSON.stringify({})
         };
         this.db_load_room = this.db_load_room.bind(this);
         setInterval(() => {
             if (auth.currentUser) {
                 if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid });
-            }else {
+            } else {
                 if (this.state.uid != "") this.setState({ uid: "" });
             }
         }, 200)
@@ -122,7 +122,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                 <table className="table table-sm bg-light">
                     <thead>
                         <tr>
-                            <th style={{ width: "15%" }}>user_name</th>
+                            <th style={{ width: "15%" }}>handlename</th>
                             <th>content</th>
                             <th style={{ width: "15%" }} >timestamp/uid</th>
                             <th style={{ width: "15%" }}>ops</th>
@@ -137,11 +137,12 @@ export class Tptef_tsx extends React.Component<{}, State> {
                         <div className="my-1 d-flex justify-content-between">
                             <div className="ml-auto">
                                 <div className="form-inline">
-                                    <input className="form-control form-control-sm mx-1" id="tptef_user" type="text" value="KARI" />
+                                    <input className="form-control form-control-sm mx-1" type="text" value={this.state.handlename}
+                                        onChange={(evt) => { this.setState({ handlename: evt.target.value }) }} />
                                     <input type="file" />
                                     <button className="btn btn-success mx-1" onClick={() => {
-                                        this.db_update_remark_add((document.getElementById("tptef_user") as HTMLInputElement).value
-                                            , (document.getElementById("tptef_content") as HTMLInputElement).value);
+                                        this.db_update_remark_add((document.getElementById("tptef_content") as HTMLInputElement).value);
+                                        (document.getElementById("tptef_content") as HTMLInputElement).value="";
                                     }}>remark</button>
                                 </div>
                             </div>

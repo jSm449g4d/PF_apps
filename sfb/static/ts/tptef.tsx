@@ -30,6 +30,9 @@ export class Tptef_tsx extends React.Component<{}, State> {
         for (var i = 0; i < keys.length; i++) {
             const thread_data= [];
             thread_data.push(<td>{doc_data[keys[i]]["user"]}</td>)
+            thread_data.push(<td>{doc_data[keys[i]]["content"]}</td>)
+            thread_data.push(<td>{doc_data[keys[i]]["date"]}</td>)
+            thread_data.push(<td>{doc_data[keys[i]]["attachment"]}</td>)
             thread_record.push(<tr>{thread_data}</tr>)
         }
         return(<tbody>{thread_record}</tbody>)

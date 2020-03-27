@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { Account_tsx, auth, storage, db } from "./component/account";
 
 interface State {
-    room: string; thread: string;
+    room: string; thread:any;
     [key: string]: string;
 }
 
@@ -15,27 +15,29 @@ export class Tptef_tsx extends React.Component<{}, State> {
         docRef.get().then((doc) => {
             if (!doc.exists) {
                 docRef.set({});
-                this.setState({ thread: "Creat!" })
+                this.setState({ thread: {}})
             }
             else {
-                let thread = "<tbody>"; //JSON.stringify(doc.data());
-
-                let keys = Object.keys(doc.data()).sort();
-                for (var i = 0; i < keys.length; i++) {
-                    thread += "<tr><td>"
-                    thread += doc.data()[keys[i]]["user"];
-                    thread += "</td></tr>"
-                }
-                thread += "</tbody>"
-                this.setState({ thread: thread })
+                this.setState({ thread: doc.data() })
             }
         });
+    }
+    thread_table_render(doc_data:any){
+        const thread_record= [];
+        let keys = Object.keys(doc_data).sort();
+        for (var i = 0; i < keys.length; i++) {
+            const thread_data= [];
+            thread_data.push(<td>{doc_data[keys[i]]["user"]}</td>)
+            thread_record.push(<tr>{thread_data}</tr>)
+        }
+        this.setState({ thread: <tbody>{thread_record}</tbody> })
+        return(<tbody>{thread_record}</tbody>)
     }
 
     constructor(props: any) {
         super(props);
         this.state = {
-            room: "main", thread: "<tbody></tbody>",
+            room: "main", thread: null
         };
         setInterval(() => {
             if (auth.currentUser) {
@@ -65,7 +67,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                             <th style={{ width: "15%" }}>ops</th>
                         </tr>
                     </thead>
-                    {this.state.thread}
+                    
                 </table>
 
                 <div className="mt-2 p-2" style={{ color: "#AAFEFE", border: "3px double silver", background: "#001111" }}>
@@ -76,7 +78,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
         );
     };
 };
-
+//{this.thread_table_render(this.state.thread)}
 ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
 
 ReactDOM.render(<Tptef_tsx />,

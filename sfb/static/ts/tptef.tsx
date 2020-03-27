@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { Account_tsx, auth, storage, db } from "./component/account";
 
 interface State {
-    uid: string,room: string; thread: string;
+    uid: string, room: string; thread: string;
 }
 
 export class Tptef_tsx extends React.Component<{}, State> {
@@ -30,8 +30,11 @@ export class Tptef_tsx extends React.Component<{}, State> {
             const thread_data = [];
             thread_data.push(<td>{doc_data[keys[i]]["user"]}</td>)
             thread_data.push(<td>{doc_data[keys[i]]["content"]}</td>)
-            thread_data.push(<td>{doc_data[keys[i]]["date"]}</td>)
-            thread_data.push(<td>{doc_data[keys[i]]["attachment"]}</td>)
+            thread_data.push(<td style={{ fontSize: "12px" }}>{doc_data[keys[i]]["date"]}<br />{doc_data[keys[i]]["uid"]}</td>)
+            const thread_data_ops = [];
+            if (doc_data[keys[i]]["attachment"] != "") { thread_data_ops.push(<div>{doc_data[keys[i]]["attachment"]}</div>) }
+            if (doc_data[keys[i]]["uid"] == this.state.uid) { thread_data_ops.push(<div><button className="btn btn-danger btn-sm">delete</button></div>) }
+            thread_data.push(<td>{thread_data_ops}</td>)
             thread_record.push(<tr>{thread_data}</tr>)
         }
         return (<tbody>{thread_record}</tbody>)
@@ -40,8 +43,8 @@ export class Tptef_tsx extends React.Component<{}, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            uid: "",room: "main", thread: JSON.stringify({})
-        };        
+            uid: "", room: "main", thread: JSON.stringify({})
+        };
         setInterval(() => {
             if (auth.currentUser) {
                 if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid });
@@ -72,7 +75,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                     </thead>
                     {this.thread_table_render()}
                 </table>
-                {this.state.uid != ""?
+                {this.state.uid != "" ?
                     <div className="mt-2 p-2" style={{ color: "#AAFEFE", border: "3px double silver", background: "#001111" }}>
                         <h5 style={{ color: "white" }}>入力フォーム</h5>
                         <textarea className="form-control my-1" name="content" placeholder="Content"></textarea>

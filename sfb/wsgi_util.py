@@ -9,24 +9,10 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 from google.cloud import storage
 
-def render_template_2(dir,**kwargs):
-    html=""
-    with open(os.path.join("./templates/",dir),"r",encoding="utf-8") as f:
-        html=f.read()
-        for kw,arg in kwargs.items():
-            html=html.replace("{{"+kw+"}}",arg)
-    return render_template_string(html)
-
 status_table=""
-def add_status_table(title="",data="",color="navy"):
-    global status_table
-    status_table+="<tr><td style=\"color:"+color+";\">"+title+"</td><td style=\"color:"+color+";\">"+data+"</td></tr>"
-def Resource_Reload():
-    add_status_table("Python",sys.version,color="#555000")
-    add_status_table("Flask",flask.__version__,color="#555000")
     
 #AP_setting_management
-access_counter=0;config_dict={}
+access_counter=0;config_dict={};resouce_active="×:FALSE"
 try:
     cred = firebase_admin.credentials.Certificate("FirebaseAdmin_Key.json")
     firebase_admin.initialize_app(cred)
@@ -34,6 +20,6 @@ try:
     os.makedirs(config_dict["temp_folder"], exist_ok=True)
     db = firestore.client()
     GCS_bucket = storage.Client.from_service_account_json("FirebaseAdmin_Key.json").get_bucket(config_dict["GCS_bucket"])
-    add_status_table("Resource","OK",color="green")
+    resouce_active="〇:OK"
 except:
-    add_status_table("Resource","Error",color="red")
+    0

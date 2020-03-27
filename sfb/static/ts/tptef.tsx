@@ -82,7 +82,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
         );
     };
 };
-//{this.thread_table_render(this.state.thread)}
+
 ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
 
 ReactDOM.render(<Tptef_tsx />,

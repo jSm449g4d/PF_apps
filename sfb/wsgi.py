@@ -2,10 +2,8 @@
 import sys
 import os
 import flask
-from flask import  redirect,request,render_template_string,render_template
-from werkzeug.utils import secure_filename
+from flask import  redirect,request,render_template
 import importlib
-import random
 
 #Flask_Startup
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -18,16 +16,18 @@ app.config['MAX_CONTENT_LENGTH'] = 100000000
 @app.route("/")
 def indexpage_show():
     wsgi_util.access_counter+=1
-    return wsgi_util.render_template_2("index.html",
-    STATUS_TABLE=wsgi_util.status_table,
-    access_counter=str(wsgi_util.access_counter)
+    return render_template("index.html",
+    STATUS_PYTHON_VERSION=sys.version,
+    STATUS_FLASK_VERSION=flask.__version__,
+    STATUS_ACCESS_COUNT=str(wsgi_util.access_counter),
+    STATUS_RESOURCE_ACTIVE=wsgi_util.resouce_active,
     )
 
 @app.route("/<name>.html")
 def html_show(name):
-    try :return wsgi_util.render_template_2('./'+name+'.html')
+    try :return render_template('./'+name+'.html')
     except Exception as e:
-        return wsgi_util.render_template_2("error.html",
+        return render_template("error.html",
         form_error_code="500",form_error_text=str(e)),500
 
 @app.route("/<name>.py",methods=['GET', 'POST'])
@@ -37,7 +37,7 @@ def py_show(name):
             return wsgi_util.render_template_2('Redirect_Get_2_Post.html')
         return importlib.import_module(name).show(request)
     except Exception as e:
-        return wsgi_util.render_template_2("error.html",
+        return render_template("error.html",
         form_error_code="500",form_error_text=str(e)),500
 
 application=app

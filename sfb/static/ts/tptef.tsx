@@ -8,9 +8,9 @@ interface State {
 
 export class Tptef_tsx extends React.Component<{}, State> {
 
-    load_room() {
+    db_load_room() {
         if (this.state.room == "") return;
-        let docRef = db.collection("tptef").doc(this.state.room);
+        const docRef = db.collection("tptef").doc(this.state.room);
         docRef.get().then((doc) => {
             if (!doc.exists) {
                 docRef.set({});
@@ -40,6 +40,26 @@ export class Tptef_tsx extends React.Component<{}, State> {
         return (<tbody>{thread_record}</tbody>)
     }
 
+    db_update_remark(remark_username: string, remark_content: string) {
+        if (this.state.uid == "" || this.state.room == "") return;
+        const docRef = db.collection("tptef").doc(this.state.room);
+        const remark_key = Date.now().toString();
+        docRef.get().then((doc) => {
+            if (doc.exists) {
+                docRef.update({
+                    [remark_key]: {
+                        user: remark_username,
+                        uid: this.state.uid,
+                        content: remark_content,
+                        date: Date.now().toString(),
+                        attachment: ""
+                    }
+                })
+            }
+        });
+        setTimeout(this.db_load_room,500);
+    }
+
     constructor(props: any) {
         super(props);
         this.state = {
@@ -62,7 +82,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                 <div className="d-flex justify-content-between">
                     <input className="form-control" id="room_name" type="text" value={this.state.room} placeholder="Room"
                         onChange={(evt) => { this.setState({ room: evt.target.value }) }} />
-                    <button className="btn btn-success btn-sm ml-auto" onClick={() => { this.load_room() }}>Goto_Room</button>
+                    <button className="btn btn-success btn-sm ml-auto" onClick={() => { this.db_load_room() }}>Goto_Room</button>
                 </div>
                 <table className="table table-sm bg-light">
                     <thead>
@@ -78,13 +98,16 @@ export class Tptef_tsx extends React.Component<{}, State> {
                 {this.state.uid != "" ?
                     <div className="mt-2 p-2" style={{ color: "#AAFEFE", border: "3px double silver", background: "#001111" }}>
                         <h5 style={{ color: "white" }}>入力フォーム</h5>
-                        <textarea className="form-control my-1" name="content" placeholder="Content"></textarea>
+                        <textarea className="form-control my-1" id="tptef_content" placeholder="Content"></textarea>
                         <div className="my-1 d-flex justify-content-between">
                             <div className="ml-auto">
                                 <div className="form-inline">
-                                    <input className="form-control form-control-sm mx-1" type="text" value="KARI" />
+                                    <input className="form-control form-control-sm mx-1" id="tptef_user" type="text" value="KARI" />
                                     <input type="file" />
-                                    <button className="btn btn-success mx-1">remark</button>
+                                    <button className="btn btn-success mx-1" onClick={() => {
+                                        this.db_update_remark((document.getElementById("tptef_user") as HTMLInputElement).value
+                                            , (document.getElementById("tptef_content") as HTMLInputElement).value);
+                                    }}>remark</button>
                                 </div>
                             </div>
                         </div>

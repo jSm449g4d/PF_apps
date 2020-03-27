@@ -30,22 +30,29 @@ export class Tptef_tsx extends React.Component<{}, State> {
         });
     };
 
-    db_update_remark_add(remark_content: string) {
+    db_update_remark_add(submit_content: string, attach_files: FileList) {
         if (this.state.uid == "" || this.state.room == "") return;
+        if (submit_content == "") { alert("Plz input content"); return; };
         const docRef = db.collection("tptef").doc(this.state.room);
         const remark_key = Date.now().toString();
         docRef.get().then((doc) => {
             if (!doc.exists) docRef.set({});
             docRef.update({
                 [remark_key]: {
-                    handlename:this.state.handlename,
+                    handlename: this.state.handlename,
                     uid: this.state.uid,
-                    content: remark_content,
+                    content: submit_content,
                     date: Date.now().toString(),
                     attachment: ""
                 }
             })
+            if (attach_files[0]) { alert("Exist") }
+            else { alert("NotExist") }
         });
+        (document.getElementById("tptef_attachment") as HTMLInputElement).value = "";
+        //let storageRef = storage.ref("tptef/" + this.state.room + "/"+remark_key);
+        //storageRef.put(upload_files[0])
+
         setTimeout(this.db_load_room, 500);
     }
 
@@ -133,16 +140,20 @@ export class Tptef_tsx extends React.Component<{}, State> {
                 {this.state.uid != "" ?
                     <div className="mt-2 p-2" style={{ color: "#AAFEFE", border: "3px double silver", background: "#001111" }}>
                         <h5 style={{ color: "white" }}>入力フォーム</h5>
-                        <textarea className="form-control my-1" id="tptef_content" placeholder="Content"></textarea>
+                        <textarea className="form-control my-1" id="tptef_content"></textarea>
                         <div className="my-1 d-flex justify-content-between">
                             <div className="ml-auto">
                                 <div className="form-inline">
                                     <input className="form-control form-control-sm mx-1" type="text" value={this.state.handlename}
                                         onChange={(evt) => { this.setState({ handlename: evt.target.value }) }} />
-                                    <input type="file" />
+                                    <input type="file" id="tptef_attachment" />
                                     <button className="btn btn-success mx-1" onClick={() => {
-                                        this.db_update_remark_add((document.getElementById("tptef_content") as HTMLInputElement).value);
-                                        (document.getElementById("tptef_content") as HTMLInputElement).value="";
+                                        this.db_update_remark_add(
+                                            (document.getElementById("tptef_content") as HTMLInputElement).value,
+                                            (document.getElementById("tptef_attachment") as HTMLInputElement).files);
+                                        (document.getElementById("tptef_content") as HTMLInputElement).value = "";
+                                        
+
                                     }}>remark</button>
                                 </div>
                             </div>
@@ -155,7 +166,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
         );
     };
 };
-
+//(document.getElementById("tptef_attachment") as HTMLInputElement).value = "";
 ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
 
 ReactDOM.render(<Tptef_tsx />,

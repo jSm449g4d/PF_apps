@@ -3,123 +3,32 @@
 
     <head>
         <meta charset="utf-8">
-        <title>Flaskなチャットルーム</title>
+        <title>chat_room</title>
     </head>
 
     <body>
-        <div id="account_tag">cant use React</div>
-        <div class="m-2">
-            <form method="post" enctype="multipart/form-data">
-                <h2 style="color:black;font-family:serif;">Chat_room</h2>
-                <nav>
-                    <div class="navbar navbar-default form-inline">
-                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link" id="nav-1-tab" data-toggle="tab" href="#nav-1" role="tab" aria-controls="nav-1" aria-selected="true">Front</a>
-                            <a class="nav-item nav-link active" id="nav-2-tab" data-toggle="tab" href="#nav-2" role="tab" aria-controls="nav-2" aria-selected="false">How_to_use</a>
-                        </div>
-                    </div>
-                    <div class="tab-content alert-info" id="nav-tabContent">
-                        <div class="tab-pane fade  p-1" id="nav-1" role="tabpanel" aria-labelledby="nav-1-tab">
-                            よおこそ
-                        </div>
-                        <div class="tab-pane fade show active  p-1" id="nav-2" role="tabpanel" aria-labelledby="nav-2-tab">
-                            よおこそ
-                        </div>
-                    </div>
-                </nav>
+        <div id="account_tsx">Cant use React+Bootstrap4</div>
+        <div id="tptef_tsx">Now_loading...</div>
+        <a class="btn btn-outline-success m-2" href="./">Indexへ</a>
 
-                <table class="table table-sm text-white">
-                    <thead>
-                        <tr>
-                            <th><input type="text" name="room" class="form-control mt-1" value="{{ROOM}}" placeholder="Room"></th>
-                            <th><input type="submit" class="btn btn-success" value="Goto_Room"></th>
-                        </tr>
-                    </thead>
-                </table>
-                {{ORDERS}}
-                <div class="mt-2 p-2" style="color:#AAFEFE;border:3px double silver;background:#001111;">
-                    <div id="submits" style="display:none;">
-                        <h5 style="color:white;font-family:''">入力フォーム</h5>
-                        <textarea class="form-control my-1" rows="5" name="content" placeholder="Content"></textarea>
-                        <div class="my-1 d-flex justify-content-between">
-                            <div class="ml-auto">
-                                <div class="form-inline">
-                                    <input type="text" name="user" class="form-control form-control-sm mx-1" value="{{USER}} ">
-                                    <input name="attachment" type="file" />
-                                    <button name="remark" class="btn btn-success mx-1" value="True">remark</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <a class="btn btn-outline-success m-2" href="./ ">Indexへ</a>
-                <input type="hidden" name="fbtoken" value="">
-                <!--↑Firebase_token_keep-->
-            </form>
-        </div>
-
-        <!--Firebase -->
-        <!-- The core Firebase JS SDK is always required and must be listed first -->
-        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-app.js "></script>
-        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-auth.js "></script>
-        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-analytics.js "></script>
-        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-firestore.js "></script>
-        <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-storage.js "></script>
-        <script>
-            // Your web app's Firebase configuration
-            var firebaseConfig = {
-                apiKey: "AIzaSyCWzFat3oUpn_4TtOpDCMhcOD2Qf4u1Mr4 ",
-                authDomain: "crack-atlas-251509.firebaseapp.com ",
-                databaseURL: "https://crack-atlas-251509.firebaseio.com ",
-                projectId: "crack-atlas-251509 ",
-                storageBucket: "crack-atlas-251509.appspot.com ",
-                messagingSenderId: "646437940818 ",
-                appId: "1:646437940818:web:080ff48019a68c74d3b98b ",
-                measurementId: "G-QLHKJ38SWW "
-            };
-            // Initialize Firebase
-            firebase.initializeApp(firebaseConfig);
-            firebase.analytics();
-            var auth = firebase.auth();
-            var db = firebase.firestore();
-            var storage = firebase.storage();
-            auth.onAuthStateChanged((user) => {
-                if (user) {
-                    user.getIdToken(true).then((idToken) => {
-                        document.getElementsByName("fbtoken")[0].setAttribute("value", idToken);
-                    })
-                } else {
-                    document.getElementsByName("fbtoken")[0].setAttribute("value", "");
-                }
-            })
-        </script>
-        <!--Firebase -->
         <!--Bootstrap and jQuery JS-->
         <link href="{{ url_for('static', filename='node_modules/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet" />
         <script src="{{ url_for('static', filename='node_modules/jquery/dist/jquery.min.js') }}"></script>
         <script src="{{ url_for('static', filename='node_modules/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
         <!--Bootstrap and jQuery JS -->
-        <!--React -->
-        <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js "></script>
-        <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js "></script>
-        <script crossorigin src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js "></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js "></script>
-        <!--React -->
-        <script type="text/babel" src="{{ url_for( 'static', filename='src/account.js' ) }} "></script>
-        <script>
-            auth.onAuthStateChanged(function(user) {
-                if (user) {
-                    document.getElementById("submits").removeAttribute("style")
-                } else {
-                    document.getElementById("submits").setAttribute("style", "display:none")
-                }
-            })
-        </script>
-        <script type="text/babel">
-            ReactDOM.render(
-            < Account_tag /> , document.getElementById('account_tag'))
-        </script>
+        <!--firebase -->
+        <script src="{{ url_for('static', filename='node_modules/firebase/firebase-app.js') }}"></script>
+        <script src="{{ url_for('static', filename='node_modules/firebase/firebase-auth.js') }}"></script>
+        <script src="{{ url_for('static', filename='node_modules/firebase/firebase-analytics.js') }}"></script>
+        <script src="{{ url_for('static', filename='node_modules/firebase/firebase-firestore.js') }}"></script>
+        <script src="{{ url_for('static', filename='node_modules/firebase/firebase-storage.js') }}"></script>
+        <!--firebase -->
+        <!-- React-->
+        <script src="{{ url_for('static', filename='node_modules/react/umd/react.development.js') }}"></script>
+        <script src="{{ url_for('static', filename='node_modules/react-dom/umd/react-dom.development.js') }}"></script>
+        <!-- React-->
+
+        <script src="{{ url_for('static', filename='src/tptef.js') }}"></script>
 
     </body>
 

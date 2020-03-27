@@ -74,6 +74,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                     [remark_key]: fb.firestore.FieldValue.delete()
                 })
             }
+            if(Object.keys(doc.data()).length<2)docRef.delete();
         });
         setTimeout(this.db_load_room, 500);
     }

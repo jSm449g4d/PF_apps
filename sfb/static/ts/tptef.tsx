@@ -3,8 +3,7 @@ import ReactDOM from "react-dom";
 import { Account_tsx, auth, storage, db } from "./component/account";
 
 interface State {
-    room: string; thread: string;
-    [key: string]: string;
+    uid: string,room: string; thread: string;
 }
 
 export class Tptef_tsx extends React.Component<{}, State> {
@@ -41,8 +40,16 @@ export class Tptef_tsx extends React.Component<{}, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            room: "main", thread: JSON.stringify({})
-        };
+            uid: "",room: "main", thread: JSON.stringify({})
+        };        
+        setInterval(() => {
+            if (auth.currentUser) {
+                if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid });
+            }
+            else {
+                if (this.state.uid != "") this.setState({ uid: "" });
+            }
+        }, 100)
     }
 
     render() {
@@ -65,24 +72,24 @@ export class Tptef_tsx extends React.Component<{}, State> {
                     </thead>
                     {this.thread_table_render()}
                 </table>
-
-                <div className="mt-2 p-2" style={{ color: "#AAFEFE", border: "3px double silver", background: "#001111" }}>
-                    <div id="submits" style={{ display: "none" }}>
+                {this.state.uid != ""?
+                    <div className="mt-2 p-2" style={{ color: "#AAFEFE", border: "3px double silver", background: "#001111" }}>
                         <h5 style={{ color: "white" }}>入力フォーム</h5>
                         <textarea className="form-control my-1" name="content" placeholder="Content"></textarea>
                         <div className="my-1 d-flex justify-content-between">
                             <div className="ml-auto">
                                 <div className="form-inline">
                                     <input className="form-control form-control-sm mx-1" type="text" value="KARI" />
-                                    <input type="file"/>
+                                    <input type="file" />
                                     <button className="btn btn-success mx-1">remark</button>
                                 </div>
                             </div>
                         </div>
-
                     </div>
-                </div>
-            </div >
+                    :
+                    <h4 className="m-2">This application cant submit without login</h4>
+                }
+            </div>
         );
     };
 };

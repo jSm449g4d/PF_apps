@@ -15,10 +15,16 @@ export class Tptef_tsx extends React.Component<{}, State> {
         const docRef = db.collection("tptef").doc(this.state.room);
         docRef.get().then((doc) => {
             if (!doc.exists) {
-                docRef.set({});
-                this.setState({ thread: JSON.stringify({}) })
-            }
-            else {
+                this.setState({ thread: JSON.stringify({
+                    "NULL": {
+                        user: "NULL",
+                        uid: "NULL",
+                        content: "Thread is not exist",
+                        date: Date.now().toString(),
+                        attachment: ""
+                    }
+                }) })
+            } else {
                 this.setState({ thread: JSON.stringify(doc.data()) })
             }
         });
@@ -29,17 +35,16 @@ export class Tptef_tsx extends React.Component<{}, State> {
         const docRef = db.collection("tptef").doc(this.state.room);
         const remark_key = Date.now().toString();
         docRef.get().then((doc) => {
-            if (doc.exists) {
-                docRef.update({
-                    [remark_key]: {
-                        user: remark_username,
-                        uid: this.state.uid,
-                        content: remark_content,
-                        date: Date.now().toString(),
-                        attachment: ""
-                    }
-                })
-            }
+            if (!doc.exists) docRef.set({});
+            docRef.update({
+                [remark_key]: {
+                    user: remark_username,
+                    uid: this.state.uid,
+                    content: remark_content,
+                    date: Date.now().toString(),
+                    attachment: ""
+                }
+            })
         });
         setTimeout(this.db_load_room, 500);
     }
@@ -52,7 +57,6 @@ export class Tptef_tsx extends React.Component<{}, State> {
                 docRef.update({
                     [remark_key]: fb.firestore.FieldValue.delete()
                 })
-
             }
         });
         setTimeout(this.db_load_room, 500);
@@ -92,15 +96,18 @@ export class Tptef_tsx extends React.Component<{}, State> {
         this.state = {
             uid: "", room: "main", thread: JSON.stringify({})
         };
-        this.db_load_room=this.db_load_room.bind(this);
+        this.db_load_room = this.db_load_room.bind(this);
         setInterval(() => {
             if (auth.currentUser) {
                 if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid });
-            }
-            else {
+            }else {
                 if (this.state.uid != "") this.setState({ uid: "" });
             }
-        }, 100)
+        }, 200)
+    }
+
+    componentDidMount() {
+        this.db_load_room()
     }
 
     render() {

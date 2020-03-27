@@ -59,11 +59,10 @@ export class Mypage_tsx extends React.Component<{}, State> {
         setInterval(() => {
             if (auth.currentUser) {
                 if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid });
-            }
-            else {
+            }else {
                 if (this.state.uid != "") this.setState({ uid: "" });
             }
-        }, 100)
+        }, 200)
     }
     changebutton_render(title:string, state_element:string) {
         let modal_id = "mygape_modal_" + title; let modal_id_s = "#" + modal_id;

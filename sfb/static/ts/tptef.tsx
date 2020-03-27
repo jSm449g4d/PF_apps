@@ -23,14 +23,16 @@ export class Tptef_tsx extends React.Component<{}, State> {
         });
     }
     thread_table_render(doc_data:any){
+        alert("A")
         const thread_record= [];
         let keys = Object.keys(doc_data).sort();
+        alert("B")
         for (var i = 0; i < keys.length; i++) {
             const thread_data= [];
             thread_data.push(<td>{doc_data[keys[i]]["user"]}</td>)
             thread_record.push(<tr>{thread_data}</tr>)
         }
-        this.setState({ thread: <tbody>{thread_record}</tbody> })
+        alert("V")
         return(<tbody>{thread_record}</tbody>)
     }
 
@@ -67,7 +69,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                             <th style={{ width: "15%" }}>ops</th>
                         </tr>
                     </thead>
-                    
+                    {this.thread_table_render({})}
                 </table>
 
                 <div className="mt-2 p-2" style={{ color: "#AAFEFE", border: "3px double silver", background: "#001111" }}>

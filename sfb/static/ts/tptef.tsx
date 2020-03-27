@@ -58,11 +58,18 @@ export class Tptef_tsx extends React.Component<{}, State> {
         setTimeout(this.db_load_room, 500);
     }
 
+    storage_download(attachment_dir: string) {
+        storage.ref(attachment_dir).getDownloadURL().then((url) => {
+            window.open(url, '_blank')
+        }).catch(() => { alert("cant download") })
+    }
+
     db_update_remark_del(remark_key: string) {
         if (this.state.uid == "" || this.state.room == "") return;
         const docRef = db.collection("tptef").doc(this.state.room);
         docRef.get().then((doc) => {
             if (doc.exists) {
+                if(doc.data()[remark_key].attachment_dir)storage.ref(doc.data()[remark_key].attachment_dir).delete()
                 docRef.update({
                     [remark_key]: fb.firestore.FieldValue.delete()
                 })
@@ -71,13 +78,6 @@ export class Tptef_tsx extends React.Component<{}, State> {
         setTimeout(this.db_load_room, 500);
     }
 
-    storage_download(attachment_dir: string) {
-        storage.ref(attachment_dir).getDownloadURL().then((url) => {
-            alert(url)
-            window.open(url, '_blank')
-        }).catch(() => { alert("cant download") })
-        setTimeout(this.db_load_room, 500);
-    }
 
     thread_table_render() {
         const doc_data = JSON.parse(this.state.thread);
@@ -97,7 +97,8 @@ export class Tptef_tsx extends React.Component<{}, State> {
                             this.storage_download(evt.currentTarget.children[0].innerHTML)
                         }}>{doc_data[keys[i]]["attachment_name"]}
                             <div style={{ display: "none" }}>{doc_data[keys[i]]["attachment_dir"]}</div>
-                        </button>)
+                        </button>
+                    )
                 }
                 if (doc_data[keys[i]]["uid"] == this.state.uid) {
                     thread_data_ops.push(
@@ -154,15 +155,15 @@ export class Tptef_tsx extends React.Component<{}, State> {
                 </table>
                 {this.state.uid != "" ?
                     <div className="mt-2 p-2" style={{ color: "#AAFEFE", border: "3px double silver", background: "#001111" }}>
-                        <h5 style={{ color: "white" }}>入力フォーム</h5>
-                        <textarea className="form-control my-1" id="tptef_content"></textarea>
+                        <h5 style={{ color: "white", fontStyle: "" }}>入力フォーム</h5>
+                        <textarea className="form-control my-1" id="tptef_content" rows={6}></textarea>
                         <div className="my-1 d-flex justify-content-between">
                             <div className="ml-auto">
                                 <div className="form-inline">
                                     <input className="form-control form-control-sm mx-1" type="text" value={this.state.handlename}
                                         onChange={(evt) => { this.setState({ handlename: evt.target.value }) }} />
                                     <input type="file" id="tptef_attachment" />
-                                    <button className="btn btn-success mx-1" onClick={() => {
+                                    <button className="btn btn-primary btn-sm mx-1" onClick={() => {
                                         this.db_update_remark_add(
                                             (document.getElementById("tptef_content") as HTMLInputElement).value,
                                             (document.getElementById("tptef_attachment") as HTMLInputElement).files[0]);

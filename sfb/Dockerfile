@@ -14,7 +14,7 @@ RUN apt install -yq npm
 RUN npm install -g npm
 RUN npm install typescript -g
 RUN npm install --save jquery react react-dom react-bootstrap bootstrap firebase && \
-    npm install --save-dev @types/jquery @types/react @types/react-dom @types/react-bootstrap @types/bootstrap @types/firebase && \
+    npm install --save-dev @types/jquery @types/react @types/react-dom @types/react-bootstrap @types/bootstrap  @types/firebase && \
     npm install --save-dev typescript ts-loader source-map-loader style-loader css-loader webpack-node-externals && \
     npm install --save-dev webpack webpack-cli webpack-glob-entry
 RUN npx webpack

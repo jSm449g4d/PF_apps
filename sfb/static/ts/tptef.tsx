@@ -74,6 +74,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
     storage_download(attachment_dir: string) {
         storage.ref(attachment_dir).getDownloadURL().then((url) => {
             alert(url)
+            window.open(url, '_blank')
         }).catch(() => { alert("cant download") })
         setTimeout(this.db_load_room, 500);
     }

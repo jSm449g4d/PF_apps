@@ -4,20 +4,16 @@
     <head>
         <meta charset="utf-8">
         <title>Error_Page</title>
-
     </head>
 
     <body>
         <div class="m-2">
-            <form method="post" enctype="multipart/form-data">
-                <h2 style="color:red;font-family:serif;">Error!!</h2>
-            </form>
-            <p>
-                Error_code→ {{form_error_code}}<br> Error_text→ {{form_error_text}}<br>
-            </p>
-            <a class="btn btn-outline-success mt-2" href="./">Flask_Indexへ</a>
+            <h2 style="color:red;font-family:serif;">Error!!</h2>
+            <div>
+                Error_code→ 500<br> Error_text→ {{STATUS_ERROR_TEXT}}
+            </div>
+            <a class="btn btn-outline-secondary mt-2" href="./">BACK</a>
         </div>
-
 
         <!--Bootstrap and jQuery JS-->
         <link href="{{ url_for('static', filename='node_modules/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet" />

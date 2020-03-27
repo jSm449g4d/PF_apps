@@ -28,17 +28,15 @@ def html_show(name):
     try :return render_template('./'+name+'.html')
     except Exception as e:
         return render_template("error.html",
-        form_error_code="500",form_error_text=str(e)),500
+        form_error_text=str(e)),500
 
-@app.route("/<name>.py",methods=['GET', 'POST'])
+@app.route("/<name>.py")
 def py_show(name):
     try :
-        if  request.method=="GET":
-            return render_template('Redirect_Get_2_Post.html')
         return importlib.import_module(name).show(request)
     except Exception as e:
         return render_template("error.html",
-        form_error_code="500",form_error_text=str(e)),500
+        STATUS_ERROR_TEXT=str(e)),500
 
 application=app
 

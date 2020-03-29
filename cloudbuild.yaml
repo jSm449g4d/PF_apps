@@ -1,12 +1,12 @@
 steps:
       #insert keys
     - name: "gcr.io/cloud-builders/gsutil"
-      args: 
+      args:
         - cp
         - $_GCS_KEYS
         - ./
       dir: web_app
-      #build      
+      #build
     - name: "gcr.io/cloud-builders/docker"
       args: 
         - build
@@ -14,9 +14,9 @@ steps:
         - $_CONTAINER/$_APPNAME
         - .
       dir: web_app
-      #CI_test    
+      #CI_test
     - name: "gcr.io/cloud-builders/docker"
-      args: 
+      args:
         - run
         - --rm
         - $_CONTAINER/$_APPNAME
@@ -24,12 +24,12 @@ steps:
         - $_TESTSH
       #push image to Container Registry
     - name: "gcr.io/cloud-builders/docker"
-      args: 
+      args:
         - push
         - $_CONTAINER/$_APPNAME
       #deploy
     - name: 'gcr.io/cloud-builders/gcloud'
-      args: 
+      args:
         - beta
         - run
         - deploy

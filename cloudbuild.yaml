@@ -1,37 +1,32 @@
-#plz set appname to env "Cloud Build→trigger→env→'_APPNAME'"
-#plz set GCP_project_dicetry to env "Cloud Build→trigger→env→'_PROJECT'"
-#plz set used_keys to env "Cloud Build→trigger→env→'_APPKEYS'"
-#plz set test_bash_file to env "Cloud Build→trigger→env→'_TESTSH'"
-
 steps:
       #insert keys
     - name: "gcr.io/cloud-builders/gsutil"
       args: 
         - cp
-        - $_APPKEYS
+        - $_GCS_KEYS
         - ./
-      dir: $_APPNAME
+      dir: web_app
       #build      
     - name: "gcr.io/cloud-builders/docker"
       args: 
         - build
         - -t
-        - $_PROJECT/$_APPNAME
+        - $_CONTAINER/$_APPNAME
         - .
-      dir: $_APPNAME
+      dir: web_app
       #CI_test    
     - name: "gcr.io/cloud-builders/docker"
       args: 
         - run
         - --rm
-        - $_PROJECT/$_APPNAME
+        - $_CONTAINER/$_APPNAME
         - bash
         - $_TESTSH
       #push image to Container Registry
     - name: "gcr.io/cloud-builders/docker"
       args: 
         - push
-        - $_PROJECT/$_APPNAME
+        - $_CONTAINER/$_APPNAME
       #deploy
     - name: 'gcr.io/cloud-builders/gcloud'
       args: 
@@ -40,7 +35,7 @@ steps:
         - deploy
         - $_APPNAME
         - --image
-        - $_PROJECT/$_APPNAME:latest
+        - $_CONTAINER/$_APPNAME:latest
         - --region
         - us-central1
         - --platform

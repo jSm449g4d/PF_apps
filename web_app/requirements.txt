@@ -1,0 +1,22 @@
+# pip_package
+wheel
+setuptools
+
+# server
+waitress
+flask
+werkzeug
+psutil
+pytz
+urllib3
+certifi
+requests
+firebase-admin
+google-cloud-firestore
+google-cloud-storage
+
+# application
+janome
+certifi
+BeautifulSoup4
+mysqlclient

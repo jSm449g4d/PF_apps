@@ -19,4 +19,3 @@ google-cloud-storage
 janome
 certifi
 BeautifulSoup4
-mysqlclient

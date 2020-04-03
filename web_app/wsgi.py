@@ -2,7 +2,7 @@
 import sys
 import os
 import flask
-from flask import redirect, request, render_template
+from flask import redirect, request, render_template,render_template_string
 import importlib
 
 # Flask_Startup
@@ -24,10 +24,10 @@ def indexpage_show():
                         STATUS_RESOURCE_ACTIVE=wsgi_util.resouce_active,
                         )
 
-@app.route("/<name>.html")
+@app.route("/<path:name>.html")
 def html_show(name):
     try:
-        return render_template('./'+name+'.html')
+        return render_template(os.path.join('./',name,)+'.html'), 200
     except Exception as e:
         return render_template("error.html", STATUS_ERROR_TEXT=str(e)), 500
 
@@ -37,8 +37,8 @@ def py_show(name):
         return importlib.import_module(name).show(request)
     except Exception as e:
         return render_template("error.html", STATUS_ERROR_TEXT=str(e)), 500
-
 application = app
+
 
 if __name__ == "__main__":
     app.run()

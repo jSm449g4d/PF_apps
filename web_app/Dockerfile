@@ -1,5 +1,5 @@
 
-FROM python:3.7
+FROM python:3.8
 #FROM ubuntu:19.10
 
 #server initialize

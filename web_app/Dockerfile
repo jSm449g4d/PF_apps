@@ -1,6 +1,5 @@
 
 FROM python:3.8
-#FROM ubuntu:19.10
 
 #server initialize
 ENV APP /web_app

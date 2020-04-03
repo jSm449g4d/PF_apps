@@ -53,7 +53,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
             uid: "", image_url: "No_Image",
             nickname: "窓の民は名無し",
             pr: "私はJhon_Doe。窓の蛇遣いです。",
-            accessed_by: "FB"
+            accessed_by: "FB",
         };
         this.update_profile = this.update_profile.bind(this)
         setInterval(() => {

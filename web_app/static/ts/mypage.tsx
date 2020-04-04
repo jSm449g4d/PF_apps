@@ -2,51 +2,15 @@
 import React from 'react';
 import ReactDOM from "react-dom";
 
-import { Account_tsx,auth,storage,db} from "./component/account";
+import { Account_tsx, auth, storage, db } from "./component/account";
 
 interface State {
     uid: string, image_url: string, nickname: string, pr: string, accessed_by: string,
-    [key:string]:string;
+    [key: string]: string;
 }
 
 export class Mypage_tsx extends React.Component<{}, State> {
-
-    load_profile() {
-        if (this.state.uid == "") return;
-        let docRef = db.collection("mypage").doc(this.state.uid);
-        docRef.get().then((doc) => {
-            let profile = JSON.parse(JSON.stringify(this.state)); delete profile["uid"];
-            if (!doc.exists) {
-                docRef.set(profile);
-                this.setState(profile);
-            }
-            else {
-                this.setState(doc.data());
-            }
-        });
-    }
-    
-    componentDidMount() {
-        this.load_profile()
-    }
-
-    componentDidUpdate(prevProps: object, prevState: State) {
-        if (this.state.uid != prevState.uid) {
-            this.load_profile();
-        }
-    }
-
-    update_profile() {
-        if (this.state.uid == "") return;
-        var docRef = db.collection("mypage").doc(this.state.uid);
-        docRef.get().then((doc) => {
-            let profile = JSON.parse(JSON.stringify(this.state)); delete profile["uid"];
-            if (doc.exists) {
-                docRef.set(profile);
-            }
-        });
-    }
-    
+    //constructors
     constructor(props: any) {
         super(props);
         this.state = {
@@ -59,38 +23,51 @@ export class Mypage_tsx extends React.Component<{}, State> {
         setInterval(() => {
             if (auth.currentUser) {
                 if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid });
-            }else {
+            } else {
                 if (this.state.uid != "") this.setState({ uid: "" });
             }
         }, 200)
     }
-    render_changebutton(title:string, state_element:string) {
-        let modal_id = "mygape_modal_" + title; let modal_id_s = "#" + modal_id;
-        return (
-            <div>
-                <button type="button" className="btn btn-outline-success btn-sm mx-1" data-toggle="modal" data-target={modal_id_s}>change</button>
-                <div className="modal fade" id={modal_id} role="dialog" aria-hidden="true">
-                    <div className="modal-dialog modal-lg" role="document">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title">{title}</h5>
-                            </div>
-                            <div className="modal-body row">
-                                <textarea className="form-control col-12" value={this.state[state_element]} onChange={
-                                    (evt) => { this.setState({ [state_element]: evt.target.value }); }} />
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-sm btn-success" data-dismiss="modal" onClick={this.update_profile}>SUBMIT</button>
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
+
+    //functions
+    load_profile() {
+        if (this.state.uid == "") return;
+        const docRef = db.collection("mypage").doc(this.state.uid);
+        docRef.get().then((doc) => {
+            if (doc.exists) {
+                this.setState(doc.data());
+            }
+            else {
+                let tmp_profile = JSON.parse(JSON.stringify(this.state)); delete tmp_profile["uid"];
+                docRef.set(tmp_profile);
+                this.setState(tmp_profile);
+            }
+        });
     }
+
+    componentDidMount() {
+        this.load_profile()
+    }
+
+    componentDidUpdate(prevProps: object, prevState: State) {
+        if (this.state.uid != prevState.uid) {
+            this.load_profile();
+        }
+    }
+
+    update_profile() {
+        if (this.state.uid == "") return;
+        const docRef = db.collection("mypage").doc(this.state.uid);
+        docRef.get().then((doc) => {
+            if (doc.exists) {
+                let tmp_profile = JSON.parse(JSON.stringify(this.state)); delete tmp_profile["uid"];
+                docRef.set(tmp_profile);
+            }
+        });
+    }
+
     icon_download() {
-        let storageRef = storage.ref("mypage/" + this.state.uid + "/icon.img");
+        const storageRef = storage.ref("mypage/" + this.state.uid + "/icon.img");
         storageRef.getDownloadURL().then((url) => {
             if (this.state.image_url != url) this.setState({ image_url: url });
         }).catch(() => { if (this.state.image_url != "no image") this.setState({ image_url: "No_Image" }); })
@@ -115,13 +92,41 @@ export class Mypage_tsx extends React.Component<{}, State> {
             </div>
         )
     }
+
+    //renders
+    render_changebutton(title: string, state_element: string) {
+        let modal_id = "mygape_modal_" + title; let modal_id_s = "#" + modal_id;
+        return (
+            <div>
+                <button type="button" className="btn btn-outline-success btn-sm mx-1" data-toggle="modal" data-target={modal_id_s}>change</button>
+                <div className="modal fade" id={modal_id} role="dialog" aria-hidden="true">
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">{title}</h5>
+                            </div>
+                            <div className="modal-body row">
+                                <textarea className="form-control col-12" value={this.state[state_element]} onChange={
+                                    (evt) => { this.setState({ [state_element]: evt.target.value }); }} />
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-sm btn-success" data-dismiss="modal" onClick={this.update_profile}>SUBMIT</button>
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     render() {
         return (
             <div>
                 {this.state.uid == "" ?
                     <h4 className="m-2">This application cant use without login</h4> :
                     <div>
-                        <div className="m-2 p-1" style={{background:"khaki"}}>
+                        <div className="m-2 p-1" style={{ background: "khaki" }}>
                             <h4 className="d-flex justify-content-between">
                                 <div>{this.state.nickname}</div>
                                 <div className="ml-auto">
@@ -148,7 +153,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
     };
 };
 
-ReactDOM.render(<Account_tsx/>, document.getElementById("account_tsx"));
+ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
 
 ReactDOM.render(
     <Mypage_tsx />,

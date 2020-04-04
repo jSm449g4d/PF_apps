@@ -25,6 +25,23 @@ interface State {
     uid: string, mail_addr: string, mail_pass: string
 }
 export class Account_tsx extends React.Component<{}, State> {
+    //constructors
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            uid: "", mail_addr: "", mail_pass: ""
+        };
+        setInterval(() => {
+            if (auth.currentUser) {
+                if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid })
+            }
+            else {
+                if (this.state.uid != "") this.setState({ uid: "" });
+            }
+        }, 100)
+    }
+
+    //functions
     signup() {
         auth.createUserWithEmailAndPassword(this.state.mail_addr, this.state.mail_pass).catch((error) => { alert("error_code:" + error.code + "\nerror_message:" + error.message) }
         )
@@ -55,22 +72,7 @@ export class Account_tsx extends React.Component<{}, State> {
         auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then().catch((error) => { alert("error_code:" + error.code + "\nerror_message:" + error.message); })
     }
 
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            uid: "", mail_addr: "", mail_pass: ""
-        };
-        setInterval(() => {
-            if (auth.currentUser) {
-                if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid })
-            }
-            else {
-                if (this.state.uid != "") this.setState({ uid: "" });
-            }
-        }, 100)
-    }
-
-
+    //renders
     accountmodal_render(title: string, func: any) {
         let modal_id = "mygape_modal_" + title; let modal_id_s = "#" + modal_id;
         func = func.bind(this)

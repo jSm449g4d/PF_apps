@@ -7,7 +7,7 @@ interface State {
 }
 
 export class Tptef_tsx extends React.Component<{}, State> {
-
+    //constructors
     constructor(props: any) {
         super(props);
         this.state = {
@@ -27,6 +27,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
         this.db_load_room()
     }
 
+    //functions
     db_load_room() {
         if (this.state.room == "") return;
         const docRef = db.collection("tptef").doc(this.state.room);
@@ -57,7 +58,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
         const remark_key = Date.now().toString();
         let attachment_name = ""; let attachment_dir = ""
         docRef.get().then((doc) => {
-            if (!doc.exists) docRef.set({});
+            if (!doc.exists) docRef.set({}); //create new document
             if (attach_a_file) {
                 attachment_name = attach_a_file.name;
                 attachment_dir = "tptef/" + this.state.room + "/" + remark_key;
@@ -98,7 +99,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
         setTimeout(this.db_load_room, 500);
     }
 
-
+    //renders
     render_table_thread() {
         const doc_data = JSON.parse(this.state.thread);
         const thread_record = [];
@@ -111,13 +112,13 @@ export class Tptef_tsx extends React.Component<{}, State> {
             thread_data.push(<td style={{ fontSize: "12px" }}>{doc_data[keys[i]]["date"]}<br />{doc_data[keys[i]]["uid"]}</td>)
             if (doc_data[keys[i]]["uid"] == this.state.uid) {
                 thread_data_ops.push(
-                    <button className="btn btn-danger btn-sm mx-1 rounded-pill"
+                    <button className="btn btn-outline-danger btn-sm m-1 rounded-pill"
                         onClick={(evt: any) => { this.db_update_remark_del(evt.target.value) }}
                         value={keys[i]}>delete</button>)
             }
             if (doc_data[keys[i]]["attachment_name"] != "") {
                 thread_data_ops.push(
-                    <button className="btn btn-primary btn-sm mx-1"
+                    <button className="btn btn-primary btn-sm m-1"
                         onClick={(evt: any) => { this.storage_download(evt.target.value) }}
                         value={doc_data[keys[i]]["attachment_dir"]}>
                         {doc_data[keys[i]]["attachment_name"].slice(0, 15)}</button>)

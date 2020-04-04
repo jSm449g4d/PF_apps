@@ -7,9 +7,7 @@ interface State {
 }
 
 export class Nicoapi_tsx extends React.Component<{}, State> {
-
-
-
+    //constructors
     constructor(props: any) {
         super(props);
         this.state = {
@@ -25,6 +23,17 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         }, 200)
     }
 
+    //functions
+    db_update_orders() {
+        if (this.state.uid == "") return;
+        var docRef = db.collection("nicoapi").doc(this.state.uid);
+        docRef.get().then((doc) => {
+            if (!doc.exists) {docRef.set({});} //create new document
+            docRef.update({})
+        });
+    }
+
+    //renders
     render_table_APIendpoint_selector(service_name: string, API_endpoint: string, API_reference: string) {
         return (<tr>
             <td>
@@ -88,7 +97,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                 this.setState({ fields: JSON.stringify(Object.assign(JSON.parse(this.state.fields), { [Date.now().toString()]: { field: "", value: "" } })) })
                             }}>+Add</button>
                         </td>
-                        <td><button className="btn btn-success" onClick={() => { alert(this.state.fields) }}>Launch</button></td>
+                        <td><button className="btn btn-success" onClick={() => { alert(this.state.fields); this.db_update_orders(); }}>Launch</button></td>
                     </tr>
                 </tbody>
             </table>)
@@ -100,7 +109,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                 {this.state.uid == "" ?
                     <h4 className="m-2">This application cant use without login</h4> :
                     <div>
-                        {/* 入力コンソール */}
+                        {/* INPUT console */}
                         <div style={{ backgroundColor: "lightcyan" }}>
                             <div className="collapse" id="nicoapi_navber_APIendpoint_selector">
                                 <table className="table table-sm">
@@ -126,9 +135,9 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                         </div>
                         {this.render_table_filelds()}
 
-                        {/* 出力コンソール */}
+                        {/* OUTPUT console */}
                         <div style={{ backgroundColor: "lightyellow" }}>
-                            <nav className="navbar"　style={{ backgroundColor: "wheat" }}>
+                            <nav className="navbar" style={{ backgroundColor: "wheat" }}>
                                 <div>
                                     <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#nicoapi_navber_orders">Show_Orders</button>
                                 </div>

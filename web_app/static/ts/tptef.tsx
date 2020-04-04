@@ -8,6 +8,25 @@ interface State {
 
 export class Tptef_tsx extends React.Component<{}, State> {
 
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            uid: "", room: "main", handlename: "窓の民は名無し", thread: JSON.stringify({})
+        };
+        this.db_load_room = this.db_load_room.bind(this);
+        setInterval(() => {
+            if (auth.currentUser) {
+                if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid });
+            } else {
+                if (this.state.uid != "") this.setState({ uid: "" });
+            }
+        }, 200)
+    }
+
+    componentDidMount() {
+        this.db_load_room()
+    }
+
     db_load_room() {
         if (this.state.room == "") return;
         const docRef = db.collection("tptef").doc(this.state.room);
@@ -101,32 +120,25 @@ export class Tptef_tsx extends React.Component<{}, State> {
                     <button className="btn btn-primary btn-sm mx-1"
                         onClick={(evt: any) => { this.storage_download(evt.target.value) }}
                         value={doc_data[keys[i]]["attachment_dir"]}>
-                        {doc_data[keys[i]]["attachment_name"]}</button>)
+                        {doc_data[keys[i]]["attachment_name"].slice(0, 15)}</button>)
             }
             thread_data.push(<td>{thread_data_ops}</td>)
             thread_record.push(<tr>{thread_data}</tr>)
         }
-        return (<tbody>{thread_record}</tbody>)
+        return (
+            <table className="table table-sm bg-light">
+                <thead>
+                    <tr>
+                        <th style={{ width: "15%" }}>handlename</th>
+                        <th>content</th>
+                        <th style={{ width: "15%" }} >timestamp/uid</th>
+                        <th style={{ width: "15%" }}>ops</th>
+                    </tr>
+                </thead>
+                <tbody>{thread_record}</tbody>
+            </table>)
     }
 
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            uid: "", room: "main", handlename: "窓の民は名無し", thread: JSON.stringify({})
-        };
-        this.db_load_room = this.db_load_room.bind(this);
-        setInterval(() => {
-            if (auth.currentUser) {
-                if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid });
-            } else {
-                if (this.state.uid != "") this.setState({ uid: "" });
-            }
-        }, 200)
-    }
-
-    componentDidMount() {
-        this.db_load_room()
-    }
 
     render() {
         return (
@@ -137,17 +149,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                         onChange={(evt) => { this.setState({ room: evt.target.value }) }} />
                     <button className="btn btn-success btn-sm ml-auto" onClick={() => { this.db_load_room() }}>Goto_Room</button>
                 </div>
-                <table className="table table-sm bg-light">
-                    <thead>
-                        <tr>
-                            <th style={{ width: "15%" }}>handlename</th>
-                            <th>content</th>
-                            <th style={{ width: "15%" }} >timestamp/uid</th>
-                            <th style={{ width: "15%" }}>ops</th>
-                        </tr>
-                    </thead>
-                    {this.render_table_thread()}
-                </table>
+                {this.render_table_thread()}
                 {this.state.uid == "" ?
                     <h4 className="m-2">Plz login to submit</h4> :
                     <div className="mt-2 p-2" style={{ color: "#AAFEFE", border: "3px double silver", background: "#001111" }}>

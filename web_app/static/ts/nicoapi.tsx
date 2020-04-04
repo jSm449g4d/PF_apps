@@ -49,21 +49,21 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         const keys = Object.keys(fields).sort();
         for (var i = 0; i < keys.length; i++) {
             const fields_data = [];
-            //field textform
+            //Field (textform)
             fields_data.push(<td><input type="text" className="form-control form-control-sm mx-1"
                 value={JSON.parse(this.state.fields)[keys[i]]["field"]}
                 onChange={(evt: any) => {
                     let tmp_fields = JSON.parse(this.state.fields); tmp_fields[evt.target.id.split('_').pop()]["field"] = evt.target.value;
                     this.setState({ fields: JSON.stringify(tmp_fields) });
                 }} id={"nicoapi_fields_field_" + [keys[i]]} /></td>)
-            //value textform
+            //Value (textform)
             fields_data.push(<td><input type="text" className="form-control form-control-sm mx-1"
                 value={JSON.parse(this.state.fields)[keys[i]]["value"]}
                 onChange={(evt: any) => {
                     let tmp_fields = JSON.parse(this.state.fields); tmp_fields[evt.target.id.split('_').pop()]["value"] = evt.target.value;
                     this.setState({ fields: JSON.stringify(tmp_fields) });
                 }} id={"nicoapi_fields_value_" + [keys[i]]} /></td>)
-            //delete button
+            //Ops (Delete button)
             fields_data.push(<td><button className="btn btn-outline-danger btn-sm rounded-pill"
                 onClick={(evt: any) => {
                     let tmp_fields = JSON.parse(this.state.fields); delete tmp_fields[evt.target.id.split('_').pop()];
@@ -77,19 +77,16 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                     <tr>
                         <th style={{ width: "15%" }}>Field</th>
                         <th>Value</th>
-                        <th style={{ width: "10%" }}>Ops</th>
+                        <th style={{ width: "8%" }}>Ops</th>
                     </tr>
                 </thead>
                 <tbody>
                     {fields_record}
-                    <tr>
-                        <td>
-                            <button name="fields_ad" value="add" className="btn btn-outline-primary rounded-pill"
-                                onClick={() => {
-                                    this.setState({ fields: JSON.stringify(Object.assign(JSON.parse(this.state.fields), { [Date.now().toString()]: { field: "", value: "" } })) })
-                                }}>+Add</button>
-                        </td>
-                    </tr>
+                    <tr><td/><td className="d-flex justify-content-center"><button className="btn btn-outline-primary rounded-pill" style={{ width: "50%" }}
+                        onClick={() => {
+                            this.setState({ fields: JSON.stringify(Object.assign(JSON.parse(this.state.fields), { [Date.now().toString()]: { field: "", value: "" } })) })
+                        }}>+Add</button>
+                    </td></tr>
                 </tbody>
             </table>)
     }
@@ -123,9 +120,9 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                 {this.render_textform_APIendpoint()}
                             </nav>
                         </div>
-
+                        {this.render_table_filelds()}
                         <div className="mt-2 bg-light">
-                            {this.render_table_filelds()}
+                            
                             <div className="d-flex justify-content-between">
                                 <div className="ml-auto">
                                     <button className="btn btn-success" onClick={() => { alert(this.state.fields) }}>Launch</button>

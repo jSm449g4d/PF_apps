@@ -34,10 +34,30 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             docRef.update({})
         });
     }
+    generate_orders() {
+        const request_url = [this.state.API_endpoint+"?"];
+        const tmp_fields = JSON.parse(this.state.fields)
+        const keys = Object.keys(JSON.parse(this.state.fields)).sort();
+        for (let i = 0; i < keys.length; i++) {
+            if (tmp_fields[keys[i]]["field"] == "") continue;
+            if (tmp_fields[keys[i]]["value"].indexOf("$for(") == 0) {
+                const tmp_for = tmp_fields[keys[i]]["value"].split(/[(;)]/);
+                if (tmp_for.length != 5) { alert("wrong:fields→value"); return; }
+                const request_url_length_before = request_url.length
+                for (let j = 0; j < request_url_length_before; j++) {
+                    for (let k = Number(tmp_for[1]); k < Number(tmp_for[2]); k += Number(tmp_for[3]))
+                        request_url.push(request_url[j] + "&" + tmp_fields[keys[i]]["field"] + "=" + String(k));
+                } request_url.splice(0, request_url_length_before); continue;
+            }
+            for (let j = 0; j < request_url.length; j++) {
+                request_url[j] += "&" + tmp_fields[keys[i]]["field"] + "=" + tmp_fields[keys[i]]["value"]
+            }
+        }
+        alert(request_url)
+    }
     show_requests() {
         const request_url = [];
         request_url.push(this.state.API_endpoint)
-        //return requests_url;
     }
 
     //renders
@@ -98,74 +118,10 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                 this.setState({ fields: JSON.stringify(Object.assign(JSON.parse(this.state.fields), { [Date.now().toString()]: { field: "", value: "" } })) })
                             }}>+Add</button>
                         </td>
-                        <td><button className="btn btn-success" onClick={() => { alert(this.state.fields); this.db_update_orders(); }}>Launch</button></td>
+                        <td><button className="btn btn-success" onClick={() => { this.db_update_orders(); this.generate_orders(); }}>Launch</button></td>
                     </tr>
                 </tbody>
             </table>)
-    }
-    render_table_fors() {
-        const keys = Object.keys(JSON.parse(this.state.fors)).sort();
-        const fors_record = [];
-        for (var i = 0; i < keys.length; i++) {
-            const fors_data = []; let tmp_fors = JSON.parse(this.state.fors);
-            //Replace (textform)
-            fors_data.push(<td key={1}><input type="text" className="form-control form-control-sm mx-1"
-                value={JSON.parse(this.state.fors)[keys[i]]["Replace"]}
-                onChange={(evt: any) => {
-                    tmp_fors[evt.target.name]["Replace"] = evt.target.value; this.setState({ fors: JSON.stringify(tmp_fors) });
-                }} name={keys[i]} /></td>)
-            //First (textform)
-            fors_data.push(<td key={2}><input type="text" className="form-control form-control-sm mx-1"
-                value={JSON.parse(this.state.fors)[keys[i]]["First"]}
-                onChange={(evt: any) => {
-                    tmp_fors[evt.target.name]["First"] = evt.target.value; this.setState({ fors: JSON.stringify(tmp_fors) });
-                }} name={keys[i]} /></td>)
-            //Last (textform)
-            fors_data.push(<td key={3}><input type="text" className="form-control form-control-sm mx-1"
-                value={JSON.parse(this.state.fors)[keys[i]]["Last"]}
-                onChange={(evt: any) => {
-                    tmp_fors[evt.target.name]["Last"] = evt.target.value; this.setState({ fors: JSON.stringify(tmp_fors) });
-                }} name={keys[i]} /></td>)
-            //Step (textform)
-            fors_data.push(<td key={4}><input type="text" className="form-control form-control-sm mx-1"
-                value={JSON.parse(this.state.fors)[keys[i]]["Step"]}
-                onChange={(evt: any) => {
-                    tmp_fors[evt.target.name]["Step"] = evt.target.value; this.setState({ fors: JSON.stringify(tmp_fors) });
-                }} name={keys[i]} /></td>)
-            //Ops (Delete button)
-            fors_data.push(<td key={5}><button className="btn btn-outline-danger btn-sm rounded-pill"
-                onClick={(evt: any) => {
-                    delete tmp_fors[evt.target.name]; this.setState({ fors: JSON.stringify(tmp_fors) })
-                }} name={keys[i]}>Delete</button></td>)
-            fors_record.push(<tr key={i}>{fors_data}</tr>)
-        }
-        return (
-            <div className="p-2">
-                <h4 className="d-flex justify-content-center">Replace_First_Last_Step → [R for R in range(F,L,S)]</h4>
-                <table className="table table-sm">
-                    <thead>
-                        <tr>
-                            <th style={{ width: "30%" }}>Replace</th>
-                            <th>First</th>
-                            <th>Last</th>
-                            <th>Step</th>
-                            <th style={{ width: "8%" }}>Ops</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {fors_record}
-                    </tbody>
-                </table>
-                <div className="d-flex justify-content-center"><button className="btn btn-outline-primary rounded-pill" style={{ width: "50%" }}
-                    onClick={() => {
-                        this.setState({
-                            fors: JSON.stringify(Object.assign(JSON.parse(this.state.fors),
-                                { [Date.now().toString()]: { Replace: "", First: "", Last: "", Step: "" } }))
-                        })
-                    }}>+Add</button>
-                </div>
-            </div>
-        )
     }
     render() {
         return (
@@ -196,12 +152,6 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                     Select API_endpoint</button>
                                 {this.render_textform_APIendpoint()}
                             </nav>
-                        </div>
-                        <div style={{ backgroundColor: "palegreen" }}>
-                            <div className="collapse" id="nicoapi_navber_fors">{this.render_table_fors()}</div>
-                            <div className="d-flex justify-content-center p-1" style={{ backgroundColor: "aquamarine" }}>
-                                <button className="btn btn-secondary btn-sm" data-toggle="collapse" data-target="#nicoapi_navber_fors">FORS</button>
-                            </div>
                         </div>
                         {this.render_table_filelds()}
 
@@ -236,7 +186,6 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         );
     };
 };
-
 ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
 
 ReactDOM.render(<Nicoapi_tsx />,

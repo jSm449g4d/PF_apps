@@ -12,7 +12,7 @@ import threading
 from urllib import parse
 import urllib3
 import certifi
-import wsgi_util
+#import wsgi_util
 
 DataDir="./nicoapi"
 
@@ -213,5 +213,5 @@ def show(req):
     
     orders=Display_Current_SQL(passwd)
     _,size_files=about_files(passwd)
-    return wsgi_util.render_template_2("nicoapi.html",ORDERS=orders,URL=urls,QUERY=query,PASS=passwd,\
-    SIZE_FILES=size_files,FIELDS=fields,FIELDS_C=fields_c)
+#    return wsgi_util.render_template_2("nicoapi.html",ORDERS=orders,URL=urls,QUERY=query,PASS=passwd,\
+#    SIZE_FILES=size_files,FIELDS=fields,FIELDS_C=fields_c)

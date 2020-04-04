@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { Account_tsx, auth, storage, db, fb } from "./component/account";
 
 interface State {
-    uid: string; API_endpoint: string, service_name: string
+    uid: string; API_endpoint: string; service_name: string; fields: string;
 }
 
 export class Nicoapi_tsx extends React.Component<{}, State> {
@@ -14,6 +14,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         super(props);
         this.state = {
             uid: "", API_endpoint: "https://site.nicovideo.jp/search-api-docs/search.html", service_name: "ニコニコ動画",
+            fields: JSON.stringify({}),
         };
         setInterval(() => {
             if (auth.currentUser) {
@@ -40,6 +41,57 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             <input type="text" className="form-control form-control-sm mx-1" size={60} value={this.state.API_endpoint}
                 onChange={(evt: any) => { this.setState({ API_endpoint: evt.target.value, service_name: "カスタム" }); }} />
         </div>)
+    }
+
+    render_table_filelds() {
+        const fields = JSON.parse(this.state.fields);
+        const fields_record = [];
+        const keys = Object.keys(fields).sort();
+        for (var i = 0; i < keys.length; i++) {
+            const fields_data = [];
+            //field textform
+            fields_data.push(<td><input type="text" className="form-control form-control-sm mx-1"
+                value={JSON.parse(this.state.fields)[keys[i]]["field"]}
+                onChange={(evt: any) => {
+                    let tmp_fields = JSON.parse(this.state.fields); tmp_fields[evt.target.id.split('_').pop()]["field"] = evt.target.value;
+                    this.setState({ fields: JSON.stringify(tmp_fields) });
+                }} id={"nicoapi_fields_field_" + [keys[i]]} /></td>)
+            //value textform
+            fields_data.push(<td><input type="text" className="form-control form-control-sm mx-1"
+                value={JSON.parse(this.state.fields)[keys[i]]["value"]}
+                onChange={(evt: any) => {
+                    let tmp_fields = JSON.parse(this.state.fields); tmp_fields[evt.target.id.split('_').pop()]["value"] = evt.target.value;
+                    this.setState({ fields: JSON.stringify(tmp_fields) });
+                }} id={"nicoapi_fields_value_" + [keys[i]]} /></td>)
+            //delete button
+            fields_data.push(<td><button className="btn btn-outline-danger btn-sm rounded-pill"
+                onClick={(evt: any) => {
+                    let tmp_fields = JSON.parse(this.state.fields); delete tmp_fields[evt.target.id.split('_').pop()];
+                    this.setState({ fields: JSON.stringify(tmp_fields) })
+                }} id={"nicoapi_fields_id_" + [keys[i]]}>Delete</button></td>)
+            fields_record.push(<tr>{fields_data}</tr>)
+        }
+        return (
+            <table className="table table-sm">
+                <thead>
+                    <tr>
+                        <th style={{ width: "15%" }}>Field</th>
+                        <th>Value</th>
+                        <th style={{ width: "10%" }}>Ops</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {fields_record}
+                    <tr>
+                        <td>
+                            <button name="fields_ad" value="add" className="btn btn-outline-primary rounded-pill"
+                                onClick={() => {
+                                    this.setState({ fields: JSON.stringify(Object.assign(JSON.parse(this.state.fields), { [Date.now().toString()]: { field: "", value: "" } })) })
+                                }}>+Add</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>)
     }
 
     render() {
@@ -73,41 +125,10 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                         </div>
 
                         <div className="mt-2 bg-light">
-                            <h5>=Query_Table=</h5>
-                            <table className="table table-sm">
-                                <thead>
-                                    <tr>
-                                        <th style={{ width: "15%" }}>Field</th>
-                                        <th>Value</th>
-                                        <th style={{ width: "10%" }}>Ops</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                    <tr>
-                                        <td>
-                                            <input type="text" className="form-control form-control-sm mx-1" />
-
-                                        </td>
-                                        <td>
-                                            <input type="text" className="form-control form-control-sm mx-1" />
-                                        </td>
-                                        <td>
-                                            <button name="fields_ad" value="del" className="btn btn-outline-danger btn-sm rounded-pill">
-                                                Delete</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <button name="fields_ad" value="add" className="btn btn-outline-primary rounded-pill">
-                                                Add</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            {this.render_table_filelds()}
                             <div className="d-flex justify-content-between">
                                 <div className="ml-auto">
-                                    <button className="btn btn-success">Launch</button>
+                                    <button className="btn btn-success" onClick={() => { alert(this.state.fields) }}>Launch</button>
                                 </div>
                             </div>
 

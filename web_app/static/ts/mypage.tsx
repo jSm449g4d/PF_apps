@@ -64,7 +64,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
             }
         }, 200)
     }
-    changebutton_render(title:string, state_element:string) {
+    render_changebutton(title:string, state_element:string) {
         let modal_id = "mygape_modal_" + title; let modal_id_s = "#" + modal_id;
         return (
             <div>
@@ -126,7 +126,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
                                 <div>{this.state.nickname}</div>
                                 <div className="ml-auto">
                                     <div className="form-inline">
-                                        {this.changebutton_render("nickname", "nickname")}{this.icon_upload()}
+                                        {this.render_changebutton("nickname", "nickname")}{this.icon_upload()}
                                     </div>
                                 </div>
                             </h4>
@@ -135,7 +135,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
                                 <div className="bg-light m-1">
                                     <div className="d-flex justify-content-between bg-white m-1">
                                         <h5 className="">PR</h5>
-                                        <div className="ml-auto">{this.changebutton_render("PR", "pr")}</div>
+                                        <div className="ml-auto">{this.render_changebutton("PR", "pr")}</div>
                                     </div>
                                     <h6 className="">{this.state.pr}</h6>
                                 </div>

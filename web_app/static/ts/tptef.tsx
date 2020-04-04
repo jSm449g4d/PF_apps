@@ -80,7 +80,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
     }
 
 
-    thread_table_render() {
+    render_table_thread() {
         const doc_data = JSON.parse(this.state.thread);
         const thread_record = [];
         const keys = Object.keys(doc_data).sort();
@@ -152,7 +152,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                             <th style={{ width: "15%" }}>ops</th>
                         </tr>
                     </thead>
-                    {this.thread_table_render()}
+                    {this.render_table_thread()}
                 </table>
                 {this.state.uid == "" ?
                     <h4 className="m-2">Plz login to submit</h4> :

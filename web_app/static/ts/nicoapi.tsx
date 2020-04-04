@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { Account_tsx, auth, storage, db, fb } from "./component/account";
 
 interface State {
-    uid: string;
+    uid: string; API_endpoint: string
 }
 
 export class Nicoapi_tsx extends React.Component<{}, State> {
@@ -13,7 +13,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            uid: "",
+            uid: "", API_endpoint: ""
         };
         setInterval(() => {
             if (auth.currentUser) {
@@ -24,6 +24,15 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         }, 200)
     }
 
+    render_table_APIendpoint_selector(service_name: string, API_endpoint: string) {
+        return (<tr>
+            <td>
+                <button className="btn btn-primary btn-sm" onClick={() => { this.setState({ API_endpoint: API_endpoint }) }}>{service_name}</button>
+            </td>
+            <td>{API_endpoint}</td>
+        </tr>)
+    }
+
     render() {
         return (
             <div className="m-2">
@@ -31,6 +40,22 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                     <div>
 
                         <div className="pos-f-t bg-dark">
+                            <div className="collapse" id="navbarToggleExternalContent_1">
+                                <table className="table table-sm text-white">
+                                    <thead>
+                                        <tr>
+                                            <th>API_endpoint</th>
+                                            <th>API_reference</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {this.render_table_APIendpoint_selector("ニコニコ動画", "https://site.nicovideo.jp/search-api-docs/search.html")}
+                                        {this.render_table_APIendpoint_selector("ニコニコ生放送", "https://site.nicovideo.jp/search-api-docs/search.html")}
+                                        {this.render_table_APIendpoint_selector("なろう小説", "https://api.syosetu.com/novelapi/api/")}
+                                        {this.render_table_APIendpoint_selector("カスタム", this.state.API_endpoint)}
+                                    </tbody>
+                                </table>
+                            </div>
                             <div className="collapse" id="navbarToggleExternalContent_1">
                             </div>
                             <div className="collapse mt-2 bg-secondary" id="navbarToggleExternalContent_2">

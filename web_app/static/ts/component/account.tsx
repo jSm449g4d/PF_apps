@@ -103,7 +103,18 @@ export class Account_tsx extends React.Component<{}, State> {
     render() {
         return (
             <div className="bg-light p-2">
-                {this.state.uid != "" ?
+                {this.state.uid == "" ?
+                    <div className="d-flex justify-content-between">
+                        <h5>サービスを利用するには、ログインしてください</h5>
+                        <div className="ml-auto">
+                            <div className="form-inline">
+                                <input type="button" value="Googleでログイン" className="btn btn-success mx-1 btn-sm" onClick={this.google_login} />
+                                {this.accountmodal_render("Sign_in", this.signin)}
+                                {this.accountmodal_render("Sign_up", this.signup)}
+                                <button type="button" className="btn btn-warning mx-1 btn-sm" onClick={this.signin_easy}>Easy_login</button>
+                            </div>
+                        </div>
+                    </div>:
                     <div className="d-flex justify-content-between">
                         <div>{auth.currentUser.photoURL ?
                             <img src={auth.currentUser.photoURL} alt="user.photoURL" width="64" height="64" /> : <div />}
@@ -129,18 +140,6 @@ export class Account_tsx extends React.Component<{}, State> {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    :
-                    <div className="d-flex justify-content-between">
-                        <h5>サービスを利用するには、ログインしてください</h5>
-                        <div className="ml-auto">
-                            <div className="form-inline">
-                                <input type="button" value="Googleでログイン" className="btn btn-success mx-1 btn-sm" onClick={this.google_login} />
-                                {this.accountmodal_render("Sign_in", this.signin)}
-                                {this.accountmodal_render("Sign_up", this.signup)}
-                                <button type="button" className="btn btn-warning mx-1 btn-sm" onClick={this.signin_easy}>Easy_login</button>
                             </div>
                         </div>
                     </div>

@@ -45,7 +45,8 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     render() {
         return (
             <div className="m-2">
-                {this.state.uid != "" ?
+                {this.state.uid == "" ?
+                    <h4 className="m-2">This application cant use without login</h4> :
                     <div>
                         <div className="pos-f-t" style={{ backgroundColor: "#d3e2ed" }}>
                             <div className="collapse" id="nicoapi_navber_APIendpoint_selector">
@@ -117,8 +118,6 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                             </div>
                         </div>
                     </div>
-                    :
-                    <h4 className="m-2">This application cant use without login</h4>
                 }
 
             </div>

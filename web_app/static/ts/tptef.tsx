@@ -154,7 +154,8 @@ export class Tptef_tsx extends React.Component<{}, State> {
                     </thead>
                     {this.thread_table_render()}
                 </table>
-                {this.state.uid != "" ?
+                {this.state.uid == "" ?
+                    <h4 className="m-2">Plz login to submit</h4> :
                     <div className="mt-2 p-2" style={{ color: "#AAFEFE", border: "3px double silver", background: "#001111" }}>
                         <h5 style={{ color: "white", fontStyle: "" }}>入力フォーム</h5>
                         <textarea className="form-control my-1" id="tptef_content" rows={6}></textarea>
@@ -175,8 +176,6 @@ export class Tptef_tsx extends React.Component<{}, State> {
                             </div>
                         </div>
                     </div>
-                    :
-                    <h4 className="m-2">This application cant submit without login</h4>
                 }
             </div>
         );

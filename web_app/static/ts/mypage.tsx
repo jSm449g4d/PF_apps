@@ -118,7 +118,8 @@ export class Mypage_tsx extends React.Component<{}, State> {
     render() {
         return (
             <div>
-                {this.state.uid != "" ?
+                {this.state.uid == "" ?
+                    <h4 className="m-2">This application cant use without login</h4> :
                     <div>
                         <div className="m-2 p-1" style={{background:"khaki"}}>
                             <h4 className="d-flex justify-content-between">
@@ -141,8 +142,6 @@ export class Mypage_tsx extends React.Component<{}, State> {
                             </div>
                         </div>
                     </div>
-                    :
-                    <h4 className="m-2">This application cant use without login</h4>
                 }
             </div>
         );

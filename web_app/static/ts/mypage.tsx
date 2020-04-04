@@ -28,6 +28,14 @@ export class Mypage_tsx extends React.Component<{}, State> {
             }
         }, 200)
     }
+    componentDidMount() {
+        this.load_profile()
+    }
+    componentDidUpdate(prevProps: object, prevState: State) {
+        if (this.state.uid != prevState.uid) {
+            this.load_profile();
+        }
+    }
 
     //functions
     load_profile() {
@@ -44,17 +52,6 @@ export class Mypage_tsx extends React.Component<{}, State> {
             }
         });
     }
-
-    componentDidMount() {
-        this.load_profile()
-    }
-
-    componentDidUpdate(prevProps: object, prevState: State) {
-        if (this.state.uid != prevState.uid) {
-            this.load_profile();
-        }
-    }
-
     update_profile() {
         if (this.state.uid == "") return;
         const docRef = db.collection("mypage").doc(this.state.uid);
@@ -65,7 +62,6 @@ export class Mypage_tsx extends React.Component<{}, State> {
             }
         });
     }
-
     icon_download() {
         const storageRef = storage.ref("mypage/" + this.state.uid + "/icon.img");
         storageRef.getDownloadURL().then((url) => {
@@ -119,7 +115,6 @@ export class Mypage_tsx extends React.Component<{}, State> {
             </div>
         )
     }
-
     render() {
         return (
             <div>

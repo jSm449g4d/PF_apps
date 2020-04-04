@@ -22,7 +22,6 @@ export class Tptef_tsx extends React.Component<{}, State> {
             }
         }, 200)
     }
-
     componentDidMount() {
         this.db_load_room()
     }
@@ -50,7 +49,6 @@ export class Tptef_tsx extends React.Component<{}, State> {
             }
         });
     };
-
     db_update_remark_add(submit_content: string, attach_a_file: any) {
         if (this.state.uid == "" || this.state.room == "") return;
         if (submit_content == "") { alert("Plz input content"); return; };
@@ -77,13 +75,11 @@ export class Tptef_tsx extends React.Component<{}, State> {
         });
         setTimeout(this.db_load_room, 500);
     }
-
     storage_download(attachment_dir: string) {
         storage.ref(attachment_dir).getDownloadURL().then((url) => {
             window.open(url, '_blank')
         }).catch(() => { alert("cant download") })
     }
-
     db_update_remark_del(remark_key: string) {
         if (this.state.uid == "" || this.state.room == "") return;
         const docRef = db.collection("tptef").doc(this.state.room);
@@ -106,25 +102,26 @@ export class Tptef_tsx extends React.Component<{}, State> {
         const keys = Object.keys(doc_data).sort();
         for (var i = 0; i < keys.length; i++) {
             const thread_data = []; const thread_data_ops = [];
-            thread_data.push(<div style={{ display: "none" }}>{keys[i]}</div>)
-            thread_data.push(<td>{doc_data[keys[i]]["handlename"]}</td>)
-            thread_data.push(<td>{doc_data[keys[i]]["content"]}</td>)
-            thread_data.push(<td style={{ fontSize: "12px" }}>{doc_data[keys[i]]["date"]}<br />{doc_data[keys[i]]["uid"]}</td>)
+            thread_data.push(<td key={1}>{doc_data[keys[i]]["handlename"]}</td>)
+            thread_data.push(<td key={2}>{doc_data[keys[i]]["content"]}</td>)
+            thread_data.push(<td key={3} style={{ fontSize: "12px" }}>{doc_data[keys[i]]["date"]}<br />{doc_data[keys[i]]["uid"]}</td>)
+            //delete button
             if (doc_data[keys[i]]["uid"] == this.state.uid) {
                 thread_data_ops.push(
-                    <button className="btn btn-outline-danger btn-sm m-1 rounded-pill"
+                    <button key={1} className="btn btn-outline-danger btn-sm m-1 rounded-pill"
                         onClick={(evt: any) => { this.db_update_remark_del(evt.target.value) }}
                         value={keys[i]}>delete</button>)
             }
+            //attachment download button
             if (doc_data[keys[i]]["attachment_name"] != "") {
                 thread_data_ops.push(
-                    <button className="btn btn-primary btn-sm m-1"
+                    <button key={2} className="btn btn-primary btn-sm m-1"
                         onClick={(evt: any) => { this.storage_download(evt.target.value) }}
                         value={doc_data[keys[i]]["attachment_dir"]}>
                         {doc_data[keys[i]]["attachment_name"].slice(0, 15)}</button>)
             }
-            thread_data.push(<td>{thread_data_ops}</td>)
-            thread_record.push(<tr>{thread_data}</tr>)
+            thread_data.push(<td key={4}>{thread_data_ops}</td>)
+            thread_record.push(<tr key={i}>{thread_data}</tr>)
         }
         return (
             <table className="table table-sm bg-light">
@@ -139,8 +136,6 @@ export class Tptef_tsx extends React.Component<{}, State> {
                 <tbody>{thread_record}</tbody>
             </table>)
     }
-
-
     render() {
         return (
             <div className="m-2">

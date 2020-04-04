@@ -2,7 +2,7 @@
 import sys
 import os
 import flask
-from flask import redirect, request, render_template
+from flask import redirect, request, render_template,send_from_directory
 import importlib
 
 # Flask_Startup
@@ -37,7 +37,10 @@ def py_show(name):
         return importlib.import_module(name).show(request)
     except Exception as e:
         return render_template("flask/error.html", STATUS_ERROR_TEXT=str(e)), 500
-application = app
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory("static/icon",'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 if __name__ == "__main__":
     app.run()

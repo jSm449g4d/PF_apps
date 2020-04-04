@@ -10,7 +10,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
 
 
 
-    constructor(props: any) {
+    constructor(props: any) {7
         super(props);
         this.state = {
             uid: "", API_endpoint: ""
@@ -40,7 +40,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                     <div>
 
                         <div className="pos-f-t bg-dark">
-                            <div className="collapse" id="navbarToggleExternalContent_1">
+                            <div className="collapse" id="nicoapi_navber_APIendpoint_selector">
                                 <table className="table table-sm text-white">
                                     <thead>
                                         <tr>
@@ -52,19 +52,18 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                         {this.render_table_APIendpoint_selector("ニコニコ動画", "https://site.nicovideo.jp/search-api-docs/search.html")}
                                         {this.render_table_APIendpoint_selector("ニコニコ生放送", "https://site.nicovideo.jp/search-api-docs/search.html")}
                                         {this.render_table_APIendpoint_selector("なろう小説", "https://api.syosetu.com/novelapi/api/")}
-                                        {this.render_table_APIendpoint_selector("カスタム", this.state.API_endpoint)}
+                                        {this.render_table_APIendpoint_selector("リセット", "https://")}
                                     </tbody>
                                 </table>
                             </div>
-                            <div className="collapse" id="navbarToggleExternalContent_1">
-                            </div>
-                            <div className="collapse mt-2 bg-secondary" id="navbarToggleExternalContent_2">
+                            <div className="collapse mt-2 bg-secondary" id="nicoapi_navber_config">
                                 <button name="clear" value="True" className="btn btn-outline-danger mt-1 bg-light">Clear_Orders</button>
                             </div>
                             <nav className="navbar navbar-dark bg-dark text-white">
-                                <button className="btn btn-primary mb-1" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent_1" aria-controls="navbarToggleExternalContent_1" aria-expanded="false" aria-label="Toggle navigation">
+                                <button className="btn btn-primary mb-1" type="button" data-toggle="collapse" data-target="#nicoapi_navber_APIendpoint_selector">
                                     API_endpoint</button>
-                                <button className="btn btn-warning mb-1" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent_2" aria-controls="navbarToggleExternalContent_2" aria-expanded="false" aria-label="Toggle navigation">
+                                <div>{this.state.API_endpoint}</div>
+                                <button className="btn btn-warning mb-1" type="button" data-toggle="collapse" data-target="#nicoapi_navber_config">
                                     Debug</button>
                             </nav>
                         </div>

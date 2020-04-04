@@ -101,7 +101,6 @@ export class Account_tsx extends React.Component<{}, State> {
             </div>
         )
     }
-
     render() {
         return (
             <div className="bg-light p-2">
@@ -118,7 +117,7 @@ export class Account_tsx extends React.Component<{}, State> {
                         </div>
                     </div>:
                     <div className="d-flex justify-content-between">
-                        <div>{auth.currentUser.photoURL ?
+                        <div className="form-inline">{auth.currentUser.photoURL ?
                             <img src={auth.currentUser.photoURL} alt="user.photoURL" width="64" height="64" /> : <div />}
                             {auth.currentUser.displayName ?
                                 <h6>ようこそ {auth.currentUser.displayName} さん</h6> : <h6>ようこそ {auth.currentUser.email} さん</h6>}

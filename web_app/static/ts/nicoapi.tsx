@@ -11,7 +11,6 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
 
 
     constructor(props: any) {
-        7
         super(props);
         this.state = {
             uid: "", API_endpoint: "https://site.nicovideo.jp/search-api-docs/search.html", service_name: "ニコニコ動画",
@@ -25,13 +24,14 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         }, 200)
     }
 
-    render_table_APIendpoint_selector(service_name: string, API_endpoint: string) {
+    render_table_APIendpoint_selector(service_name: string, API_endpoint: string, API_reference: string) {
         return (<tr>
             <td>
-                <button className="btn btn-primary btn-sm" onClick={() => { this.setState({ API_endpoint: API_endpoint, service_name: service_name }) }}>
+                <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#nicoapi_navber_APIendpoint_selector"
+                    onClick={() => { this.setState({ API_endpoint: API_endpoint, service_name: service_name }) }}>
                     {service_name}</button>
             </td>
-            <td>{API_endpoint}</td>
+            <td>{API_reference == "" ? <div>None</div> : <a href={API_reference}>{API_reference}</a>}</td>
         </tr>)
     }
 
@@ -47,26 +47,26 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             <div className="m-2">
                 {this.state.uid != "" ?
                     <div>
-                        <div className="pos-f-t bg-dark">
+                        <div className="pos-f-t" style={{ backgroundColor: "#d3e2ed" }}>
                             <div className="collapse" id="nicoapi_navber_APIendpoint_selector">
-                                <table className="table table-sm text-white">
+                                <table className="table table-sm">
                                     <thead>
                                         <tr>
-                                            <th>API_endpoint</th>
-                                            <th>API_reference</th>
+                                            <th>endpoint</th>
+                                            <th>reference</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {this.render_table_APIendpoint_selector("ニコニコ動画", "https://site.nicovideo.jp/search-api-docs/search.html")}
-                                        {this.render_table_APIendpoint_selector("ニコニコ生放送", "https://site.nicovideo.jp/search-api-docs/search.html")}
-                                        {this.render_table_APIendpoint_selector("なろう小説", "https://api.syosetu.com/novelapi/api/")}
-                                        {this.render_table_APIendpoint_selector("カスタム", "https://")}
+                                        {this.render_table_APIendpoint_selector("ニコニコ動画", "https://api.search.nicovideo.jp/api/v2/video/contents/search", "https://site.nicovideo.jp/search-api-docs/search.html")}
+                                        {this.render_table_APIendpoint_selector("ニコニコ生放送", "https://api.search.nicovideo.jp/api/v2/live/contents/search", "https://site.nicovideo.jp/search-api-docs/search.html")}
+                                        {this.render_table_APIendpoint_selector("なろう小説", "https://api.syosetu.com/novelapi/api/", "https://dev.syosetu.com/man/api/")}
+                                        {this.render_table_APIendpoint_selector("カスタム", "https://", "")}
                                     </tbody>
                                 </table>
                             </div>
-                            <nav className="navbar navbar-dark bg-dark text-white">
-                                <button className="btn btn-primary mb-1" type="button" data-toggle="collapse" data-target="#nicoapi_navber_APIendpoint_selector">
-                                    API_endpoint</button>
+                            <nav className="navbar" style={{ backgroundColor: "#e3f2fd" }}>
+                                <button className="btn btn-primary" type="button" data-toggle="collapse" data-target="#nicoapi_navber_APIendpoint_selector">
+                                    Select API_endpoint</button>
                                 {this.render_textform_APIendpoint()}
                             </nav>
                         </div>

@@ -35,7 +35,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         });
     }
     generate_orders() {
-        const request_url = [this.state.API_endpoint+"?"];
+        const request_url = [this.state.API_endpoint + "?"];
         const tmp_fields = JSON.parse(this.state.fields)
         const keys = Object.keys(JSON.parse(this.state.fields)).sort();
         for (let i = 0; i < keys.length; i++) {
@@ -131,6 +131,15 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                     <div>
                         {/* INPUT console */}
                         <div style={{ backgroundColor: "lightcyan" }}>
+                            {/* HELP collapse */}
+                            <div className="collapse" id="nicoapi_navber_help">
+                                <h4 className="d-flex justify-content-center" style={{ fontStyle: "Sylfaen" }}>Command</h4>
+                                <div className="d-flex justify-content-center">一度に複数のリクエストを行う為の、特殊なvalueの仕方です。</div>
+                                <h5>$for(A;B;C)</h5>
+                                <li style={{ listStyle: "none" }}>A:開始の数値 B:終了条件の数値(上限) C:インクリメント</li>
+                                <li style={{ listStyle: "none" }}>一度のリクエストで得られるレコード数(limit)が限られる際等に、繰り返し要求を出すときに使用します。</li>
+                            </div>
+                            {/* API_endpoint collapse */}
                             <div className="collapse" id="nicoapi_navber_APIendpoint_selector">
                                 <table className="table table-sm">
                                     <thead>
@@ -147,9 +156,12 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                     </tbody>
                                 </table>
                             </div>
+                            {/* collapse navigation */}
                             <nav className="navbar" style={{ backgroundColor: "paleturquoise" }}>
-                                <button className="btn btn-primary" data-toggle="collapse" data-target="#nicoapi_navber_APIendpoint_selector">
-                                    Select API_endpoint</button>
+                                <div>
+                                    <button className="btn btn-primary mx-1" data-toggle="collapse" data-target="#nicoapi_navber_APIendpoint_selector">Select API_endpoint</button>
+                                    <button className="btn btn-success rounded-pill mx-1" data-toggle="collapse" data-target="#nicoapi_navber_help">HELP</button>
+                                </div>
                                 {this.render_textform_APIendpoint()}
                             </nav>
                         </div>

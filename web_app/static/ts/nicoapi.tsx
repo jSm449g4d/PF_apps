@@ -3,17 +3,18 @@ import ReactDOM from "react-dom";
 import { Account_tsx, auth, storage, db, fb } from "./component/account";
 
 interface State {
-    uid: string; API_endpoint: string
+    uid: string; API_endpoint: string, service_name: string
 }
 
 export class Nicoapi_tsx extends React.Component<{}, State> {
 
 
 
-    constructor(props: any) {7
+    constructor(props: any) {
+        7
         super(props);
         this.state = {
-            uid: "", API_endpoint: ""
+            uid: "", API_endpoint: "https://site.nicovideo.jp/search-api-docs/search.html", service_name: "ニコニコ動画",
         };
         setInterval(() => {
             if (auth.currentUser) {
@@ -27,10 +28,18 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     render_table_APIendpoint_selector(service_name: string, API_endpoint: string) {
         return (<tr>
             <td>
-                <button className="btn btn-primary btn-sm" onClick={() => { this.setState({ API_endpoint: API_endpoint }) }}>{service_name}</button>
+                <button className="btn btn-primary btn-sm" onClick={() => { this.setState({ API_endpoint: API_endpoint, service_name: service_name }) }}>
+                    {service_name}</button>
             </td>
             <td>{API_endpoint}</td>
         </tr>)
+    }
+
+    render_textform_APIendpoint() {
+        return (<div className="form-inline"><b>{this.state.service_name}</b>
+            <input type="text" className="form-control form-control-sm mx-1" size={60} value={this.state.API_endpoint}
+                onChange={(evt: any) => { this.setState({ API_endpoint: evt.target.value, service_name: "カスタム" }); }} />
+        </div>)
     }
 
     render() {
@@ -38,7 +47,6 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             <div className="m-2">
                 {this.state.uid != "" ?
                     <div>
-
                         <div className="pos-f-t bg-dark">
                             <div className="collapse" id="nicoapi_navber_APIendpoint_selector">
                                 <table className="table table-sm text-white">
@@ -52,19 +60,14 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                         {this.render_table_APIendpoint_selector("ニコニコ動画", "https://site.nicovideo.jp/search-api-docs/search.html")}
                                         {this.render_table_APIendpoint_selector("ニコニコ生放送", "https://site.nicovideo.jp/search-api-docs/search.html")}
                                         {this.render_table_APIendpoint_selector("なろう小説", "https://api.syosetu.com/novelapi/api/")}
-                                        {this.render_table_APIendpoint_selector("リセット", "https://")}
+                                        {this.render_table_APIendpoint_selector("カスタム", "https://")}
                                     </tbody>
                                 </table>
-                            </div>
-                            <div className="collapse mt-2 bg-secondary" id="nicoapi_navber_config">
-                                <button name="clear" value="True" className="btn btn-outline-danger mt-1 bg-light">Clear_Orders</button>
                             </div>
                             <nav className="navbar navbar-dark bg-dark text-white">
                                 <button className="btn btn-primary mb-1" type="button" data-toggle="collapse" data-target="#nicoapi_navber_APIendpoint_selector">
                                     API_endpoint</button>
-                                <div>{this.state.API_endpoint}</div>
-                                <button className="btn btn-warning mb-1" type="button" data-toggle="collapse" data-target="#nicoapi_navber_config">
-                                    Debug</button>
+                                {this.render_textform_APIendpoint()}
                             </nav>
                         </div>
 

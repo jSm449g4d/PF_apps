@@ -53,22 +53,22 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             fields_data.push(<td><input type="text" className="form-control form-control-sm mx-1"
                 value={JSON.parse(this.state.fields)[keys[i]]["field"]}
                 onChange={(evt: any) => {
-                    let tmp_fields = JSON.parse(this.state.fields); tmp_fields[evt.target.id.split('_').pop()]["field"] = evt.target.value;
+                    let tmp_fields = JSON.parse(this.state.fields); tmp_fields[evt.target.name.split('_').pop()]["field"] = evt.target.value;
                     this.setState({ fields: JSON.stringify(tmp_fields) });
-                }} id={"nicoapi_fields_field_" + [keys[i]]} /></td>)
+                }} name={"nicoapi_fields_field_" + [keys[i]]} /></td>)
             //Value (textform)
             fields_data.push(<td><input type="text" className="form-control form-control-sm mx-1"
                 value={JSON.parse(this.state.fields)[keys[i]]["value"]}
                 onChange={(evt: any) => {
-                    let tmp_fields = JSON.parse(this.state.fields); tmp_fields[evt.target.id.split('_').pop()]["value"] = evt.target.value;
+                    let tmp_fields = JSON.parse(this.state.fields); tmp_fields[evt.target.name.split('_').pop()]["value"] = evt.target.value;
                     this.setState({ fields: JSON.stringify(tmp_fields) });
-                }} id={"nicoapi_fields_value_" + [keys[i]]} /></td>)
+                }} name={"nicoapi_fields_value_" + [keys[i]]} /></td>)
             //Ops (Delete button)
             fields_data.push(<td><button className="btn btn-outline-danger btn-sm rounded-pill"
                 onClick={(evt: any) => {
-                    let tmp_fields = JSON.parse(this.state.fields); delete tmp_fields[evt.target.id.split('_').pop()];
+                    let tmp_fields = JSON.parse(this.state.fields); delete tmp_fields[evt.target.name.split('_').pop()];
                     this.setState({ fields: JSON.stringify(tmp_fields) })
-                }} id={"nicoapi_fields_id_" + [keys[i]]}>Delete</button></td>)
+                }} name={"nicoapi_fields_id_" + [keys[i]]}>Delete</button></td>)
             fields_record.push(<tr>{fields_data}</tr>)
         }
         return (
@@ -121,8 +121,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                             </nav>
                         </div>
                         {this.render_table_filelds()}
-                        <div className="mt-2 bg-light">
-                            
+                        <div className="bg-light">
                             <div className="d-flex justify-content-between">
                                 <div className="ml-auto">
                                     <button className="btn btn-success" onClick={() => { alert(this.state.fields) }}>Launch</button>

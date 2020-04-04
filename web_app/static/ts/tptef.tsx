@@ -69,12 +69,12 @@ export class Tptef_tsx extends React.Component<{}, State> {
         const docRef = db.collection("tptef").doc(this.state.room);
         docRef.get().then((doc) => {
             if (doc.exists) {
-                if(doc.data()[remark_key].attachment_dir)storage.ref(doc.data()[remark_key].attachment_dir).delete()
+                if (doc.data()[remark_key].attachment_dir) storage.ref(doc.data()[remark_key].attachment_dir).delete()
                 docRef.update({
                     [remark_key]: fb.firestore.FieldValue.delete()
                 })
             }
-            if(Object.keys(doc.data()).length<2)docRef.delete();
+            if (Object.keys(doc.data()).length < 2) docRef.delete();
         });
         setTimeout(this.db_load_room, 500);
     }
@@ -85,31 +85,25 @@ export class Tptef_tsx extends React.Component<{}, State> {
         const thread_record = [];
         const keys = Object.keys(doc_data).sort();
         for (var i = 0; i < keys.length; i++) {
-            const thread_data = [];
+            const thread_data = []; const thread_data_ops = [];
             thread_data.push(<div style={{ display: "none" }}>{keys[i]}</div>)
             thread_data.push(<td>{doc_data[keys[i]]["handlename"]}</td>)
             thread_data.push(<td>{doc_data[keys[i]]["content"]}</td>)
             thread_data.push(<td style={{ fontSize: "12px" }}>{doc_data[keys[i]]["date"]}<br />{doc_data[keys[i]]["uid"]}</td>)
-            {//Data which is operation of Remark
-                const thread_data_ops = [];
-                if (doc_data[keys[i]]["uid"] == this.state.uid) {
-                    thread_data_ops.push(
-                        <button className="btn btn-danger btn-sm mx-1"
-                            onClick={(evt) => { this.db_update_remark_del(evt.currentTarget.children[0].innerHTML) }}>delete
-                        <div style={{ display: "none" }}>{keys[i]}</div>
-                        </button>)
-                }
-                if (doc_data[keys[i]]["attachment_name"] != "") {
-                    thread_data_ops.push(
-                        <button className="btn btn-primary btn-sm mx-1" onClick={(evt) => {
-                            this.storage_download(evt.currentTarget.children[0].innerHTML)
-                        }}>{doc_data[keys[i]]["attachment_name"]}
-                            <div style={{ display: "none" }}>{doc_data[keys[i]]["attachment_dir"]}</div>
-                        </button>
-                    )
-                }
-                thread_data.push(<td>{thread_data_ops}</td>)
+            if (doc_data[keys[i]]["uid"] == this.state.uid) {
+                thread_data_ops.push(
+                    <button className="btn btn-danger btn-sm mx-1 rounded-pill"
+                        onClick={(evt: any) => { this.db_update_remark_del(evt.target.value) }}
+                        value={keys[i]}>delete</button>)
             }
+            if (doc_data[keys[i]]["attachment_name"] != "") {
+                thread_data_ops.push(
+                    <button className="btn btn-primary btn-sm mx-1"
+                        onClick={(evt: any) => { this.storage_download(evt.target.value) }}
+                        value={doc_data[keys[i]]["attachment_dir"]}>
+                        {doc_data[keys[i]]["attachment_name"]}</button>)
+            }
+            thread_data.push(<td>{thread_data_ops}</td>)
             thread_record.push(<tr>{thread_data}</tr>)
         }
         return (<tbody>{thread_record}</tbody>)

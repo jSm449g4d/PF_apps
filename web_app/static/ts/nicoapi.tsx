@@ -94,8 +94,13 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                 onChange={(evt: any) => {
                     tmp_fields[evt.target.name]["value"] = evt.target.value; this.setState({ fields: JSON.stringify(tmp_fields) });
                 }} name={keys[i]} /></td>)
+            //Command (Delete button)
+            fields_data.push(<td key={3}><button className="btn btn-warning btn-sm"
+                onClick={(evt: any) => {
+                    tmp_fields[evt.target.name]["value"] = "$for(1;1601;500)"; this.setState({ fields: JSON.stringify(tmp_fields) })
+                }} name={keys[i]}>$for</button></td>)
             //Ops (Delete button)
-            fields_data.push(<td key={3}><button className="btn btn-outline-danger btn-sm rounded-pill"
+            fields_data.push(<td key={4}><button className="btn btn-outline-danger btn-sm rounded-pill"
                 onClick={(evt: any) => {
                     delete tmp_fields[evt.target.name]; this.setState({ fields: JSON.stringify(tmp_fields) })
                 }} name={keys[i]}>Delete</button></td>)
@@ -105,8 +110,9 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             <table className="table table-sm">
                 <thead>
                     <tr>
-                        <th style={{ width: "15%" }}>Field</th>
+                        <th style={{ width: "10%" }}>Field</th>
                         <th>Value</th>
+                        <th style={{ width: "8%" }}>Command</th>
                         <th style={{ width: "8%" }}>Ops</th>
                     </tr>
                 </thead>

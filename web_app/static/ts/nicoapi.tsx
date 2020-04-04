@@ -79,21 +79,38 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                     <tr>
                                         <th style={{ width: "15%" }}>Field</th>
                                         <th>Value</th>
+                                        <th style={{ width: "10%" }}>Ops</th>
                                     </tr>
                                 </thead>
-                                <tbody></tbody>
+                                <tbody>
+
+                                    <tr>
+                                        <td>
+                                            <input type="text" className="form-control form-control-sm mx-1" />
+
+                                        </td>
+                                        <td>
+                                            <input type="text" className="form-control form-control-sm mx-1" />
+                                        </td>
+                                        <td>
+                                            <button name="fields_ad" value="del" className="btn btn-outline-danger btn-sm rounded-pill">
+                                                Delete</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <button name="fields_ad" value="add" className="btn btn-outline-primary rounded-pill">
+                                                Add</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
                             </table>
-                            <nav className="navbar">
-                                <div>
-                                    <button name="fields_ad" value="del" className="btn btn-dark rounded-pill">
-                                        <b>Del</b>_Field</button>
-                                    <button name="fields_ad" value="add" className="btn btn-outline-dark rounded-pill">
-                                        <b>Add</b>_Field</button>
+                            <div className="d-flex justify-content-between">
+                                <div className="ml-auto">
+                                    <button className="btn btn-success">Launch</button>
                                 </div>
-                                <div>
-                                    <button name="launch" value="True" className="btn btn-success ">Launch</button>
-                                </div>
-                            </nav>
+                            </div>
+
                             <h5>=Download_Status=</h5>
                             <nav className="navbar">
                                 <div>

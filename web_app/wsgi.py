@@ -2,7 +2,7 @@
 import sys
 import os
 import flask
-from flask import redirect, request, render_template,send_from_directory
+from flask import redirect, request, render_template, send_from_directory
 import importlib
 
 # Flask_Startup
@@ -13,45 +13,42 @@ wsgi_util = importlib.import_module("wsgi_util")
 # prevent uploading too large file
 app.config['MAX_CONTENT_LENGTH'] = 100000000
 
+
 @app.route("/")
 def indexpage_show():
-    wsgi_util.access_counter += 1;
+    wsgi_util.access_counter += 1
     return render_template("index.html",
-                        STATUS_PYTHON_VERSION=sys.version,
-                        STATUS_FLASK_VERSION=flask.__version__,
-                        STATUS_ACCESS_COUNT=str(wsgi_util.access_counter),
-                        STATUS_RESOURCE_ACTIVE=wsgi_util.resouce_active,
-                        )
+                           STATUS_PYTHON_VERSION=sys.version,
+                           STATUS_FLASK_VERSION=flask.__version__,
+                           STATUS_ACCESS_COUNT=str(wsgi_util.access_counter),
+                           STATUS_RESOURCE_ACTIVE=wsgi_util.resouce_active)
+
 
 @app.route("/<path:name>.py")
 def py_show(name):
     try:
-        return importlib.import_module("python."+name.replace("/",".")).show(request), 200
+        return importlib.import_module("python."+name.replace("/", ".")).show(request), 200
     except Exception as e:
         return render_template("error.html", STATUS_ERROR_TEXT=str(e)), 500
 
+
 @app.route('/favicon.ico')
 def favicon():
-    try :return app.send_static_file("icon/favicon.ico", mimetype='image/vnd.microsoft.icon'), 200
-    except: return "error" ,500
+    try:
+        return app.send_static_file("icon/favicon.ico", mimetype='image/vnd.microsoft.icon'), 200
+    except:
+        return "error", 500
+
 
 @app.route("/<path:name>")
 def html_show(name):
     try:
-        return app.send_static_file(os.path.join(name).replace("\\","/")), 200
+        return app.send_static_file(os.path.join(name).replace("\\", "/")), 200
     except Exception as e:
         return render_template("error.html", STATUS_ERROR_TEXT=str(e)), 500
 
-#@app.route("/<path:name>.html")
-#def html_show(name):
-#    try:
-#        return app.send_static_file(os.path.join(name).replace("\\","/")+'.html'), 200
-#    except Exception as e:
-#        return render_template("error.html", STATUS_ERROR_TEXT=str(e)), 500
 
-
-
-application=app
+application = app
 
 if __name__ == "__main__":
     app.run()

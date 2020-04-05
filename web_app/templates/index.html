@@ -8,64 +8,63 @@
 </head>
 
 <body>
-    <div class="mx-3">
-        <form method="post" enctype="multipart/form-data" style="display:inline;">
+    <div class="m-2">
+        <div class="d-flex justify-content-between">
             <h1 style="color:#001900;font-family:serif">Flask_Index</h1>
-            <h5 style="color:darkgreen;font-family:''">Flask+SQLite3+Bootstrap4</h5>
-            <table class="table table-sm table-bordered" style="color: #555000;background-color: azure;">
-                <thead>
-                    <tr>
-                        <th class="text-center" colspan="2">versions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style="color:#555000;">Access Counter</td>
-                        <td style="color:#555000;">{{STATUS_ACCESS_COUNT}}</td>
-                    </tr>
-                    <tr>
-                        <td style="color:#555000;">Python version</td>
-                        <td style="color:#555000;">{{STATUS_PYTHON_VERSION}}</td>
-                    </tr>
-                    <tr>
-                        <td style="color:#555000;">Flask version</td>
-                        <td style="color:#555000;">{{STATUS_FLASK_VERSION}}</td>
-                    </tr>
-                    <tr>
-                        <td style="color:#555000;">Resource Active</td>
-                        <td style="color:#555000;">{{STATUS_RESOURCE_ACTIVE}}</td>
-                    </tr>
-                </tbody>
-            </table>
+            <h5 style="color:darkgreen;font-family:''">Flask+Bootstrap4</h5>
+        </div>
+        <table class="table table-sm table-bordered" style="color: #555000;background-color: azure;">
+            <thead>
+                <tr>
+                    <th class="text-center" colspan="2">versions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="color:#555000;">Access Counter</td>
+                    <td style="color:#555000;">{{STATUS_ACCESS_COUNT}}</td>
+                </tr>
+                <tr>
+                    <td style="color:#555000;">Python version</td>
+                    <td style="color:#555000;">{{STATUS_PYTHON_VERSION}}</td>
+                </tr>
+                <tr>
+                    <td style="color:#555000;">Flask version</td>
+                    <td style="color:#555000;">{{STATUS_FLASK_VERSION}}</td>
+                </tr>
+                <tr>
+                    <td style="color:#555000;">Resource Active</td>
+                    <td style="color:#555000;">{{STATUS_RESOURCE_ACTIVE}}</td>
+                </tr>
+            </tbody>
+        </table>
 
-            <table class="table table-sm table-bordered mt-2 table-success"
-                style="color: navy;background-color: khaki;">
-                <thead>
-                    <tr>
-                        <th class="text-center">Link</th>
-                        <th class="text-center">Outline</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><a href="./html/mypage.html">マイページ</a></td>
-                        <td>MyPage</td>
-                    </tr>
-                    <tr>
-                        <td><a href="./html/tptef.html">Flaskなチャットルーム</a></td>
-                        <td>毎度実験に使われるSPAです</td>
-                    </tr>
-                    <tr>
-                        <td><a href="./html/nicoapi.html">NicoAPI</a></td>
-                        <td>NicoAPI</td>
-                    </tr>
-                    <tr>
-                        <td><a href="./janome_banilla/main.py">API</a></td>
-                        <td>APIテスト</td>
-                    </tr>
-                </tbody>
-            </table>
-        </form>
+        <table class="table table-sm table-bordered mt-2 table-success" style="color: navy;background-color: khaki;">
+            <thead>
+                <tr>
+                    <th class="text-center">Link</th>
+                    <th class="text-center">Outline</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="./html/mypage.html">マイページ</a></td>
+                    <td>MyPage</td>
+                </tr>
+                <tr>
+                    <td><a href="./html/tptef.html">Flaskなチャットルーム</a></td>
+                    <td>毎度実験に使われるSPAです</td>
+                </tr>
+                <tr>
+                    <td><a href="./html/nicoapi.html">NicoAPI</a></td>
+                    <td>NicoAPI</td>
+                </tr>
+                <tr>
+                    <td><a href="./janome_banilla/main.py">API</a></td>
+                    <td>APIテスト</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <!--Bootstrap and jQuery JS-->

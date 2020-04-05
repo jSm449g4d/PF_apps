@@ -167,7 +167,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         return (
             <div className="m-2">
                 {this.state.uid == "" ?
-                    <h4 className="m-2">This application cant use without login</h4> :
+                    <h4 className= "d-flex justify-content-center">This application cant use without login</h4> :
                     <div>
                         {/* INPUT console */}
                         <div style={{ backgroundColor: "lightcyan" }}>

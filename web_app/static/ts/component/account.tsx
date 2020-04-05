@@ -42,31 +42,22 @@ export class Account_tsx extends React.Component<{}, State> {
     }
 
     //functions
-    signup() {
-        auth.createUserWithEmailAndPassword(this.state.mail_addr, this.state.mail_pass).catch((error) => { alert("error_code:" + error.code + "\nerror_message:" + error.message) }
-        )
+    signup(mail_addr: string = this.state.mail_addr, mail_pass: string = this.state.mail_pass) {
+        auth.createUserWithEmailAndPassword(mail_addr, mail_pass).catch((error) => { alert("error_code:" + error.code + "\nerror_message:" + error.message) })
     }
-    signin() {
-        auth.signInWithEmailAndPassword(this.state.mail_addr, this.state.mail_pass).catch((error) => { alert("error_code:" + error.code + "\nerror_message:" + error.message) }
-        )
+    signin(mail_addr: string = this.state.mail_addr, mail_pass: string = this.state.mail_pass) {
+        auth.signInWithEmailAndPassword(mail_addr, mail_pass).catch((error) => { alert("error_code:" + error.code + "\nerror_message:" + error.message) })
     }
-    pass_reset() {
-        auth.sendPasswordResetEmail(this.state.mail_addr).then(() => {
-            alert("SEND_EMAIL!")
-        }).catch((error) => { alert("error_code:" + error.code + "\nerror_message:" + error.message) }
-        );
+    signin_easy(mail_addr: string = "a@b.com", mail_pass: string = "asdfgh") {
+        auth.signInWithEmailAndPassword(mail_addr, mail_pass).catch(() => { this.signup(mail_addr, mail_pass); })
     }
-    account_delete() {
-        auth.currentUser.delete().then(() => {
-            alert("ACCOUNT_DELETED!")
-        }).catch((error) => { alert("error_code:" + error.code + "\nerror_message:" + error.message) }
-        );
+    pass_reset(mail_addr: string = this.state.mail_addr) {
+        auth.sendPasswordResetEmail(mail_addr).then(() => { alert("SEND_EMAIL!") }).catch((error) => { alert("error_code:" + error.code + "\nerror_message:" + error.message) });
     }
-    signin_easy() {
-        auth.signInWithEmailAndPassword("a@b.com", "asdfgh").catch(() => {
-            auth.createUserWithEmailAndPassword("a@b.com", "asdfgh").catch((error) => { alert("error_code:" + error.code + "\nerror_message:" + error.message) }
-            )
-        })
+    user_delete() {
+        if (window.confirm('Are you really DELETE:USER?\n')) {
+            auth.currentUser.delete().then(() => { alert("ACCOUNT_DELETED!") }).catch((error) => { alert("error_code:" + error.code + "\nerror_message:" + error.message) });
+        } else { alert("Canceled"); }
     }
     google_login() {
         auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then().catch((error) => { alert("error_code:" + error.code + "\nerror_message:" + error.message); })
@@ -109,13 +100,13 @@ export class Account_tsx extends React.Component<{}, State> {
                         <h5>サービスを利用するには、ログインしてください</h5>
                         <div className="ml-auto">
                             <div className="form-inline">
-                                <input type="button" value="Googleでログイン" className="btn btn-success mx-1 btn-sm" onClick={this.google_login} />
+                                <input type="button" value="Googleでログイン" className="btn btn-success mx-1 btn-sm" onClick={() => { this.google_login() }} />
                                 {this.accountmodal_render("Sign_in", this.signin)}
                                 {this.accountmodal_render("Sign_up", this.signup)}
-                                <button type="button" className="btn btn-warning mx-1 btn-sm" onClick={this.signin_easy}>Easy_login</button>
+                                <button type="button" className="btn btn-warning mx-1 btn-sm" onClick={() => { this.signin_easy() }}>Easy_login</button>
                             </div>
                         </div>
-                    </div>:
+                    </div> :
                     <div className="d-flex justify-content-between">
                         <div className="form-inline">{auth.currentUser.photoURL ?
                             <img src={auth.currentUser.photoURL} alt="user.photoURL" width="64" height="64" /> : <div />}
@@ -135,8 +126,8 @@ export class Account_tsx extends React.Component<{}, State> {
                                             <input type="text" name="mail_addr" className="form-control col-12" placeholder="send mail for password_reset" />
                                         </div>
                                         <div className="modal-footer">
-                                            <button type="button" className="btn btn-sm btn-warning" data-dismiss="modal">password_reset</button>
-                                            <button type="button" className="btn btn-sm btn-danger" data-dismiss="modal">account_delete</button>
+                                            <button type="button" className="btn btn-sm btn-warning" data-dismiss="modal">password_RESRT</button>
+                                            <button type="button" className="btn btn-sm btn-danger" data-dismiss="modal" onClick={() => { this.user_delete(); }}>USER_DELETE</button>
                                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                                         </div>
                                     </div>

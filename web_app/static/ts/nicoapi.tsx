@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from "react-dom";
 import { Account_tsx, auth, storage, db, fb } from "./component/account";
-import { string } from 'prop-types';
 
 interface State {
     uid: string; API_endpoint: string; service_name: string; fields: string; db_update_timestamp: number;

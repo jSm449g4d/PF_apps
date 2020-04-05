@@ -57,4 +57,4 @@ def show(request):
                 ret += token.phonetic+","
             return ret.strip(',')
 
-    return render_template_FaaS(os.path.join(os.path.dirname(__file__),"main.html"), STATUS_PYTHON_VERSION=sys.version, STATUS_FLASK_VERSION=flask.__version__)
+    return render_template_FaaS(os.path.join(os.path.dirname(__file__),"main.html"))

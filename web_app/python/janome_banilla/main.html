@@ -2,42 +2,30 @@
 <html lang="ja">
 
 
-    <head>
-        <meta charset="utf-8">
-        <title>API_for_Janome_doe</title>
-        <link rel="shortcut icon" href="/icon/favicon.ico">
-    </head>
+<head>
+    <meta charset="utf-8">
+    <title>API_for_Janome_doe</title>
+    <link rel="shortcut icon" href="/icon/favicon.ico">
+</head>
 
-    <body>
-        <div class="m-2">
+<body>
+    <div class="m-2">
+        <div class="d-flex justify-content-between">
             <h1 style="color:black;font-family:serif;">Janome_banilla</h1>
-            <div class="p-1 bg-light">
-                <h5>POSTでアクセスしてください</h5>
-                {"surface":"xxx"}→xxxを形態素解析し、「,」で区切ってわかち書きがきします<br> {"speech":"xxx"}→xxxを形態素解析し、「,」で区切って品詞特定します
-                <br> {"phonetic":"xxx"}→xxxを形態素解析し、「,」で区切って読みをカタカナで返します
-            </div>
-
-            <a class="btn btn-success mt-1" href="https://github.com/jSm449g4d/API_for_Janome_doe">本APIの実装はこちら</a>
-
-            <table class="table table-sm table-bordered" style="color: #555000;background-color: azure;">
-                <thead>
-                    <tr>
-                        <th class="text-center" colspan="2">versions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style="color:#555000;">Python version</td>
-                        <td style="color:#555000;">{{STATUS_PYTHON_VERSION}}</td>
-                    </tr>
-                    <tr>
-                        <td style="color:#555000;">Flask version</td>
-                        <td style="color:#555000;">{{STATUS_FLASK_VERSION}}</td>
-                    </tr>
-                </tbody>
-            </table>
-
+            <h5 style="color:darkgreen;font-family:''">Flask+Bootstrap4</h5>
         </div>
+        <div class="p-1 bg-light">
+            <h5>POSTでアクセスしてください</h5>
+            <li style="list-style: none;">{"surface":"xxx"}→xxxを形態素解析し、「,」で区切ってわかち書きがきします</li>
+            <li style="list-style: none;">{"speech":"xxx"}→xxxを形態素解析し、「,」で区切って品詞特定します </li>
+            <li style="list-style: none;">{"phonetic":"xxx"}→xxxを形態素解析し、「,」で区切って読みをカタカナで返します</li>
+            <li style="list-style: none;">一度のリクエストで得られるレコード数(limit)が限られる際等に、繰り返し要求を出すときに使用します。</li>
+        </div>
+
+        <a class="btn btn-success btn-sm" href="https://github.com/jSm449g4d/API_for_Janome_doe">本APIの実装はこちら</a>
+
+        <a class="btn btn-outline-success btn-sm m-2" href="/">Back</a>
+    </div>
 
     <!--Bootstrap and jQuery JS-->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
@@ -54,6 +42,6 @@
         crossorigin="anonymous"></script>
     <script>$.fn.modal || document.write("<script src=\"/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js\">< /script>")</script>
     <!--Bootstrap and jQuery JS-->
-    </body>
+</body>
 
 </html>

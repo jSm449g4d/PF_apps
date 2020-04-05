@@ -9,7 +9,7 @@ RUN apt update -q;apt upgrade -yq
 
 # Javascript+Typescript
 WORKDIR $APP/static
-RUN apt install -yq npm
+RUN apt install npm -yq
 RUN npm install -g npm
 RUN npm install --save jquery react react-dom react-bootstrap bootstrap firebase 
 RUN npm install --save-dev @types/jquery @types/react @types/react-dom @types/react-bootstrap @types/bootstrap  @types/firebase && \
@@ -20,7 +20,7 @@ RUN npx webpack
 
 # Python3
 WORKDIR $APP
-RUN apt install -yq gcc python3-pip
+RUN apt install gcc python3-pip -yq
 RUN pip3 install -U pip
 RUN pip install -U -r requirements.txt
 

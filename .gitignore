@@ -8,6 +8,7 @@ package-lock.json
 # Python
 __pycache__/
 temps/
+__junkcode/
 
 # VScode
 .vscode/

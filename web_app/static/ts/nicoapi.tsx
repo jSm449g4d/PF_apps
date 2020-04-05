@@ -173,7 +173,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                             {/* HELP collapse */}
                             <div className="collapse" id="nicoapi_navber_help">
                                 <h4 className="d-flex justify-content-center" style={{ fontStyle: "Sylfaen" }}>Command</h4>
-                                <div className="d-flex justify-content-center">一度に複数のリクエストを行う為の、特殊なvalueの仕方です。</div>
+                                <div className="d-flex justify-content-center">一度に複数のリクエストを行う為の、特殊なvalueの入力方法です。</div>
                                 <h5>$for(A;B;C)</h5>
                                 <li style={{ listStyle: "none" }}>A:開始の数値 B:終了条件の数値(上限) C:インクリメント</li>
                                 <li style={{ listStyle: "none" }}>一度のリクエストで得られるレコード数(limit)が限られる際等に、繰り返し要求を出すときに使用します。</li>

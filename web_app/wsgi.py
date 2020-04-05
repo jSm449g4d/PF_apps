@@ -30,10 +30,10 @@ def html_show(name):
     except Exception as e:
         return render_template("flask/error.html", STATUS_ERROR_TEXT=str(e)), 500
 
-@app.route("/<name>.py")
+@app.route("/<path:name>.py")
 def py_show(name):
     try:
-        return importlib.import_module(name).show(request)
+        return importlib.import_module("python."+name.replace("/",".")).show(request)
     except Exception as e:
         return render_template("flask/error.html", STATUS_ERROR_TEXT=str(e)), 500
 

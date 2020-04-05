@@ -40,7 +40,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
     //functions
     load_profile() {
         if (this.state.uid == "") return;
-        const docRef = db.collection("mypage").doc(this.state.uid);
+        const docRef = db.doc("mypage/"+this.state.uid);
         docRef.get().then((doc) => {
             if (doc.exists) {
                 this.setState(doc.data());
@@ -54,7 +54,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
     }
     update_profile() {
         if (this.state.uid == "") return;
-        const docRef = db.collection("mypage").doc(this.state.uid);
+        const docRef = db.doc("mypage/"+this.state.uid);
         docRef.get().then((doc) => {
             if (doc.exists) {
                 let tmp_profile = JSON.parse(JSON.stringify(this.state)); delete tmp_profile["uid"];

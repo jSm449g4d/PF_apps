@@ -13,7 +13,6 @@ wsgi_util = importlib.import_module("wsgi_util")
 # prevent uploading too large file
 app.config['MAX_CONTENT_LENGTH'] = 100000000
 
-
 @app.route("/")
 def indexpage_show():
     wsgi_util.access_counter += 1;

@@ -29,7 +29,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
     //functions
     db_load_room() {
         if (this.state.room == "") return;
-        const docRef = db.collection("tptef").doc(this.state.room);
+        const docRef = db.doc("tptef/"+this.state.room)
         docRef.get().then((doc) => {
             if (doc.exists == false) {
                 this.setState({
@@ -51,8 +51,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
     db_update_remark_add(submit_content: string, attach_a_file: any) {
         if (this.state.uid == "" || this.state.room == "") return;
         if (submit_content == "") { alert("Plz input content"); return; };
-        const docRef = db.collection("tptef").doc(this.state.room);
-        const remark_key = Date.now().toString();
+        const docRef = db.doc("tptef/"+this.state.room);
         let attachment_dir = "";
         docRef.get().then((doc) => {
             if (doc.exists == false) docRef.set({}); //create new document
@@ -61,7 +60,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                 storage.ref(attachment_dir).put(attach_a_file);
             }
             docRef.update({
-                [remark_key]: {
+                [Date.now().toString()]: {
                     handlename: this.state.handlename,
                     uid: this.state.uid,
                     content: submit_content,
@@ -79,7 +78,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
     }
     db_update_remark_del(remark_key: string) {
         if (this.state.uid == "" || this.state.room == "") return;
-        const docRef = db.collection("tptef").doc(this.state.room);
+        const docRef = db.doc("tptef/"+this.state.room);
         docRef.get().then((doc) => {
             if (doc.exists) {
                 if (doc.data()[remark_key].attachment_dir) storage.ref(doc.data()[remark_key].attachment_dir).delete()
@@ -87,7 +86,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                     [remark_key]: fb.firestore.FieldValue.delete()
                 })
             }
-            if (Object.keys(doc.data()).length < 2) docRef.delete();
+            if (Object.keys(doc.data()).length <2) docRef.delete();
         });
         setTimeout(this.db_load_room, 500);
     }
@@ -115,7 +114,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                     <button key={2} className="btn btn-primary btn-sm m-1"
                         onClick={(evt: any) => { this.storage_download(evt.target.value) }}
                         value={doc_data[keys[i]]["attachment_dir"]}>
-                        {doc_data[keys[i]]["attachment_dir"].split("/").pop().slice(0, 15)}</button>)
+                        {doc_data[keys[i]]["attachment_dir"].split("/").pop().slice(0, 20)}</button>)
             }
             thread_data.push(<td key={4}>{thread_data_ops}</td>)
             thread_record.push(<tr key={i}>{thread_data}</tr>)

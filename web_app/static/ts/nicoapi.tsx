@@ -24,7 +24,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         }, 200)
     }
 
-    db_update_generate_orders(cooling_time_ms: number = 5000) {
+    db_update_generate_orders(cooling_time_ms: number = 10000) {
         //prevent SPAMing → cooling_time_ms [ms]
         if (Date.now() < this.state.db_update_timestamp + cooling_time_ms) {
             alert("dont SPAM !\nremaining cooling time: " + String(this.state.db_update_timestamp + cooling_time_ms - Date.now()) + "[ms]"); return;
@@ -50,7 +50,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         } alert(request_url);
         //db_update_orders
         if (this.state.uid == "") return;
-        var docRef = db.collection("nicoapi").doc(this.state.uid);
+        const docRef = db.doc("nicoapi/"+this.state.uid);
         docRef.get().then((doc) => {
             if (doc.exists == false) { docRef.set({}); } //create new document
             docRef.update({ [Date.now().toString()]: request_url }) // request_timestamp:[request_url_0,request_url_1,...]

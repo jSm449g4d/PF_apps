@@ -51,10 +51,10 @@ export class Account_tsx extends React.Component<{}, State> {
     easyin(mail_addr: string = "a@b.com", mail_pass: string = "asdfgh") {
         auth.signInWithEmailAndPassword(mail_addr, mail_pass).catch(() => { this.signup(mail_addr, mail_pass); })
     }
-    pass_reset(mail_addr: string = this.state.mail_addr) {
+    reset_pass(mail_addr: string = this.state.mail_addr) {
         auth.sendPasswordResetEmail(mail_addr).then(() => { alert("SEND_EMAIL!") }).catch((error) => { alert("error_code:" + error.code + "\nerror_message:" + error.message) });
     }
-    user_delete() {
+    delete_user() {
         if (window.confirm('Are you really DELETE:USER?\n')) {
             auth.currentUser.delete().then(() => { alert("ACCOUNT_DELETED!") }).catch((error) => { alert("error_code:" + error.code + "\nerror_message:" + error.message) });
         } else { alert("Canceled"); }
@@ -126,8 +126,8 @@ export class Account_tsx extends React.Component<{}, State> {
                                             <input type="text" name="mail_addr" className="form-control col-12" placeholder="send mail for password_reset" />
                                         </div>
                                         <div className="modal-footer">
-                                            <button type="button" className="btn btn-sm btn-warning" data-dismiss="modal">password_RESRT</button>
-                                            <button type="button" className="btn btn-sm btn-danger" data-dismiss="modal" onClick={() => { this.user_delete(); }}>USER_DELETE</button>
+                                            <button type="button" className="btn btn-sm btn-warning" data-dismiss="modal" onClick={() => { this.reset_pass(); }}>password_RESRT</button>
+                                            <button type="button" className="btn btn-sm btn-danger" data-dismiss="modal" onClick={() => { this.delete_user(); }}>USER_DELETE</button>
                                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                                         </div>
                                     </div>

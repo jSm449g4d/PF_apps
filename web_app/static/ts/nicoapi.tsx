@@ -12,7 +12,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            uid: "", API_endpoint: "https://", service_name: "← Plz select API_endpoint",
+            uid: "", API_endpoint: "https://", service_name: "← Plz \"Select API_endpoint\"",
             fields: JSON.stringify({}), db_update_timestamp: Date.now(),
         };
         setInterval(() => {

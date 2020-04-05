@@ -48,7 +48,7 @@ export class Account_tsx extends React.Component<{}, State> {
     signin(mail_addr: string = this.state.mail_addr, mail_pass: string = this.state.mail_pass) {
         auth.signInWithEmailAndPassword(mail_addr, mail_pass).catch((error) => { alert("error_code:" + error.code + "\nerror_message:" + error.message) })
     }
-    signin_easy(mail_addr: string = "a@b.com", mail_pass: string = "asdfgh") {
+    easyin(mail_addr: string = "a@b.com", mail_pass: string = "asdfgh") {
         auth.signInWithEmailAndPassword(mail_addr, mail_pass).catch(() => { this.signup(mail_addr, mail_pass); })
     }
     pass_reset(mail_addr: string = this.state.mail_addr) {
@@ -103,7 +103,7 @@ export class Account_tsx extends React.Component<{}, State> {
                                 <input type="button" value="Googleでログイン" className="btn btn-success mx-1 btn-sm" onClick={() => { this.google_login() }} />
                                 {this.accountmodal_render("Sign_in", this.signin)}
                                 {this.accountmodal_render("Sign_up", this.signup)}
-                                <button type="button" className="btn btn-warning mx-1 btn-sm" onClick={() => { this.signin_easy() }}>Easy_login</button>
+                                <button type="button" className="btn btn-warning mx-1 btn-sm" onClick={() => { this.easyin() }}>Easy_login</button>
                             </div>
                         </div>
                     </div> :

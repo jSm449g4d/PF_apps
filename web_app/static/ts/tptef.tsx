@@ -31,7 +31,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
         if (this.state.room == "") return;
         const docRef = db.collection("tptef").doc(this.state.room);
         docRef.get().then((doc) => {
-            if (doc.exists==false) {
+            if (doc.exists == false) {
                 this.setState({
                     thread: JSON.stringify({
                         "NULL": {
@@ -39,7 +39,6 @@ export class Tptef_tsx extends React.Component<{}, State> {
                             uid: "NULL",
                             content: "Thread is not exist",
                             date: Date.now().toString(),
-                            attachment_name: "",
                             attachment_dir: "",
                         }
                     })
@@ -54,12 +53,11 @@ export class Tptef_tsx extends React.Component<{}, State> {
         if (submit_content == "") { alert("Plz input content"); return; };
         const docRef = db.collection("tptef").doc(this.state.room);
         const remark_key = Date.now().toString();
-        let attachment_name = ""; let attachment_dir = ""
+        let attachment_dir = "";
         docRef.get().then((doc) => {
-            if (!doc.exists) docRef.set({}); //create new document
+            if (doc.exists == false) docRef.set({}); //create new document
             if (attach_a_file) {
-                attachment_name = attach_a_file.name;
-                attachment_dir = "tptef/" + this.state.room + "/" + remark_key;
+                attachment_dir = "tptef/" + this.state.uid + "/" + attach_a_file.name;
                 storage.ref(attachment_dir).put(attach_a_file);
             }
             docRef.update({
@@ -68,7 +66,6 @@ export class Tptef_tsx extends React.Component<{}, State> {
                     uid: this.state.uid,
                     content: submit_content,
                     date: Date.now().toString(),
-                    attachment_name: attachment_name,
                     attachment_dir: attachment_dir,
                 }
             })
@@ -77,7 +74,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
     }
     storage_download(attachment_dir: string) {
         storage.ref(attachment_dir).getDownloadURL().then((url) => {
-            window.open(url, '_blank')
+            window.open(url, '_blank');
         }).catch(() => { alert("cant download") })
     }
     db_update_remark_del(remark_key: string) {
@@ -113,12 +110,12 @@ export class Tptef_tsx extends React.Component<{}, State> {
                         value={keys[i]}>delete</button>)
             }
             //attachment download button
-            if (doc_data[keys[i]]["attachment_name"] != "") {
+            if (doc_data[keys[i]]["attachment_dir"] != "") {
                 thread_data_ops.push(
                     <button key={2} className="btn btn-primary btn-sm m-1"
                         onClick={(evt: any) => { this.storage_download(evt.target.value) }}
                         value={doc_data[keys[i]]["attachment_dir"]}>
-                        {doc_data[keys[i]]["attachment_name"].slice(0, 15)}</button>)
+                        {doc_data[keys[i]]["attachment_dir"].split("/").pop().slice(0, 15)}</button>)
             }
             thread_data.push(<td key={4}>{thread_data_ops}</td>)
             thread_record.push(<tr key={i}>{thread_data}</tr>)
@@ -147,7 +144,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                 </div>
                 {this.render_table_thread()}
                 {this.state.uid == "" ?
-                    <h4  className= "d-flex justify-content-center">Plz login to submit</h4> :
+                    <h4 className="d-flex justify-content-center">Plz login to submit</h4> :
                     <div className="mt-2 p-2" style={{ color: "#AAFEFE", border: "3px double silver", background: "#001111" }}>
                         <h5 style={{ color: "white", fontStyle: "" }}>入力フォーム</h5>
                         <textarea className="form-control my-1" id="tptef_content" rows={6}></textarea>

@@ -23,13 +23,6 @@ def indexpage_show():
                         STATUS_RESOURCE_ACTIVE=wsgi_util.resouce_active,
                         )
 
-@app.route("/<path:name>.html")
-def html_show(name):
-    try:
-        return app.send_static_file(os.path.join("html",name).replace("\\","/")+'.html'), 200
-    except Exception as e:
-        return render_template("error.html", STATUS_ERROR_TEXT=str(e)), 500
-
 @app.route("/<path:name>.py")
 def py_show(name):
     try:
@@ -39,8 +32,24 @@ def py_show(name):
 
 @app.route('/favicon.ico')
 def favicon():
-    try :return send_from_directory("static/icon",'favicon.ico', mimetype='image/vnd.microsoft.icon'), 200
+    try :return app.send_static_file("icon/favicon.ico", mimetype='image/vnd.microsoft.icon'), 200
     except: return "error" ,500
+
+@app.route("/<path:name>")
+def html_show(name):
+    try:
+        return app.send_static_file(os.path.join(name).replace("\\","/")), 200
+    except Exception as e:
+        return render_template("error.html", STATUS_ERROR_TEXT=str(e)), 500
+
+#@app.route("/<path:name>.html")
+#def html_show(name):
+#    try:
+#        return app.send_static_file(os.path.join(name).replace("\\","/")+'.html'), 200
+#    except Exception as e:
+#        return render_template("error.html", STATUS_ERROR_TEXT=str(e)), 500
+
+
 
 application=app
 

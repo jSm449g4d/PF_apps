@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from "react-dom";
 import { Account_tsx, auth, storage, db, fb } from "./component/account";
+import { string } from 'prop-types';
 
 interface State {
-    uid: string; API_endpoint: string; service_name: string; fields: string; fors: string;
+    uid: string; API_endpoint: string; service_name: string; fields: string; db_update_timestamp: number;
 }
 
 export class Nicoapi_tsx extends React.Component<{}, State> {
@@ -11,8 +12,8 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            uid: "", API_endpoint: "https://site.nicovideo.jp/search-api-docs/search.html", service_name: "ニコニコ動画",
-            fields: JSON.stringify({}), fors: JSON.stringify({})
+            uid: "", API_endpoint: "https://", service_name: "← Plz select API_endpoint",
+            fields: JSON.stringify({}), db_update_timestamp: Date.now(),
         };
         setInterval(() => {
             if (auth.currentUser) {
@@ -23,18 +24,12 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         }, 200)
     }
 
-    //functions
-    db_update_orders() {
-        if (this.state.uid == "") return;
-        this.state.API_endpoint;
-        this.state.fields;
-        var docRef = db.collection("nicoapi").doc(this.state.uid);
-        docRef.get().then((doc) => {
-            if (!doc.exists) { docRef.set({}); } //create new document
-            docRef.update({})
-        });
-    }
-    generate_orders() {
+    db_update_generate_orders(cooling_time_ms: number = 5000) {
+        //prevent SPAMing → cooling_time_ms [ms]
+        if (Date.now() < this.state.db_update_timestamp + cooling_time_ms) {
+            alert("dont SPAM !\nremaining cooling time: " + String(this.state.db_update_timestamp + cooling_time_ms - Date.now()) + "[ms]"); return;
+        } else { this.setState({ db_update_timestamp: Date.now() }) }
+        //generate_orders
         const request_url = [this.state.API_endpoint + "?"];
         const tmp_fields = JSON.parse(this.state.fields)
         const keys = Object.keys(JSON.parse(this.state.fields)).sort();
@@ -52,12 +47,14 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             for (let j = 0; j < request_url.length; j++) {
                 request_url[j] += "&" + tmp_fields[keys[i]]["field"] + "=" + tmp_fields[keys[i]]["value"]
             }
-        }
-        alert(request_url)
-    }
-    show_requests() {
-        const request_url = [];
-        request_url.push(this.state.API_endpoint)
+        } alert(request_url);
+        //db_update_orders
+        if (this.state.uid == "") return;
+        var docRef = db.collection("nicoapi").doc(this.state.uid);
+        docRef.get().then((doc) => {
+            if (doc.exists == false) { docRef.set({}); } //create new document
+            docRef.update({ [Date.now().toString()]: request_url }) // request_timestamp:[request_url_0,request_url_1,...]
+        });
     }
 
     //renders
@@ -99,7 +96,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                         [String(Date.now() - 3)]: { field: "gzip", value: "5" },
                                         [String(Date.now() - 2)]: { field: "out", value: "yaml" },
                                         [String(Date.now() - 1)]: { field: "lim", value: "499" },
-                                        [String(Date.now() - 0)]: { field: "st", value: "$for(1;2000;499" },
+                                        [String(Date.now() - 0)]: { field: "st", value: "$for(1;2000;499)" },
                                     })
                             })
                         }
@@ -161,7 +158,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                 this.setState({ fields: JSON.stringify(Object.assign(JSON.parse(this.state.fields), { [Date.now().toString()]: { field: "", value: "" } })) })
                             }}>+Add</button>
                         </td>
-                        <td><button className="btn btn-success" onClick={() => { this.db_update_orders(); this.generate_orders(); }}>Launch</button></td>
+                        <td><button className="btn btn-success" onClick={() => { this.db_update_generate_orders(); }}>Launch</button></td>
                     </tr>
                 </tbody>
             </table>)

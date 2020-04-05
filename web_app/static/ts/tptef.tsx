@@ -31,7 +31,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
         if (this.state.room == "") return;
         const docRef = db.collection("tptef").doc(this.state.room);
         docRef.get().then((doc) => {
-            if (!doc.exists) {
+            if (doc.exists==false) {
                 this.setState({
                     thread: JSON.stringify({
                         "NULL": {

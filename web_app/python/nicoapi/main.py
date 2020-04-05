@@ -15,8 +15,12 @@ def render_template_FaaS(dir, **kwargs):
 
 def qrawler():
     while True:
-        time.sleep(3)
-
+        try:
+            time.sleep(3)
+            docs=wsgi_util.db.collection("nicoapi").stream()
+            print(docs)
+        except:
+            return True
 
 threading.Thread(name='qrawler', target=qrawler).start()
 

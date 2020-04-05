@@ -3,7 +3,7 @@ const entry = require('webpack-glob-entry')
     //const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
-    entry: entry('./ts/*.tsx'),
+    entry: entry('./*.tsx'),
     output: {
         path: path.resolve(__dirname, './src'),
         filename: '[name].js'

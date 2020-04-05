@@ -61,13 +61,50 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     }
 
     //renders
-    render_table_APIendpoint_selector(service_name: string, API_endpoint: string, API_reference: string) {
+    render_table_APIendpoint_selector(service_name: string, API_reference: string) {
         return (<tr>
             <td>
                 <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#nicoapi_navber_APIendpoint_selector"
-                    onClick={() => { this.setState({ API_endpoint: API_endpoint, service_name: service_name }) }}>
-                    {service_name}</button>
-            </td>
+                    onClick={() => {
+                        if (service_name == "ニコニコ動画") {
+                            this.setState({
+                                API_endpoint: "https://api.search.nicovideo.jp/api/v2/video/contents/search", service_name: service_name, fields: JSON.stringify(
+                                    {
+                                        [String(Date.now() - 5)]: { field: "q", value: "ゆっくり解説" },
+                                        [String(Date.now() - 4)]: { field: "targets", value: "title,description,tags" },
+                                        [String(Date.now() - 3)]: { field: "fields", value: "contentId,title,description,tags" },
+                                        [String(Date.now() - 2)]: { field: "sort", value: "viewCounter" },
+                                        [String(Date.now() - 1)]: { field: "_limit", value: "100" },
+                                        [String(Date.now() - 0)]: { field: "_offset", value: "$for(1;1601;100)" },
+                                    })
+                            })
+                        }
+                        else if (service_name == "ニコニコ生放送") {
+                            this.setState({
+                                API_endpoint: "https://api.search.nicovideo.jp/api/v2/live/contents/search", service_name: service_name, fields: JSON.stringify(
+                                    {
+                                        [String(Date.now() - 5)]: { field: "q", value: "ゆっくり解説" },
+                                        [String(Date.now() - 4)]: { field: "targets", value: "title,description,tags" },
+                                        [String(Date.now() - 3)]: { field: "fields", value: "contentId,title,description,tags" },
+                                        [String(Date.now() - 2)]: { field: "sort", value: "viewCounter" },
+                                        [String(Date.now() - 1)]: { field: "_limit", value: "100" },
+                                        [String(Date.now() - 0)]: { field: "_offset", value: "$for(1;1601;100)" },
+                                    })
+                            })
+                        }
+                        else if (service_name == "なろう小説") {
+                            this.setState({
+                                API_endpoint: "https://api.syosetu.com/novelapi/api/", service_name: service_name, fields: JSON.stringify(
+                                    {
+                                        [String(Date.now() - 3)]: { field: "gzip", value: "5" },
+                                        [String(Date.now() - 2)]: { field: "out", value: "yaml" },
+                                        [String(Date.now() - 1)]: { field: "lim", value: "499" },
+                                        [String(Date.now() - 0)]: { field: "st", value: "$for(1;2000;499" },
+                                    })
+                            })
+                        }
+                        else { this.setState({ API_endpoint: "https://", service_name: service_name, fields: JSON.stringify({}) }) }
+                    }}>{service_name}</button></td>
             <td>{API_reference == "" ? <div>None</div> : <a href={API_reference}>{API_reference}</a>}</td>
         </tr>)
     }
@@ -155,10 +192,10 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {this.render_table_APIendpoint_selector("ニコニコ動画", "https://api.search.nicovideo.jp/api/v2/video/contents/search", "https://site.nicovideo.jp/search-api-docs/search.html")}
-                                        {this.render_table_APIendpoint_selector("ニコニコ生放送", "https://api.search.nicovideo.jp/api/v2/live/contents/search", "https://site.nicovideo.jp/search-api-docs/search.html")}
-                                        {this.render_table_APIendpoint_selector("なろう小説", "https://api.syosetu.com/novelapi/api/", "https://dev.syosetu.com/man/api/")}
-                                        {this.render_table_APIendpoint_selector("カスタム", "https://", "")}
+                                        {this.render_table_APIendpoint_selector("ニコニコ動画", "https://site.nicovideo.jp/search-api-docs/search.html")}
+                                        {this.render_table_APIendpoint_selector("ニコニコ生放送", "https://site.nicovideo.jp/search-api-docs/search.html")}
+                                        {this.render_table_APIendpoint_selector("なろう小説", "https://dev.syosetu.com/man/api/")}
+                                        {this.render_table_APIendpoint_selector("カスタム", "")}
                                     </tbody>
                                 </table>
                             </div>

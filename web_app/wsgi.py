@@ -43,7 +43,7 @@ def html_show(name):
 @app.route("/<path:name>.py")
 def py_show(name):
     try:
-        return importlib.import_module("python."+name.replace("/", ".").replace("..", "_")).show(request), 200
+        return importlib.import_module("Python3."+name.replace("/", ".").replace("..", "_")).show(request), 200
     except Exception as e:
         return render_template("error.html", STATUS_ERROR_TEXT=str(e)), 500
 

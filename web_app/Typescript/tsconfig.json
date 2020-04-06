@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "outDir": "../static/src/",
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "module": "es2020",
+        "target": "es2020",
+        "jsx": "react",
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+    },
+    "include": [
+        "./**/*",
+    ],
+}

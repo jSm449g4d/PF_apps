@@ -41,9 +41,17 @@ def py_show(name):
 
 # favicon
 @app.route('/favicon.ico')
-def favicon():
+def favicon_ico():
     try:
-        return app.send_static_file("icon/favicon.ico", mimetype='image/vnd.microsoft.icon'), 200
+        return app.send_static_file("site/favicon.ico"), 200
+    except:
+        return "error", 500
+
+# robots.txt
+@app.route('/robots.txt')
+def robots_txt():
+    try:
+        return app.send_static_file("site/robots.txt"), 200
     except:
         return "error", 500
 

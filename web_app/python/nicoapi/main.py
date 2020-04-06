@@ -17,8 +17,8 @@ def qrawler():
     while True:
         try:
             time.sleep(3)
-            docs=wsgi_util.db.collection("nicoapi").stream()
-            print(docs)
+        #    docs=wsgi_util.db.collection("nicoapi").stream()
+        #    print(docs)
         except:
             return True
 

@@ -31,7 +31,7 @@ def favirobo(name):
     except:
         return "error", 500
 
-# HTML routing
+# HTML pages
 @app.route("/<path:name>.html")
 def html_show(name):
     try:

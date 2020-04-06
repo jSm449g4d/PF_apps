@@ -1,9 +1,9 @@
-#Keys
+# Keys
 FirebaseAdmin_Key.json
 
 # Javascript/Typescript
 node_modules/
-src/
+scr/
 package-lock.json
 
 # Python

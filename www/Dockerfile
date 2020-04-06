@@ -2,7 +2,7 @@
 FROM python:3.8
 
 # Init
-ENV APP /web_app
+ENV APP /www
 WORKDIR $APP
 COPY . .
 RUN apt update -q;apt upgrade -yq

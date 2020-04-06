@@ -48,15 +48,15 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><a href="./html/mypage.html">マイページ</a></td>
+                    <td><a href="./mypage.html">マイページ</a></td>
                     <td>MyPage</td>
                 </tr>
                 <tr>
-                    <td><a href="./html/tptef.html">Flaskなチャットルーム</a></td>
+                    <td><a href="./tptef.html">Flaskなチャットルーム</a></td>
                     <td>毎度実験に使われるSPAです</td>
                 </tr>
                 <tr>
-                    <td><a href="./html/nicoapi.html">NicoAPI</a></td>
+                    <td><a href="./nicoapi.html">NicoAPI</a></td>
                     <td>NicoAPI</td>
                 </tr>
                 <tr>
@@ -72,21 +72,20 @@
         <a class="btn btn-outline-success btn-sm m-2" href="/">Back</a>
     </div>
 
-    <!--Bootstrap and jQuery JS-->
+    <!--Bootstrap + jQuery-->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"
-        onload="window.bs4css= 1;">
-    <script>window.bs4css || document.write(
-            "<link href=\"/node_modules/bootstrap/dist/css/bootstrap.min.css\" rel=\"stylesheet\" />");
-    </script>
+        crossorigin="anonymous" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+        onload="window.Bs_css= 1;">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write(
-            "<script src=\"/node_modules/jquery/dist/jquery.min.js\">< /script>")</script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
-        integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm"
-        crossorigin="anonymous"></script>
-    <script>$.fn.modal || document.write("<script src=\"/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js\">< /script>")</script>
-    <!--Bootstrap and jQuery JS-->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"
+        integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm"></script>
+    <script>if (window.Bs_css && window.jQuery && $.fn.modal) {/*CDN all green*/ } else { /*CDN fault*/
+            document.write('<link href="/static/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" \/>');
+            document.write('<script src="/static/node_modules/jquery/dist/jquery.min.js"><\/script>');
+            document.write('<script src="/static/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"><\/script>');
+        }
+    </script>
+    <!--Bootstrap + jQuery-->
 </body>
 
 </html>

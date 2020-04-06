@@ -49,7 +49,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         } alert(request_url);
         //db_update_orders
         if (this.state.uid == "") return;
-        const docRef = db.doc("nicoapi/"+this.state.uid);
+        const docRef = db.doc("nicoapi/" + this.state.uid);
         docRef.get().then((doc) => {
             if (doc.exists == false) { docRef.set({}); } //create new document
             docRef.update({ [Date.now().toString()]: request_url }) // request_timestamp:[request_url_0,request_url_1,...]
@@ -57,7 +57,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     }
 
     //renders
-    render_table_APIendpoint_selector(service_name: string, API_reference: string="") {
+    render_table_APIendpoint_selector(service_name: string, API_reference: string = "") {
         return (<tr>
             <td>
                 <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#nicoapi_navber_APIendpoint_selector"
@@ -166,7 +166,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         return (
             <div className="m-2">
                 {this.state.uid == "" ?
-                    <h4 className= "d-flex justify-content-center">This application cant use without login</h4> :
+                    <h4 className="d-flex justify-content-center">This application cant use without login</h4> :
                     <div>
                         {/* INPUT console */}
                         <div style={{ backgroundColor: "lightcyan" }}>

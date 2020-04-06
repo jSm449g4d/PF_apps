@@ -17,7 +17,7 @@ app.config['MAX_CONTENT_LENGTH'] = 100000000
 @app.route("/")
 def indexpage_show():
     wsgi_util.access_counter += 1
-    return render_template("index.html",
+    return render_template("Python3_index.html",
                            STATUS_PYTHON_VERSION=sys.version,
                            STATUS_FLASK_VERSION=flask.__version__,
                            STATUS_ACCESS_COUNT=str(wsgi_util.access_counter),
@@ -37,7 +37,7 @@ def html_show(name):
     try:
         return send_file(os.path.join("html", name).replace("\\", "/").replace("..", "_")+".html"), 200
     except Exception as e:
-        return render_template("error.html", STATUS_ERROR_TEXT=str(e)), 500
+        return render_template("Python3_error.html", STATUS_ERROR_TEXT=str(e)), 500
 
 # FaaS by Python3
 @app.route("/<path:name>.py")
@@ -47,7 +47,7 @@ def py_show(name):
         name = name.replace("/Python3", "")
         return importlib.import_module("Python3."+name.replace("/", ".").replace("..", "_")).show(request), 200
     except Exception as e:
-        return render_template("error.html", STATUS_ERROR_TEXT=str(e)), 500
+        return render_template("Python3_error.html", STATUS_ERROR_TEXT=str(e)), 500
 
 
 application = app

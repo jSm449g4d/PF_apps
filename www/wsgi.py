@@ -44,7 +44,8 @@ def html_show(name):
 def py_show(name):
     try:
         # Domain/Python3/* and Domain/* → Domain/* → Domain/Python3/*
-        name = name.replace("/Python3", "")
+        name = name.replace("Python3/", "")
+        print(name)
         return importlib.import_module("Python3."+name.replace("/", ".").replace("..", "_")).show(request), 200
     except Exception as e:
         return render_template("Python3_error.html", STATUS_ERROR_TEXT=str(e)), 500

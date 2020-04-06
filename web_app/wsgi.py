@@ -23,6 +23,14 @@ def indexpage_show():
                            STATUS_ACCESS_COUNT=str(wsgi_util.access_counter),
                            STATUS_RESOURCE_ACTIVE=wsgi_util.resouce_active)
 
+# favicon.ico+robots.txt
+@app.route('/<name>')
+def favirobo(name):
+    try:
+        return send_file(os.path.join("html", name).replace("\\", "/").replace("..", "_")), 200
+    except:
+        return "error", 500
+
 # HTML routing
 @app.route("/<path:name>.html")
 def html_show(name):
@@ -38,22 +46,6 @@ def py_show(name):
         return importlib.import_module("python."+name.replace("/", ".").replace("..", "_")).show(request), 200
     except Exception as e:
         return render_template("error.html", STATUS_ERROR_TEXT=str(e)), 500
-
-# favicon
-@app.route('/favicon.ico')
-def favicon_ico():
-    try:
-        return app.send_static_file("site/favicon.ico"), 200
-    except:
-        return "error", 500
-
-# robots.txt
-@app.route('/robots.txt')
-def robots_txt():
-    try:
-        return app.send_static_file("site/robots.txt"), 200
-    except:
-        return "error", 500
 
 
 application = app

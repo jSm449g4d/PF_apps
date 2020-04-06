@@ -3,6 +3,7 @@ FirebaseAdmin_Key.json
 
 # Javascript/Typescript
 node_modules/
+src/
 package-lock.json
 
 # Python

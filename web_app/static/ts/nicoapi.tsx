@@ -57,7 +57,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     }
 
     //renders
-    render_table_APIendpoint_selector(service_name: string, API_reference: string) {
+    render_table_APIendpoint_selector(service_name: string, API_reference: string="") {
         return (<tr>
             <td>
                 <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#nicoapi_navber_APIendpoint_selector"

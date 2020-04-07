@@ -15,11 +15,10 @@ access_counter = 0
 config_dict = {}
 resouce_active = "×:FALSE"
 try:
-    cred = firebase_admin.credentials.Certificate("FirebaseAdmin_Key.json")
-    firebase_admin.initialize_app(cred)
-    with open("config.json", "r", encoding="utf-8") as fp:
+    os.makedirs("tmp", exist_ok=True)
+    firebase_admin.initialize_app(firebase_admin.credentials.Certificate("FirebaseAdmin_Key.json"))
+    with open("Flask/config.json", "r", encoding="utf-8") as fp:
         config_dict.update(json.load(fp))
-    os.makedirs(config_dict["temp_folder"], exist_ok=True)
     auth = firebase_admin.auth
     db = firestore.client()
     GCS_bucket = storage.Client.from_service_account_json(

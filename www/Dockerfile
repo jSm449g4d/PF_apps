@@ -19,7 +19,7 @@ RUN npm install --save-dev @types/jquery @types/react @types/react-dom @types/re
 RUN npx webpack
 
 # Python3
-WORKDIR $APP
+WORKDIR $APP/Flask
 RUN apt install gcc python3-pip -yq
 RUN pip3 install -U pip
 RUN pip install -U -r requirements.txt

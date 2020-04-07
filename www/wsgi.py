@@ -4,6 +4,7 @@ import os
 import flask
 from flask import request, send_file, render_template
 import importlib
+import psutil
 
 # Flask_Startup
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -21,9 +22,10 @@ def indexpage_show():
                            STATUS_PYTHON_VERSION=sys.version,
                            STATUS_FLASK_VERSION=flask.__version__,
                            STATUS_ACCESS_COUNT=str(wsgi_util.access_counter),
-                           STATUS_RESOURCE_ACTIVE=wsgi_util.resouce_active)
+                           STATUS_RESOURCE_MEM='{:,}'.format(psutil.virtual_memory().used)+"[Byte] / "+'{:,}'.format(psutil.virtual_memory().total)+"[Byte]",
+                           STATUS_RESOURCE_ACTIVE=wsgi_util.resouce_active,)
 
-# favicon.ico+robots.txt
+# domain/Flask/* ← favicon.ico and robots.txt
 @app.route('/<name>')
 def favirobo(name):
     try:
@@ -31,7 +33,7 @@ def favirobo(name):
     except:
         return "error", 500
 
-# HTML pages
+# domain/html/**/*.html ← webpage
 @app.route("/<path:name>.html")
 def html_show(name):
     try:
@@ -39,7 +41,7 @@ def html_show(name):
     except Exception as e:
         return render_template("Flask_error.html", STATUS_ERROR_TEXT=str(e)), 500
 
-# FaaS by Flask
+# domain/Flask/**/*.py ← FaaS
 @app.route("/<path:name>.py")
 def py_show(name):
     try:

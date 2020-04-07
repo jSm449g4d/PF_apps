@@ -1,6 +1,4 @@
-#Integration test 2/2
-
-# coding: utf-8
+#I ntegration test 2/2
 import sys
 import urllib.parse
 from bs4 import BeautifulSoup

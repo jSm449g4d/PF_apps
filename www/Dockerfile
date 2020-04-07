@@ -22,7 +22,7 @@ RUN npx webpack
 WORKDIR $APP/Flask
 RUN apt install gcc python3-pip -yq
 RUN pip3 install -U pip
-RUN pip install -U -r requirements.txt
+RUN pip3 install -U -r requirements.txt
 
 # Hosting
 WORKDIR $APP

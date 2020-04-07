@@ -22,8 +22,10 @@ def indexpage_show():
                            STATUS_PYTHON_VERSION=sys.version,
                            STATUS_FLASK_VERSION=flask.__version__,
                            STATUS_ACCESS_COUNT=str(wsgi_util.access_counter),
-                           STATUS_RESOURCE_MEM='{:,}'.format(psutil.virtual_memory().used)+"[Byte] / "+'{:,}'.format(psutil.virtual_memory().total)+"[Byte]",
+                           STATUS_RESOURCE_MEM='{:,}'.format(psutil.virtual_memory(
+                           ).used)+"[Byte] / "+'{:,}'.format(psutil.virtual_memory().total)+"[Byte]",
                            STATUS_RESOURCE_ACTIVE=wsgi_util.resouce_active,)
+
 
 # domain/Flask/* ← favicon.ico and robots.txt
 @app.route('/<name>')

@@ -1,13 +1,15 @@
-
 import React from 'react';
 import ReactDOM from "react-dom";
+import { Account_tsx, auth, fb } from "./component/account";
 
-import { Account_tsx, auth, storage, db } from "./component/account";
+const storage = fb.storage();
+const db = fb.firestore()
 
 interface State {
     uid: string, image_url: string, nickname: string, pr: string, accessed_by: string,
     [key: string]: string;
 }
+
 
 export class Mypage_tsx extends React.Component<{}, State> {
     //constructors

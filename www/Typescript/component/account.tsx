@@ -15,11 +15,9 @@ firebase.initializeApp({
     appId: "1:646437940818:web:080ff48019a68c74d3b98b",
     measurementId: "G-QLHKJ38SWW"
 })
-firebase.analytics();
-export const fb = firebase
-export var auth = firebase.auth();
-export var storage = firebase.storage();
-export var db = firebase.firestore()
+export const fb = firebase;
+fb.analytics();
+export const auth = firebase.auth();
 
 interface State {
     uid: string, mail_addr: string, mail_pass: string

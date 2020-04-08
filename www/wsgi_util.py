@@ -1,4 +1,5 @@
-# coding: utf-8
+### DONT LOAD "wsgi_util.py" DIRECTLY as multiple loading causes multiple declarations of variables  ###
+
 import sys
 import os
 import json
@@ -8,7 +9,7 @@ from firebase_admin import auth
 from firebase_admin import firestore
 from google.cloud import storage
 
-status_table = ""
+print("A")
 
 # AP_setting_management
 access_counter = 0

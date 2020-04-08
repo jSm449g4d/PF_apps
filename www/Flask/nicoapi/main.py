@@ -3,7 +3,9 @@ import os
 import sys
 import threading
 import time
-# from  import wsgi_util
+import importlib
+
+wsgi_util = importlib.import_module("wsgi_util")
 
 def render_template_FaaS(dir, **kwargs):
     html = ""

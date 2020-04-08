@@ -9,8 +9,6 @@ from firebase_admin import auth
 from firebase_admin import firestore
 from google.cloud import storage
 
-print("A")
-
 # AP_setting_management
 access_counter = 0
 config_dict = {}

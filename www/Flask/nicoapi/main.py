@@ -25,19 +25,19 @@ def render_template_FaaS(dir, **kwargs):
 
 
 # application
-daemon_loop = 10
-try:
-    wsgi_h = importlib.import_module("wsgi_h")
-    db = wsgi_h.db
-    daemon_loop = 0
-except:
-    firebase_admin.initialize_app()
-    db = firestore.client()
-
-
 def deamon():
+    # daemon_init
+    daemon_loop = 10
+    try:
+        wsgi_h = importlib.import_module("wsgi_h")
+        db = wsgi_h.db
+        daemon_loop = 0
+    except:
+        firebase_admin.initialize_app()
+        db = firestore.client()
+    # daemon_loop
     while True:
-        # daemon_init
+        # daemon_loop_management
         time.sleep(3)
         if daemon_loop != 0:
             daemon_loop -= 1
@@ -52,7 +52,6 @@ threading.Thread(name='nicoapi_d', target=deamon).start()
 
 
 def show(request):
-    dicts = db.document('tptef/main').get().to_dict()
-    return json.dumps(dicts)
-
-#    return render_template_FaaS(os.path.join(os.path.dirname(__file__), "main.html"))
+#    dicts = db.document('tptef/main').get().to_dict()
+#    return json.dumps(dicts)
+    return render_template_FaaS(os.path.join(os.path.dirname(__file__), "main.html"))

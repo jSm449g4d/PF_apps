@@ -14,11 +14,15 @@
             <h2 style="color:black;font-family:''">Janome_banilla</h2>
             <h4 style="color:darkgreen;font-family:serif;">Flask+Bootstrap4</h4>
         </div>
-        <div class="p-1 bg-light">
+        <div class="bg-light">
             <h5>POSTでアクセスしてください</h5>
-            <li style="list-style: none;">{"surface":"xxx"}→xxxを形態素解析し、「,」で区切ってわかち書きがきします</li>
-            <li style="list-style: none;">{"speech":"xxx"}→xxxを形態素解析し、「,」で区切って品詞特定します </li>
-            <li style="list-style: none;">{"phonetic":"xxx"}→xxxを形態素解析し、「,」で区切って読みをカタカナで返します</li>
+            <li style="list-style: none;">{"wakati":"xxy"}→{"wakati",["xx","y"]} :xxxを形態素解析して分かち書きして返します</li>
+            <li style="list-style: none;">
+                {"mode":["surface,"speech",...],"content":"xxy"}→{"surface":["xx","y"],"speech":["XX","Y"]...}
+                : xxxを形態素解析してタスクごとに返します</li>
+            <li style="list-style: none;">surface : 分かち書き</li>
+            <li style="list-style: none;">speech : 品詞特定</li>
+            <li style="list-style: none;">phonetic: 読み(カタカナで表記)</li>
             <li style="list-style: none;">一度のリクエストで得られるレコード数(limit)が限られる際等に、繰り返し要求を出すときに使用します。</li>
             <a class="btn btn-success btn-sm" href="https://github.com/jSm449g4d/API_for_Janome_doe">実装(github)</a>
         </div>

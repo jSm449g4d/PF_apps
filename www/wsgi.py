@@ -11,8 +11,8 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(os.path.join("./", os.path.dirname(__file__)))
 app = flask.Flask(__name__)
 wsgi_h = importlib.import_module("wsgi_h")
-# prevent uploading too large file
 app.config['MAX_CONTENT_LENGTH'] = 100000000
+os.makedirs("tmp", exist_ok=True)
 
 # Flask Index
 @app.route("/")

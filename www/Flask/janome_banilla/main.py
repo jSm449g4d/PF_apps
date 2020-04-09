@@ -1,19 +1,27 @@
+# server
 import flask
 import os
 import sys
-
+# application
 from janome.tokenizer import Tokenizer
 from werkzeug.utils import secure_filename
 
+
+# server
+def render_template_FaaS(dir, **kwargs):
+    try:
+        with open(os.path.join(dir), "r", encoding="utf-8") as f:
+            html = f.read()
+            for kw, arg in kwargs.items():
+                html = html.replace("{{"+kw+"}}", arg)
+            return flask.render_template_string(html)
+    except:
+        return "error:loading main.html"
+
+
+# application
 t = Tokenizer()
 
-def render_template_FaaS(dir, **kwargs):
-    html = ""
-    with open(os.path.join(dir), "r", encoding="utf-8") as f:
-        html = f.read()
-        for kw, arg in kwargs.items():
-            html = html.replace("{{"+kw+"}}", arg)
-    return flask.render_template_string(html)
 
 def show(request):
     global t
@@ -57,4 +65,4 @@ def show(request):
                 ret += token.phonetic+","
             return ret.strip(',')
 
-    return render_template_FaaS(os.path.join(os.path.dirname(__file__),"main.html"))
+    return render_template_FaaS(os.path.join(os.path.dirname(__file__), "main.html"))

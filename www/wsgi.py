@@ -21,10 +21,10 @@ def indexpage_show():
     return render_template("Flask_index.html",
                            STATUS_PYTHON_VERSION=sys.version,
                            STATUS_FLASK_VERSION=flask.__version__,
-                           STATUS_ACCESS_COUNT=str(wsgi_util.access_counter),
+                           STATUS_ACCESS_COUNT=str(wsgi_h.access_counter),
                            STATUS_RESOURCE_MEM='{:,}'.format(psutil.virtual_memory(
                            ).used)+"[Byte] / "+'{:,}'.format(psutil.virtual_memory().total)+"[Byte]",
-                           STATUS_RESOURCE_ACTIVE=wsgi_util.resouce_active,)
+                           STATUS_RESOURCE_ACTIVE=wsgi_h.resouce_active,)
 
 
 # domain/Flask/* ← favicon.ico and robots.txt

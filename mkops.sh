@@ -7,6 +7,7 @@
 
 echo "start"
 sudo apt install p7zip-full
+sudo rm -r www.zip
 7z a www.zip www/html/
 7z a www.zip www/Flask/
 7z a www.zip www/static/

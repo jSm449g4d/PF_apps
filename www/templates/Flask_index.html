@@ -10,8 +10,8 @@
 <body>
     <div class="m-2">
         <div class="d-flex justify-content-between">
-            <h2 style="color:navy;font-family:'Courier';">Flask_Index</h2>
-            <h4 style="color:darkgreen;font-family:serif;">Flask+Bootstrap4</h4>
+            <h2 style="font-family:OCRB;color:navy;">Flask_Index</h2>
+            <h4 style="font-family:serif;color:darkgreen;">Flask+Bootstrap4</h4>
         </div>
         <table class="table table-sm table-bordered" style="color: #555000;background-color: azure;">
             <thead>
@@ -33,12 +33,16 @@
                     <td style="color:#555000;">{{STATUS_FLASK_VERSION}}</td>
                 </tr>
                 <tr>
-                    <td style="color:#555000;">DRAM ( used / total )</td>
-                    <td style="color:#555000;">{{STATUS_RESOURCE_MEM}}</td>
+                    <td style="color:#555000;">OS</td>
+                    <td style="color:#555000;">{{STATUS_RESOURCE_OS}}</td>
                 </tr>
                 <tr>
                     <td style="color:#555000;">CPU ( physical / logical )</td>
                     <td style="color:#555000;">{{STATUS_RESOURCE_CORE}}</td>
+                </tr>
+                <tr>
+                    <td style="color:#555000;">DRAM ( used / total )</td>
+                    <td style="color:#555000;">{{STATUS_RESOURCE_MEM}}</td>
                 </tr>
                 <tr>
                     <td style="color:#555000;">Resource Active</td>

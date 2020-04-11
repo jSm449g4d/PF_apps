@@ -1,10 +1,12 @@
-# coding: utf-8
+# server
 import sys
 import os
 import flask
 from flask import request, send_file, render_template
 import importlib
+# application
 import psutil
+import platform
 
 # Flask_Startup
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -22,10 +24,11 @@ def indexpage_show():
                            STATUS_PYTHON_VERSION=sys.version,
                            STATUS_FLASK_VERSION=flask.__version__,
                            STATUS_ACCESS_COUNT=str(wsgi_h.access_counter),
-                           STATUS_RESOURCE_MEM='{:,}'.format(psutil.virtual_memory(
-                           ).used)+"[Byte] / "+'{:,}'.format(psutil.virtual_memory().total)+"[Byte]",
+                           STATUS_RESOURCE_OS=platform.platform(),
                            STATUS_RESOURCE_CORE=str(psutil.cpu_count(
                                logical=False))+" / "+str(psutil.cpu_count()),
+                           STATUS_RESOURCE_MEM='{:,}'.format(psutil.virtual_memory(
+                           ).used)+"[Byte] / "+'{:,}'.format(psutil.virtual_memory().total)+"[Byte]",
                            STATUS_RESOURCE_ACTIVE=wsgi_h.resouce_active,)
 
 

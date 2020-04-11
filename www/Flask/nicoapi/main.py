@@ -26,19 +26,18 @@ def render_template_FaaS(dir, **kwargs):
 # application
 def deamon():
     # daemon_init
-    daemon_loop = 10
+    daemon_loop = False
     try:
         wsgi_h = importlib.import_module("wsgi_h")
         db = wsgi_h.db
-        daemon_loop = 0
+#        daemon_loop = True
     except:
         db = firestore.Client()
-    # daemon_loop
+    # daemon_loop_process
     while True:
-
-        docRefs=db.collection('nicoapi').list_documents()
+        docRefs = db.collection('nicoapi').list_documents()
         for docRef in docRefs:
-            recodes=docRef.get().to_dict()        
+            recodes = docRef.get().to_dict()
             for recode in recodes.values():
                 for data in recode:
                     time.sleep(3)
@@ -47,10 +46,8 @@ def deamon():
 
         # daemon_loop_management
         time.sleep(20)
-        if daemon_loop != 0:
-            daemon_loop -= 1
-            if daemon_loop < 1:
-                return 0
+        if daemon_loop == False:
+            return 0
 
     return 0
 

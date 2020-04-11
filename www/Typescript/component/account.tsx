@@ -1,23 +1,18 @@
 import React from 'react';
-
 import firebase from 'firebase/app';
 import "firebase/analytics";
 import "firebase/auth";
 import "firebase/storage";
 import "firebase/firestore";
+
+import { firebaseConfig } from "./config";
+
 firebase.initializeApp({
-    apiKey: "AIzaSyCWzFat3oUpn_4TtOpDCMhcOD2Qf4u1Mr4",
-    authDomain: "crack-atlas-251509.firebaseapp.com",
-    databaseURL: "https://crack-atlas-251509.firebaseio.com",
-    projectId: "crack-atlas-251509",
-    storageBucket: "crack-atlas-251509.appspot.com",
-    messagingSenderId: "646437940818",
-    appId: "1:646437940818:web:080ff48019a68c74d3b98b",
-    measurementId: "G-QLHKJ38SWW"
+    firebaseConfig
 })
 export const fb = firebase;
-fb.analytics();
 export const auth = firebase.auth();
+fb.analytics();
 
 interface State {
     uid: string, mail_addr: string, mail_pass: string

@@ -23,6 +23,7 @@ def render_template_FaaS(dir, **kwargs):
     except:
         return "error:loading main.html"
 
+debug="none"
 # application
 def deamon():
     # daemon_init
@@ -34,8 +35,12 @@ def deamon():
             storage = wsgi_h.GCS.get_bucket(json.load(fp)["GCS_bucket"])
 #           daemon_loop = True
         except:
+            global debug;
+            debug="0"
             db = firestore.Client()
+            debug="1"
             storage = firestorage.Client().get_bucket(json.load(fp)["GCS_bucket"])
+            debug="2"
         
     # daemon_loop_process
     while True:
@@ -66,4 +71,5 @@ threading.Thread(name='nicoapi_d', target=deamon).start()
 
 
 def show(request):
-    return render_template_FaaS(os.path.join(os.path.dirname(__file__), "main.html"))
+    global debug;
+    return render_template_FaaS(os.path.join(os.path.dirname(__file__), "main.html",debug=debug))

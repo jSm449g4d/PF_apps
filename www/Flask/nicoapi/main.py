@@ -36,20 +36,21 @@ def deamon():
         with open("config.json", "r", encoding="utf-8") as fp:
             db = firestore.Client()
             GCS = storage.Client().from_service_account_json(json.load(fp)["GCS_bucket"])
-            deb="2"
         
     # daemon_loop_process
     while True:
         docRefs = db.collection('nicoapi').list_documents()
         for docRef in docRefs:
             
-            docRef.update({str(int(datetime.now().timestamp()*1000)):["ima!"]})
+            docRef.update({str(int(datetime.now().timestamp()*1000)):["start!"]})
 
             recodes = docRef.get().to_dict()
             for recode in recodes.values():
                 for data in recode:
                     time.sleep(3)
                     print("rec:"+data)
+
+            docRef.update({str(int(datetime.now().timestamp()*1000)):["finish!"]})
 
         print("end")
 

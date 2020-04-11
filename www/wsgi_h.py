@@ -1,4 +1,4 @@
-### DONT LOAD "wsgi_util.py" DIRECTLY as multiple loading causes multiple declarations of variables  ###
+### DONT LOAD "wsgi_h.py" DIRECTLY as multiple loading causes multiple declarations of variables  ###
 
 import sys
 import os

@@ -8,7 +8,7 @@ import psutil
 
 # Flask_Startup
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-os.chdir(os.path.dirname(os.path.join("./",__file__)))
+os.chdir(os.path.dirname(os.path.join("./", __file__)))
 app = flask.Flask(__name__)
 wsgi_h = importlib.import_module("wsgi_h")
 app.config['MAX_CONTENT_LENGTH'] = 100000000
@@ -24,6 +24,8 @@ def indexpage_show():
                            STATUS_ACCESS_COUNT=str(wsgi_h.access_counter),
                            STATUS_RESOURCE_MEM='{:,}'.format(psutil.virtual_memory(
                            ).used)+"[Byte] / "+'{:,}'.format(psutil.virtual_memory().total)+"[Byte]",
+                           STATUS_RESOURCE_CORE=str(psutil.cpu_count(
+                               logical=False))+"/"+str(psutil.cpu_count()),
                            STATUS_RESOURCE_ACTIVE=wsgi_h.resouce_active,)
 
 

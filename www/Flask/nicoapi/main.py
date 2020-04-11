@@ -31,11 +31,11 @@ def deamon():
         try:
             wsgi_h = importlib.import_module("wsgi_h")
             db = wsgi_h.db
-            storage = wsgi_h.GCS.from_service_account_json(json.load(fp)["GCS_bucket"])
+            storage = wsgi_h.GCS.get_bucket(json.load(fp)["GCS_bucket"])
 #           daemon_loop = True
         except:
             db = firestore.Client()
-            storage = firestorage.Client().from_service_account_json(json.load(fp)["GCS_bucket"])
+            storage = firestorage.Client().get_bucket(json.load(fp)["GCS_bucket"])
         
     # daemon_loop_process
     while True:

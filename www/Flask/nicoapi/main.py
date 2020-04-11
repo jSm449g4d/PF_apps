@@ -35,16 +35,22 @@ def deamon():
         db = firestore.Client()
     # daemon_loop
     while True:
+
+        docRefs=db.collection('nicoapi').list_documents()
+        for docRef in docRefs:
+            recodes=docRef.get().to_dict()        
+            for recode in recodes.values():
+                for data in recode:
+                    time.sleep(3)
+                    print("rec:"+data)
+        print("end")
+
         # daemon_loop_management
-        time.sleep(3)
+        time.sleep(20)
         if daemon_loop != 0:
             daemon_loop -= 1
             if daemon_loop < 1:
                 return 0
-
-#        doc=db.document('tptef/mains').get().to_dict()
-#        print(doc)
-        print("aaa")
 
     return 0
 
@@ -53,6 +59,4 @@ threading.Thread(name='nicoapi_d', target=deamon).start()
 
 
 def show(request):
-    #    dicts = db.document('tptef/main').get().to_dict()
-    #    return json.dumps(dicts)
     return render_template_FaaS(os.path.join(os.path.dirname(__file__), "main.html"))

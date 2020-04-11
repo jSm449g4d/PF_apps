@@ -36,16 +36,16 @@ def deamon():
 #           daemon_loop = True
         except:
             global debug;
-            debug="0"
             db = firestore.Client()
-            debug="1"
             storage = firestorage.Client().get_bucket(json.load(fp)["GCS_bucket"])
             debug="2"
         
     # daemon_loop_process
     while True:
+        debug="3"
         docRefs = db.collection('nicoapi').list_documents()
         for docRef in docRefs:
+            debug="4"
             
             docRef.update({str(int(datetime.now().timestamp()*1000)):["start!"]})
 
@@ -58,6 +58,7 @@ def deamon():
             docRef.update({str(int(datetime.now().timestamp()*1000)):["finish!"]})
 
         print("end")
+        debug="5"
 
         # daemon_loop_management
         time.sleep(300)

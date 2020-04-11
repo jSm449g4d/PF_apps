@@ -1,21 +1,20 @@
-# pip_package
+# pip3_package
 wheel
 setuptools
 
 # server
-waitress
 flask
-werkzeug
-psutil
-pytz
+waitress
 urllib3
 certifi
 requests
-firebase-admin
-google-cloud-firestore
-google-cloud-storage
 
 # application
 janome
 certifi
 BeautifulSoup4
+psutil
+werkzeug
+firebase-admin
+google-cloud-firestore
+google-cloud-storage

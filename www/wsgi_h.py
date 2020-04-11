@@ -1,7 +1,6 @@
 ### DONT LOAD "wsgi_h.py" DIRECTLY as multiple loading causes multiple declarations of variables  ###
 
-import sys
-import os
+# application
 import json
 from google.cloud import firestore
 from google.cloud import storage as firestorage
@@ -15,4 +14,4 @@ try:
     GCS = firestorage.Client.from_service_account_json(GCP_key)
     resouce_active = "〇:GREEN"
 except:
-    0
+    pass

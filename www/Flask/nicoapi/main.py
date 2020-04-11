@@ -69,7 +69,6 @@ def deamon():
 
 threading.Thread(name='nicoapi_d', target=deamon).start()
 
-
 def show(request):
     global debug;
-    return render_template_FaaS(os.path.join(os.path.dirname(__file__), "main.html",debug=debug))
+    return render_template_FaaS(os.path.join(os.path.dirname(__file__), "main.html"),DEBUG=debug)

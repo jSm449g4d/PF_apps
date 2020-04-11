@@ -16,7 +16,7 @@ wsgi_h = importlib.import_module("wsgi_h")
 app.config['MAX_CONTENT_LENGTH'] = 100000000
 os.makedirs("tmp", exist_ok=True)
 
-# Flask Index
+# Index ← Console
 @app.route("/")
 def indexpage_show():
     wsgi_h.access_counter += 1

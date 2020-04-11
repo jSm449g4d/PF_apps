@@ -37,7 +37,7 @@ steps:
         - --image
         - $_CONTAINER/$_APPNAME:latest
         - --region
-        - us-central1
+        - asia-northeast1
         - --platform
         - managed
         - --timeout

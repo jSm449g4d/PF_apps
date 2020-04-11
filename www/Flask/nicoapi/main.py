@@ -55,7 +55,7 @@ def deamon():
         print("end")
 
         # daemon_loop_management
-        time.sleep(20)
+        time.sleep(300)
         if daemon_loop == False:
             return 0
 

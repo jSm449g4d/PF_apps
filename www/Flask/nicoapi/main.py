@@ -7,6 +7,7 @@ import threading
 import time
 import importlib
 from google.cloud import firestore
+from google.cloud import storage
 
 import json
 
@@ -22,7 +23,6 @@ def render_template_FaaS(dir, **kwargs):
     except:
         return "error:loading main.html"
 
-
 # application
 def deamon():
     # daemon_init
@@ -30,9 +30,15 @@ def deamon():
     try:
         wsgi_h = importlib.import_module("wsgi_h")
         db = wsgi_h.db
+        GCS = wsgi_h.GCS
 #        daemon_loop = True
+        print("OK")
     except:
-        db = firestore.Client()
+        with open("config.json", "r", encoding="utf-8") as fp:
+            db = firestore.Client()
+            GCS = storage.Client().from_service_account_json(json.load(fp)["GCS_bucket"])
+            deb="2"
+        
     # daemon_loop_process
     while True:
         docRefs = db.collection('nicoapi').list_documents()
@@ -41,6 +47,7 @@ def deamon():
             for recode in recodes.values():
                 for data in recode:
                     time.sleep(3)
+
                     print("rec:"+data)
         print("end")
 

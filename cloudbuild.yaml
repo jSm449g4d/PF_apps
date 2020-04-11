@@ -1,13 +1,13 @@
 steps:
       # insert keys
-    - name: gcr.io/cloud-builders/gsutil
+    - name: asia.io/cloud-builders/gsutil
       args:
         - cp
         - $_GCS_KEYS
         - ./
       dir: www
       # build
-    - name: gcr.io/cloud-builders/docker
+    - name: asia.io/cloud-builders/docker
       args: 
         - build
         - -t
@@ -15,7 +15,7 @@ steps:
         - .
       dir: www
       # CI_test
-    - name: gcr.io/cloud-builders/docker
+    - name: asia.io/cloud-builders/docker
       args:
         - run
         - --rm
@@ -23,12 +23,12 @@ steps:
         - bash
         - $_TESTSH
       # push image to Container Registry
-    - name: gcr.io/cloud-builders/docker
+    - name: asia.io/cloud-builders/docker
       args:
         - push
         - $_CONTAINER/$_APPNAME
       # deploy
-    - name: gcr.io/cloud-builders/gcloud
+    - name: asia.io/cloud-builders/gcloud
       args:
         - beta
         - run

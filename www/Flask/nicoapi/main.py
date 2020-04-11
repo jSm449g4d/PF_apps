@@ -7,7 +7,7 @@ import threading
 import time
 import importlib
 from google.cloud import firestore
-from google.cloud import storage
+from google.cloud import storage as firestorage
 import json
 from datetime import datetime
 
@@ -27,15 +27,15 @@ def render_template_FaaS(dir, **kwargs):
 def deamon():
     # daemon_init
     daemon_loop = False
-    try:
-        wsgi_h = importlib.import_module("wsgi_h")
-        db = wsgi_h.db
-        GCS = wsgi_h.GCS
-#        daemon_loop = True
-    except:
-        with open("config.json", "r", encoding="utf-8") as fp:
+    with open(os.path.join(os.path.dirname(__file__), "config.json"), "r", encoding="utf-8") as fp:
+        try:
+            wsgi_h = importlib.import_module("wsgi_h")
+            db = wsgi_h.db
+            storage = wsgi_h.GCS.from_service_account_json(json.load(fp)["GCS_bucket"])
+#           daemon_loop = True
+        except:
             db = firestore.Client()
-            GCS = storage.Client().from_service_account_json(json.load(fp)["GCS_bucket"])
+            storage = firestorage.Client().from_service_account_json(json.load(fp)["GCS_bucket"])
         
     # daemon_loop_process
     while True:

@@ -6,9 +6,8 @@ import sys
 import threading
 import time
 import importlib
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import firestore
+from google.cloud import firestore
+
 import json
 
 
@@ -33,8 +32,7 @@ def deamon():
         db = wsgi_h.db
         daemon_loop = 0
     except:
-        firebase_admin.initialize_app()
-        db = firestore.client()
+        db = firestore.Client()
     # daemon_loop
     while True:
         # daemon_loop_management
@@ -43,8 +41,11 @@ def deamon():
             daemon_loop -= 1
             if daemon_loop < 1:
                 return 0
-        # daemon_process
-        print("nicoapi_d:", daemon_loop)
+
+#        doc=db.document('tptef/mains').get().to_dict()
+#        print(doc)
+        print("aaa")
+
     return 0
 
 
@@ -52,6 +53,6 @@ threading.Thread(name='nicoapi_d', target=deamon).start()
 
 
 def show(request):
-#    dicts = db.document('tptef/main').get().to_dict()
-#    return json.dumps(dicts)
+    #    dicts = db.document('tptef/main').get().to_dict()
+    #    return json.dumps(dicts)
     return render_template_FaaS(os.path.join(os.path.dirname(__file__), "main.html"))

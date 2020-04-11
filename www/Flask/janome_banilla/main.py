@@ -49,5 +49,4 @@ def show(request):
                     ret["phonetic"].append(token.phonetic)
             return json.dumps(ret, ensure_ascii=False)
 
-    return render_template_FaaS(os.path.join(
-        os.path.dirname(__file__), "main.html"))
+    return render_template_FaaS(os.path.join(os.path.dirname(__file__), "main.html"))

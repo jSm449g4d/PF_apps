@@ -3,11 +3,8 @@
 import sys
 import os
 import json
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import auth
-from firebase_admin import firestore
 from google.cloud import storage
+from google.cloud import firestore
 
 # AP_setting_management
 access_counter = 0
@@ -16,11 +13,10 @@ resouce_active = "×:FALSE"
 try:
     with open("Flask/config.json", "r", encoding="utf-8") as fp:
         config_dict.update(json.load(fp))
-    firebase_admin.initialize_app(
-        firebase_admin.credentials.Certificate("FirebaseAdmin_Key.json"))
-    auth = firebase_admin.auth
-    db = firestore.client()
-    
+
+    db = firestore.Client.from_service_account_json(
+        "FirebaseAdmin_Key.json")
+
     GCS_bucket = storage.Client.from_service_account_json(
         "FirebaseAdmin_Key.json").get_bucket(config_dict["GCS_bucket"])
     resouce_active = "〇:OK"

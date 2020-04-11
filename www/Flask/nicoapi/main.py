@@ -8,8 +8,8 @@ import time
 import importlib
 from google.cloud import firestore
 from google.cloud import storage
-
 import json
+from datetime import datetime
 
 
 # server
@@ -32,7 +32,6 @@ def deamon():
         db = wsgi_h.db
         GCS = wsgi_h.GCS
 #        daemon_loop = True
-        print("OK")
     except:
         with open("config.json", "r", encoding="utf-8") as fp:
             db = firestore.Client()
@@ -43,12 +42,15 @@ def deamon():
     while True:
         docRefs = db.collection('nicoapi').list_documents()
         for docRef in docRefs:
+            
+            docRef.update({str(int(datetime.now().timestamp()*1000)):["ima!"]})
+
             recodes = docRef.get().to_dict()
             for recode in recodes.values():
                 for data in recode:
                     time.sleep(3)
-
                     print("rec:"+data)
+
         print("end")
 
         # daemon_loop_management

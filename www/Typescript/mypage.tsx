@@ -21,7 +21,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
             pr: "私はJhon_Doe。窓の蛇遣いです。",
             accessed_by: "FB",
         };
-        this.update_profile = this.update_profile.bind(this)
+        this.db_update_setpf = this.db_update_setpf.bind(this)
         setInterval(() => {
             if (auth.currentUser) {
                 if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid });
@@ -31,16 +31,16 @@ export class Mypage_tsx extends React.Component<{}, State> {
         }, 200)
     }
     componentDidMount() {
-        this.load_profile()
+        this.db_update_loadpf()
     }
     componentDidUpdate(prevProps: object, prevState: State) {
         if (this.state.uid != prevState.uid) {
-            this.load_profile();
+            this.db_update_loadpf();
         }
     }
 
     //functions
-    load_profile() {
+    db_update_loadpf() {
         if (this.state.uid == "") return;
         const docRef = db.doc("mypage/"+this.state.uid);
         docRef.get().then((doc) => {
@@ -54,7 +54,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
             }
         });
     }
-    update_profile() {
+    db_update_setpf() {
         if (this.state.uid == "") return;
         const docRef = db.doc("mypage/"+this.state.uid);
         docRef.get().then((doc) => {
@@ -108,7 +108,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
                                     (evt) => { this.setState({ [state_element]: evt.target.value }); }} />
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-sm btn-success" data-dismiss="modal" onClick={this.update_profile}>SUBMIT</button>
+                                <button type="button" className="btn btn-sm btn-success" data-dismiss="modal" onClick={this.db_update_setpf}>SUBMIT</button>
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                             </div>
                         </div>

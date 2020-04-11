@@ -26,7 +26,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         }, 200)
     }
 
-    db_update_generate_orders(cooling_time_ms: number = 10000) {
+    db_update_genorders(cooling_time_ms: number = 10000) {
         //prevent SPAMing → cooling_time_ms [ms]
         if (Date.now() < this.state.db_update_timestamp + cooling_time_ms) {
             alert("dont SPAM !\nremaining cooling time: " + String(this.state.db_update_timestamp + cooling_time_ms - Date.now()) + "[ms]"); return;
@@ -160,7 +160,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                 this.setState({ fields: JSON.stringify(Object.assign(JSON.parse(this.state.fields), { [Date.now().toString()]: { field: "", value: "" } })) })
                             }}>+Add</button>
                         </td>
-                        <td><button className="btn btn-success" onClick={() => { this.db_update_generate_orders(); }}>Launch</button></td>
+                        <td><button className="btn btn-success" onClick={() => { this.db_update_genorders(); }}>Launch</button></td>
                     </tr>
                 </tbody>
             </table>)

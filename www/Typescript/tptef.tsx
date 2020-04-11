@@ -51,7 +51,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
             }
         });
     };
-    db_update_remark_add(submit_content: string, attach_a_file: any) {
+    db_update_addremark(submit_content: string, attach_a_file: any) {
         if (this.state.uid == "" || this.state.room == "") return;
         if (submit_content == "") { alert("Plz input content"); return; };
         const docRef = db.doc("tptef/"+this.state.room);
@@ -74,12 +74,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
         });
         setTimeout(this.db_load_room, 500);
     }
-    storage_download(attachment_dir: string) {
-        storage.ref(attachment_dir).getDownloadURL().then((url) => {
-            window.open(url, '_blank');
-        }).catch(() => { alert("cant download") })
-    }
-    db_update_remark_del(remark_key: string) {
+    db_updatedelete_delremark(remark_key: string) {
         if (this.state.uid == "" || this.state.room == "") return;
         const docRef = db.doc("tptef/"+this.state.room);
         docRef.get().then((doc) => {
@@ -92,6 +87,11 @@ export class Tptef_tsx extends React.Component<{}, State> {
             if (Object.keys(doc.data()).length <2) docRef.delete();
         });
         setTimeout(this.db_load_room, 500);
+    }
+    storage_download(attachment_dir: string) {
+        storage.ref(attachment_dir).getDownloadURL().then((url) => {
+            window.open(url, '_blank');
+        }).catch(() => { alert("cant download") })
     }
 
     //renders
@@ -108,7 +108,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
             if (doc_data[keys[i]]["uid"] == this.state.uid) {
                 thread_data_ops.push(
                     <button key={1} className="btn btn-outline-danger btn-sm m-1 rounded-pill"
-                        onClick={(evt: any) => { this.db_update_remark_del(evt.target.value) }}
+                        onClick={(evt: any) => { this.db_updatedelete_delremark(evt.target.value) }}
                         value={keys[i]}>delete</button>)
             }
             //attachment download button
@@ -157,7 +157,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                                         onChange={(evt) => { this.setState({ handlename: evt.target.value }) }} />
                                     <input type="file" id="tptef_attachment" />
                                     <button className="btn btn-primary btn-sm mx-1" onClick={() => {
-                                        this.db_update_remark_add(
+                                        this.db_update_addremark(
                                             (document.getElementById("tptef_content") as HTMLInputElement).value,
                                             (document.getElementById("tptef_attachment") as HTMLInputElement).files[0]);
                                         (document.getElementById("tptef_content") as HTMLInputElement).value = "";

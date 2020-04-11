@@ -23,8 +23,9 @@ def render_template_FaaS(dir, **kwargs):
     except:
         return "error:loading main.html"
 
-debug="none"
 # application
+
+
 def deamon():
     # daemon_init
     daemon_loop = False
@@ -35,19 +36,17 @@ def deamon():
             storage = wsgi_h.GCS.get_bucket(json.load(fp)["GCS_bucket"])
 #           daemon_loop = True
         except:
-            global debug;
             db = firestore.Client()
-            storage = firestorage.Client().get_bucket(json.load(fp)["GCS_bucket"])
-            debug="2"
-        
+            storage = firestorage.Client().get_bucket(
+                json.load(fp)["GCS_bucket"])
+
     # daemon_loop_process
     while True:
-        debug="3"
         docRefs = db.collection('nicoapi').list_documents()
         for docRef in docRefs:
-            debug="4"
-            
-            docRef.update({str(int(datetime.now().timestamp()*1000)):["start!"]})
+
+            docRef.update(
+                {str(int(datetime.now().timestamp()*1000)): ["start!"]})
 
             recodes = docRef.get().to_dict()
             for recode in recodes.values():
@@ -55,10 +54,10 @@ def deamon():
                     time.sleep(3)
                     print("rec:"+data)
 
-            docRef.update({str(int(datetime.now().timestamp()*1000)):["finish!"]})
+            docRef.update(
+                {str(int(datetime.now().timestamp()*1000)): ["finish!"]})
 
         print("end")
-        debug="5"
 
         # daemon_loop_management
         time.sleep(300)
@@ -70,6 +69,6 @@ def deamon():
 
 threading.Thread(name='nicoapi_d', target=deamon).start()
 
+
 def show(request):
-    global debug;
-    return render_template_FaaS(os.path.join(os.path.dirname(__file__), "main.html"),DEBUG=debug)
+    return render_template_FaaS(os.path.join(os.path.dirname(__file__), "main.html"))

@@ -7,11 +7,11 @@ from google.cloud import storage as firestorage
 
 # AP_setting_management
 access_counter = 0
-resouce_active = "×:FALSE"
+resouce_active = "×: FAULT"
 GCP_key = "FirebaseAdmin_Key.json"
 try:
     db = firestore.Client.from_service_account_json(GCP_key)
     GCS = firestorage.Client.from_service_account_json(GCP_key)
-    resouce_active = "〇:GREEN"
+    resouce_active = "〇: GREEN"
 except:
     pass

@@ -15,4 +15,3 @@ werkzeug
 janome
 urllib3
 certifi
-requests

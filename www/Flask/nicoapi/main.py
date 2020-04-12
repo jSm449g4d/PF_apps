@@ -1,24 +1,24 @@
-# server
-import flask
+# Standard
+import hashlib
 import os
 import sys
-# application
 import importlib
 import json
 import threading
 import time
-from google.cloud import firestore
-from google.cloud import storage as firestorage
-import hashlib
-import urllib3
-import certifi
 from urllib import parse
 import io
 import zipfile
+# Additional
+import flask
+import urllib3
+import certifi
+from google.cloud import firestore
+from google.cloud import storage as firestorage
 
 
-# server
-def render_template_FaaS(dir, **kwargs):
+# FaaS Standard
+def render_template_FaaS(dir: str, **kwargs):
     try:
         with open(os.path.join(dir), "r", encoding="utf-8") as f:
             html = f.read()
@@ -28,9 +28,8 @@ def render_template_FaaS(dir, **kwargs):
     except:
         return "error:loading main.html"
 
+
 # application
-
-
 def deamon():
     # daemon_init
     daemon_loop = False
@@ -56,20 +55,16 @@ def deamon():
                 with io.BytesIO() as inmemory_zip:
                     for url in urls:
                         time.sleep(3)
-                        if True:
-                            print(hashlib.md5(url.encode('utf-8')).hexdigest())
+                        try:
                             resp_json = https.request('GET', parse.quote(
                                 url, safe="=&-?:/%")).data.decode('utf-8')
                             with zipfile.ZipFile(inmemory_zip, 'a', compression=zipfile.ZIP_DEFLATED) as zf:
                                 zf.writestr(hashlib.md5(url.encode(
                                     'utf-8')).hexdigest(), json.dumps(resp_json, ensure_ascii=False))
-                    # with open("tmp/"+timestamp+"_"+str(int(datetime.now().timestamp()*1000))+".zip", "wb") as f:
-                    #    f.write(inmemory_zip.getvalue())
-                    with open("tmp/"+timestamp+".zip", "wb") as f:
-                        f.write(inmemory_zip.getvalue())
-                    storage.blob(
-                        "nicoapi/test_uid/"+timestamp+".zip").upload_from_filename("tmp/"+timestamp+".zip")
-#                    storage.blob("nicoapi/test/haz.zip").upload_from_file(inmemory_zip)
+                            storage.blob("nicoapi/"+docRef.id +
+                                         "/"+timestamp + ".zip").upload_from_string(inmemory_zip.getvalue())
+                        except:
+                            pass
             print("end")
 
         # daemon_loop_management

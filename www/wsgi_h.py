@@ -1,10 +1,12 @@
 ### DONT LOAD "wsgi_h.py" DIRECTLY as multiple loading causes multiple declarations of variables  ###
 
+# Standard
 import os
-# application
 import json
+# Additional
 from google.cloud import firestore
 from google.cloud import storage as firestorage
+
 
 # AP_setting_management
 access_counter = 0

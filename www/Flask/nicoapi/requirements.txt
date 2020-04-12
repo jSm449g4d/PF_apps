@@ -2,4 +2,3 @@ google-cloud-firestore
 google-cloud-storage
 urllib3
 certifi
-requests

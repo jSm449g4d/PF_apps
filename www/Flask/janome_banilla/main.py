@@ -1,14 +1,14 @@
-# server
-import flask
+# Standard
 import os
 import sys
-# application
 import json
+# Additional
+import flask
 from janome.tokenizer import Tokenizer
 
 
-# server
-def render_template_FaaS(dir, **kwargs):
+# FaaS Standard
+def render_template_FaaS(dir: str, **kwargs):
     try:
         with open(os.path.join(dir), "r", encoding="utf-8") as f:
             html = f.read()

@@ -1,10 +1,13 @@
-# server
-import flask
+# Standard
 import os
 import sys
 import importlib
-import psutil
+from datetime import datetime
 import platform
+# Additional
+import flask
+import psutil
+
 
 # Flask_Startup
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -21,6 +24,8 @@ def indexpage_show():
     return flask.render_template("Flask_index.html",
                                  STATUS_ACCESS_COUNT=str(
                                      wsgi_h.access_counter),
+                                 STATUS_ACCESS_TIMESTAMP=str(
+                                     int(datetime.now().timestamp()*1000)),
                                  STATUS_PYTHON_VERSION=sys.version,
                                  STATUS_FLASK_VERSION=flask.__version__,
                                  STATUS_RESOURCE_OS=platform.platform(),

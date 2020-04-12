@@ -7,12 +7,14 @@ import importlib
 import json
 import threading
 import time
+from datetime import datetime
 from google.cloud import firestore
 from google.cloud import storage as firestorage
-from datetime import datetime
 import urllib3
 import certifi
 from urllib import parse
+import io
+import zipfile
 
 
 # server
@@ -47,29 +49,25 @@ def deamon():
     while True:
         https = urllib3.PoolManager(cert_reqs='CERT_REQUIRED', ca_certs=certifi.where(
         ), headers={"User-Agent": "nicoapi"})
-
         docRefs = db.collection('nicoapi').list_documents()
         for docRef in docRefs:
-
-            docRef.update(
-                {str(int(datetime.now().timestamp()*1000)): ["start!"]})
-
             recodes = docRef.get().to_dict()
-            for recode in recodes.values():
-                for data in recode:
-                    time.sleep(3)
-                    print(parse.quote(data, safe="=&-?:/%"))
-                    try:
-                        html = https.request(
-                            'GET', parse.quote(data, safe="=&-?:/%"))
-                        print(html.data)
-                    except:
-                        pass
-
-            docRef.update(
-                {str(int(datetime.now().timestamp()*1000)): ["finish!"]})
-
-        print("end")
+            for timestamp, urls in recodes.items():
+                with io.BytesIO() as inmemory_zip:
+                    for url in urls:
+                        time.sleep(3)
+                        if True:
+                            print("access")
+                            resp_json = https.request('GET', parse.quote(
+                                url, safe="=&-?:/%")).data.decode('utf-8')
+                            with zipfile.ZipFile(inmemory_zip, 'a', compression=zipfile.ZIP_DEFLATED) as zf:
+                                zf.writestr(str(int(datetime.now().timestamp(
+                                )*1000)), json.dumps(resp_json, ensure_ascii=False))
+                   # storage.ref("nicoapi/test").put(timestamp+".zip")
+                    #storage.blob("nicoapi/test").upload_from_file(inmemory_zip)
+                    with open("tmp/"+timestamp+".zip", "wb") as f:
+                        f.write(inmemory_zip.getvalue())
+            print("end")
 
         # daemon_loop_management
         time.sleep(300)

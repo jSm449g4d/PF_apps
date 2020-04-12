@@ -41,7 +41,7 @@ def show(request):
     # render template
     global access_counter
     access_counter += 1
-    kwargs = {"STATUS_ACCESS_COUNT": access_counter}
+    kwargs = {"STATUS_ACCESS_COUNT": str(access_counter)}
     with open(os.path.join(os.path.dirname(__file__), "main.html"), "r", encoding="utf-8") as f:
         html = f.read()
         for kw, arg in kwargs.items():

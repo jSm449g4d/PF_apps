@@ -68,7 +68,7 @@ def deamon():
                     with open("tmp/"+timestamp+".zip", "wb") as f:
                         f.write(inmemory_zip.getvalue())
                     storage.blob(
-                        "nicoapi/test_uid").upload_from_filename("tmp/"+timestamp+".zip")
+                        "nicoapi/test_uid/"+timestamp+".zip").upload_from_filename("tmp/"+timestamp+".zip")
 #                    storage.blob("nicoapi/test/haz.zip").upload_from_file(inmemory_zip)
             print("end")
 

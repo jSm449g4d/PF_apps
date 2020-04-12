@@ -12,12 +12,23 @@ resouce_health = "×: FAULT"
 GCP_key = "FirebaseAdmin_Key.json"
 
 
+# Firestore compatible
 class db_Ref:
     db_dict = {}
     db_path = ""
 
-    def __init__(self, db_path):
-        self.db_path = db_path
+    def __init__(self, db_path: str = ""):
+        if db_path == "":
+            os.makedirs("./db", exist_ok=True)
+            try:  # db cleaning ← delete except for json file
+                for root, _, files in os.walk("./db"):
+                    for file in files:
+                        if file.split(".")[-1] != "json":
+                            os.remove(os.path.join(root, file))
+                    # TODO: delete emp folder
+            except:
+                pass
+        self.db_path = db_path.replace("\\", "/").replace("..", "_")
 
     def list_documents(self):
         Refs = []
@@ -42,24 +53,11 @@ class db_Ref:
     def to_dict(self):
         return json.dumps(self.db_dict, ensure_ascii=False)
 
-
-class db_STANDALONE:
-    def __init__(self,):
-        os.makedirs("./db", exist_ok=True)
-        try:  # db cleaning ← delete except for json file
-            for root, _, files in os.walk("./db"):
-                for file in files:
-                    if file.split(".")[-1] != "json":
-                        os.remove(os.path.join(root, file))
-                # TODO: delete emp folder
-        except:
-            pass
-
-    def document(self, db_path):
+    def document(self, db_path: str = ""):
         return db_Ref(db_path)
 
-    def collection(self, db_path):
-        return self.document(db_path)
+    def collection(self, db_path: str = ""):
+        return db_Ref(db_path)
 
 
 try:
@@ -68,6 +66,6 @@ try:
     resouce_health = "〇: GCP"
 except:
     # UC: STANDALONE mode
-    db = db_STANDALONE()
+    db = db_Ref()
     GCS = 0
-    resouce_health = "△: STAND ALONE"
+    resouce_health = "△: STANDALONE"

@@ -45,6 +45,9 @@ def deamon():
 
     # daemon_loop_process
     while True:
+        https = urllib3.PoolManager(cert_reqs='CERT_REQUIRED', ca_certs=certifi.where(
+        ), headers={"User-Agent": "nicoapi"})
+
         docRefs = db.collection('nicoapi').list_documents()
         for docRef in docRefs:
 
@@ -55,8 +58,14 @@ def deamon():
             for recode in recodes.values():
                 for data in recode:
                     time.sleep(3)
-                    deta=parse.quote(data, safe="=&-?:/%")
-                    print("rec:"+deta)
+                    print(parse.quote(data, safe="=&-?:/%"))
+                    try:
+                        html = https.request(
+                            'GET', parse.quote(data, safe="=&-?:/%"))
+                        print(html.data)
+                    except:
+                        pass
+
             docRef.update(
                 {str(int(datetime.now().timestamp()*1000)): ["finish!"]})
 

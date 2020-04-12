@@ -7,9 +7,7 @@ import "firebase/firestore";
 
 import { firebaseConfig } from "./config";
 
-firebase.initializeApp({
-    firebaseConfig
-})
+firebase.initializeApp(firebaseConfig)
 export const fb = firebase;
 export const auth = firebase.auth();
 fb.analytics();

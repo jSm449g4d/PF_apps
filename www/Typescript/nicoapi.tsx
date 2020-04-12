@@ -72,7 +72,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                         [String(Date.now() - 5)]: { field: "q", value: "ゆっくり解説" },
                                         [String(Date.now() - 4)]: { field: "targets", value: "title,description,tags" },
                                         [String(Date.now() - 3)]: { field: "fields", value: "contentId,title,description,tags" },
-                                        [String(Date.now() - 2)]: { field: "sort", value: "viewCounter" },
+                                        [String(Date.now() - 2)]: { field: "_sort", value: "viewCounter" },
                                         [String(Date.now() - 1)]: { field: "_limit", value: "100" },
                                         [String(Date.now() - 0)]: { field: "_offset", value: "$for(1;1601;100)" },
                                     })
@@ -85,7 +85,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                         [String(Date.now() - 5)]: { field: "q", value: "ゆっくり解説" },
                                         [String(Date.now() - 4)]: { field: "targets", value: "title,description,tags" },
                                         [String(Date.now() - 3)]: { field: "fields", value: "contentId,title,description,tags" },
-                                        [String(Date.now() - 2)]: { field: "sort", value: "viewCounter" },
+                                        [String(Date.now() - 2)]: { field: "_sort", value: "viewCounter" },
                                         [String(Date.now() - 1)]: { field: "_limit", value: "100" },
                                         [String(Date.now() - 0)]: { field: "_offset", value: "$for(1;1601;100)" },
                                     })

@@ -7,19 +7,8 @@ import flask
 from janome.tokenizer import Tokenizer
 
 
-# FaaS Standard
-def render_template_FaaS(dir: str, **kwargs):
-    try:
-        with open(os.path.join(dir), "r", encoding="utf-8") as f:
-            html = f.read()
-            for kw, arg in kwargs.items():
-                html = html.replace("{{"+kw+"}}", arg)
-            return flask.render_template_string(html)
-    except:
-        return "error: loading main.html"
-
-
-# application
+# global variable
+access_counter = 0
 t = Tokenizer()
 
 
@@ -49,4 +38,13 @@ def show(request):
                     ret["phonetic"].append(token.phonetic)
             return json.dumps(ret, ensure_ascii=False)
 
-    return render_template_FaaS(os.path.join(os.path.dirname(__file__), "main.html"))
+    # render template
+    global access_counter
+    access_counter += 1
+    kwargs = {"STATUS_ACCESS_COUNT": access_counter}
+    with open(os.path.join(os.path.dirname(__file__), "main.html"), "r", encoding="utf-8") as f:
+        html = f.read()
+        for kw, arg in kwargs.items():
+            html = html.replace("{{"+kw+"}}", arg)
+        return flask.render_template_string(html)
+    return "404: nof found → main.html", 404

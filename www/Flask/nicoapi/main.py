@@ -17,16 +17,8 @@ from google.cloud import firestore
 from google.cloud import storage as firestorage
 
 
-# FaaS Standard
-def render_template_FaaS(dir: str, **kwargs):
-    try:
-        with open(os.path.join(dir), "r", encoding="utf-8") as f:
-            html = f.read()
-            for kw, arg in kwargs.items():
-                html = html.replace("{{"+kw+"}}", arg)
-            return flask.render_template_string(html)
-    except:
-        return "error:loading main.html"
+# global variable
+access_counter = 0
 
 
 # application
@@ -65,13 +57,10 @@ def deamon():
                                          "/"+timestamp + ".zip").upload_from_string(inmemory_zip.getvalue())
                         except:
                             pass
-            print("end")
-
         # daemon_loop_management
         time.sleep(300)
         if daemon_loop == False:
             return 0
-
     return 0
 
 
@@ -79,4 +68,13 @@ threading.Thread(name='nicoapi_d', target=deamon).start()
 
 
 def show(request):
-    return render_template_FaaS(os.path.join(os.path.dirname(__file__), "main.html"))
+    # render template
+    global access_counter
+    access_counter += 1
+    kwargs = {"STATUS_ACCESS_COUNT": access_counter}
+    with open(os.path.join(os.path.dirname(__file__), "main.html"), "r", encoding="utf-8") as f:
+        html = f.read()
+        for kw, arg in kwargs.items():
+            html = html.replace("{{"+kw+"}}", arg)
+        return flask.render_template_string(html)
+    return "404: nof found → main.html", 404

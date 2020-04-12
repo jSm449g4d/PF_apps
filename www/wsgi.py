@@ -22,7 +22,7 @@ os.makedirs("tmp", exist_ok=True)
 def indexpage_show():
     wsgi_h.access_counter += 1
     return flask.render_template("Flask_index.html",
-                                 STATUS_ACCESS_COUNT=str(
+                                 STATUS_ACCESS_COUNTER=str(
                                      wsgi_h.access_counter),
                                  STATUS_ACCESS_TIMESTAMP=str(
                                      int(datetime.now().timestamp()*1000)),

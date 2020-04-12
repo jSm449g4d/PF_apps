@@ -1,5 +1,6 @@
 ### DONT LOAD "wsgi_h.py" DIRECTLY as multiple loading causes multiple declarations of variables  ###
 
+import os
 # application
 import json
 from google.cloud import firestore
@@ -9,9 +10,64 @@ from google.cloud import storage as firestorage
 access_counter = 0
 resouce_health = "×: FAULT"
 GCP_key = "FirebaseAdmin_Key.json"
+
+
+class db_Ref:
+    db_dict = {}
+    db_path = ""
+
+    def __init__(self, db_path):
+        self.db_path = db_path
+
+    def list_documents(self):
+        Refs = []
+        try:
+            for file in os.listdir(os.path.join("./db", self.db_path)):
+                Refs.append(
+                    db_Ref(os.path.splitext(
+                        os.path.join(self.db_path, file))[0])
+                )
+        except:
+            Refs = []
+        return Refs
+
+    def get(self):
+        try:
+            with open(os.path.join("./db", self.db_path), encoding="utf-8") as fp:
+                self.db_dict = json.load(fp)
+        except:
+            self.db_dict = {}
+        return self
+
+    def to_dict(self):
+        return json.dumps(self.db_dict, ensure_ascii=False)
+
+
+class db_STANDALONE:
+    def __init__(self,):
+        os.makedirs("./db", exist_ok=True)
+        try:  # db cleaning ← delete except for json file
+            for root, _, files in os.walk("./db"):
+                for file in files:
+                    if file.split(".")[-1] != "json":
+                        os.remove(os.path.join(root, file))
+                # TODO: delete emp folder
+        except:
+            pass
+
+    def document(self, db_path):
+        return db_Ref(db_path)
+
+    def collection(self, db_path):
+        return self.document(db_path)
+
+
 try:
     db = firestore.Client.from_service_account_json(GCP_key)
     GCS = firestorage.Client.from_service_account_json(GCP_key)
-    resouce_health = "〇: GREEN"
+    resouce_health = "〇: GCP"
 except:
-    pass
+    # UC: STANDALONE mode
+    db = db_STANDALONE()
+    GCS = 0
+    resouce_health = "△: STAND ALONE"

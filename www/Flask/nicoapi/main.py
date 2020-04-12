@@ -7,9 +7,9 @@ import importlib
 import json
 import threading
 import time
-from datetime import datetime
 from google.cloud import firestore
 from google.cloud import storage as firestorage
+import hashlib
 import urllib3
 import certifi
 from urllib import parse
@@ -35,12 +35,12 @@ def deamon():
     # daemon_init
     daemon_loop = False
     with open(os.path.join(os.path.dirname(__file__), "config.json"), "r", encoding="utf-8") as fp:
-        try:
+        try:  # on CaaS
             wsgi_h = importlib.import_module("wsgi_h")
             db = wsgi_h.db
             storage = wsgi_h.GCS.get_bucket(json.load(fp)["GCS_bucket"])
 #           daemon_loop = True
-        except:
+        except:  # on FaaS
             db = firestore.Client()
             storage = firestorage.Client().get_bucket(
                 json.load(fp)["GCS_bucket"])
@@ -57,16 +57,19 @@ def deamon():
                     for url in urls:
                         time.sleep(3)
                         if True:
-                            print("access")
+                            print(hashlib.md5(url.encode('utf-8')).hexdigest())
                             resp_json = https.request('GET', parse.quote(
                                 url, safe="=&-?:/%")).data.decode('utf-8')
                             with zipfile.ZipFile(inmemory_zip, 'a', compression=zipfile.ZIP_DEFLATED) as zf:
-                                zf.writestr(str(int(datetime.now().timestamp(
-                                )*1000)), json.dumps(resp_json, ensure_ascii=False))
-                   # storage.ref("nicoapi/test").put(timestamp+".zip")
-                    #storage.blob("nicoapi/test").upload_from_file(inmemory_zip)
+                                zf.writestr(hashlib.md5(url.encode(
+                                    'utf-8')).hexdigest(), json.dumps(resp_json, ensure_ascii=False))
+                    # with open("tmp/"+timestamp+"_"+str(int(datetime.now().timestamp()*1000))+".zip", "wb") as f:
+                    #    f.write(inmemory_zip.getvalue())
                     with open("tmp/"+timestamp+".zip", "wb") as f:
                         f.write(inmemory_zip.getvalue())
+                    storage.blob(
+                        "nicoapi/test_uid").upload_from_filename("tmp/"+timestamp+".zip")
+#                    storage.blob("nicoapi/test/haz.zip").upload_from_file(inmemory_zip)
             print("end")
 
         # daemon_loop_management

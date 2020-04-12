@@ -10,7 +10,10 @@ package-lock.json
 
 # Python
 __pycache__/
+
+# server
 tmp/
+db/
 
 # VScode
 .vscode/

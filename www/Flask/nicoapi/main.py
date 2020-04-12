@@ -10,6 +10,9 @@ import time
 from google.cloud import firestore
 from google.cloud import storage as firestorage
 from datetime import datetime
+import urllib3
+import certifi
+from urllib import parse
 
 
 # server
@@ -52,8 +55,8 @@ def deamon():
             for recode in recodes.values():
                 for data in recode:
                     time.sleep(3)
-                    print("rec:"+data)
-
+                    deta=parse.quote(data, safe="=&-?:/%")
+                    print("rec:"+deta)
             docRef.update(
                 {str(int(datetime.now().timestamp()*1000)): ["finish!"]})
 

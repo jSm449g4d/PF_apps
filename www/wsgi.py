@@ -2,7 +2,6 @@
 import flask
 import os
 import sys
-# application
 import importlib
 import psutil
 import platform

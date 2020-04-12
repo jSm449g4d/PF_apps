@@ -1,7 +1,7 @@
-###  CONVERT DEV+OPS TO OPS FOR ORVERLAP INTO ANOTHER HOSTING (Apache2.4 etc...) ###
+###  CONVERT DEV+OPS TO OPS FOR ORVERLAPPNG INTO ANOTHER HOSTING (Apache2.4 etc...) ###
 # 1. bash mkops.sh
 # 2. $ cd /var/
-# 3. Plz copy&paste intowww.zip → /var/
+# 3. Plz drag&drop www.zip → /var/
 # 4. $ 7z x www.zip
 # 5. $ sudo rm -r /var/www.zip
 

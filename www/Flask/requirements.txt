@@ -4,17 +4,15 @@ setuptools
 
 # server
 flask
+psutil
 waitress
+
+# application
+google-cloud-firestore
+google-cloud-storage
+BeautifulSoup4
+werkzeug
+janome
 urllib3
 certifi
 requests
-
-# application
-janome
-certifi
-BeautifulSoup4
-psutil
-werkzeug
-firebase-admin
-google-cloud-firestore
-google-cloud-storage

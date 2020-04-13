@@ -31,17 +31,17 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         }, 200)
     }
     componentDidMount() {
-        this.db_load_getorders.bind(this)()
+        this.db_cLud_getorders.bind(this)()
     }
     componentDidUpdate() {
         if (Date.now() > this.state.lastops_timestamp + 30000) {
-            this.db_load_getorders.bind(this)()
+            this.db_cLud_getorders.bind(this)()
             this.setState({ lastops_timestamp: Date.now() })
         }
     }
 
     //functions
-    db_load_getorders() {
+    db_cLud_getorders() {
         //prevent SPAMing
         if (this.state.uid == "") return;
         db.doc("nicoapi/" + this.state.uid).get().then((doc) => {
@@ -49,7 +49,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             else { this.setState({ orders: JSON.stringify(doc.data()) }) }
         })
     }
-    db_update_genorders() {
+    db_CLUd_genorders() {
         //_generate_orders
         const request_url = [this.state.API_endpoint + "?"];
         const tmp_fields = JSON.parse(this.state.fields)
@@ -80,7 +80,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                     if (doc.exists == false) { docRef.set({}); } //create new document
                     docRef.update({ [Date.now().toString()]: request_url }) // request_timestamp:[request_url_0,request_url_1,...]
                 });
-                setTimeout(this.db_load_getorders, 1000);
+                setTimeout(this.db_cLud_getorders.bind(this), 1000);
             };
         }
         else { alert("dont SPAM !\nremaining cooling time: " + String(this.state.stopspam_timestamp - Date.now() + 6000) + "[ms]"); return; };
@@ -206,7 +206,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                 this.setState({ fields: JSON.stringify(Object.assign(JSON.parse(this.state.fields), { [Date.now().toString()]: { field: "", value: "" } })) })
                             }}>+Add</button>
                         </td>
-                        <td><button className="btn btn-success" onClick={() => { this.db_update_genorders(); }}>Launch</button></td>
+                        <td><button className="btn btn-success" onClick={() => { this.db_CLUd_genorders(); }}>Launch</button></td>
                     </tr>
                 </tbody>
             </table>)
@@ -272,7 +272,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                             <nav className="navbar" style={{ backgroundColor: "wheat" }}>
                                 <div>
                                     <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#nicoapi_navber_orders"
-                                        onClick={() => { this.db_load_getorders() }}>Show_Orders</button>
+                                        onClick={() => { this.db_cLud_getorders() }}>Show_Orders</button>
                                 </div>
                                 {() => {
                                     let num: Number = 0; let keys = Object.keys(JSON.parse(this.state.orders));

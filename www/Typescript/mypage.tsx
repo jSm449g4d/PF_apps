@@ -21,7 +21,6 @@ export class Mypage_tsx extends React.Component<{}, State> {
             pr: "私はJhon_Doe。窓の蛇遣いです。",
             accessed_by: "FB",
         };
-        this.db_update_setpf = this.db_update_setpf.bind(this)
         setInterval(() => {
             if (auth.currentUser) {
                 if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid });
@@ -31,18 +30,18 @@ export class Mypage_tsx extends React.Component<{}, State> {
         }, 200)
     }
     componentDidMount() {
-        this.db_update_loadpf()
+        this.db_CLud_loadpf.bind(this);
     }
     componentDidUpdate(prevProps: object, prevState: State) {
         if (this.state.uid != prevState.uid) {
-            this.db_update_loadpf();
+            this.db_CLud_loadpf.bind(this)();
         }
     }
 
     //functions
-    db_update_loadpf() {
+    db_CLud_loadpf() {
         if (this.state.uid == "") return;
-        const docRef = db.doc("mypage/"+this.state.uid);
+        const docRef = db.doc("mypage/" + this.state.uid);
         docRef.get().then((doc) => {
             if (doc.exists) {
                 this.setState(doc.data());
@@ -54,9 +53,9 @@ export class Mypage_tsx extends React.Component<{}, State> {
             }
         });
     }
-    db_update_setpf() {
+    db_CLud_setpf() {
         if (this.state.uid == "") return;
-        const docRef = db.doc("mypage/"+this.state.uid);
+        const docRef = db.doc("mypage/" + this.state.uid);
         docRef.get().then((doc) => {
             if (doc.exists) {
                 let tmp_profile = JSON.parse(JSON.stringify(this.state)); delete tmp_profile["uid"];
@@ -108,7 +107,8 @@ export class Mypage_tsx extends React.Component<{}, State> {
                                     (evt) => { this.setState({ [state_element]: evt.target.value }); }} />
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-sm btn-success" data-dismiss="modal" onClick={this.db_update_setpf}>SUBMIT</button>
+                                <button type="button" className="btn btn-sm btn-success" data-dismiss="modal"
+                                    onClick={() => { this.db_CLud_setpf() }}>SUBMIT</button>
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                             </div>
                         </div>
@@ -121,7 +121,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
         return (
             <div>
                 {this.state.uid == "" ?
-                    <h4  className= "d-flex justify-content-center">This application cant use without login</h4> :
+                    <h4 className="d-flex justify-content-center">This application cant use without login</h4> :
                     <div>
                         <div className="m-2 p-1" style={{ background: "khaki" }}>
                             <h4 className="d-flex justify-content-between">

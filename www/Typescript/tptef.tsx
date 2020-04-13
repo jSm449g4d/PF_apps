@@ -27,17 +27,17 @@ export class Tptef_tsx extends React.Component<{}, State> {
         }, 200)
     }
     componentDidMount() {
-        this.db_load_room.bind(this)()
+        this.db_cLud_room.bind(this)()
     }
     componentDidUpdate() {
         if (Date.now() > this.state.lastops_timestamp + 30000) {
-            this.db_load_room.bind(this)()
+            this.db_cLud_room.bind(this)()
             this.setState({ lastops_timestamp: Date.now() })
         }
     }
 
     //functions
-    db_load_room() {
+    db_cLud_room() {
         //prevent SPAMing
         if (this.state.room == "") return;
         const docRef = db.doc("tptef/" + this.state.room)
@@ -59,7 +59,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
             }
         });
     };
-    db_update_addremark(submit_content: string, attach_a_file: any) {
+    db_CLUd_addremark(submit_content: string, attach_a_file: any) {
         //prevent SPAMing
         if (this.state.uid == "" || this.state.room == "") return;
         if (submit_content == "") { alert("Plz input content"); return; };
@@ -80,9 +80,9 @@ export class Tptef_tsx extends React.Component<{}, State> {
                     attachment_dir: attachment_dir,
                 }
             })
-        }); setTimeout(this.db_load_room.bind(this), 500);
+        }); setTimeout(this.db_cLud_room.bind(this), 500);
     }
-    db_updatedelete_delremark(remark_key: string) {
+    db_cLUD_delremark(remark_key: string) {
         //prevent SPAMing
         if (this.state.uid == "" || this.state.room == "") return;
         const docRef = db.doc("tptef/" + this.state.room);
@@ -94,7 +94,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                 })
             }
             if (Object.keys(doc.data()).length < 2) docRef.delete();
-        }); setTimeout(this.db_load_room.bind(this), 500);
+        }); setTimeout(this.db_cLud_room.bind(this), 500);
     }
     storage_download(attachment_dir: string) {
         storage.ref(attachment_dir).getDownloadURL().then((url) => {
@@ -116,7 +116,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
             if (doc_data[keys[i]]["uid"] == this.state.uid) {
                 thread_data_ops.push(
                     <button key={1} className="btn btn-outline-danger btn-sm m-1 rounded-pill"
-                        onClick={(evt: any) => { this.db_updatedelete_delremark(evt.target.value) }}
+                        onClick={(evt: any) => { this.db_cLUD_delremark(evt.target.value) }}
                         value={keys[i]}>delete</button>)
             }
             //attachment download button
@@ -150,7 +150,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                 <div className="d-flex justify-content-between">
                     <input className="form-control" id="room_name" type="text" value={this.state.room} placeholder="Room"
                         onChange={(evt) => { this.setState({ room: evt.target.value }) }} />
-                    <button className="btn btn-success btn-sm ml-auto" onClick={() => { this.db_load_room() }}>Goto_Room</button>
+                    <button className="btn btn-success btn-sm ml-auto" onClick={() => { this.db_cLud_room() }}>Goto_Room</button>
                 </div>
                 {this.render_thread_table()}
                 {this.state.uid == "" ?
@@ -165,7 +165,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                                         onChange={(evt) => { this.setState({ handlename: evt.target.value }) }} />
                                     <input type="file" id="tptef_attachment" />
                                     <button className="btn btn-primary btn-sm mx-1" onClick={() => {
-                                        this.db_update_addremark(
+                                        this.db_CLUd_addremark(
                                             (document.getElementById("tptef_content") as HTMLInputElement).value,
                                             (document.getElementById("tptef_attachment") as HTMLInputElement).files[0]);
                                         (document.getElementById("tptef_content") as HTMLInputElement).value = "";

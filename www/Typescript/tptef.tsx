@@ -7,6 +7,7 @@ const db = fb.firestore();
 
 interface State {
     uid: string; room: string; thread: string; handlename: string;
+    stopspam_timestamp: number; lastops_timestamp: number;
 }
 
 export class Tptef_tsx extends React.Component<{}, State> {
@@ -14,7 +15,8 @@ export class Tptef_tsx extends React.Component<{}, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            uid: "", room: "main", handlename: "窓の民は名無し", thread: JSON.stringify({})
+            uid: "", room: "main", handlename: "窓の民は名無し", thread: JSON.stringify({}),
+            stopspam_timestamp: Date.now(), lastops_timestamp: Date.now(),
         };
         setInterval(() => {
             if (auth.currentUser) {
@@ -27,9 +29,16 @@ export class Tptef_tsx extends React.Component<{}, State> {
     componentDidMount() {
         this.db_load_room.bind(this)()
     }
+    componentDidUpdate() {
+        if (Date.now() > this.state.lastops_timestamp + 30000) {
+            this.db_load_room.bind(this)()
+            this.setState({ lastops_timestamp: Date.now() })
+        }
+    }
 
     //functions
     db_load_room() {
+        //prevent SPAMing
         if (this.state.room == "") return;
         const docRef = db.doc("tptef/" + this.state.room)
         docRef.get().then((doc) => {
@@ -51,6 +60,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
         });
     };
     db_update_addremark(submit_content: string, attach_a_file: any) {
+        //prevent SPAMing
         if (this.state.uid == "" || this.state.room == "") return;
         if (submit_content == "") { alert("Plz input content"); return; };
         const docRef = db.doc("tptef/" + this.state.room);
@@ -70,10 +80,10 @@ export class Tptef_tsx extends React.Component<{}, State> {
                     attachment_dir: attachment_dir,
                 }
             })
-        });
-        setTimeout(this.db_load_room, 1000);
+        }); setTimeout(this.db_load_room.bind(this), 500);
     }
     db_updatedelete_delremark(remark_key: string) {
+        //prevent SPAMing
         if (this.state.uid == "" || this.state.room == "") return;
         const docRef = db.doc("tptef/" + this.state.room);
         docRef.get().then((doc) => {
@@ -84,8 +94,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                 })
             }
             if (Object.keys(doc.data()).length < 2) docRef.delete();
-        });
-        setTimeout(this.db_load_room, 500);
+        }); setTimeout(this.db_load_room.bind(this), 500);
     }
     storage_download(attachment_dir: string) {
         storage.ref(attachment_dir).getDownloadURL().then((url) => {

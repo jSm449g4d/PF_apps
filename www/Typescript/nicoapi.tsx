@@ -2,6 +2,7 @@ import jQuery from 'jquery';
 import React from 'react';
 import ReactDOM from "react-dom";
 import { Account_tsx, auth, fb } from "./component/account";
+import { string } from 'prop-types';
 
 const storage = fb.storage();
 const db = fb.firestore()
@@ -18,7 +19,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         this.state = {
             uid: "", API_endpoint: "https://", service_name: "← Plz \"Select API_endpoint\"",
             fields: JSON.stringify({}), orders: JSON.stringify({}),
-            stopspam_timestamp: Date.now(), lastops_timestamp: Date.now()
+            stopspam_timestamp: Date.now(), lastops_timestamp: Date.now(),
         };
         //check Auth
         setInterval(() => {
@@ -33,7 +34,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         this.db_load_getorders.bind(this)()
     }
     componentDidUpdate() {
-        if (this.state.lastops_timestamp < Date.now() - 10000) {
+        if (Date.now() > this.state.lastops_timestamp + 30000) {
             this.db_load_getorders.bind(this)()
             this.setState({ lastops_timestamp: Date.now() })
         }
@@ -41,17 +42,14 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
 
     //functions
     db_load_getorders() {
+        //prevent SPAMing
         if (this.state.uid == "") return;
         db.doc("nicoapi/" + this.state.uid).get().then((doc) => {
             if (doc.exists == false) { this.setState({ orders: JSON.stringify({}) }) }
             else { this.setState({ orders: JSON.stringify(doc.data()) }) }
         })
     }
-    db_update_genorders(cooling_time_ms: number = 6000) {
-        //prevent SPAMing → cooling_time_ms [ms]
-        if (this.state.stopspam_timestamp > Date.now() - cooling_time_ms) {
-            alert("dont SPAM !\nremaining cooling time: " + String(this.state.stopspam_timestamp - Date.now() + cooling_time_ms) + "[ms]"); return;
-        } else { this.setState({ stopspam_timestamp: Date.now() }) }
+    db_update_genorders() {
         //_generate_orders
         const request_url = [this.state.API_endpoint + "?"];
         const tmp_fields = JSON.parse(this.state.fields)
@@ -72,15 +70,20 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             }
         }
         //db_update_
-        if (confirm("Do you really want to submit?")) {
-            if (this.state.uid == "") return;
-            const docRef = db.doc("nicoapi/" + this.state.uid);
-            docRef.get().then((doc) => {
-                if (doc.exists == false) { docRef.set({}); } //create new document
-                docRef.update({ [Date.now().toString()]: request_url }) // request_timestamp:[request_url_0,request_url_1,...]
-            });
-            setTimeout(this.db_load_getorders, 1000);
-        };
+        //prevent SPAMing
+        if (this.state.uid == "") return;
+        if (Date.now() > this.state.stopspam_timestamp + 6000) {
+            this.setState({ stopspam_timestamp: Date.now() })
+            if (confirm("Do you really want to submit?")) {
+                const docRef = db.doc("nicoapi/" + this.state.uid);
+                docRef.get().then((doc) => {
+                    if (doc.exists == false) { docRef.set({}); } //create new document
+                    docRef.update({ [Date.now().toString()]: request_url }) // request_timestamp:[request_url_0,request_url_1,...]
+                });
+                setTimeout(this.db_load_getorders, 1000);
+            };
+        }
+        else { alert("dont SPAM !\nremaining cooling time: " + String(this.state.stopspam_timestamp - Date.now() + 6000) + "[ms]"); return; };
     }
 
     //renders
@@ -130,6 +133,25 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                     }}>{service_name}</button></td>
             <td>{API_reference == "" ? <div>None</div> : <a href={API_reference}>{API_reference}</a>}</td>
         </tr>)
+    }
+    render_APIendpoint_table() {
+        return (
+            <table className="table table-sm">
+                <thead>
+                    <tr style={{ textAlign: "center" }}>
+                        <th>endpoint</th>
+                        <th>reference</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {this.render_APIendpoint_record("ニコニコ動画", "https://site.nicovideo.jp/search-api-docs/search.html")}
+                    {this.render_APIendpoint_record("ニコニコ生放送", "https://site.nicovideo.jp/search-api-docs/search.html")}
+                    {this.render_APIendpoint_record("なろう小説", "https://dev.syosetu.com/man/api/")}
+                    {this.render_APIendpoint_record("カスタム", "")}
+                </tbody>
+            </table>
+        )
+
     }
     render_APIendpoint_textform() {
         return (<div className="form-inline"><b>{this.state.service_name}</b>
@@ -232,20 +254,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                             </div>
                             {/* API_endpoint collapse */}
                             <div className="collapse" id="nicoapi_navber_APIendpoint_selector">
-                                <table className="table table-sm">
-                                    <thead>
-                                        <tr style={{ textAlign: "center" }}>
-                                            <th>endpoint</th>
-                                            <th>reference</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {this.render_APIendpoint_record("ニコニコ動画", "https://site.nicovideo.jp/search-api-docs/search.html")}
-                                        {this.render_APIendpoint_record("ニコニコ生放送", "https://site.nicovideo.jp/search-api-docs/search.html")}
-                                        {this.render_APIendpoint_record("なろう小説", "https://dev.syosetu.com/man/api/")}
-                                        {this.render_APIendpoint_record("カスタム", "")}
-                                    </tbody>
-                                </table>
+                                {this.render_APIendpoint_table()}
                             </div>
                             {/* collapse navigation */}
                             <nav className="navbar" style={{ backgroundColor: "paleturquoise" }}>
@@ -265,6 +274,11 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                     <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#nicoapi_navber_orders"
                                         onClick={() => { this.db_load_getorders() }}>Show_Orders</button>
                                 </div>
+                                {() => {
+                                    let num: Number = 0; let keys = Object.keys(JSON.parse(this.state.orders));
+                                    //for (let i = 0; i < keys.length; i++) { num += JSON.parse(this.state.orders)[keys[i]].length }
+                                    return (<div>{String(keys.length) + ":" + String(num)}</div>)
+                                }}
                                 <div>
                                     <button className="btn btn-primary btn-sm mx-1">Download</button>
                                     <button className="btn btn-danger btn-sm mx-1">Delete</button>

@@ -39,8 +39,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
     //functions
     db_cLud_loadroom() {
         if (this.state.room == "") return;
-        const docRef = db.doc("tptef/" + this.state.room)
-        docRef.get().then((doc) => {
+        db.doc("tptef/" + this.state.room).get().then((doc) => {
             if (doc.exists == false) {
                 this.setState({
                     thread: JSON.stringify({

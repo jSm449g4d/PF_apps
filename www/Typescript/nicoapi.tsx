@@ -209,8 +209,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     render_orders_text() {
         let num: Number = 0; let keys = Object.keys(JSON.parse(this.state.orders));
         for (let i = 0; i < keys.length; i++) { num += JSON.parse(this.state.orders)[keys[i]].length }
-        return (<div>{"orders / requests: " + String(keys.length) + " / " + String(num)}
-        </div>)
+        return (<h6 className="mx-1">{"orders / requests: " + String(keys.length) + " / " + String(num)}</h6>)
     }
     render_orders_table() {
         const keys = Object.keys(JSON.parse(this.state.orders)).sort();

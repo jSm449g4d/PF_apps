@@ -48,8 +48,8 @@ export class Mypage_tsx extends React.Component<{}, State> {
             }
             else {
                 let tmp_profile = JSON.parse(JSON.stringify(this.state)); delete tmp_profile["uid"];
-                this.setState(tmp_profile);
                 docRef.set(tmp_profile);
+                this.setState(tmp_profile);
             }
         });
     }

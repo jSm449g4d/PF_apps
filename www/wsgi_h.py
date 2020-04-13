@@ -18,6 +18,7 @@ GCP_key = "FirebaseAdmin_Key.json"
 class db_Ref:
     db_dict = {}
     db_path = ""
+    id = ""
 
     def __init__(self, db_path: str = ""):
         if db_path == "":
@@ -31,6 +32,7 @@ class db_Ref:
             except:
                 pass
         self.db_path = db_path.replace("\\", "/").replace("..", "_")
+        self.id = os.path.basename(db_path)
 
     def list_documents(self):
         Refs = []

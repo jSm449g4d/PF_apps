@@ -1,3 +1,4 @@
+import jQuery from 'jquery';
 import React from 'react';
 import ReactDOM from "react-dom";
 import { Account_tsx, auth, fb } from "./component/account";
@@ -6,8 +7,8 @@ const storage = fb.storage();
 const db = fb.firestore()
 
 interface State {
-    uid: string; API_endpoint: string; service_name: string; stopspam_timestamp: number;
-    fields: string; orders: string;
+    uid: string; API_endpoint: string; service_name: string; fields: string; orders: string;
+    stopspam_timestamp: number; lastops_timestamp: number;
 }
 
 export class Nicoapi_tsx extends React.Component<{}, State> {
@@ -16,9 +17,10 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         super(props);
         this.state = {
             uid: "", API_endpoint: "https://", service_name: "← Plz \"Select API_endpoint\"",
-            fields: JSON.stringify({}), orders: JSON.stringify({}), stopspam_timestamp: Date.now(),
+            fields: JSON.stringify({}), orders: JSON.stringify({}),
+            stopspam_timestamp: Date.now(), lastops_timestamp: Date.now()
         };
-        this.db_load_getorders = this.db_load_getorders.bind(this);
+        //check Auth
         setInterval(() => {
             if (auth.currentUser) {
                 if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid });
@@ -28,7 +30,13 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         }, 200)
     }
     componentDidMount() {
-        this.db_load_getorders()
+        this.db_load_getorders.bind(this)()
+    }
+    componentDidUpdate() {
+        if (this.state.lastops_timestamp < Date.now() - 10000) {
+            this.db_load_getorders.bind(this)()
+            this.setState({ lastops_timestamp: Date.now() })
+        }
     }
 
     //functions
@@ -41,10 +49,10 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     }
     db_update_genorders(cooling_time_ms: number = 6000) {
         //prevent SPAMing → cooling_time_ms [ms]
-        if (Date.now() < this.state.stopspam_timestamp + cooling_time_ms) {
-            alert("dont SPAM !\nremaining cooling time: " + String(this.state.stopspam_timestamp + cooling_time_ms - Date.now()) + "[ms]"); return;
+        if (this.state.stopspam_timestamp > Date.now() - cooling_time_ms) {
+            alert("dont SPAM !\nremaining cooling time: " + String(this.state.stopspam_timestamp - Date.now() + cooling_time_ms) + "[ms]"); return;
         } else { this.setState({ stopspam_timestamp: Date.now() }) }
-        //generate_orders
+        //_generate_orders
         const request_url = [this.state.API_endpoint + "?"];
         const tmp_fields = JSON.parse(this.state.fields)
         const keys = Object.keys(JSON.parse(this.state.fields)).sort();
@@ -52,7 +60,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             if (tmp_fields[keys[i]]["field"] == "") continue;
             if (tmp_fields[keys[i]]["value"].indexOf("$for(") == 0) {
                 const tmp_for = tmp_fields[keys[i]]["value"].split(/[(;)]/);
-                if (tmp_for.length != 5) { alert("wrong:fields→value"); return; }
+                if (tmp_for.length != 5) { alert("wrong: fields→value"); return; }
                 const request_url_length_before = request_url.length
                 for (let j = 0; j < request_url_length_before; j++) {
                     for (let k = Number(tmp_for[1]); k < Number(tmp_for[2]); k += Number(tmp_for[3]))
@@ -62,15 +70,17 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             for (let j = 0; j < request_url.length; j++) {
                 request_url[j] += "&" + tmp_fields[keys[i]]["field"] + "=" + tmp_fields[keys[i]]["value"]
             }
-        } alert(request_url);
-        //db_update_orders
-        if (this.state.uid == "") return;
-        const docRef = db.doc("nicoapi/" + this.state.uid);
-        docRef.get().then((doc) => {
-            if (doc.exists == false) { docRef.set({}); } //create new document
-            docRef.update({ [Date.now().toString()]: request_url }) // request_timestamp:[request_url_0,request_url_1,...]
-        });
-        setTimeout(this.db_load_getorders, 1000);
+        }
+        //db_update_
+        if (confirm("Do you really want to submit?")) {
+            if (this.state.uid == "") return;
+            const docRef = db.doc("nicoapi/" + this.state.uid);
+            docRef.get().then((doc) => {
+                if (doc.exists == false) { docRef.set({}); } //create new document
+                docRef.update({ [Date.now().toString()]: request_url }) // request_timestamp:[request_url_0,request_url_1,...]
+            });
+            setTimeout(this.db_load_getorders, 1000);
+        };
     }
 
     //renders
@@ -180,23 +190,23 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             </table>)
     }
     render_orders_table() {
-        //JSON.parse(this.state.orders)
-        const keys = Object.keys({"A":"n"}).sort();
-        const orders_record = []; let tmp_orders = {"A":"n"};
+        const keys = Object.keys(JSON.parse(this.state.orders)).sort();
+        const orders_record = []; let tmp_orders = JSON.parse(this.state.orders);
         for (var i = 0; i < keys.length; i++) {
-            const fields_data = [];
+            const orders_data = [];
             //Timestamp
-            fields_data.push(<td key={1}>UC: timestamp</td>)
-            //Field (textform)
-            fields_data.push(<td key={2}>UC: requests</td>)
-            orders_record.push(<tr key={i}>{fields_data}</tr>)
+            orders_data.push(<td key={1}>{keys[i]}</td>)
+            //Request URLs
+            orders_data.push(<td key={2} style={{ fontSize: "12px" }}>{tmp_orders[keys[i]].join('\n')}</td>)
+            orders_record.push(<tr key={i}>{orders_data}</tr>)
         }
+        if (keys.length == 0) { orders_record.push(<tr><td colSpan={2}>Not Exist</td></tr>); }
         return (
             <table className="table table-sm">
                 <thead>
                     <tr style={{ textAlign: "center" }}>
-                        <th style={{ width: "15%" }} >timestamp</th>
-                        <th>URL</th>
+                        <th style={{ width: "10%" }} >timestamp</th>
+                        <th>Request URLs</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -252,7 +262,8 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                         <div style={{ backgroundColor: "lightyellow" }}>
                             <nav className="navbar" style={{ backgroundColor: "wheat" }}>
                                 <div>
-                                    <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#nicoapi_navber_orders">Show_Orders</button>
+                                    <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#nicoapi_navber_orders"
+                                        onClick={() => { this.db_load_getorders() }}>Show_Orders</button>
                                 </div>
                                 <div>
                                     <button className="btn btn-primary btn-sm mx-1">Download</button>

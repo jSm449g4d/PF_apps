@@ -16,7 +16,6 @@ export class Tptef_tsx extends React.Component<{}, State> {
         this.state = {
             uid: "", room: "main", handlename: "窓の民は名無し", thread: JSON.stringify({})
         };
-        this.db_load_room = this.db_load_room.bind(this);
         setInterval(() => {
             if (auth.currentUser) {
                 if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid });
@@ -26,13 +25,13 @@ export class Tptef_tsx extends React.Component<{}, State> {
         }, 200)
     }
     componentDidMount() {
-        this.db_load_room()
+        this.db_load_room.bind(this)()
     }
 
     //functions
     db_load_room() {
         if (this.state.room == "") return;
-        const docRef = db.doc("tptef/"+this.state.room)
+        const docRef = db.doc("tptef/" + this.state.room)
         docRef.get().then((doc) => {
             if (doc.exists == false) {
                 this.setState({
@@ -54,7 +53,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
     db_update_addremark(submit_content: string, attach_a_file: any) {
         if (this.state.uid == "" || this.state.room == "") return;
         if (submit_content == "") { alert("Plz input content"); return; };
-        const docRef = db.doc("tptef/"+this.state.room);
+        const docRef = db.doc("tptef/" + this.state.room);
         let attachment_dir = "";
         docRef.get().then((doc) => {
             if (doc.exists == false) docRef.set({}); //create new document
@@ -76,7 +75,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
     }
     db_updatedelete_delremark(remark_key: string) {
         if (this.state.uid == "" || this.state.room == "") return;
-        const docRef = db.doc("tptef/"+this.state.room);
+        const docRef = db.doc("tptef/" + this.state.room);
         docRef.get().then((doc) => {
             if (doc.exists) {
                 if (doc.data()[remark_key].attachment_dir) storage.ref(doc.data()[remark_key].attachment_dir).delete()
@@ -84,7 +83,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                     [remark_key]: fb.firestore.FieldValue.delete()
                 })
             }
-            if (Object.keys(doc.data()).length <2) docRef.delete();
+            if (Object.keys(doc.data()).length < 2) docRef.delete();
         });
         setTimeout(this.db_load_room, 500);
     }

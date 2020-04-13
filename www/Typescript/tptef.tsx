@@ -59,28 +59,25 @@ export class Tptef_tsx extends React.Component<{}, State> {
             }
         });
     };
-    db_CLUd_addremark(submit_content: string, attach_a_file: any) {
+    db_Clud_addremark(submit_content: string, attach_a_file: any) {
         //prevent SPAMing
         if (this.state.uid == "" || this.state.room == "") return;
         if (submit_content == "") { alert("Plz input content"); return; };
-        const docRef = db.doc("tptef/" + this.state.room);
-        let attachment_dir = "";
-        docRef.get().then((doc) => {
-            if (doc.exists == false) docRef.set({}); //create new document
-            if (attach_a_file) {
-                attachment_dir = "tptef/" + this.state.uid + "/" + attach_a_file.name;
-                storage.ref(attachment_dir).put(attach_a_file);
+        let attachment_dir: string = "";
+        if (attach_a_file) {
+            attachment_dir = "tptef/" + this.state.uid + "/" + attach_a_file.name;
+            storage.ref(attachment_dir).put(attach_a_file);
+        }
+        db.doc("tptef/" + this.state.room).set({
+            [Date.now().toString()]: {
+                handlename: this.state.handlename,
+                uid: this.state.uid,
+                content: submit_content,
+                date: Date.now().toString(),
+                attachment_dir: attachment_dir,
             }
-            docRef.update({
-                [Date.now().toString()]: {
-                    handlename: this.state.handlename,
-                    uid: this.state.uid,
-                    content: submit_content,
-                    date: Date.now().toString(),
-                    attachment_dir: attachment_dir,
-                }
-            })
-        }); setTimeout(this.db_cLud_room.bind(this), 500);
+        }, { merge: true });
+        setTimeout(this.db_cLud_room.bind(this), 500);
     }
     db_cLUD_delremark(remark_key: string) {
         //prevent SPAMing
@@ -165,7 +162,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                                         onChange={(evt) => { this.setState({ handlename: evt.target.value }) }} />
                                     <input type="file" id="tptef_attachment" />
                                     <button className="btn btn-primary btn-sm mx-1" onClick={() => {
-                                        this.db_CLUd_addremark(
+                                        this.db_Clud_addremark(
                                             (document.getElementById("tptef_content") as HTMLInputElement).value,
                                             (document.getElementById("tptef_attachment") as HTMLInputElement).files[0]);
                                         (document.getElementById("tptef_content") as HTMLInputElement).value = "";

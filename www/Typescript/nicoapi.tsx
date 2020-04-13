@@ -49,7 +49,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             else { this.setState({ orders: JSON.stringify(doc.data()) }) }
         })
     }
-    db_CLUd_genorders() {
+    db_Clud_genorders() {
         //_generate_orders
         const request_url = [this.state.API_endpoint + "?"];
         const tmp_fields = JSON.parse(this.state.fields)
@@ -75,11 +75,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         if (Date.now() > this.state.stopspam_timestamp + 6000) {
             this.setState({ stopspam_timestamp: Date.now() })
             if (confirm("Do you really want to submit?")) {
-                const docRef = db.doc("nicoapi/" + this.state.uid);
-                docRef.get().then((doc) => {
-                    if (doc.exists == false) { docRef.set({}); } //create new document
-                    docRef.update({ [Date.now().toString()]: request_url }) // request_timestamp:[request_url_0,request_url_1,...]
-                });
+                db.doc("nicoapi/" + this.state.uid).set({ [Date.now().toString()]: request_url }, { merge: true });
                 setTimeout(this.db_cLud_getorders.bind(this), 1000);
             };
         }
@@ -206,10 +202,16 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                 this.setState({ fields: JSON.stringify(Object.assign(JSON.parse(this.state.fields), { [Date.now().toString()]: { field: "", value: "" } })) })
                             }}>+Add</button>
                         </td>
-                        <td><button className="btn btn-success" onClick={() => { this.db_CLUd_genorders(); }}>Launch</button></td>
+                        <td><button className="btn btn-success" onClick={() => { this.db_Clud_genorders(); }}>Launch</button></td>
                     </tr>
                 </tbody>
             </table>)
+    }
+    render_orders_text() {
+        let num: Number = 0; let keys = Object.keys(JSON.parse(this.state.orders));
+        for (let i = 0; i < keys.length; i++) { num += JSON.parse(this.state.orders)[keys[i]].length }
+        return (<div>{"orders / requests: " + String(keys.length) + " / " + String(num)}
+        </div>)
     }
     render_orders_table() {
         const keys = Object.keys(JSON.parse(this.state.orders)).sort();
@@ -270,16 +272,12 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                         {/* OUTPUT console */}
                         <div style={{ backgroundColor: "lightyellow" }}>
                             <nav className="navbar" style={{ backgroundColor: "wheat" }}>
-                                <div>
+                                <div className="form-inline">
                                     <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#nicoapi_navber_orders"
-                                        onClick={() => { this.db_cLud_getorders() }}>Show_Orders</button>
+                                        onClick={() => { this.db_cLud_getorders() }}>Orders</button>
+                                    {this.render_orders_text()}
                                 </div>
-                                {() => {
-                                    let num: Number = 0; let keys = Object.keys(JSON.parse(this.state.orders));
-                                    //for (let i = 0; i < keys.length; i++) { num += JSON.parse(this.state.orders)[keys[i]].length }
-                                    return (<div>{String(keys.length) + ":" + String(num)}</div>)
-                                }}
-                                <div>
+                                <div className="form-inline">
                                     <button className="btn btn-primary btn-sm mx-1">Download</button>
                                     <button className="btn btn-danger btn-sm mx-1">Delete</button>
                                 </div>

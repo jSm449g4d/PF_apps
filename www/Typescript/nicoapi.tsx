@@ -42,7 +42,6 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
 
     //functions
     db_cLud_getorders() {
-        //prevent SPAMing
         if (this.state.uid == "") return;
         db.doc("nicoapi/" + this.state.uid).get().then((doc) => {
             if (doc.exists == false) { this.setState({ orders: JSON.stringify({}) }) }

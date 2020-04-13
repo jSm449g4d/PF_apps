@@ -48,20 +48,15 @@ export class Mypage_tsx extends React.Component<{}, State> {
             }
             else {
                 let tmp_profile = JSON.parse(JSON.stringify(this.state)); delete tmp_profile["uid"];
-                docRef.set(tmp_profile);
                 this.setState(tmp_profile);
+                docRef.set(tmp_profile);
             }
         });
     }
-    db_CLud_setpf() {
+    db_Clud_setpf() {
         if (this.state.uid == "") return;
-        const docRef = db.doc("mypage/" + this.state.uid);
-        docRef.get().then((doc) => {
-            if (doc.exists) {
-                let tmp_profile = JSON.parse(JSON.stringify(this.state)); delete tmp_profile["uid"];
-                docRef.set(tmp_profile);
-            }
-        });
+        let tmp_profile = JSON.parse(JSON.stringify(this.state)); delete tmp_profile["uid"];
+        db.doc("mypage/" + this.state.uid).set(tmp_profile, { merge: true });
     }
     icon_download() {
         const storageRef = storage.ref("mypage/" + this.state.uid + "/icon.img");
@@ -108,7 +103,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-sm btn-success" data-dismiss="modal"
-                                    onClick={() => { this.db_CLud_setpf() }}>SUBMIT</button>
+                                    onClick={() => { this.db_Clud_setpf() }}>SUBMIT</button>
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                             </div>
                         </div>

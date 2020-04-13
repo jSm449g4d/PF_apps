@@ -7,7 +7,7 @@ const db = fb.firestore();
 
 interface State {
     uid: string; room: string; thread: string; handlename: string;
-    stopspam_timestamp: number; lastops_timestamp: number;
+    lastops_timestamp: number;
 }
 
 export class Tptef_tsx extends React.Component<{}, State> {
@@ -16,7 +16,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
         super(props);
         this.state = {
             uid: "", room: "main", handlename: "窓の民は名無し", thread: JSON.stringify({}),
-            stopspam_timestamp: Date.now(), lastops_timestamp: Date.now(),
+            lastops_timestamp: Date.now(),
         };
         setInterval(() => {
             if (auth.currentUser) {
@@ -27,18 +27,17 @@ export class Tptef_tsx extends React.Component<{}, State> {
         }, 200)
     }
     componentDidMount() {
-        this.db_cLud_room.bind(this)()
+        this.db_cLud_loadroom.bind(this)()
     }
     componentDidUpdate() {
         if (Date.now() > this.state.lastops_timestamp + 30000) {
-            this.db_cLud_room.bind(this)()
+            this.db_cLud_loadroom.bind(this)()
             this.setState({ lastops_timestamp: Date.now() })
         }
     }
 
     //functions
-    db_cLud_room() {
-        //prevent SPAMing
+    db_cLud_loadroom() {
         if (this.state.room == "") return;
         const docRef = db.doc("tptef/" + this.state.room)
         docRef.get().then((doc) => {
@@ -60,7 +59,6 @@ export class Tptef_tsx extends React.Component<{}, State> {
         });
     };
     db_Clud_addremark(submit_content: string, attach_a_file: any) {
-        //prevent SPAMing
         if (this.state.uid == "" || this.state.room == "") return;
         if (submit_content == "") { alert("Plz input content"); return; };
         let attachment_dir: string = "";
@@ -77,21 +75,20 @@ export class Tptef_tsx extends React.Component<{}, State> {
                 attachment_dir: attachment_dir,
             }
         }, { merge: true });
-        setTimeout(this.db_cLud_room.bind(this), 500);
+        setTimeout(this.db_cLud_loadroom.bind(this), 500);
     }
-    db_cLUD_delremark(remark_key: string) {
-        //prevent SPAMing
+    db_cLuD_delremark(remark_key: string) {
         if (this.state.uid == "" || this.state.room == "") return;
         const docRef = db.doc("tptef/" + this.state.room);
         docRef.get().then((doc) => {
             if (doc.exists) {
                 if (doc.data()[remark_key].attachment_dir) storage.ref(doc.data()[remark_key].attachment_dir).delete()
-                docRef.update({
+                docRef.set({
                     [remark_key]: fb.firestore.FieldValue.delete()
-                })
+                }, { merge: true })
             }
             if (Object.keys(doc.data()).length < 2) docRef.delete();
-        }); setTimeout(this.db_cLud_room.bind(this), 500);
+        }); setTimeout(this.db_cLud_loadroom.bind(this), 500);
     }
     storage_download(attachment_dir: string) {
         storage.ref(attachment_dir).getDownloadURL().then((url) => {
@@ -113,7 +110,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
             if (doc_data[keys[i]]["uid"] == this.state.uid) {
                 thread_data_ops.push(
                     <button key={1} className="btn btn-outline-danger btn-sm m-1 rounded-pill"
-                        onClick={(evt: any) => { this.db_cLUD_delremark(evt.target.value) }}
+                        onClick={(evt: any) => { this.db_cLuD_delremark(evt.target.value) }}
                         value={keys[i]}>delete</button>)
             }
             //attachment download button
@@ -147,7 +144,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                 <div className="d-flex justify-content-between">
                     <input className="form-control" id="room_name" type="text" value={this.state.room} placeholder="Room"
                         onChange={(evt) => { this.setState({ room: evt.target.value }) }} />
-                    <button className="btn btn-success btn-sm ml-auto" onClick={() => { this.db_cLud_room() }}>Goto_Room</button>
+                    <button className="btn btn-success btn-sm ml-auto" onClick={() => { this.db_cLud_loadroom() }}>Goto_Room</button>
                 </div>
                 {this.render_thread_table()}
                 {this.state.uid == "" ?

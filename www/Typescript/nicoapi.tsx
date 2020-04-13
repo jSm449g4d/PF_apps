@@ -147,10 +147,11 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
 
     }
     render_APIendpoint_textform() {
-        return (<div className="form-inline"><b>{this.state.service_name}</b>
-            <input type="text" className="form-control form-control-sm mx-1" size={60} value={this.state.API_endpoint}
-                onChange={(evt: any) => { this.setState({ API_endpoint: evt.target.value, service_name: "カスタム" }); }} />
-        </div>)
+        return (
+            <div className="form-inline"><b>{this.state.service_name}</b>
+                <input type="text" className="form-control form-control-sm mx-1" size={60} value={this.state.API_endpoint}
+                    onChange={(evt: any) => { this.setState({ API_endpoint: evt.target.value, service_name: "カスタム" }); }} />
+            </div>)
     }
     render_filelds_table() {
         const keys = Object.keys(JSON.parse(this.state.fields)).sort();

@@ -17,7 +17,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
         this.state = {
             uid: "", image_url: "",
             profile: JSON.stringify({
-                nickname: "窓の民は名無し", pr: "私はJhon_Doe。窓の蛇遣いです。", accessed_by: "FB",
+                nickname: "窓の民は名無し", pr: "私はJhon_Doe。窓の蛇遣いです。", timestamp: Date.now(),
             }),
         };
         setInterval(() => {
@@ -50,14 +50,32 @@ export class Mypage_tsx extends React.Component<{}, State> {
         if (this.state.uid == "") return;
         db.doc("mypage/" + this.state.uid).set(JSON.parse(this.state.profile), { merge: true });
     }
-    icon_download() {
+    storage_cLud_icon() {
         storage.ref("mypage/" + this.state.uid + "/icon.img").getDownloadURL().then((url) => {
             if (this.state.image_url != url) this.setState({ image_url: url });
         }).catch(() => { if (this.state.image_url != "") this.setState({ image_url: "" }); })
+    }
+    storage_Clud_icon(upload_file: any) {
+        storage.ref("mypage/" + this.state.uid + "/icon.img").put(upload_file);
+    }
+    icon_upload() {
+        return (
+            <button type="button" className="btn btn-outline-success btn-sm" onClick={
+                (evt) => { $(evt.currentTarget.children[0]).click() }}>
+                Upload_Icon
+                <input type="file" className="d-none" onChange={
+                    (evt) => { this.storage_Clud_icon(evt.target.files[0]) }} accept="image/jpeg,image/png" />
+            </button>
+        )
+    }
+
+    //renders
+    render_icon() {
+        this.storage_cLud_icon();
         if (this.state.image_url == "") { return (<div>No Image</div>) }
         return (<div><img src={this.state.image_url} alt={this.state.image_url} width="200" height="200" /></div>)
     }
-    icon_upload() {
+    render_upicon() {
         return (
             <div>
                 <button type="button" className="btn btn-outline-success btn-sm" onClick={(evt) => {
@@ -71,8 +89,6 @@ export class Mypage_tsx extends React.Component<{}, State> {
             </div>
         )
     }
-
-    //renders
     render_changebutton(title: string, state_element: string) {
         let modal_id = "mygape_modal_" + title; let modal_id_s = "#" + modal_id;
         return (
@@ -119,7 +135,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
                                 </div>
                             </h4>
                             <div className="d-flex">
-                                <div className="">{this.icon_download()}</div>
+                                <div className="">{this.render_icon()}</div>
                                 <div className="bg-light m-1">
                                     <div className="d-flex justify-content-between bg-white m-1">
                                         <h5 className="">PR</h5>

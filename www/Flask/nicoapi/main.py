@@ -39,15 +39,18 @@ def deamon():
 
     # daemon_loop_process
     while True:
+        # DB layer
         https = urllib3.PoolManager(cert_reqs='CERT_REQUIRED', ca_certs=certifi.where(
         ), headers={"User-Agent": "nicoapi"})
         docRefs = db.collection('nicoapi').list_documents()
         for docRef in docRefs:
             recodes = docRef.get().to_dict()
+            # Document layer
             for timestamp, urls in recodes.items():
                 with io.BytesIO() as inmemory_zip:
                     for url in urls:
                         time.sleep(3)
+                        print(hashlib.md5(url.encode('utf-8')).hexdigest())
                         try:
                             resp_json = https.request('GET', parse.quote(
                                 url, safe="=&-?:/%")).data.decode('utf-8')

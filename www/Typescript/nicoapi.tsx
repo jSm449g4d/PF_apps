@@ -48,8 +48,15 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             else { this.setState({ orders: JSON.stringify(doc.data()) }) }
         })
     }
-    db_Clud_genorders() {
-        //_generate_orders
+    db_Clud_genorders(request_dict: any) {
+        if (this.state.uid == "") return;
+        this.setState({ stopspam_timestamp: Date.now() })
+        if (confirm("Do you really want to submit?")) {
+            db.doc("nicoapi/" + this.state.uid).set(request_dict, { merge: true });
+            setTimeout(this.db_cLud_getorders.bind(this), 1000);
+        };
+    }
+    _genorders() {
         const request_url = [this.state.API_endpoint + "?"];
         const tmp_fields = JSON.parse(this.state.fields)
         const keys = Object.keys(JSON.parse(this.state.fields)).sort();
@@ -68,17 +75,8 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                 request_url[j] += "&" + tmp_fields[keys[i]]["field"] + "=" + tmp_fields[keys[i]]["value"]
             }
         }
-        //db_update_
-        //prevent SPAMing
-        if (this.state.uid == "") return;
-        if (Date.now() > this.state.stopspam_timestamp + 6000) {
-            this.setState({ stopspam_timestamp: Date.now() })
-            if (confirm("Do you really want to submit?")) {
-                db.doc("nicoapi/" + this.state.uid).set({ [Date.now().toString()]: request_url }, { merge: true });
-                setTimeout(this.db_cLud_getorders.bind(this), 1000);
-            };
-        }
-        else { alert("dont SPAM !\nremaining cooling time: " + String(this.state.stopspam_timestamp - Date.now() + 6000) + "[ms]"); return; };
+        if (Date.now() > this.state.stopspam_timestamp + 6000) { this.db_Clud_genorders({ [Date.now().toString()]: request_url }) }
+        else { alert("dont SPAM !\nremaining cooling time: " + String(this.state.stopspam_timestamp - Date.now() + 6000) + "[ms]") };
     }
 
     //renders
@@ -201,7 +199,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                 this.setState({ fields: JSON.stringify(Object.assign(JSON.parse(this.state.fields), { [Date.now().toString()]: { field: "", value: "" } })) })
                             }}>+Add</button>
                         </td>
-                        <td><button className="btn btn-success" onClick={() => { this.db_Clud_genorders(); }}>Launch</button></td>
+                        <td><button className="btn btn-success" onClick={() => { this._genorders(); }}>Launch</button></td>
                     </tr>
                 </tbody>
             </table>)

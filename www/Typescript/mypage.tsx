@@ -6,8 +6,7 @@ const storage = fb.storage();
 const db = fb.firestore()
 
 interface State {
-    uid: string, image_url: string, nickname: string, pr: string, accessed_by: string,
-    [key: string]: string;
+    uid: string, image_url: string, profile: string
 }
 
 
@@ -16,10 +15,10 @@ export class Mypage_tsx extends React.Component<{}, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            uid: "", image_url: "No_Image",
-            nickname: "窓の民は名無し",
-            pr: "私はJhon_Doe。窓の蛇遣いです。",
-            accessed_by: "FB",
+            uid: "", image_url: "",
+            profile: JSON.stringify({
+                nickname: "窓の民は名無し", pr: "私はJhon_Doe。窓の蛇遣いです。", accessed_by: "FB",
+            }),
         };
         setInterval(() => {
             if (auth.currentUser) {
@@ -43,34 +42,22 @@ export class Mypage_tsx extends React.Component<{}, State> {
         if (this.state.uid == "") return;
         const docRef = db.doc("mypage/" + this.state.uid);
         docRef.get().then((doc) => {
-            if (doc.exists) {
-                this.setState(doc.data());
-            }
-            else {
-                let tmp_profile = JSON.parse(JSON.stringify(this.state)); delete tmp_profile["uid"];
-                docRef.set(tmp_profile);
-                this.setState(tmp_profile);
-            }
+            if (doc.exists) { this.setState({ profile: JSON.stringify(doc.data()) }); }
+            else { docRef.set(JSON.parse(this.state.profile), { merge: true }); }
         });
     }
     db_Clud_setpf() {
         if (this.state.uid == "") return;
-        let tmp_profile = JSON.parse(JSON.stringify(this.state)); delete tmp_profile["uid"];
-        db.doc("mypage/" + this.state.uid).set(tmp_profile, { merge: true });
+        db.doc("mypage/" + this.state.uid).set(JSON.parse(this.state.profile), { merge: true });
     }
     icon_download() {
-        const storageRef = storage.ref("mypage/" + this.state.uid + "/icon.img");
-        storageRef.getDownloadURL().then((url) => {
+        storage.ref("mypage/" + this.state.uid + "/icon.img").getDownloadURL().then((url) => {
             if (this.state.image_url != url) this.setState({ image_url: url });
-        }).catch(() => { if (this.state.image_url != "no image") this.setState({ image_url: "No_Image" }); })
-        return (
-            <div>
-                <img src={this.state.image_url} alt={this.state.image_url} width="200" height="200" />
-            </div>
-        )
+        }).catch(() => { if (this.state.image_url != "") this.setState({ image_url: "" }); })
+        if (this.state.image_url == "") { return (<div>No Image</div>) }
+        return (<div><img src={this.state.image_url} alt={this.state.image_url} width="200" height="200" /></div>)
     }
     icon_upload() {
-        let storageRef = storage.ref("mypage/" + this.state.uid + "/icon.img");
         return (
             <div>
                 <button type="button" className="btn btn-outline-success btn-sm" onClick={(evt) => {
@@ -78,7 +65,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
                 }}>Upload_Icon
                 <input type="file" className="d-none" onChange={(evt) => {
                         if (window.confirm('Are you really submitting?\n' + evt.target.files[0].name)) {
-                            storageRef.put(evt.target.files[0]);
+                            storage.ref("mypage/" + this.state.uid + "/icon.img").put(evt.target.files[0]);
                         }; this.setState({});
                     }} accept="image/jpeg,image/png" /></button>
             </div>
@@ -98,8 +85,12 @@ export class Mypage_tsx extends React.Component<{}, State> {
                                 <h5 className="modal-title">{title}</h5>
                             </div>
                             <div className="modal-body row">
-                                <textarea className="form-control col-12" value={this.state[state_element]} onChange={
-                                    (evt) => { this.setState({ [state_element]: evt.target.value }); }} />
+                                <textarea className="form-control col-12" value={JSON.parse(this.state.profile)[state_element]} onChange={
+                                    (evt) => {
+                                        let tmp_profile_dict = JSON.parse(this.state.profile)
+                                        tmp_profile_dict[state_element] = evt.target.value
+                                        this.setState({ profile: JSON.stringify(tmp_profile_dict) });
+                                    }} />
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-sm btn-success" data-dismiss="modal"
@@ -120,7 +111,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
                     <div>
                         <div className="m-2 p-1" style={{ background: "khaki" }}>
                             <h4 className="d-flex justify-content-between">
-                                <div>{this.state.nickname}</div>
+                                <div>{JSON.parse(this.state.profile)["nickname"]}</div>
                                 <div className="ml-auto">
                                     <div className="form-inline">
                                         {this.render_changebutton("nickname", "nickname")}{this.icon_upload()}
@@ -134,7 +125,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
                                         <h5 className="">PR</h5>
                                         <div className="ml-auto">{this.render_changebutton("PR", "pr")}</div>
                                     </div>
-                                    <h6 className="">{this.state.pr}</h6>
+                                    <h6 className="">{JSON.parse(this.state.profile)["pr"]}</h6>
                                 </div>
                             </div>
                         </div>

@@ -72,7 +72,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                 }
             })
         });
-        setTimeout(this.db_load_room, 500);
+        setTimeout(this.db_load_room, 1000);
     }
     db_updatedelete_delremark(remark_key: string) {
         if (this.state.uid == "" || this.state.room == "") return;
@@ -95,7 +95,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
     }
 
     //renders
-    render_table_thread() {
+    render_thread_table() {
         const doc_data = JSON.parse(this.state.thread);
         const thread_record = [];
         const keys = Object.keys(doc_data).sort();
@@ -125,7 +125,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
         return (
             <table className="table table-sm bg-light">
                 <thead>
-                    <tr>
+                    <tr style={{ textAlign: "center" }}>
                         <th style={{ width: "15%" }}>handlename</th>
                         <th>content</th>
                         <th style={{ width: "15%" }} >timestamp/uid</th>
@@ -144,7 +144,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                         onChange={(evt) => { this.setState({ room: evt.target.value }) }} />
                     <button className="btn btn-success btn-sm ml-auto" onClick={() => { this.db_load_room() }}>Goto_Room</button>
                 </div>
-                {this.render_table_thread()}
+                {this.render_thread_table()}
                 {this.state.uid == "" ?
                     <h4 className="d-flex justify-content-center">Plz login to submit</h4> :
                     <div className="mt-2 p-2" style={{ color: "#AAFEFE", border: "3px double silver", background: "#001111" }}>

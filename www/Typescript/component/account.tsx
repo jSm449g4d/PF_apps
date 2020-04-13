@@ -55,7 +55,7 @@ export class Account_tsx extends React.Component<{}, State> {
     }
 
     //renders
-    accountmodal_render(title: string, func: any) {
+    render_account_modal(title: string, func: any) {
         let modal_id = "mygape_modal_" + title; let modal_id_s = "#" + modal_id;
         func = func.bind(this)
         return (
@@ -92,8 +92,8 @@ export class Account_tsx extends React.Component<{}, State> {
                         <div className="ml-auto">
                             <div className="form-inline">
                                 <input type="button" value="Googleでログイン" className="btn btn-success mx-1 btn-sm" onClick={() => { this.google_login() }} />
-                                {this.accountmodal_render("Sign_in", this.signin)}
-                                {this.accountmodal_render("Sign_up", this.signup)}
+                                {this.render_account_modal("Sign_in", this.signin)}
+                                {this.render_account_modal("Sign_up", this.signup)}
                                 <button type="button" className="btn btn-warning mx-1 btn-sm" onClick={() => { this.easyin() }}>Easy_login</button>
                             </div>
                         </div>

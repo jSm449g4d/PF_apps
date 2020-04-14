@@ -176,12 +176,12 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                     tmp_fields[evt.target.name]["value"] = evt.target.value; this.setState({ fields: JSON.stringify(tmp_fields) });
                 }} name={keys[i]} /></td>)
             //Command (Delete button)
-            tmp_data.push(<td key={3}><button className="btn btn-warning btn-sm"
+            tmp_data.push(<td key={3}><button className="btn btn-warning btn-sm" style={{ textAlign: "center" }}
                 onClick={(evt: any) => {
                     tmp_fields[evt.target.name]["value"] = "$for(1;1601;500)"; this.setState({ fields: JSON.stringify(tmp_fields) })
                 }} name={keys[i]}>$for</button></td>)
             //Ops (Delete button)
-            tmp_data.push(<td key={4}><button className="btn btn-outline-danger btn-sm rounded-pill"
+            tmp_data.push(<td key={4}><button className="btn btn-outline-danger btn-sm rounded-pill" style={{ textAlign: "center" }}
                 onClick={(evt: any) => {
                     delete tmp_fields[evt.target.name]; this.setState({ fields: JSON.stringify(tmp_fields) })
                 }} name={keys[i]}>Delete</button></td>)
@@ -229,7 +229,27 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                     value={keys[i]}>Download</button></td>)
             tmp_record.push(<tr key={i}>{tmp_data}</tr>)
         }
-        if (keys.length == 0) { tmp_record.push(<tr><td colSpan={3}>Not Exist</td></tr>); }
+        if (keys.length == 0) { tmp_record.push(<tr><td colSpan={3} style={{ textAlign: "center" }}>Not Exist</td></tr>); }
+        return (
+            <table className="table table-sm">
+                <thead>
+                    <tr style={{ textAlign: "center" }}>
+                        <th style={{ width: "10%" }} >timestamp</th>
+                        <th>Request URLs</th>
+                        <th style={{ width: "10%" }} >Ops</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {tmp_record}
+                </tbody>
+            </table>)
+    }
+    render_dlconsole_table() {
+        const keys = Object.keys({}).sort();
+        const tmp_record = []; let tmp_orders = {};
+        for (var i = 0; i < keys.length; i++) {
+        }
+        if (keys.length == 0) { tmp_record.push(<tr><td colSpan={3} style={{ textAlign: "center" }}>UC</td></tr>); }
         return (
             <table className="table table-sm">
                 <thead>
@@ -260,10 +280,6 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                 <li style={{ listStyle: "none" }}>A:開始の数値 B:終了条件の数値(上限) C:インクリメント</li>
                                 <li style={{ listStyle: "none" }}>一度のリクエストで得られるレコード数(limit)が限られる際等に、繰り返し要求を出すときに使用します。</li>
                             </div>
-                            {/* API_endpoint collapse */}
-                            <div className="collapse" id="nicoapi_navber_APIendpoint_selector">
-                                {this.render_APIendpoint_table()}
-                            </div>
                             {/* collapse navigation */}
                             <nav className="navbar" style={{ backgroundColor: "paleturquoise" }}>
                                 <div>
@@ -272,6 +288,10 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                 </div>
                                 {this.render_APIendpoint_textform()}
                             </nav>
+                            {/* API_endpoint collapse */}
+                            <div className="collapse" id="nicoapi_navber_APIendpoint_selector">
+                                {this.render_APIendpoint_table()}
+                            </div>
                         </div>
                         {this.render_filelds_table()}
 
@@ -283,9 +303,19 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                         onClick={() => { this.db_cLud_getorders() }}>Orders</button>
                                     {this.render_orders_text()}
                                 </div>
+                                <div className="form-inline">
+                                    <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#nicoapi_navber_orders"
+                                        onClick={() => { }}>Downloads</button>
+                                    {}
+                                </div>
                             </nav>
+                            {/* Orderstable collapse */}
                             <div className="collapse" id="nicoapi_navber_orders">
                                 {this.render_orders_table()}
+                            </div>
+                            {/* DLconsole collapse */}
+                            <div className="collapse" id="nicoapi_navber_dlconsole">
+                                {this.render_dlconsole_table()}
                             </div>
                         </div>
                     </div>

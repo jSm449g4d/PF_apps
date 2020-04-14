@@ -71,7 +71,6 @@ def show(request):
     # body
     global thread_d
     if thread_d.is_alive() == False:
-        print("res")
         thread_d = threading.Thread(name='nicoapi_d', target=deamon)
         thread_d.start()
         status_lines += "Thread start!!<br>"

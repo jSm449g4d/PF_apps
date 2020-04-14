@@ -18,13 +18,13 @@ GCP_key = "FirebaseAdmin_Key.json"
 class db_Ref:
     # valiable
     db_dict = {}
-    db_path = ""
+    db_path = ""  # /root: www/db/{db_path}.json
     id = ""
 
     def __init__(self, db_path: str = ""):
         if db_path == "":
             os.makedirs("./db", exist_ok=True)
-            try:  # db cleaning ← delete except for json file
+            try:  # delete except for "json"
                 for root, _, files in os.walk("./db"):
                     for file in files:
                         if file.split(".")[-1] != "json":
@@ -60,17 +60,24 @@ class db_Ref:
 
     def document(self, db_path: str = ""):
         return db_Ref(db_path)
-    # alias
     collection = document
     doc = document
+
+    def delete(self):
+        try:
+            os.remove(os.path.join("./db", db_path)+".json")
+        except:
+            pass
 
 
 try:
     db = firestore.Client.from_service_account_json(GCP_key)
+    DELETE_FIELD = firestore.DELETE_FIELD
     GCS = firestorage.Client.from_service_account_json(GCP_key)
     resouce_health = "〇: GCP"
 except:
     # UC: STANDALONE mode
     db = db_Ref()
+    DELETE_FIELD = None
     GCS = 0
     resouce_health = "△: STANDALONE"

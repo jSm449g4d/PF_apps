@@ -29,30 +29,30 @@ export class Mypage_tsx extends React.Component<{}, State> {
         }, 200)
     }
     componentDidMount() {
-        this.db_cLud_loadpf.bind(this);
+        this.db_cRud_loadpf.bind(this);
     }
     componentDidUpdate(prevProps: object, prevState: State) {
         if (this.state.uid != prevState.uid) {
-            this.db_cLud_loadpf.bind(this)();
+            this.db_cRud_loadpf.bind(this)();
         }
     }
 
     //functions
-    db_Clud_setpf() {
+    db_Crud_setpf() {
         if (this.state.uid == "") return;
         db.doc("mypage/" + this.state.uid).set(JSON.parse(this.state.profile), { merge: true });
     }
-    db_cLud_loadpf() {
+    db_cRud_loadpf() {
         if (this.state.uid == "") return;
         db.doc("mypage/" + this.state.uid).get().then((doc) => {
             if (doc.exists) { this.setState({ profile: JSON.stringify(doc.data()) }); }
         });
     }
-    storage_Clud_icon(upload_file: any) {
+    storage_Crud_icon(upload_file: any) {
         if (this.state.uid == "") return;
         storage.ref("mypage/" + this.state.uid + "/icon.img").put(upload_file);
     }
-    storage_cLud_icon() {
+    storage_cRud_icon() {
         storage.ref("mypage/" + this.state.uid + "/icon.img").getDownloadURL().then((url) => {
             if (this.state.image_url != url) this.setState({ image_url: url });
         }).catch(() => { if (this.state.image_url != "") this.setState({ image_url: "" }); })
@@ -60,7 +60,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
 
     //renders
     render_icon() {
-        this.storage_cLud_icon();
+        this.storage_cRud_icon();
         if (this.state.image_url == "") { return (<div>No Image</div>) }
         return (<div><img src={this.state.image_url} alt={this.state.image_url} width="200" height="200" /></div>)
     }
@@ -70,7 +70,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
                 (evt) => { $(evt.currentTarget.children[0]).click() }}>
                 Upload_Icon
                 <input type="file" className="d-none" onChange={
-                    (evt) => { this.storage_Clud_icon(evt.target.files[0]) }} accept="image/jpeg,image/png" />
+                    (evt) => { this.storage_Crud_icon(evt.target.files[0]) }} accept="image/jpeg,image/png" />
             </button>
         )
     }
@@ -95,7 +95,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-sm btn-success" data-dismiss="modal"
-                                    onClick={() => { this.db_Clud_setpf() }}>SUBMIT</button>
+                                    onClick={() => { this.db_Crud_setpf() }}>SUBMIT</button>
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                             </div>
                         </div>

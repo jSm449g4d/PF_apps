@@ -27,17 +27,17 @@ export class Tptef_tsx extends React.Component<{}, State> {
         }, 200)
     }
     componentDidMount() {
-        this.db_cLud_loadroom.bind(this)()
+        this.db_cRud_loadroom.bind(this)()
     }
     componentDidUpdate() {
         if (Date.now() > this.state.lastops_timestamp + 30000) {
-            this.db_cLud_loadroom.bind(this)()
+            this.db_cRud_loadroom.bind(this)()
             this.setState({ lastops_timestamp: Date.now() })
         }
     }
 
     //functions
-    db_Clud_addremark(submit_content: string, attach_a_file: any) {
+    db_Crud_addremark(submit_content: string, attach_a_file: any) {
         if (this.state.uid == "" || this.state.room == "") return;
         if (submit_content == "") { alert("Plz input content"); return; };
         let attachment_dir: string = "";
@@ -54,9 +54,9 @@ export class Tptef_tsx extends React.Component<{}, State> {
                 attachment_dir: attachment_dir,
             }
         }, { merge: true });
-        setTimeout(this.db_cLud_loadroom.bind(this), 500);
+        setTimeout(this.db_cRud_loadroom.bind(this), 500);
     }
-    db_cLud_loadroom() {
+    db_cRud_loadroom() {
         if (this.state.room == "") return;
         db.doc("tptef/" + this.state.room).get().then((doc) => {
             if (doc.exists == false) {
@@ -74,7 +74,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
             } else { this.setState({ thread: JSON.stringify(doc.data()) }) }
         });
     };
-    db_cLuD_delremark(remark_key: string) {
+    db_cRuD_delremark(remark_key: string) {
         if (this.state.uid == "" || this.state.room == "") return;
         const docRef = db.doc("tptef/" + this.state.room);
         docRef.get().then((doc) => {
@@ -85,9 +85,9 @@ export class Tptef_tsx extends React.Component<{}, State> {
                 }, { merge: true })
             }
             if (Object.keys(doc.data()).length < 2) docRef.delete();
-        }); setTimeout(this.db_cLud_loadroom.bind(this), 500);
+        }); setTimeout(this.db_cRud_loadroom.bind(this), 500);
     }
-    storage_cLud_attachment(attachment_dir: string) {
+    storage_cRud_attachment(attachment_dir: string) {
         storage.ref(attachment_dir).getDownloadURL().then((url) => {
             window.open(url, '_blank');
         }).catch(() => { alert("cant download") })
@@ -108,11 +108,11 @@ export class Tptef_tsx extends React.Component<{}, State> {
                 //delete button
                 if (doc_data[keys[i]]["uid"] == this.state.uid) tmp_datum.push(
                     <button key={1} className="btn btn-outline-danger btn-sm m-1 rounded-pill"
-                        onClick={(evt: any) => { this.db_cLuD_delremark(evt.target.value) }} value={keys[i]}>delete</button>)
+                        onClick={(evt: any) => { this.db_cRuD_delremark(evt.target.value) }} value={keys[i]}>delete</button>)
                 //attachment download button
                 if (doc_data[keys[i]]["attachment_dir"] != "") tmp_datum.push(
                     <button key={2} className="btn btn-primary btn-sm m-1"
-                        onClick={(evt: any) => { this.storage_cLud_attachment(evt.target.value) }}
+                        onClick={(evt: any) => { this.storage_cRud_attachment(evt.target.value) }}
                         value={doc_data[keys[i]]["attachment_dir"]}>
                         {doc_data[keys[i]]["attachment_dir"].split("/").pop().slice(0, 20)}</button>)
             }
@@ -139,7 +139,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                 <div className="d-flex justify-content-between">
                     <input className="form-control" id="room_name" type="text" value={this.state.room} placeholder="Room"
                         onChange={(evt) => { this.setState({ room: evt.target.value }) }} />
-                    <button className="btn btn-success btn-sm ml-auto" onClick={() => { this.db_cLud_loadroom() }}>Goto_Room</button>
+                    <button className="btn btn-success btn-sm ml-auto" onClick={() => { this.db_cRud_loadroom() }}>Goto_Room</button>
                 </div>
                 {this.render_thread_table()}
                 {this.state.uid == "" ?
@@ -154,7 +154,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                                         onChange={(evt) => { this.setState({ handlename: evt.target.value }) }} />
                                     <input type="file" id="tptef_attachment" />
                                     <button className="btn btn-primary btn-sm mx-1" onClick={() => {
-                                        this.db_Clud_addremark(
+                                        this.db_Crud_addremark(
                                             (document.getElementById("tptef_content") as HTMLInputElement).value,
                                             (document.getElementById("tptef_attachment") as HTMLInputElement).files[0]);
                                         (document.getElementById("tptef_content") as HTMLInputElement).value = "";

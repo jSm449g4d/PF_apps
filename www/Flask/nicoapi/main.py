@@ -27,30 +27,33 @@ with open(os.path.join(os.path.dirname(__file__), "config.json"), "r", encoding=
     try:  # on CaaS
         wsgi_h = importlib.import_module("wsgi_h")
         db = wsgi_h.db
+        DELETE_FIELD=wsgi_h.DELETE_FIELD
         storage = wsgi_h.GCS.get_bucket(json.load(fp)["GCS_bucket"])
     except:  # on FaaS
         db = firestore.Client()
+        DELETE_FIELD=firestore.DELETE_FIELD
         storage = firestorage.Client().get_bucket(json.load(fp)["GCS_bucket"])
 
 
 def deamon():
     # DB layer
-    https = urllib3.PoolManager(cert_reqs='CERT_REQUIRED', ca_certs=certifi.where(
-    ), headers={"User-Agent": "nicoapi"})
     docRefs = db.collection('nicoapi').list_documents()
     for docRef in docRefs:
         recodes: dict = docRef.get().to_dict()
-        tmp_recode: dict = recodes.copy()
         # Document layer
+        # No recode, No Document
+        if len(recodes) < 1:
+            docRef.delete()
+            continue
         for timestamp, order in recodes.items():
             # 7days to delete
             if int(datetime.now().timestamp()*1000) > int(timestamp)+604800000:
-                del tmp_recode[timestamp]
+                recodes[timestamp]=DELETE_FIELD
                 continue
             # downloaded data is not exist on GCS → delete
-            if tmp_recode[timestamp]["status"] == "processed":
+            if recodes[timestamp]["status"] == "processed":
                 if storage.blob("nicoapi/"+docRef.id + "/"+timestamp + ".zip").exists() == False:
-                    del tmp_recode[timestamp]
+                    recodes[timestamp]=DELETE_FIELD
                 continue
             with io.BytesIO() as inmemory_zip:
                 # set https UserAgent
@@ -70,8 +73,9 @@ def deamon():
                                      ".zip").upload_from_string(inmemory_zip.getvalue())
                     except:
                         pass
-            tmp_recode[timestamp]["status"] = "processed"
-        docRef.set(tmp_recode)
+            recodes[timestamp]["status"] = "processed"
+        docRef.set(recodes,merge=True)
+    time.sleep(300) # prevent high freq restart
 
 
 thread_d = threading.Thread(name='nicoapi_d', target=deamon)

@@ -29,17 +29,17 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         }, 200)
     }
     componentDidMount() {
-        this.db_cLud_getorders.bind(this)()
+        this.db_cRud_getorders.bind(this)()
     }
     componentDidUpdate() {
         if (Date.now() > this.state.lastops_timestamp + 30000) {
-            this.db_cLud_getorders.bind(this)()
+            this.db_cRud_getorders.bind(this)()
             this.setState({ lastops_timestamp: Date.now() })
         }
     }
 
     //functions
-    db_Clud_genorders(urls_array: string[]) {
+    db_Crud_genorders(urls_array: string[]) {
         if (this.state.uid == "") return;
         if (confirm("Do you really want to submit?")) {
             db.doc("nicoapi/" + this.state.uid).set(
@@ -49,17 +49,17 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                     }
                 }
                 , { merge: true });
-            setTimeout(this.db_cLud_getorders.bind(this), 1000);
+            setTimeout(this.db_cRud_getorders.bind(this), 1000);
         };
     }
-    db_cLud_getorders() {
+    db_cRud_getorders() {
         if (this.state.uid == "") return;
         db.doc("nicoapi/" + this.state.uid).get().then((doc) => {
             if (doc.exists == false) { this.setState({ orders: JSON.stringify({}) }) }
             else { this.setState({ orders: JSON.stringify(doc.data()) }) }
         })
     }
-    storage_cLud_dlorders(target_dir: string) {
+    storage_cRud_dlorders(target_dir: string) {
         storage.ref(target_dir).getDownloadURL().then((url) => {
             window.open(url, '_blank');
         }).catch(() => { alert("cant download") })
@@ -84,7 +84,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             }
         }
         if (Date.now() > this.state.stopspam_timestamp + 6000) {
-            this.db_Clud_genorders(request_urls); this.setState({ stopspam_timestamp: Date.now() });
+            this.db_Crud_genorders(request_urls); this.setState({ stopspam_timestamp: Date.now() });
         }
         else { alert("dont SPAM !\nremaining cooling time: " + String(this.state.stopspam_timestamp - Date.now() + 6000) + "[ms]") };
     }
@@ -228,11 +228,20 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             tmp_data.push(<td key={1} style={{ textAlign: "center" }}>
                 {keys[i]}<br />Status: {tmp_orders[keys[i]]["status"]}<br />UA: {tmp_orders[keys[i]]["User-Agent"]}</td>)
             tmp_data.push(<td key={2} style={{ fontSize: "12px" }}>{tmp_orders[keys[i]]["request_urls"].join('\n')}</td>)
-            // download button
-            tmp_data.push(<td key={3} style={{ textAlign: "center" }}>
-                <button className="btn btn-primary btn-sm m-1"
-                    onClick={(evt: any) => { this.storage_cLud_dlorders("nicoapi/" + this.state.uid + "/" + evt.target.value + ".zip") }}
-                    value={keys[i]}>Download</button></td>)
+            const tmp_datum = []; {// col: Ops
+                //download button
+                if (tmp_orders[keys[i]]["status"] == "processed") tmp_datum.push(
+                    <button key={1} className="btn btn-primary btn-sm m-1"
+                        onClick={(evt: any) => { this.storage_cRud_dlorders("nicoapi/" + this.state.uid + "/" + evt.target.value + ".zip") }}
+                        value={keys[i]}>Download</button>)
+                //attachment download button
+                if (tmp_orders[keys[i]]["status"] == "processed") tmp_datum.push(
+                    <button key={2} className="btn btn-outline-danger btn-sm m-1"
+                        onClick={(evt: any) => { alert("Under Construction") }} // TODO: delete from GCS
+                        value={keys[i]}>Delete</button>)
+            }
+            tmp_data.push(<td key={3} style={{ textAlign: "center" }}>{tmp_datum}</td>)
+
             tmp_record.push(<tr key={i}>{tmp_data}</tr>)
         }
         if (keys.length == 0) { tmp_record.push(<tr><td colSpan={3} style={{ textAlign: "center" }}>Not Exist</td></tr>); }
@@ -241,26 +250,6 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                 <thead>
                     <tr style={{ textAlign: "center" }}>
                         <th style={{ width: "10%" }} >Timestamp/Info</th>
-                        <th>Request URLs</th>
-                        <th style={{ width: "10%" }} >Ops</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {tmp_record}
-                </tbody>
-            </table>)
-    }
-    render_dlconsole_table() {
-        const keys = Object.keys({}).sort();
-        const tmp_record = []; let tmp_orders = {};
-        for (var i = 0; i < keys.length; i++) {
-        }
-        if (keys.length == 0) { tmp_record.push(<tr><td colSpan={3} style={{ textAlign: "center" }}>UC</td></tr>); }
-        return (
-            <table className="table table-sm">
-                <thead>
-                    <tr style={{ textAlign: "center" }}>
-                        <th style={{ width: "10%" }} >timestamp</th>
                         <th>Request URLs</th>
                         <th style={{ width: "10%" }} >Ops</th>
                     </tr>
@@ -306,22 +295,13 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                             <nav className="navbar" style={{ backgroundColor: "wheat" }}>
                                 <div className="form-inline">
                                     <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#nicoapi_navber_orders"
-                                        onClick={() => { this.db_cLud_getorders() }}>Orders</button>
+                                        onClick={() => { this.db_cRud_getorders() }}>Orders</button>
                                     {this.render_orders_text()}
-                                </div>
-                                <div className="form-inline">
-                                    <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#nicoapi_navber_dlconsole"
-                                        onClick={() => { }}>Downloads</button>
-                                    {}
                                 </div>
                             </nav>
                             {/* Orderstable collapse */}
                             <div className="collapse" id="nicoapi_navber_orders">
                                 {this.render_orders_table()}
-                            </div>
-                            {/* DLconsole collapse */}
-                            <div className="collapse" id="nicoapi_navber_dlconsole">
-                                {this.render_dlconsole_table()}
                             </div>
                         </div>
                     </div>

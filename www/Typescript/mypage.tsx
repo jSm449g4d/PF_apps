@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from "react-dom";
 import { Account_tsx, auth, fb } from "./component/account";
+import { stopf5 } from "./component/stopf5";
 
 const storage = fb.storage();
 const db = fb.firestore()
@@ -40,19 +41,23 @@ export class Mypage_tsx extends React.Component<{}, State> {
     //functions
     db_Crud_setpf() {
         if (this.state.uid == "") return;
+        if (stopf5.check("1", 500) == false) return; // To prevent high freq access
         db.doc("mypage/" + this.state.uid).set(JSON.parse(this.state.profile), { merge: true });
     }
     db_cRud_loadpf() {
         if (this.state.uid == "") return;
+        if (stopf5.check("2", 500) == false) return; // To prevent high freq access
         db.doc("mypage/" + this.state.uid).get().then((doc) => {
             if (doc.exists) { this.setState({ profile: JSON.stringify(doc.data()) }); }
         });
     }
     storage_Crud_icon(upload_file: any) {
         if (this.state.uid == "") return;
+        if (stopf5.check("3", 500) == false) return; // To prevent high freq access
         storage.ref("mypage/" + this.state.uid + "/icon.img").put(upload_file);
     }
     storage_cRud_icon() {
+        if (stopf5.check("4", 500) == false) return; // To prevent high freq access
         storage.ref("mypage/" + this.state.uid + "/icon.img").getDownloadURL().then((url) => {
             if (this.state.image_url != url) this.setState({ image_url: url });
         }).catch(() => { if (this.state.image_url != "") this.setState({ image_url: "" }); })

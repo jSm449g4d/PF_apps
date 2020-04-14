@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from "react-dom";
 import { Account_tsx, auth, fb } from "./component/account";
+import { stopf5 } from "./component/stopf5";
 
 const storage = fb.storage();
 const db = fb.firestore()
 
 interface State {
     uid: string; API_endpoint: string; service_name: string; fields: string; orders: string;
-    stopspam_timestamp: number; lastops_timestamp: number;
 }
 
 export class Nicoapi_tsx extends React.Component<{}, State> {
@@ -16,8 +16,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         super(props);
         this.state = {
             uid: "", API_endpoint: "https://", service_name: "← Plz \"Select API_endpoint\"",
-            fields: JSON.stringify({}), orders: JSON.stringify({}),
-            stopspam_timestamp: Date.now(), lastops_timestamp: Date.now(),
+            fields: JSON.stringify({}), orders: JSON.stringify({})
         };
         //check Auth
         setInterval(() => {
@@ -31,35 +30,36 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     componentDidMount() {
         this.db_cRud_getorders.bind(this)()
     }
-    componentDidUpdate() {
-        if (Date.now() > this.state.lastops_timestamp + 30000) {
+    componentDidUpdate(prevProps: object, prevState: State) {
+        if (this.state.uid != prevState.uid) {
             this.db_cRud_getorders.bind(this)()
-            this.setState({ lastops_timestamp: Date.now() })
         }
     }
 
     //functions
     db_Crud_genorders(urls_array: string[]) {
         if (this.state.uid == "") return;
+        if (stopf5.check("1", 6000, true) == false) return; // To prevent high freq access
         if (confirm("Do you really want to submit?")) {
             db.doc("nicoapi/" + this.state.uid).set(
                 {
                     [Date.now().toString()]: {
                         "request_urls": urls_array, "status": "standby", "User-Agent": "nicoapi"
                     }
-                }
-                , { merge: true });
-            setTimeout(this.db_cRud_getorders.bind(this), 1000);
+                }, { merge: true });
+            setTimeout(this.db_cRud_getorders.bind(this), 500);
         };
     }
     db_cRud_getorders() {
         if (this.state.uid == "") return;
+        if (stopf5.check("2", 500) == false) return; // To prevent high freq access
         db.doc("nicoapi/" + this.state.uid).get().then((doc) => {
             if (doc.exists == false) { this.setState({ orders: JSON.stringify({}) }) }
             else { this.setState({ orders: JSON.stringify(doc.data()) }) }
         })
     }
     storage_cRud_dlorders(target_dir: string) {
+        if (stopf5.check("3", 500) == false) return; // To prevent high freq access
         storage.ref(target_dir).getDownloadURL().then((url) => {
             window.open(url, '_blank');
         }).catch(() => { alert("cant download") })
@@ -83,10 +83,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                 request_urls[j] += "&" + tmp_fields[keys[i]]["field"] + "=" + tmp_fields[keys[i]]["value"]
             }
         }
-        if (Date.now() > this.state.stopspam_timestamp + 6000) {
-            this.db_Crud_genorders(request_urls); this.setState({ stopspam_timestamp: Date.now() });
-        }
-        else { alert("dont SPAM !\nremaining cooling time: " + String(this.state.stopspam_timestamp - Date.now() + 6000) + "[ms]") };
+        this.db_Crud_genorders(request_urls);
     }
 
     //renders

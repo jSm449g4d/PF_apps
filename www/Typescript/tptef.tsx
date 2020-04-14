@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from "react-dom";
 import { Account_tsx, auth, fb } from "./component/account";
+import { stopf5 } from "./component/stopf5";
 
 const storage = fb.storage();
 const db = fb.firestore();
 
 interface State {
     uid: string; room: string; thread: string; handlename: string;
-    lastops_timestamp: number;
 }
 
 export class Tptef_tsx extends React.Component<{}, State> {
@@ -16,7 +16,6 @@ export class Tptef_tsx extends React.Component<{}, State> {
         super(props);
         this.state = {
             uid: "", room: "main", handlename: "窓の民は名無し", thread: JSON.stringify({}),
-            lastops_timestamp: Date.now(),
         };
         setInterval(() => {
             if (auth.currentUser) {
@@ -29,10 +28,9 @@ export class Tptef_tsx extends React.Component<{}, State> {
     componentDidMount() {
         this.db_cRud_loadroom.bind(this)()
     }
-    componentDidUpdate() {
-        if (Date.now() > this.state.lastops_timestamp + 30000) {
+    componentDidUpdate(prevProps: object, prevState: State) {
+        if (this.state.uid != prevState.uid) {
             this.db_cRud_loadroom.bind(this)()
-            this.setState({ lastops_timestamp: Date.now() })
         }
     }
 
@@ -40,6 +38,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
     db_Crud_addremark(submit_content: string, attach_a_file: any) {
         if (this.state.uid == "" || this.state.room == "") return;
         if (submit_content == "") { alert("Plz input content"); return; };
+        if (stopf5.check("1", 500) == false) return; // To prevent high freq access
         let attachment_dir: string = "";
         if (attach_a_file) {
             attachment_dir = "tptef/" + this.state.uid + "/" + attach_a_file.name;
@@ -58,6 +57,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
     }
     db_cRud_loadroom() {
         if (this.state.room == "") return;
+        if (stopf5.check("2", 500) == false) return; // To prevent high freq access
         db.doc("tptef/" + this.state.room).get().then((doc) => {
             if (doc.exists == false) {
                 this.setState({
@@ -76,6 +76,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
     };
     db_cRuD_delremark(remark_key: string) {
         if (this.state.uid == "" || this.state.room == "") return;
+        if (stopf5.check("3", 500) == false) return; // To prevent high freq access
         const docRef = db.doc("tptef/" + this.state.room);
         docRef.get().then((doc) => {
             if (doc.exists) {

@@ -27,7 +27,6 @@ with open(os.path.join(os.path.dirname(__file__), "config.json"), "r", encoding=
         wsgi_h = importlib.import_module("wsgi_h")
         db = wsgi_h.db
         storage = wsgi_h.GCS.get_bucket(json.load(fp)["GCS_bucket"])
-        access_counter = wsgi_h.access_counter
     except:  # on FaaS
         db = firestore.Client()
         storage = firestorage.Client().get_bucket(json.load(fp)["GCS_bucket"])
@@ -41,9 +40,9 @@ def deamon():
     for docRef in docRefs:
         recodes = docRef.get().to_dict()
         # Document layer
-        for timestamp, urls in recodes.items():
+        for timestamp, order in recodes.items():
             with io.BytesIO() as inmemory_zip:
-                for url in urls:
+                for url in order["request_urls"]:
                     print(hashlib.md5(url.encode('utf-8')).hexdigest())
                     time.sleep(3)
                     try:

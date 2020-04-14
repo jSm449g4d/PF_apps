@@ -41,11 +41,16 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     }
 
     //functions
-    db_Clud_genorders(request_dict: any) {
+    db_Clud_genorders(urls_array: string[]) {
         if (this.state.uid == "") return;
-        this.setState({ stopspam_timestamp: Date.now() })
         if (confirm("Do you really want to submit?")) {
-            db.doc("nicoapi/" + this.state.uid).set(request_dict, { merge: true });
+            db.doc("nicoapi/" + this.state.uid).set(
+                {
+                    [Date.now().toString()]: {
+                        "request_urls": urls_array, "status": "standby", "User-Agent": "nicoapi"
+                    }
+                }
+                , { merge: true });
             setTimeout(this.db_cLud_getorders.bind(this), 1000);
         };
     }
@@ -62,7 +67,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         }).catch(() => { alert("cant download") })
     }
     _genorders() {
-        const request_url = [this.state.API_endpoint + "?"];
+        const request_urls = [this.state.API_endpoint + "?"];
         const tmp_fields = JSON.parse(this.state.fields)
         const keys = Object.keys(JSON.parse(this.state.fields)).sort();
         for (let i = 0; i < keys.length; i++) {
@@ -70,17 +75,19 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             if (tmp_fields[keys[i]]["value"].indexOf("$for(") == 0) {
                 const tmp_for = tmp_fields[keys[i]]["value"].split(/[(;)]/);
                 if (tmp_for.length != 5) { alert("wrong: fields→value"); return; }
-                const request_url_length_before = request_url.length
+                const request_url_length_before = request_urls.length
                 for (let j = 0; j < request_url_length_before; j++) {
                     for (let k = Number(tmp_for[1]); k < Number(tmp_for[2]); k += Number(tmp_for[3]))
-                        request_url.push(request_url[j] + "&" + tmp_fields[keys[i]]["field"] + "=" + String(k));
-                } request_url.splice(0, request_url_length_before); continue;
+                        request_urls.push(request_urls[j] + "&" + tmp_fields[keys[i]]["field"] + "=" + String(k));
+                } request_urls.splice(0, request_url_length_before); continue;
             }
-            for (let j = 0; j < request_url.length; j++) {
-                request_url[j] += "&" + tmp_fields[keys[i]]["field"] + "=" + tmp_fields[keys[i]]["value"]
+            for (let j = 0; j < request_urls.length; j++) {
+                request_urls[j] += "&" + tmp_fields[keys[i]]["field"] + "=" + tmp_fields[keys[i]]["value"]
             }
         }
-        if (Date.now() > this.state.stopspam_timestamp + 6000) { this.db_Clud_genorders({ [Date.now().toString()]: request_url }) }
+        if (Date.now() > this.state.stopspam_timestamp + 6000) {
+            this.db_Clud_genorders(request_urls); this.setState({ stopspam_timestamp: Date.now() });
+        }
         else { alert("dont SPAM !\nremaining cooling time: " + String(this.state.stopspam_timestamp - Date.now() + 6000) + "[ms]") };
     }
 
@@ -212,7 +219,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     }
     render_orders_text() {
         let num: Number = 0; let keys = Object.keys(JSON.parse(this.state.orders));
-        for (let i = 0; i < keys.length; i++) { num += JSON.parse(this.state.orders)[keys[i]].length }
+        for (let i = 0; i < keys.length; i++) { num += JSON.parse(this.state.orders)[keys[i]]["request_urls"].length }
         return (<div className="mx-3">{"orders / requests: " + String(keys.length) + " / " + String(num)}</div>)
     }
     render_orders_table() {
@@ -221,7 +228,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         for (var i = 0; i < keys.length; i++) {
             const tmp_data = [];
             tmp_data.push(<td key={1} style={{ textAlign: "center" }}>{keys[i]}</td>)
-            tmp_data.push(<td key={2} style={{ fontSize: "12px" }}>{tmp_orders[keys[i]].join('\n')}</td>)
+            tmp_data.push(<td key={2} style={{ fontSize: "12px" }}>{tmp_orders[keys[i]]["request_urls"].join('\n')}</td>)
             // download button
             tmp_data.push(<td key={3} style={{ textAlign: "center" }}>
                 <button className="btn btn-primary btn-sm m-1"
@@ -283,8 +290,8 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                             {/* collapse navigation */}
                             <nav className="navbar" style={{ backgroundColor: "paleturquoise" }}>
                                 <div>
-                                    <button className="btn btn-primary mx-1" data-toggle="collapse" data-target="#nicoapi_navber_APIendpoint_selector">Select API_endpoint</button>
                                     <button className="btn btn-success rounded-pill mx-1" data-toggle="collapse" data-target="#nicoapi_navber_help">HELP</button>
+                                    <button className="btn btn-primary mx-1" data-toggle="collapse" data-target="#nicoapi_navber_APIendpoint_selector">Select API_endpoint</button>
                                 </div>
                                 {this.render_APIendpoint_textform()}
                             </nav>
@@ -304,7 +311,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                     {this.render_orders_text()}
                                 </div>
                                 <div className="form-inline">
-                                    <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#nicoapi_navber_orders"
+                                    <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#nicoapi_navber_dlconsole"
                                         onClick={() => { }}>Downloads</button>
                                     {}
                                 </div>

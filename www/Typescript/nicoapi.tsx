@@ -1,8 +1,6 @@
-import jQuery from 'jquery';
 import React from 'react';
 import ReactDOM from "react-dom";
 import { Account_tsx, auth, fb } from "./component/account";
-import { string } from 'prop-types';
 
 const storage = fb.storage();
 const db = fb.firestore()
@@ -227,7 +225,8 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         const tmp_record = []; let tmp_orders = JSON.parse(this.state.orders);
         for (var i = 0; i < keys.length; i++) {
             const tmp_data = [];
-            tmp_data.push(<td key={1} style={{ textAlign: "center" }}>{keys[i]}</td>)
+            tmp_data.push(<td key={1} style={{ textAlign: "center" }}>
+                {keys[i]}<br />Status: {tmp_orders[keys[i]]["status"]}<br />UA: {tmp_orders[keys[i]]["User-Agent"]}</td>)
             tmp_data.push(<td key={2} style={{ fontSize: "12px" }}>{tmp_orders[keys[i]]["request_urls"].join('\n')}</td>)
             // download button
             tmp_data.push(<td key={3} style={{ textAlign: "center" }}>
@@ -241,7 +240,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             <table className="table table-sm">
                 <thead>
                     <tr style={{ textAlign: "center" }}>
-                        <th style={{ width: "10%" }} >timestamp</th>
+                        <th style={{ width: "10%" }} >Timestamp/Info</th>
                         <th>Request URLs</th>
                         <th style={{ width: "10%" }} >Ops</th>
                     </tr>

@@ -9,6 +9,7 @@ import time
 from urllib import parse
 import io
 import zipfile
+from datetime import datetime
 # Additional
 import flask
 import urllib3
@@ -38,9 +39,19 @@ def deamon():
     ), headers={"User-Agent": "nicoapi"})
     docRefs = db.collection('nicoapi').list_documents()
     for docRef in docRefs:
-        recodes = docRef.get().to_dict()
+        recodes: dict = docRef.get().to_dict()
+        tmp_recode: dict = recodes.copy()
         # Document layer
         for timestamp, order in recodes.items():
+            # 7days to delete
+            if int(datetime.now().timestamp()*1000) > int(timestamp)+604800000:
+                del tmp_recode[timestamp]
+                continue
+            # downloaded data is not exist on GCS → delete
+            if tmp_recode[timestamp]["status"] == "processed":
+                if storage.blob("nicoapi/"+docRef.id + "/"+timestamp + ".zip").exists() == False:
+                    del tmp_recode[timestamp]
+                continue
             with io.BytesIO() as inmemory_zip:
                 # set https UserAgent
                 https = urllib3.PoolManager(cert_reqs='CERT_REQUIRED', ca_certs=certifi.where(
@@ -59,6 +70,8 @@ def deamon():
                                      ".zip").upload_from_string(inmemory_zip.getvalue())
                     except:
                         pass
+            tmp_recode[timestamp]["status"] = "processed"
+        docRef.set(tmp_recode)
 
 
 thread_d = threading.Thread(name='nicoapi_d', target=deamon)

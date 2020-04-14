@@ -13,6 +13,13 @@ t = Tokenizer()
 
 
 def show(request):
+    # head ← (template)
+    global access_counter
+    access_counter += 1
+    status_lines = "<h6 class='text-center'>==STATUS==<br>"
+    status_lines += "Access Counter :" + str(access_counter) + "<br>"
+
+    # body
     ret = {}
     global t
     if request.method == "POST":
@@ -38,10 +45,9 @@ def show(request):
                     ret["phonetic"].append(token.phonetic)
             return json.dumps(ret, ensure_ascii=False)
 
-    # render template
-    global access_counter
-    access_counter += 1
-    kwargs = {"STATUS_ACCESS_COUNT": str(access_counter)}
+    # foot ← (template)
+    status_lines += "<h6>"
+    kwargs = {"STATUS_LINES": status_lines}
     with open(os.path.join(os.path.dirname(__file__), "main.html"), "r", encoding="utf-8") as f:
         html = f.read()
         for kw, arg in kwargs.items():

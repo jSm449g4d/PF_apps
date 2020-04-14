@@ -5,11 +5,15 @@ www.zip.tmp
 
 # Javascript/Typescript
 node_modules/
-src/
 package-lock.json
+src/
 
 # Python
 __pycache__/
+
+# golang
+*.elf
+*.exe
 
 # server
 tmp/

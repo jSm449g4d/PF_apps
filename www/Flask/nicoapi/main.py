@@ -42,6 +42,10 @@ def deamon():
         # Document layer
         for timestamp, order in recodes.items():
             with io.BytesIO() as inmemory_zip:
+                # set https UserAgent
+                https = urllib3.PoolManager(cert_reqs='CERT_REQUIRED', ca_certs=certifi.where(
+                ), headers={"User-Agent": order["User-Agent"]})
+                # start Crawl
                 for url in order["request_urls"]:
                     print(hashlib.md5(url.encode('utf-8')).hexdigest())
                     time.sleep(3)

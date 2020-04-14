@@ -283,12 +283,6 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                         onClick={() => { this.db_cLud_getorders() }}>Orders</button>
                                     {this.render_orders_text()}
                                 </div>
-                                <div className="form-inline">
-                                    <button className="btn btn-primary btn-sm mx-1"
-                                        onClick={() => { }}
-                                    >Download</button>
-                                    <button className="btn btn-danger btn-sm mx-1">Delete</button>
-                                </div>
                             </nav>
                             <div className="collapse" id="nicoapi_navber_orders">
                                 {this.render_orders_table()}

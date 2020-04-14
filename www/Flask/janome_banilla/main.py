@@ -2,6 +2,7 @@
 import os
 import sys
 import json
+import importlib
 # Additional
 import flask
 from janome.tokenizer import Tokenizer
@@ -10,6 +11,14 @@ from janome.tokenizer import Tokenizer
 # global variable
 access_counter = 0
 t = Tokenizer()
+
+# application
+with open(os.path.join(os.path.dirname(__file__), "config.json"), "r", encoding="utf-8") as fp:
+    try:  # on CaaS
+        wsgi_h = importlib.import_module("wsgi_h")
+        access_counter = wsgi_h.access_counter
+    except:  # on FaaS
+        pass
 
 
 def show(request):

@@ -116,15 +116,15 @@ export class Tptef_tsx extends React.Component<{}, State> {
                         value={doc_data[keys[i]]["attachment_dir"]}>
                         {doc_data[keys[i]]["attachment_dir"].split("/").pop().slice(0, 20)}</button>)
             }
-            tmp_data.push(<td key={4}>{tmp_datum}</td>)
+            tmp_data.push(<td key={4} style={{ textAlign: "center" }}>{tmp_datum}</td>)
             tmp_recode.push(<tr key={i}>{tmp_data}</tr>)
         }
         return (
             <table className="table table-sm bg-light">
                 <thead>
                     <tr style={{ textAlign: "center" }}>
-                        <th style={{ width: "15%" }}>handlename</th>
-                        <th>content</th>
+                        <th style={{ width: "15%" }}>Handlename</th>
+                        <th>Content</th>
                         <th style={{ width: "15%" }} >Timestamp/uid</th>
                         <th style={{ width: "15%" }}>Ops</th>
                     </tr>

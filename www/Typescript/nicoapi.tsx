@@ -160,32 +160,32 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     }
     render_filelds_table() {
         const keys = Object.keys(JSON.parse(this.state.fields)).sort();
-        const fields_record = []; let tmp_fields = JSON.parse(this.state.fields);
+        const tmp_record = []; let tmp_fields = JSON.parse(this.state.fields);
         for (var i = 0; i < keys.length; i++) {
-            const fields_data = [];
+            const tmp_data = [];
             //Field (textform)
-            fields_data.push(<td key={1}><input type="text" className="form-control form-control-sm mx-1"
+            tmp_data.push(<td key={1}><input type="text" className="form-control form-control-sm mx-1"
                 value={JSON.parse(this.state.fields)[keys[i]]["field"]}
                 onChange={(evt: any) => {
                     tmp_fields[evt.target.name]["field"] = evt.target.value; this.setState({ fields: JSON.stringify(tmp_fields) });
                 }} name={keys[i]} /></td>)
             //Value (textform)
-            fields_data.push(<td key={2}><input type="text" className="form-control form-control-sm mx-1"
+            tmp_data.push(<td key={2}><input type="text" className="form-control form-control-sm mx-1"
                 value={JSON.parse(this.state.fields)[keys[i]]["value"]}
                 onChange={(evt: any) => {
                     tmp_fields[evt.target.name]["value"] = evt.target.value; this.setState({ fields: JSON.stringify(tmp_fields) });
                 }} name={keys[i]} /></td>)
             //Command (Delete button)
-            fields_data.push(<td key={3}><button className="btn btn-warning btn-sm"
+            tmp_data.push(<td key={3}><button className="btn btn-warning btn-sm"
                 onClick={(evt: any) => {
                     tmp_fields[evt.target.name]["value"] = "$for(1;1601;500)"; this.setState({ fields: JSON.stringify(tmp_fields) })
                 }} name={keys[i]}>$for</button></td>)
             //Ops (Delete button)
-            fields_data.push(<td key={4}><button className="btn btn-outline-danger btn-sm rounded-pill"
+            tmp_data.push(<td key={4}><button className="btn btn-outline-danger btn-sm rounded-pill"
                 onClick={(evt: any) => {
                     delete tmp_fields[evt.target.name]; this.setState({ fields: JSON.stringify(tmp_fields) })
                 }} name={keys[i]}>Delete</button></td>)
-            fields_record.push(<tr key={i}>{fields_data}</tr>)
+            tmp_record.push(<tr key={i}>{tmp_data}</tr>)
         }
         return (
             <table className="table table-sm">
@@ -198,7 +198,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                     </tr>
                 </thead>
                 <tbody>
-                    {fields_record}
+                    {tmp_record}
                     <tr className="my-2"><td />
                         <td className="d-flex justify-content-center"><button className="btn btn-outline-primary rounded-pill" style={{ width: "50%" }}
                             onClick={() => {
@@ -217,19 +217,19 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     }
     render_orders_table() {
         const keys = Object.keys(JSON.parse(this.state.orders)).sort();
-        const orders_record = []; let tmp_orders = JSON.parse(this.state.orders);
+        const tmp_record = []; let tmp_orders = JSON.parse(this.state.orders);
         for (var i = 0; i < keys.length; i++) {
-            const orders_data = [];
-            orders_data.push(<td key={1} style={{ textAlign: "center" }}>{keys[i]}</td>)
-            orders_data.push(<td key={2} style={{ fontSize: "12px" }}>{tmp_orders[keys[i]].join('\n')}</td>)
+            const tmp_data = [];
+            tmp_data.push(<td key={1} style={{ textAlign: "center" }}>{keys[i]}</td>)
+            tmp_data.push(<td key={2} style={{ fontSize: "12px" }}>{tmp_orders[keys[i]].join('\n')}</td>)
             // download button
-            orders_data.push(<td key={3} style={{ textAlign: "center" }}>
+            tmp_data.push(<td key={3} style={{ textAlign: "center" }}>
                 <button className="btn btn-primary btn-sm m-1"
                     onClick={(evt: any) => { this.storage_cLud_dlorders("nicoapi/" + this.state.uid + "/" + evt.target.value + ".zip") }}
                     value={keys[i]}>Download</button></td>)
-            orders_record.push(<tr key={i}>{orders_data}</tr>)
+            tmp_record.push(<tr key={i}>{tmp_data}</tr>)
         }
-        if (keys.length == 0) { orders_record.push(<tr><td colSpan={3}>Not Exist</td></tr>); }
+        if (keys.length == 0) { tmp_record.push(<tr><td colSpan={3}>Not Exist</td></tr>); }
         return (
             <table className="table table-sm">
                 <thead>
@@ -240,7 +240,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                     </tr>
                 </thead>
                 <tbody>
-                    {orders_record}
+                    {tmp_record}
                 </tbody>
             </table>)
     }

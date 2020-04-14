@@ -96,33 +96,28 @@ export class Tptef_tsx extends React.Component<{}, State> {
     //renders
     render_thread_table() {
         const doc_data = JSON.parse(this.state.thread);
-        const thread_record = [];
+        const tmp_recode = [];
         const keys = Object.keys(doc_data).sort();
         for (var i = 0; i < keys.length; i++) {
-            const thread_data = [];
-            thread_data.push(<td key={1} style={{ textAlign: "center" }}>{doc_data[keys[i]]["handlename"]}</td>)
-            thread_data.push(<td key={2}>{doc_data[keys[i]]["content"]}</td>)
-            thread_data.push(<td key={3} style={{ fontSize: "12px", textAlign: "center" }}>
+            const tmp_data = [];
+            tmp_data.push(<td key={1} style={{ textAlign: "center" }}>{doc_data[keys[i]]["handlename"]}</td>)
+            tmp_data.push(<td key={2}>{doc_data[keys[i]]["content"]}</td>)
+            tmp_data.push(<td key={3} style={{ fontSize: "12px", textAlign: "center" }}>
                 {doc_data[keys[i]]["date"]}<br />{doc_data[keys[i]]["uid"]}</td>)
-            {   //delete button
-                const thread_data_ops = [];
-                if (doc_data[keys[i]]["uid"] == this.state.uid) {
-                    thread_data_ops.push(
-                        <button key={1} className="btn btn-outline-danger btn-sm m-1 rounded-pill"
-                            onClick={(evt: any) => { this.db_cLuD_delremark(evt.target.value) }}
-                            value={keys[i]}>delete</button>)
-                }
+            const tmp_datum = []; {
+                //delete button
+                if (doc_data[keys[i]]["uid"] == this.state.uid) tmp_datum.push(
+                    <button key={1} className="btn btn-outline-danger btn-sm m-1 rounded-pill"
+                        onClick={(evt: any) => { this.db_cLuD_delremark(evt.target.value) }} value={keys[i]}>delete</button>)
                 //attachment download button
-                if (doc_data[keys[i]]["attachment_dir"] != "") {
-                    thread_data_ops.push(
-                        <button key={2} className="btn btn-primary btn-sm m-1"
-                            onClick={(evt: any) => { this.storage_cLud_attachment(evt.target.value) }}
-                            value={doc_data[keys[i]]["attachment_dir"]}>
-                            {doc_data[keys[i]]["attachment_dir"].split("/").pop().slice(0, 20)}</button>)
-                }
-                thread_data.push(<td key={4}>{thread_data_ops}</td>)
+                if (doc_data[keys[i]]["attachment_dir"] != "") tmp_datum.push(
+                    <button key={2} className="btn btn-primary btn-sm m-1"
+                        onClick={(evt: any) => { this.storage_cLud_attachment(evt.target.value) }}
+                        value={doc_data[keys[i]]["attachment_dir"]}>
+                        {doc_data[keys[i]]["attachment_dir"].split("/").pop().slice(0, 20)}</button>)
             }
-            thread_record.push(<tr key={i}>{thread_data}</tr>)
+            tmp_data.push(<td key={4}>{tmp_datum}</td>)
+            tmp_recode.push(<tr key={i}>{tmp_data}</tr>)
         }
         return (
             <table className="table table-sm bg-light">
@@ -134,7 +129,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                         <th style={{ width: "15%" }}>Ops</th>
                     </tr>
                 </thead>
-                <tbody>{thread_record}</tbody>
+                <tbody>{tmp_recode}</tbody>
             </table>)
     }
     render() {

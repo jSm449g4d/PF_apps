@@ -29,44 +29,33 @@ export class Mypage_tsx extends React.Component<{}, State> {
         }, 200)
     }
     componentDidMount() {
-        this.db_CLud_loadpf.bind(this);
+        this.db_cLud_loadpf.bind(this);
     }
     componentDidUpdate(prevProps: object, prevState: State) {
         if (this.state.uid != prevState.uid) {
-            this.db_CLud_loadpf.bind(this)();
+            this.db_cLud_loadpf.bind(this)();
         }
     }
 
     //functions
-    db_CLud_loadpf() {
-        if (this.state.uid == "") return;
-        const docRef = db.doc("mypage/" + this.state.uid);
-        docRef.get().then((doc) => {
-            if (doc.exists) { this.setState({ profile: JSON.stringify(doc.data()) }); }
-            else { docRef.set(JSON.parse(this.state.profile), { merge: true }); }
-        });
-    }
     db_Clud_setpf() {
         if (this.state.uid == "") return;
         db.doc("mypage/" + this.state.uid).set(JSON.parse(this.state.profile), { merge: true });
+    }
+    db_cLud_loadpf() {
+        if (this.state.uid == "") return;
+        db.doc("mypage/" + this.state.uid).get().then((doc) => {
+            if (doc.exists) { this.setState({ profile: JSON.stringify(doc.data()) }); }
+        });
+    }
+    storage_Clud_icon(upload_file: any) {
+        if (this.state.uid == "") return;
+        storage.ref("mypage/" + this.state.uid + "/icon.img").put(upload_file);
     }
     storage_cLud_icon() {
         storage.ref("mypage/" + this.state.uid + "/icon.img").getDownloadURL().then((url) => {
             if (this.state.image_url != url) this.setState({ image_url: url });
         }).catch(() => { if (this.state.image_url != "") this.setState({ image_url: "" }); })
-    }
-    storage_Clud_icon(upload_file: any) {
-        storage.ref("mypage/" + this.state.uid + "/icon.img").put(upload_file);
-    }
-    icon_upload() {
-        return (
-            <button type="button" className="btn btn-outline-success btn-sm" onClick={
-                (evt) => { $(evt.currentTarget.children[0]).click() }}>
-                Upload_Icon
-                <input type="file" className="d-none" onChange={
-                    (evt) => { this.storage_Clud_icon(evt.target.files[0]) }} accept="image/jpeg,image/png" />
-            </button>
-        )
     }
 
     //renders
@@ -77,16 +66,12 @@ export class Mypage_tsx extends React.Component<{}, State> {
     }
     render_upicon() {
         return (
-            <div>
-                <button type="button" className="btn btn-outline-success btn-sm" onClick={(evt) => {
-                    $(evt.currentTarget.children[0]).click()
-                }}>Upload_Icon
-                <input type="file" className="d-none" onChange={(evt) => {
-                        if (window.confirm('Are you really submitting?\n' + evt.target.files[0].name)) {
-                            storage.ref("mypage/" + this.state.uid + "/icon.img").put(evt.target.files[0]);
-                        }; this.setState({});
-                    }} accept="image/jpeg,image/png" /></button>
-            </div>
+            <button type="button" className="btn btn-outline-success btn-sm" onClick={
+                (evt) => { $(evt.currentTarget.children[0]).click() }}>
+                Upload_Icon
+                <input type="file" className="d-none" onChange={
+                    (evt) => { this.storage_Clud_icon(evt.target.files[0]) }} accept="image/jpeg,image/png" />
+            </button>
         )
     }
     render_changebutton(title: string, state_element: string) {
@@ -130,7 +115,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
                                 <div>{JSON.parse(this.state.profile)["nickname"]}</div>
                                 <div className="ml-auto">
                                     <div className="form-inline">
-                                        {this.render_changebutton("nickname", "nickname")}{this.icon_upload()}
+                                        {this.render_changebutton("nickname", "nickname")}{this.render_upicon()}
                                     </div>
                                 </div>
                             </h4>

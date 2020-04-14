@@ -16,6 +16,7 @@ GCP_key = "FirebaseAdmin_Key.json"
 
 # Firestore compatible
 class db_Ref:
+    # valiable
     db_dict = {}
     db_path = ""
     id = ""
@@ -59,9 +60,9 @@ class db_Ref:
 
     def document(self, db_path: str = ""):
         return db_Ref(db_path)
-
-    def collection(self, db_path: str = ""):
-        return db_Ref(db_path)
+    # alias
+    collection = document
+    doc = document
 
 
 try:

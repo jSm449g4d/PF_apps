@@ -41,13 +41,6 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     }
 
     //functions
-    db_cLud_getorders() {
-        if (this.state.uid == "") return;
-        db.doc("nicoapi/" + this.state.uid).get().then((doc) => {
-            if (doc.exists == false) { this.setState({ orders: JSON.stringify({}) }) }
-            else { this.setState({ orders: JSON.stringify(doc.data()) }) }
-        })
-    }
     db_Clud_genorders(request_dict: any) {
         if (this.state.uid == "") return;
         this.setState({ stopspam_timestamp: Date.now() })
@@ -55,6 +48,18 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             db.doc("nicoapi/" + this.state.uid).set(request_dict, { merge: true });
             setTimeout(this.db_cLud_getorders.bind(this), 1000);
         };
+    }
+    db_cLud_getorders() {
+        if (this.state.uid == "") return;
+        db.doc("nicoapi/" + this.state.uid).get().then((doc) => {
+            if (doc.exists == false) { this.setState({ orders: JSON.stringify({}) }) }
+            else { this.setState({ orders: JSON.stringify(doc.data()) }) }
+        })
+    }
+    storage_cLud_dlorders(target_dir: string) {
+        storage.ref(target_dir).getDownloadURL().then((url) => {
+            window.open(url, '_blank');
+        }).catch(() => { alert("cant download") })
     }
     _genorders() {
         const request_url = [this.state.API_endpoint + "?"];
@@ -208,26 +213,30 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     render_orders_text() {
         let num: Number = 0; let keys = Object.keys(JSON.parse(this.state.orders));
         for (let i = 0; i < keys.length; i++) { num += JSON.parse(this.state.orders)[keys[i]].length }
-        return (<h6 className="mx-1">{"orders / requests: " + String(keys.length) + " / " + String(num)}</h6>)
+        return (<div className="mx-3">{"orders / requests: " + String(keys.length) + " / " + String(num)}</div>)
     }
     render_orders_table() {
         const keys = Object.keys(JSON.parse(this.state.orders)).sort();
         const orders_record = []; let tmp_orders = JSON.parse(this.state.orders);
         for (var i = 0; i < keys.length; i++) {
             const orders_data = [];
-            //Timestamp
-            orders_data.push(<td key={1}>{keys[i]}</td>)
-            //Request URLs
+            orders_data.push(<td key={1} style={{ textAlign: "center" }}>{keys[i]}</td>)
             orders_data.push(<td key={2} style={{ fontSize: "12px" }}>{tmp_orders[keys[i]].join('\n')}</td>)
+            // download button
+            orders_data.push(<td key={3} style={{ textAlign: "center" }}>
+                <button className="btn btn-primary btn-sm m-1"
+                    onClick={(evt: any) => { this.storage_cLud_dlorders("nicoapi/" + this.state.uid + "/" + evt.target.value + ".zip") }}
+                    value={keys[i]}>Download</button></td>)
             orders_record.push(<tr key={i}>{orders_data}</tr>)
         }
-        if (keys.length == 0) { orders_record.push(<tr><td colSpan={2}>Not Exist</td></tr>); }
+        if (keys.length == 0) { orders_record.push(<tr><td colSpan={3}>Not Exist</td></tr>); }
         return (
             <table className="table table-sm">
                 <thead>
                     <tr style={{ textAlign: "center" }}>
                         <th style={{ width: "10%" }} >timestamp</th>
                         <th>Request URLs</th>
+                        <th style={{ width: "10%" }} >Ops</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -275,7 +284,9 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                     {this.render_orders_text()}
                                 </div>
                                 <div className="form-inline">
-                                    <button className="btn btn-primary btn-sm mx-1">Download</button>
+                                    <button className="btn btn-primary btn-sm mx-1"
+                                        onClick={() => { }}
+                                    >Download</button>
                                     <button className="btn btn-danger btn-sm mx-1">Delete</button>
                                 </div>
                             </nav>

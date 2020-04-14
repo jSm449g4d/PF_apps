@@ -37,26 +37,6 @@ export class Tptef_tsx extends React.Component<{}, State> {
     }
 
     //functions
-    db_cLud_loadroom() {
-        if (this.state.room == "") return;
-        db.doc("tptef/" + this.state.room).get().then((doc) => {
-            if (doc.exists == false) {
-                this.setState({
-                    thread: JSON.stringify({
-                        "NULL": {
-                            handlename: "NULL",
-                            uid: "NULL",
-                            content: "Thread is not exist",
-                            date: Date.now().toString(),
-                            attachment_dir: "",
-                        }
-                    })
-                })
-            } else {
-                this.setState({ thread: JSON.stringify(doc.data()) })
-            }
-        });
-    };
     db_Clud_addremark(submit_content: string, attach_a_file: any) {
         if (this.state.uid == "" || this.state.room == "") return;
         if (submit_content == "") { alert("Plz input content"); return; };
@@ -76,6 +56,24 @@ export class Tptef_tsx extends React.Component<{}, State> {
         }, { merge: true });
         setTimeout(this.db_cLud_loadroom.bind(this), 500);
     }
+    db_cLud_loadroom() {
+        if (this.state.room == "") return;
+        db.doc("tptef/" + this.state.room).get().then((doc) => {
+            if (doc.exists == false) {
+                this.setState({
+                    thread: JSON.stringify({
+                        "NULL": {
+                            handlename: "NULL",
+                            uid: "NULL",
+                            content: "Thread is not exist",
+                            date: Date.now().toString(),
+                            attachment_dir: "",
+                        }
+                    })
+                })
+            } else { this.setState({ thread: JSON.stringify(doc.data()) }) }
+        });
+    };
     db_cLuD_delremark(remark_key: string) {
         if (this.state.uid == "" || this.state.room == "") return;
         const docRef = db.doc("tptef/" + this.state.room);
@@ -89,7 +87,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
             if (Object.keys(doc.data()).length < 2) docRef.delete();
         }); setTimeout(this.db_cLud_loadroom.bind(this), 500);
     }
-    storage_download(attachment_dir: string) {
+    storage_cLud_attachment(attachment_dir: string) {
         storage.ref(attachment_dir).getDownloadURL().then((url) => {
             window.open(url, '_blank');
         }).catch(() => { alert("cant download") })
@@ -101,26 +99,29 @@ export class Tptef_tsx extends React.Component<{}, State> {
         const thread_record = [];
         const keys = Object.keys(doc_data).sort();
         for (var i = 0; i < keys.length; i++) {
-            const thread_data = []; const thread_data_ops = [];
-            thread_data.push(<td key={1}>{doc_data[keys[i]]["handlename"]}</td>)
+            const thread_data = [];
+            thread_data.push(<td key={1} style={{ textAlign: "center" }}>{doc_data[keys[i]]["handlename"]}</td>)
             thread_data.push(<td key={2}>{doc_data[keys[i]]["content"]}</td>)
-            thread_data.push(<td key={3} style={{ fontSize: "12px" }}>{doc_data[keys[i]]["date"]}<br />{doc_data[keys[i]]["uid"]}</td>)
-            //delete button
-            if (doc_data[keys[i]]["uid"] == this.state.uid) {
-                thread_data_ops.push(
-                    <button key={1} className="btn btn-outline-danger btn-sm m-1 rounded-pill"
-                        onClick={(evt: any) => { this.db_cLuD_delremark(evt.target.value) }}
-                        value={keys[i]}>delete</button>)
+            thread_data.push(<td key={3} style={{ fontSize: "12px", textAlign: "center" }}>
+                {doc_data[keys[i]]["date"]}<br />{doc_data[keys[i]]["uid"]}</td>)
+            {   //delete button
+                const thread_data_ops = [];
+                if (doc_data[keys[i]]["uid"] == this.state.uid) {
+                    thread_data_ops.push(
+                        <button key={1} className="btn btn-outline-danger btn-sm m-1 rounded-pill"
+                            onClick={(evt: any) => { this.db_cLuD_delremark(evt.target.value) }}
+                            value={keys[i]}>delete</button>)
+                }
+                //attachment download button
+                if (doc_data[keys[i]]["attachment_dir"] != "") {
+                    thread_data_ops.push(
+                        <button key={2} className="btn btn-primary btn-sm m-1"
+                            onClick={(evt: any) => { this.storage_cLud_attachment(evt.target.value) }}
+                            value={doc_data[keys[i]]["attachment_dir"]}>
+                            {doc_data[keys[i]]["attachment_dir"].split("/").pop().slice(0, 20)}</button>)
+                }
+                thread_data.push(<td key={4}>{thread_data_ops}</td>)
             }
-            //attachment download button
-            if (doc_data[keys[i]]["attachment_dir"] != "") {
-                thread_data_ops.push(
-                    <button key={2} className="btn btn-primary btn-sm m-1"
-                        onClick={(evt: any) => { this.storage_download(evt.target.value) }}
-                        value={doc_data[keys[i]]["attachment_dir"]}>
-                        {doc_data[keys[i]]["attachment_dir"].split("/").pop().slice(0, 20)}</button>)
-            }
-            thread_data.push(<td key={4}>{thread_data_ops}</td>)
             thread_record.push(<tr key={i}>{thread_data}</tr>)
         }
         return (
@@ -129,8 +130,8 @@ export class Tptef_tsx extends React.Component<{}, State> {
                     <tr style={{ textAlign: "center" }}>
                         <th style={{ width: "15%" }}>handlename</th>
                         <th>content</th>
-                        <th style={{ width: "15%" }} >timestamp/uid</th>
-                        <th style={{ width: "15%" }}>ops</th>
+                        <th style={{ width: "15%" }} >Timestamp/uid</th>
+                        <th style={{ width: "15%" }}>Ops</th>
                     </tr>
                 </thead>
                 <tbody>{thread_record}</tbody>

@@ -11,7 +11,7 @@ from google.cloud import storage as firestorage
 # AP_setting_management
 access_counter = 0
 resouce_health = "×: FAULT"
-GCP_key = "FirebaseAdmin_Key.json"
+GCP_key = "FirebaseAdminKey.json"
 
 
 # Firestore compatible

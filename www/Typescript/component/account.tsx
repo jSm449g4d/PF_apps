@@ -35,24 +35,24 @@ export class Account_tsx extends React.Component<{}, State> {
     }
 
     //functions
-    signup(mail_addr: string = this.state.mail_addr, mail_pass: string = this.state.mail_pass) {
+    auth_signup(mail_addr: string = this.state.mail_addr, mail_pass: string = this.state.mail_pass) {
         auth.createUserWithEmailAndPassword(mail_addr, mail_pass).catch((err) => { fb_errmsg(err) })
     }
-    signin(mail_addr: string = this.state.mail_addr, mail_pass: string = this.state.mail_pass) {
+    auth_signin(mail_addr: string = this.state.mail_addr, mail_pass: string = this.state.mail_pass) {
         auth.signInWithEmailAndPassword(mail_addr, mail_pass).catch((err) => { fb_errmsg(err) })
     }
-    easyin(mail_addr: string = "a@b.com", mail_pass: string = "asdfgh") {
-        auth.signInWithEmailAndPassword(mail_addr, mail_pass).catch(() => { this.signup(mail_addr, mail_pass); })
+    auth_easyin(mail_addr: string = "a@b.com", mail_pass: string = "asdfgh") {
+        auth.signInWithEmailAndPassword(mail_addr, mail_pass).catch(() => { this.auth_signup(mail_addr, mail_pass); })
     }
-    reset_pass(mail_addr: string = this.state.mail_addr) {
+    auth_resetpass(mail_addr: string = this.state.mail_addr) {
         auth.sendPasswordResetEmail(mail_addr).then(() => { alert("SEND_EMAIL!") }).catch((err) => { fb_errmsg(err) });
     }
-    delete_user() {
+    auth_deluser() {
         if (window.confirm('Are you really DELETE:USER?\n')) {
             auth.currentUser.delete().then(() => { alert("ACCOUNT_DELETED!") }).catch((err) => { fb_errmsg(err) });
-        } else { alert("Canceled"); }
+        }
     }
-    google_login() { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then().catch((err) => { fb_errmsg(err) }) }
+    auth_glogin() { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then().catch((err) => { fb_errmsg(err) }) }
 
     //renders
     render_account_modal(title: string, func: any) {
@@ -62,16 +62,16 @@ export class Account_tsx extends React.Component<{}, State> {
             <div>
                 <button type="button" className="btn btn-primary btn-sm mx-1" data-toggle="modal" data-target={modal_id_s}>{title}</button>
                 <div className="modal fade" id={modal_id} role="dialog" aria-hidden="true">
-                    <div className="modal-dialog modal-lg" role="document">
+                    <div className="modal-dialog" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">{title}</h5>
                             </div>
-                            <div className="modal-body row">
-                                <input type="text" name="mail_addr" className="form-control col-6" placeholder="mail_address"
-                                    onChange={(evt: any) => { this.setState({ mail_addr: evt.target.value }); }} />
-                                <input type="text" name="mail_pass" className="form-control col-6" placeholder="set_password"
-                                    onChange={(evt: any) => { this.setState({ mail_pass: evt.target.value }); }} />
+                            <div className="modal-body">
+                                <div><input className="form-control m-1" type="text" size={40} name="mail_addr" placeholder="mail_address"
+                                    onChange={(evt: any) => { this.setState({ mail_addr: evt.target.value }); }} /></div>
+                                <div><input className="form-control m-1" type="text" size={40} name="mail_pass" placeholder="set_password"
+                                    onChange={(evt: any) => { this.setState({ mail_pass: evt.target.value }); }} /></div>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={func}>Submit</button>
@@ -91,10 +91,10 @@ export class Account_tsx extends React.Component<{}, State> {
                         <h5>サービスを利用するには、ログインしてください</h5>
                         <div className="ml-auto">
                             <div className="form-inline">
-                                <input type="button" value="Googleでログイン" className="btn btn-success mx-1 btn-sm" onClick={() => { this.google_login() }} />
-                                {this.render_account_modal("Sign_in", this.signin)}
-                                {this.render_account_modal("Sign_up", this.signup)}
-                                <button type="button" className="btn btn-warning mx-1 btn-sm" onClick={() => { this.easyin() }}>Easy_login</button>
+                                <input type="button" value="Googleでログイン" className="btn btn-success mx-1 btn-sm" onClick={() => { this.auth_glogin() }} />
+                                {this.render_account_modal("Sign_in", this.auth_signin)}
+                                {this.render_account_modal("Sign_up", this.auth_signup)}
+                                <button type="button" className="btn btn-warning mx-1 btn-sm" onClick={() => { this.auth_easyin() }}>Easy_login</button>
                             </div>
                         </div>
                     </div> :
@@ -113,12 +113,12 @@ export class Account_tsx extends React.Component<{}, State> {
                                         <div className="modal-header">
                                             <h5 className="modal-title">Config</h5>
                                         </div>
-                                        <div className="modal-body row">
-                                            <input type="text" name="mail_addr" className="form-control col-12" placeholder="send mail for password_reset" />
+                                        <div className="modal-body">
+                                            <input type="text" name="mail_addr" className="form-control" size={40} placeholder="mail address" />
                                         </div>
                                         <div className="modal-footer">
-                                            <button type="button" className="btn btn-sm btn-warning" data-dismiss="modal" onClick={() => { this.reset_pass(); }}>password_RESRT</button>
-                                            <button type="button" className="btn btn-sm btn-danger" data-dismiss="modal" onClick={() => { this.delete_user(); }}>USER_DELETE</button>
+                                            <button type="button" className="btn btn-sm btn-warning" data-dismiss="modal" onClick={() => { this.auth_resetpass(); }}>password_RESRT</button>
+                                            <button type="button" className="btn btn-sm btn-danger" data-dismiss="modal" onClick={() => { this.auth_deluser(); }}>USER_DELETE</button>
                                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                                         </div>
                                     </div>

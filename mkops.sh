@@ -12,6 +12,6 @@ sudo rm -r www.zip
 7z a www.zip www/Flask/
 7z a www.zip www/static/
 7z a www.zip www/templates/
-7z a www.zip www/FirebaseAdmin_Key.json
+7z a www.zip www/FirebaseAdminKey.json
 7z a www.zip www/wsgi_h.py
 7z a www.zip www/wsgi.py

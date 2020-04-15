@@ -32,6 +32,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
             this.setState({ unsnaps: [this.db_Rwd_getroom.bind(this)(),] })
         }
     }
+    componentWillUnmount() { for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() } }
 
     //functions
     db_Rwd_getroom() {
@@ -71,7 +72,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
     }
     db_RwD_delremark(remark_key: string) {
         if (this.state.uid == "" || this.state.room == "") return;
-        if (stopf5.check("3", 500) == false) return; // To prevent high freq access
+        if (stopf5.check("2", 500) == false) return; // To prevent high freq access
         const docRef = db.doc("tptef/" + this.state.room);
         docRef.get().then((doc) => {
             if (doc.exists) {
@@ -168,6 +169,4 @@ export class Tptef_tsx extends React.Component<{}, State> {
 
 ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
 
-ReactDOM.render(<Tptef_tsx />,
-    document.getElementById("tptef_tsx")
-);
+ReactDOM.render(<Tptef_tsx />, document.getElementById("tptef_tsx"));

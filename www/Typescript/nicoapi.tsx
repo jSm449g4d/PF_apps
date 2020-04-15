@@ -30,6 +30,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             this.setState({ unsnaps: [this.db_Rwd_getorders.bind(this)(),] })
         }
     }
+    componentWillUnmount() { for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() } }
 
     //functions
     db_Rwd_getorders() {
@@ -54,15 +55,12 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     db_rwD_delorders(target_timestamp: string) {
         if (this.state.uid == "") return;
         db.doc("nicoapi/" + this.state.uid)
-            .set({ [target_timestamp]: fb.firestore.FieldValue.delete() }, { merge: true }).catch(
-                (err) => fb_errmsg(err)
-            )
+            .set({ [target_timestamp]: fb.firestore.FieldValue.delete() }, { merge: true }).catch((err) => fb_errmsg(err))
     }
     storage_Rwd_dlorders(target_timestamp: string) {
         if (stopf5.check("2", 500) == false) return; // To prevent high freq access
         storage.ref("nicoapi/" + this.state.uid + "/" + target_timestamp + ".zip")
-            .getDownloadURL().then((url) => { window.open(url, '_blank'); })
-            .catch((err: any) => { fb_errmsg(err) })
+            .getDownloadURL().then((url) => { window.open(url, '_blank'); }).catch((err: any) => { fb_errmsg(err) })
     }
     storage_rwD_delorders(target_timestamp: string) {
         if (this.state.uid == "") return;
@@ -231,7 +229,8 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             const tmp_data = [];
             tmp_data.push(<td key={1} style={{ textAlign: "center" }}>
                 {keys[i]}<br />Status: {tmp_orders[keys[i]]["status"]}<br />UA: {tmp_orders[keys[i]]["User-Agent"]}</td>)
-            tmp_data.push(<td key={2} style={{ fontSize: "12px" }}>{tmp_orders[keys[i]]["request_urls"].join('\n')}</td>)
+            tmp_data.push(<td key={2} style={{ fontSize: "12px" }}><details><summary> {tmp_orders[keys[i]]["request_urls"][0]}</summary>
+                {tmp_orders[keys[i]]["request_urls"].slice(1).join('\n')}</details></td>)
             const tmp_datum = []; {// col: Ops
                 //download button
                 if (tmp_orders[keys[i]]["status"] == "processed") tmp_datum.push(
@@ -243,9 +242,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                     <button key={2} className="btn btn-outline-danger btn-sm m-1"
                         onClick={(evt: any) => { this.storage_rwD_delorders(evt.target.value) }}
                         value={keys[i]}>Delete</button>)
-            }
-            tmp_data.push(<td key={3} style={{ textAlign: "center" }}>{tmp_datum}</td>)
-
+            } tmp_data.push(<td key={3} style={{ textAlign: "center" }}>{tmp_datum}</td>)
             tmp_record.push(<tr key={i}>{tmp_data}</tr>)
         }
         if (keys.length == 0) { tmp_record.push(<tr><td colSpan={3} style={{ textAlign: "center" }}>Not Exist</td></tr>); }
@@ -316,6 +313,4 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
 };//
 ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
 
-ReactDOM.render(<Nicoapi_tsx />,
-    document.getElementById("nicoapi_tsx")
-);
+ReactDOM.render(<Nicoapi_tsx />, document.getElementById("nicoapi_tsx"));

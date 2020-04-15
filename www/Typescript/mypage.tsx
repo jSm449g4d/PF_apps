@@ -7,7 +7,7 @@ const storage = fb.storage();
 const db = fb.firestore()
 
 interface State {
-    uid: string;unsnaps: any; image_url: string; profile: string
+    uid: string; unsnaps: any; image_url: string; profile: string
 }
 
 
@@ -16,7 +16,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            uid: "",unsnaps:[], image_url: "",
+            uid: "", unsnaps: [], image_url: "",
             profile: JSON.stringify({
                 nickname: "窓の民は名無し", pr: "私はJhon_Doe。窓の蛇遣いです。", timestamp: Date.now(),
             }),
@@ -32,6 +32,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
             this.setState({ unsnaps: [this.db_Rwd_getprofile.bind(this)(),] })
         }
     }
+    componentWillUnmount() { for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() } }
 
     //functions
     db_Rwd_getprofile() {
@@ -47,11 +48,11 @@ export class Mypage_tsx extends React.Component<{}, State> {
     }
     storage_rWd_icon(upload_file: any) {
         if (this.state.uid == "") return;
-        if (stopf5.check("3", 500) == false) return; // To prevent high freq access
+        if (stopf5.check("2", 500) == false) return; // To prevent high freq access
         storage.ref("mypage/" + this.state.uid + "/icon.img").put(upload_file);
     }
     storage_Rwd_icon() {
-        if (stopf5.check("4", 500) == false) return; // To prevent high freq access
+        if (stopf5.check("3", 500) == false) return; // To prevent high freq access
         storage.ref("mypage/" + this.state.uid + "/icon.img").getDownloadURL().then((url) => {
             if (this.state.image_url != url) this.setState({ image_url: url });
         }).catch(() => { if (this.state.image_url != "") this.setState({ image_url: "" }); })
@@ -138,8 +139,5 @@ export class Mypage_tsx extends React.Component<{}, State> {
 
 ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
 
-ReactDOM.render(
-    <Mypage_tsx />,
-    document.getElementById("mypage_tsx")
-);
+ReactDOM.render(<Mypage_tsx />, document.getElementById("mypage_tsx"));
 

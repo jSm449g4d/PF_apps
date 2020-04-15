@@ -7,7 +7,8 @@ const storage = fb.storage();
 const db = fb.firestore()
 
 interface State {
-    uid: string; API_endpoint: string; service_name: string; fields: string; orders: string;
+    uid: string; unsnaps: any; API_endpoint: string; service_name: string; fields: string; orders: string;
+
 }
 
 export class Nicoapi_tsx extends React.Component<{}, State> {
@@ -15,7 +16,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            uid: "", API_endpoint: "https://", service_name: "← Plz \"Select API_endpoint\"",
+            uid: "", unsnaps: [], API_endpoint: "https://", service_name: "← Plz \"Select API_endpoint\"",
             fields: JSON.stringify({}), orders: JSON.stringify({})
         };
         //check Auth
@@ -27,17 +28,22 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             }
         }, 200)
     }
-    componentDidMount() {
-        this.db_cRud_getorders.bind(this)()
-    }
     componentDidUpdate(prevProps: object, prevState: State) {
         if (this.state.uid != prevState.uid) {
-            this.db_cRud_getorders.bind(this)()
+            for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() }
+            this.setState({ unsnaps: [this.db_Rwd_getorders.bind(this)(),] })
         }
     }
 
     //functions
-    db_Crud_genorders(urls_array: string[]) {
+    db_Rwd_getorders() {
+        if (this.state.uid == "") return () => { };
+        return db.doc("nicoapi/" + this.state.uid).onSnapshot((doc) => {
+            if (doc.exists == false) { this.setState({ orders: JSON.stringify({}) }) }
+            else { this.setState({ orders: JSON.stringify(doc.data()) }) }
+        });
+    }
+    db_rWd_genorders(urls_array: string[]) {
         if (this.state.uid == "") return;
         if (stopf5.check("1", 6000, true) == false) return; // To prevent high freq access
         if (confirm("Do you really want to submit?")) {
@@ -47,19 +53,10 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                         "request_urls": urls_array, "status": "standby", "User-Agent": "nicoapi"
                     }
                 }, { merge: true });
-            setTimeout(this.db_cRud_getorders.bind(this), 500);
         };
     }
-    db_cRud_getorders() {
-        if (this.state.uid == "") return;
+    storage_Rwd_dlorders(target_dir: string) {
         if (stopf5.check("2", 500) == false) return; // To prevent high freq access
-        db.doc("nicoapi/" + this.state.uid).get().then((doc) => {
-            if (doc.exists == false) { this.setState({ orders: JSON.stringify({}) }) }
-            else { this.setState({ orders: JSON.stringify(doc.data()) }) }
-        })
-    }
-    storage_cRud_dlorders(target_dir: string) {
-        if (stopf5.check("3", 500) == false) return; // To prevent high freq access
         storage.ref(target_dir).getDownloadURL().then((url) => {
             window.open(url, '_blank');
         }).catch(() => { alert("cant download") })
@@ -83,7 +80,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                 request_urls[j] += "&" + tmp_fields[keys[i]]["field"] + "=" + tmp_fields[keys[i]]["value"]
             }
         }
-        this.db_Crud_genorders(request_urls);
+        this.db_rWd_genorders(request_urls);
     }
 
     //renders
@@ -229,7 +226,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                 //download button
                 if (tmp_orders[keys[i]]["status"] == "processed") tmp_datum.push(
                     <button key={1} className="btn btn-primary btn-sm m-1"
-                        onClick={(evt: any) => { this.storage_cRud_dlorders("nicoapi/" + this.state.uid + "/" + evt.target.value + ".zip") }}
+                        onClick={(evt: any) => { this.storage_Rwd_dlorders("nicoapi/" + this.state.uid + "/" + evt.target.value + ".zip") }}
                         value={keys[i]}>Download</button>)
                 //attachment download button
                 if (tmp_orders[keys[i]]["status"] == "processed") tmp_datum.push(
@@ -291,8 +288,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                         <div style={{ backgroundColor: "lightyellow" }}>
                             <nav className="navbar" style={{ backgroundColor: "wheat" }}>
                                 <div className="form-inline">
-                                    <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#nicoapi_navber_orders"
-                                        onClick={() => { this.db_cRud_getorders() }}>Orders</button>
+                                    <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#nicoapi_navber_orders">Orders</button>
                                     {this.render_orders_text()}
                                 </div>
                             </nav>

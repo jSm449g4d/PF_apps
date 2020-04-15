@@ -7,7 +7,7 @@ const storage = fb.storage();
 const db = fb.firestore()
 
 interface State {
-    uid: string, image_url: string, profile: string
+    uid: string;unsnaps: any; image_url: string; profile: string
 }
 
 
@@ -16,7 +16,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            uid: "", image_url: "",
+            uid: "",unsnaps:[], image_url: "",
             profile: JSON.stringify({
                 nickname: "窓の民は名無し", pr: "私はJhon_Doe。窓の蛇遣いです。", timestamp: Date.now(),
             }),
@@ -29,34 +29,31 @@ export class Mypage_tsx extends React.Component<{}, State> {
             }
         }, 200)
     }
-    componentDidMount() {
-        this.db_cRud_loadpf.bind(this);
-    }
     componentDidUpdate(prevProps: object, prevState: State) {
         if (this.state.uid != prevState.uid) {
-            this.db_cRud_loadpf.bind(this)();
+            for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() }
+            this.setState({ unsnaps: [this.db_Rwd_getprofile.bind(this)(),] })
         }
     }
 
     //functions
-    db_Crud_setpf() {
+    db_Rwd_getprofile() {
+        if (this.state.uid == "") return () => { };
+        return db.doc("mypage/" + this.state.uid).onSnapshot((doc) => {
+            if (doc.exists) { this.setState({ profile: JSON.stringify(doc.data()) }); }
+        });
+    }
+    db_rWd_setpf() {
         if (this.state.uid == "") return;
         if (stopf5.check("1", 500) == false) return; // To prevent high freq access
         db.doc("mypage/" + this.state.uid).set(JSON.parse(this.state.profile), { merge: true });
     }
-    db_cRud_loadpf() {
-        if (this.state.uid == "") return;
-        if (stopf5.check("2", 500) == false) return; // To prevent high freq access
-        db.doc("mypage/" + this.state.uid).get().then((doc) => {
-            if (doc.exists) { this.setState({ profile: JSON.stringify(doc.data()) }); }
-        });
-    }
-    storage_Crud_icon(upload_file: any) {
+    storage_rWd_icon(upload_file: any) {
         if (this.state.uid == "") return;
         if (stopf5.check("3", 500) == false) return; // To prevent high freq access
         storage.ref("mypage/" + this.state.uid + "/icon.img").put(upload_file);
     }
-    storage_cRud_icon() {
+    storage_Rwd_icon() {
         if (stopf5.check("4", 500) == false) return; // To prevent high freq access
         storage.ref("mypage/" + this.state.uid + "/icon.img").getDownloadURL().then((url) => {
             if (this.state.image_url != url) this.setState({ image_url: url });
@@ -65,7 +62,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
 
     //renders
     render_icon() {
-        this.storage_cRud_icon();
+        this.storage_Rwd_icon();
         if (this.state.image_url == "") { return (<div>No Image</div>) }
         return (<div><img src={this.state.image_url} alt={this.state.image_url} width="200" height="200" /></div>)
     }
@@ -75,7 +72,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
                 (evt) => { $(evt.currentTarget.children[0]).click() }}>
                 Upload_Icon
                 <input type="file" className="d-none" onChange={
-                    (evt) => { this.storage_Crud_icon(evt.target.files[0]) }} accept="image/jpeg,image/png" />
+                    (evt) => { this.storage_rWd_icon(evt.target.files[0]) }} accept="image/jpeg,image/png" />
             </button>
         )
     }
@@ -100,7 +97,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-sm btn-success" data-dismiss="modal"
-                                    onClick={() => { this.db_Crud_setpf() }}>SUBMIT</button>
+                                    onClick={() => { this.db_rWd_setpf() }}>SUBMIT</button>
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                             </div>
                         </div>

@@ -49,6 +49,9 @@ def deamon():
             # 7days to delete
             if int(datetime.now().timestamp()*1000) > int(timestamp)+604800000:
                 recodes[timestamp] = DELETE_FIELD
+                if storage.blob("nicoapi/"+docRef.id + "/"+timestamp + ".zip").exists() == True:
+                    storage.blob("nicoapi/"+docRef.id + "/" +
+                                 timestamp + ".zip").delete()
                 continue
             # downloaded data is not exist on GCS → delete
             if recodes[timestamp]["status"] == "processed":
@@ -75,7 +78,7 @@ def deamon():
                         pass
             recodes[timestamp]["status"] = "processed"
         docRef.set(recodes, merge=True)
-    time.sleep(300)  # prevent high freq restart
+    time.sleep(180)  # prevent high freq restart
 
 
 thread_d = threading.Thread(name='nicoapi_d', target=deamon)

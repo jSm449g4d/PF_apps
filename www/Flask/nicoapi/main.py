@@ -27,11 +27,11 @@ with open(os.path.join(os.path.dirname(__file__), "config.json"), "r", encoding=
     try:  # on CaaS
         wsgi_h = importlib.import_module("wsgi_h")
         db = wsgi_h.db
-        DELETE_FIELD=wsgi_h.DELETE_FIELD
+        DELETE_FIELD = wsgi_h.DELETE_FIELD
         storage = wsgi_h.GCS.get_bucket(json.load(fp)["GCS_bucket"])
     except:  # on FaaS
         db = firestore.Client()
-        DELETE_FIELD=firestore.DELETE_FIELD
+        DELETE_FIELD = firestore.DELETE_FIELD
         storage = firestorage.Client().get_bucket(json.load(fp)["GCS_bucket"])
 
 
@@ -48,12 +48,12 @@ def deamon():
         for timestamp, order in recodes.items():
             # 7days to delete
             if int(datetime.now().timestamp()*1000) > int(timestamp)+604800000:
-                recodes[timestamp]=DELETE_FIELD
+                recodes[timestamp] = DELETE_FIELD
                 continue
             # downloaded data is not exist on GCS → delete
             if recodes[timestamp]["status"] == "processed":
                 if storage.blob("nicoapi/"+docRef.id + "/"+timestamp + ".zip").exists() == False:
-                    recodes[timestamp]=DELETE_FIELD
+                    recodes[timestamp] = DELETE_FIELD
                 continue
             with io.BytesIO() as inmemory_zip:
                 # set https UserAgent
@@ -74,8 +74,8 @@ def deamon():
                     except:
                         pass
             recodes[timestamp]["status"] = "processed"
-        docRef.set(recodes,merge=True)
-    time.sleep(300) # prevent high freq restart
+        docRef.set(recodes, merge=True)
+    time.sleep(300)  # prevent high freq restart
 
 
 thread_d = threading.Thread(name='nicoapi_d', target=deamon)
@@ -94,6 +94,8 @@ def show(request):
         thread_d = threading.Thread(name='nicoapi_d', target=deamon)
         thread_d.start()
         status_lines += "Thread start!!<br>"
+    if request.method == "POST":
+        return "Imalive", 200
 
     # foot ← (template)
     status_lines += "<h6>"

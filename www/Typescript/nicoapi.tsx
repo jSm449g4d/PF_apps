@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from "react-dom";
-import { Account_tsx, auth, fb } from "./component/account";
+import { Account_tsx, auth, fb, fb_errmsg } from "./component/account";
 import { stopf5 } from "./component/stopf5";
 
 const storage = fb.storage();
@@ -51,11 +51,24 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                 }, { merge: true });
         };
     }
-    storage_Rwd_dlorders(target_dir: string) {
+    db_rwD_delorders(target_timestamp: string) {
+        if (this.state.uid == "") return;
+        db.doc("nicoapi/" + this.state.uid)
+            .set({ [target_timestamp]: fb.firestore.FieldValue.delete() }, { merge: true }).catch(
+                (err) => fb_errmsg(err)
+            )
+    }
+    storage_Rwd_dlorders(target_timestamp: string) {
         if (stopf5.check("2", 500) == false) return; // To prevent high freq access
-        storage.ref(target_dir).getDownloadURL().then((url) => {
-            window.open(url, '_blank');
-        }).catch(() => { alert("cant download") })
+        storage.ref("nicoapi/" + this.state.uid + "/" + target_timestamp + ".zip")
+            .getDownloadURL().then((url) => { window.open(url, '_blank'); })
+            .catch((err: any) => { fb_errmsg(err) })
+    }
+    storage_rwD_delorders(target_timestamp: string) {
+        if (this.state.uid == "") return;
+        if (stopf5.check("3", 500) == false) return; // To prevent high freq access
+        storage.ref("nicoapi/" + this.state.uid + "/" + target_timestamp + ".zip").delete().catch((err) => { fb_errmsg(err) });
+        this.db_rwD_delorders(target_timestamp)
     }
     _genorders() {
         const request_urls = [this.state.API_endpoint + "?"];
@@ -78,6 +91,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         }
         this.db_rWd_genorders(request_urls);
     }
+
 
     //renders
     render_APIendpoint_record(service_name: string, API_reference: string = "") {
@@ -222,12 +236,12 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                 //download button
                 if (tmp_orders[keys[i]]["status"] == "processed") tmp_datum.push(
                     <button key={1} className="btn btn-primary btn-sm m-1"
-                        onClick={(evt: any) => { this.storage_Rwd_dlorders("nicoapi/" + this.state.uid + "/" + evt.target.value + ".zip") }}
+                        onClick={(evt: any) => { this.storage_Rwd_dlorders(evt.target.value) }}
                         value={keys[i]}>Download</button>)
                 //attachment download button
                 if (tmp_orders[keys[i]]["status"] == "processed") tmp_datum.push(
                     <button key={2} className="btn btn-outline-danger btn-sm m-1"
-                        onClick={(evt: any) => { alert("Under Construction") }} // TODO: delete from GCS
+                        onClick={(evt: any) => { this.storage_rwD_delorders(evt.target.value) }}
                         value={keys[i]}>Delete</button>)
             }
             tmp_data.push(<td key={3} style={{ textAlign: "center" }}>{tmp_datum}</td>)

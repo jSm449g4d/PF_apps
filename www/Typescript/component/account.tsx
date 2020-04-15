@@ -12,6 +12,8 @@ export const fb = firebase;
 export const auth = firebase.auth();
 fb.analytics();
 
+export function fb_errmsg(error: any) { alert("error_code:" + error.code + "\nerror_message:" + error.message); }
+
 interface State {
     uid: string, mail_addr: string, mail_pass: string
 }
@@ -34,25 +36,23 @@ export class Account_tsx extends React.Component<{}, State> {
 
     //functions
     signup(mail_addr: string = this.state.mail_addr, mail_pass: string = this.state.mail_pass) {
-        auth.createUserWithEmailAndPassword(mail_addr, mail_pass).catch((error) => { alert("error_code:" + error.code + "\nerror_message:" + error.message) })
+        auth.createUserWithEmailAndPassword(mail_addr, mail_pass).catch((err) => { fb_errmsg(err) })
     }
     signin(mail_addr: string = this.state.mail_addr, mail_pass: string = this.state.mail_pass) {
-        auth.signInWithEmailAndPassword(mail_addr, mail_pass).catch((error) => { alert("error_code:" + error.code + "\nerror_message:" + error.message) })
+        auth.signInWithEmailAndPassword(mail_addr, mail_pass).catch((err) => { fb_errmsg(err) })
     }
     easyin(mail_addr: string = "a@b.com", mail_pass: string = "asdfgh") {
         auth.signInWithEmailAndPassword(mail_addr, mail_pass).catch(() => { this.signup(mail_addr, mail_pass); })
     }
     reset_pass(mail_addr: string = this.state.mail_addr) {
-        auth.sendPasswordResetEmail(mail_addr).then(() => { alert("SEND_EMAIL!") }).catch((error) => { alert("error_code:" + error.code + "\nerror_message:" + error.message) });
+        auth.sendPasswordResetEmail(mail_addr).then(() => { alert("SEND_EMAIL!") }).catch((err) => { fb_errmsg(err) });
     }
     delete_user() {
         if (window.confirm('Are you really DELETE:USER?\n')) {
-            auth.currentUser.delete().then(() => { alert("ACCOUNT_DELETED!") }).catch((error) => { alert("error_code:" + error.code + "\nerror_message:" + error.message) });
+            auth.currentUser.delete().then(() => { alert("ACCOUNT_DELETED!") }).catch((err) => { fb_errmsg(err) });
         } else { alert("Canceled"); }
     }
-    google_login() {
-        auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then().catch((error) => { alert("error_code:" + error.code + "\nerror_message:" + error.message); })
-    }
+    google_login() { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then().catch((err) => { fb_errmsg(err) }) }
 
     //renders
     render_account_modal(title: string, func: any) {

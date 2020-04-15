@@ -19,13 +19,9 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             uid: "", unsnaps: [], API_endpoint: "https://", service_name: "← Plz \"Select API_endpoint\"",
             fields: JSON.stringify({}), orders: JSON.stringify({})
         };
-        //check Auth
         setInterval(() => {
-            if (auth.currentUser) {
-                if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid });
-            } else {
-                if (this.state.uid != "") this.setState({ uid: "" });
-            }
+            if (auth.currentUser) { if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid }); }
+            else { if (this.state.uid != "") this.setState({ uid: "" }); }
         }, 200)
     }
     componentDidUpdate(prevProps: object, prevState: State) {

@@ -88,20 +88,21 @@ def show(request):
     # head ← (template)
     global access_counter
     access_counter += 1
-    status_lines = "<h6 class='text-center'>==STATUS==<br>"
-    status_lines += "Access Counter :" + str(access_counter) + "<br>"
+    status_dict: dict = {"access_counter": str(access_counter)}
 
     # body
     global thread_d
     if thread_d.is_alive() == False:
         thread_d = threading.Thread(name='nicoapi_d', target=deamon)
         thread_d.start()
-        status_lines += "Thread start!!<br>"
+        status_dict["Thread"] = "Start!!"
     if request.method == "POST":
         return "Imalive", 200
 
     # foot ← (template)
-    status_lines += "<h6>"
+    status_lines: str = "<h6 class='text-center'>==STATUS==</h6>"
+    for key, value in status_dict.items():
+        status_lines += "<div class='text-center' >" + key+": "+value+"</div>"
     kwargs = {"STATUS_LINES": status_lines}
     with open(os.path.join(os.path.dirname(__file__), "main.html"), "r", encoding="utf-8") as f:
         html = f.read()

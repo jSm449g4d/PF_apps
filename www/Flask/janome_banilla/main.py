@@ -16,8 +16,7 @@ def show(request):
     # head ← (template)
     global access_counter
     access_counter += 1
-    status_lines = "<h6 class='text-center'>==STATUS==<br>"
-    status_lines += "Access Counter :" + str(access_counter) + "<br>"
+    status_dict: dict = {"access_counter": str(access_counter)}
 
     # body
     ret = {}
@@ -46,7 +45,9 @@ def show(request):
             return json.dumps(ret, ensure_ascii=False)
 
     # foot ← (template)
-    status_lines += "<h6>"
+    status_lines: str = "<h6 class='text-center'>==STATUS==</h6>"
+    for key, value in status_dict.items():
+        status_lines += "<div class='text-center' >" + key+": "+value+"</div>"
     kwargs = {"STATUS_LINES": status_lines}
     with open(os.path.join(os.path.dirname(__file__), "main.html"), "r", encoding="utf-8") as f:
         html = f.read()

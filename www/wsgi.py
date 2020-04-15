@@ -17,23 +17,29 @@ wsgi_h = importlib.import_module("wsgi_h")
 app.config['MAX_CONTENT_LENGTH'] = 100000000
 os.makedirs("tmp", exist_ok=True)
 
-# Index ← Console
+# Index
 @app.route("/")
 def indexpage_show():
-    wsgi_h.access_counter += 1
-    return flask.render_template("Flask_index.html",
-                                 STATUS_ACCESS_COUNTER=str(
-                                     wsgi_h.access_counter),
-                                 STATUS_ACCESS_TIMESTAMP=str(
-                                     int(datetime.now().timestamp()*1000)),
-                                 STATUS_PYTHON_VERSION=sys.version,
-                                 STATUS_FLASK_VERSION=flask.__version__,
-                                 STATUS_RESOURCE_OS=platform.platform(),
-                                 STATUS_RESOURCE_CORE=str(psutil.cpu_count(
-                                     logical=False))+" / "+str(psutil.cpu_count()),
-                                 STATUS_RESOURCE_MEM='{:,}'.format(psutil.virtual_memory(
-                                 ).used)+"[Byte] / "+'{:,}'.format(psutil.virtual_memory().total)+"[Byte]",
-                                 STATUS_RESOURCE_HEALTH=wsgi_h.resouce_health,)
+    try:  # Apache2.4 index
+        return flask.send_file(os.path.join("html/index.html"))
+    except:  # Flask index
+        try:
+            wsgi_h.access_counter += 1
+            return flask.render_template("Flask_index.html",
+                                         STATUS_ACCESS_COUNTER=str(
+                                             wsgi_h.access_counter),
+                                         STATUS_ACCESS_TIMESTAMP=str(
+                                             int(datetime.now().timestamp()*1000)),
+                                         STATUS_PYTHON_VERSION=sys.version,
+                                         STATUS_FLASK_VERSION=flask.__version__,
+                                         STATUS_RESOURCE_OS=platform.platform(),
+                                         STATUS_RESOURCE_CORE=str(psutil.cpu_count(
+                                             logical=False))+" / "+str(psutil.cpu_count()),
+                                         STATUS_RESOURCE_MEM='{:,}'.format(psutil.virtual_memory(
+                                         ).used)+"[Byte] / "+'{:,}'.format(psutil.virtual_memory().total)+"[Byte]",
+                                         STATUS_RESOURCE_HEALTH=wsgi_h.resouce_health,)
+        except Exception as e:
+            return flask.render_template("Flask_error.html", STATUS_ERROR_TEXT=str(e)), 500
 
 
 # domain/Flask/* ← favicon.ico and robots.txt
@@ -57,14 +63,14 @@ def html_show(name):
 def py_show(name):
     try:
         # Domain/Flask/* and Domain/* → Domain/* → Domain/Flask/*
-        name = name.replace("Flask/", "")
+        name=name.replace("Flask/", "")
         print(name)
         return importlib.import_module("Flask."+name.replace("/", ".").replace("..", "_")).show(flask.request)
     except Exception as e:
         return flask.render_template("Flaks_error.html", STATUS_ERROR_TEXT=str(e)), 500
 
 
-application = app
+application=app
 
 if __name__ == "__main__":
     app.run()

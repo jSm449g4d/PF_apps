@@ -5,9 +5,18 @@ import "firebase/auth";
 import "firebase/storage";
 import "firebase/firestore";
 
-import { firebaseConfig } from "./config";
 
-firebase.initializeApp(firebaseConfig)
+firebase.initializeApp({
+    apiKey: "AIzaSyBnD6VYwD1fUwgNc9WYUFaYYa9goQNJu6A",
+    authDomain: "fir-251509.firebaseapp.com",
+    databaseURL: "https://fir-251509.firebaseio.com",
+    projectId: "fir-251509",
+    storageBucket: "fir-251509.appspot.com",
+    messagingSenderId: "854391462599",
+    appId: "1:854391462599:web:7cbbbd24e82fdb1b02fce2",
+    measurementId: "G-4N2QE70XC1"
+})
+
 export const fb = firebase;
 export const auth = firebase.auth();
 fb.analytics();
@@ -25,13 +34,9 @@ export class Account_tsx extends React.Component<{}, State> {
             uid: "", mail_addr: "", mail_pass: ""
         };
         setInterval(() => {
-            if (auth.currentUser) {
-                if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid })
-            }
-            else {
-                if (this.state.uid != "") this.setState({ uid: "" });
-            }
-        }, 100)
+            if (auth.currentUser) { if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid }); }
+            else { if (this.state.uid != "") this.setState({ uid: "" }); }
+        }, 200)
     }
 
     //functions

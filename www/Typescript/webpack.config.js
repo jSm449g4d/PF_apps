@@ -24,7 +24,7 @@ module.exports = {
     ],
   },
 
-  plugins: [new CopyPlugin([{ from: "./www/**/*", to: "../" }])],
+  plugins: [new CopyPlugin([{ from: "./html/**/*", to: "./" }])],
 
   externals: {
     react: "React",

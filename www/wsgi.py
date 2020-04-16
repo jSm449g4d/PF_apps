@@ -12,7 +12,8 @@ import psutil
 # Flask_Startup
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(os.path.dirname(os.path.join("./", __file__)))
-app = flask.Flask(__name__, template_folder="./Flask/templates/")
+app = flask.Flask(
+    __name__, template_folder="./Flask/templates/", static_folder='./html/static/')
 wsgi_h = importlib.import_module("wsgi_h")
 app.config['MAX_CONTENT_LENGTH'] = 100000000
 os.makedirs("tmp", exist_ok=True)

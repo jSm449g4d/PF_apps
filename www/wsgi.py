@@ -43,14 +43,6 @@ def indexpage_show():
 
 
 # html: domain/* → www/html/*
-@app.route('/<path:name>')
-@app.route('/Flask/<path:name>')
-def favirobo(name):
-    try:
-        return flask.send_file(os.path.join("html", name).replace("\\", "/").replace("..", "_"))
-    except:
-        return "cant_access", 404
-
 # FaaS: domain/Flask/**/*.py → www/Flask/**/*.py
 @app.route("/Flask/<path:name>.py")
 @app.route("/Flask/Flask/<path:name>.py")
@@ -61,6 +53,15 @@ def py_show(name):
         return importlib.import_module("Flask."+name.replace("/", ".").replace("..", "_")).show(flask.request)
     except Exception as e:
         return flask.render_template("error.html", STATUS_ERROR_TEXT=str(e)), 500
+        
+@app.route('/<path:name>')
+@app.route('/Flask/<path:name>')
+def favirobo(name):
+    try:
+        return flask.send_file(os.path.join("html", name).replace("\\", "/").replace("..", "_"))
+    except:
+        return "cant_access", 404
+
 
 
 application = app

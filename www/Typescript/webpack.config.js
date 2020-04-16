@@ -6,7 +6,7 @@ module.exports = {
   entry: entry("./tsx/*.tsx"),
   output: {
     path: path.resolve(__dirname, "../"),
-    filename: "./static/src/[name].js",
+    filename: "./html/static/src/[name].js",
   },
 
   mode: "production",

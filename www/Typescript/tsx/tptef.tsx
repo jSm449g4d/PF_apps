@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from "react-dom";
-import { Account_tsx, auth, fb } from "./component/account";
+import { Account_tsx, auth, fb, fb_errmsg } from "./component/account";
 import { stopf5 } from "./component/stopf5";
 
 const storage = fb.storage();
 const db = fb.firestore();
 
 interface State {
-    uid: string; unsnaps: any; room: string; thread: string; handlename: string;
+    uid: string; unsnaps: any; room: string; handlename: string;
+    thread: { [keys: string]: { attachment_dir: string, content: string, handlename: string } }
 }
 
 export class Tptef_tsx extends React.Component<{}, State> {
@@ -15,7 +16,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            uid: "", unsnaps: [], room: "main", handlename: "窓の民は名無し", thread: JSON.stringify({}),
+            uid: "", unsnaps: [], room: "main", handlename: "窓の民は名無し", thread: {}
         };
         setInterval(() => {
             if (auth.currentUser) { if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid }); }
@@ -40,24 +41,24 @@ export class Tptef_tsx extends React.Component<{}, State> {
         return db.doc("tptef/" + this.state.room).onSnapshot((doc) => {
             if (doc.exists == false) {
                 this.setState({
-                    thread: JSON.stringify({
-                        [Date.now().toString() + "_" + this.state.uid]: {
+                    thread: {
+                        [Date.now().toString() + "_" + "NULL"]: {
                             handlename: "NULL", content: "Thread is not exist", attachment_dir: "",
                         }
-                    })
+                    }
                 })
-            } else { this.setState({ thread: JSON.stringify(doc.data()) }) }
+            } else { this.setState({ thread: doc.data() }) }
         })
     }
 
     db_rWd_addremark(submit_content: string, attach_a_file: any) {
         if (this.state.uid == "" || this.state.room == "") return;
         if (submit_content == "") { alert("Plz input content"); return; };
-        if (stopf5.check("1", 500) == true) return; // To prevent high freq access
+        if (stopf5.check("1", 500, true) == false) return; // To prevent high freq access
         let attachment_dir: string = "";
         if (attach_a_file) {
             attachment_dir = "tptef/" + this.state.uid + "/" + attach_a_file.name;
-            storage.ref(attachment_dir).put(attach_a_file);
+            storage.ref(attachment_dir).put(attach_a_file).catch((err) => { fb_errmsg(err) });;
         }
         db.doc("tptef/" + this.state.room).set({
             [Date.now().toString() + "_" + this.state.uid]: {
@@ -65,38 +66,38 @@ export class Tptef_tsx extends React.Component<{}, State> {
                 content: submit_content,
                 attachment_dir: attachment_dir,
             }
-        }, { merge: true });
+        }, { merge: true }).catch((err) => { fb_errmsg(err) });;
     }
     db_RwD_delremark(tsuid: string) {
         if (this.state.uid == "" || this.state.room == "") return;
-        if (stopf5.check("2", 500) == true) return; // To prevent high freq access
+        if (stopf5.check("2", 500, true) == false) return; // To prevent high freq access
         const docRef = db.doc("tptef/" + this.state.room);
         docRef.get().then((doc) => {
             if (doc.exists) {
                 if (doc.data()[tsuid].attachment_dir) storage.ref(doc.data()[tsuid].attachment_dir).delete()
                 docRef.set({
                     [tsuid]: fb.firestore.FieldValue.delete()
-                }, { merge: true })
+                }, { merge: true }).catch((err) => { fb_errmsg(err) });
             }
-            if (Object.keys(doc.data()).length < 2) docRef.delete();
+            if (Object.keys(doc.data()).length < 2) docRef.delete().catch((err) => { fb_errmsg(err) });
         });
     }
     storage_Rwd_attachment(attachment_dir: string) {
         if (stopf5.check("3", 500) == false) return; // To prevent high freq access
         storage.ref(attachment_dir).getDownloadURL().then((url) => {
             window.open(url, '_blank');
-        }).catch(() => { alert("cant download") })
+        }).catch((err) => { fb_errmsg(err) });
     }
 
     //renders
     render_thread_table() {
-        const doc_data = JSON.parse(this.state.thread);
+        const doc_redoces: any = Object.assign(this.state.thread);
         const tmp_recodes = [];
-        const tsuids = Object.keys(doc_data).sort();
+        const tsuids = Object.keys(doc_redoces).sort();
         for (var i = 0; i < tsuids.length; i++) {
             const tmp_data = [];
-            tmp_data.push(<td key={1} style={{ textAlign: "center" }}>{doc_data[tsuids[i]]["handlename"]}</td>)
-            tmp_data.push(<td key={2}>{doc_data[tsuids[i]]["content"]}</td>)
+            tmp_data.push(<td key={1} style={{ textAlign: "center" }}>{doc_redoces[tsuids[i]]["handlename"]}</td>)
+            tmp_data.push(<td key={2}>{doc_redoces[tsuids[i]]["content"]}</td>)
             tmp_data.push(<td key={3} style={{ fontSize: "12px", textAlign: "center" }}>
                 {tsuids[i].split("_")[0]}<br />{tsuids[i].split("_")[1]}</td>)
             const tmp_datum = []; {
@@ -105,11 +106,11 @@ export class Tptef_tsx extends React.Component<{}, State> {
                     <button key={1} className="btn btn-outline-danger btn-sm m-1 rounded-pill"
                         onClick={(evt: any) => { this.db_RwD_delremark(evt.target.name) }} name={tsuids[i]}>delete</button>)
                 //attachment download button
-                if (doc_data[tsuids[i]]["attachment_dir"] != "") tmp_datum.push(
+                if (doc_redoces[tsuids[i]]["attachment_dir"] != "") tmp_datum.push(
                     <button key={2} className="btn btn-primary btn-sm m-1"
                         onClick={(evt: any) => { this.storage_Rwd_attachment(evt.target.name) }}
-                        name={doc_data[tsuids[i]]["attachment_dir"]}>
-                        {doc_data[tsuids[i]]["attachment_dir"].split("/").pop().slice(0, 20)}</button>)
+                        name={doc_redoces[tsuids[i]]["attachment_dir"]}>
+                        {doc_redoces[tsuids[i]]["attachment_dir"].split("/").pop().slice(0, 15)}</button>)
             }
             tmp_data.push(<td key={4} style={{ textAlign: "center" }}>{tmp_datum}</td>)
             tmp_recodes.push(<tr key={i}>{tmp_data}</tr>)

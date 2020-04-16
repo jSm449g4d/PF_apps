@@ -49,16 +49,16 @@ export class Mypage_tsx extends React.Component<{}, State> {
         if (this.state.uid == "") return;
         if (stopf5.check("1", 500) == true) return; // To prevent high freq access
         db.doc("mypage/" + this.state.uid).set({
-            [Date.now().toString() + "_" + this.state.uid]:JSON.parse(this.state.profile)
+            [Date.now().toString() + "_" + this.state.uid]: JSON.parse(this.state.profile)
         });
     }
     storage_rWd_icon(upload_file: any) {
         if (this.state.uid == "") return;
-        if (stopf5.check("2", 500) == true) return; // To prevent high freq access
+        if (stopf5.check("2", 500, true) == false) return; // To prevent high freq access
         storage.ref("mypage/" + this.state.uid + "/icon.img").put(upload_file);
     }
     storage_Rwd_icon() {
-        if (stopf5.check("3", 500) == false) return; // To prevent high freq access
+        if (stopf5.check("3", 500,true) == false) return; // To prevent high freq access
         storage.ref("mypage/" + this.state.uid + "/icon.img").getDownloadURL().then((url) => {
             if (this.state.image_url != url) this.setState({ image_url: url });
         }).catch(() => { if (this.state.image_url != "") this.setState({ image_url: "" }); })

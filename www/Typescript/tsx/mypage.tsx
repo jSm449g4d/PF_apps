@@ -7,7 +7,8 @@ const storage = fb.storage();
 const db = fb.firestore()
 
 interface State {
-    uid: string; unsnaps: any; image_url: string; profile: string
+    uid: string; unsnaps: any; image_url: string;
+    profile: { [keys: string]: string };
 }
 
 
@@ -17,9 +18,9 @@ export class Mypage_tsx extends React.Component<{}, State> {
         super(props);
         this.state = {
             uid: "", unsnaps: [], image_url: "",
-            profile: JSON.stringify({
+            profile: {
                 nickname: "窓の民は名無し", pr: "私はJhon_Doe。窓の蛇遣いです。"
-            }),
+            },
         };
         setInterval(() => {
             if (auth.currentUser) { if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid }); }
@@ -41,27 +42,26 @@ export class Mypage_tsx extends React.Component<{}, State> {
             if (doc.exists) {
                 const tmp_recodes = doc.data()
                 const tsuids = Object.keys(tmp_recodes).sort()
-                this.setState({ profile: JSON.stringify(tmp_recodes[tsuids[0]]) });
+                this.setState({ profile: tmp_recodes[tsuids[0]] });
             }
         });
     }
     db_rWd_setpf() {
         if (this.state.uid == "") return;
-        if (stopf5.check("1", 500) == true) return; // To prevent high freq access
+        if (stopf5.check("1", 500, true) == false) return; // To prevent high freq access
         db.doc("mypage/" + this.state.uid).set({
-            [Date.now().toString() + "_" + this.state.uid]: JSON.parse(this.state.profile)
+            [Date.now().toString() + "_" + this.state.uid]: this.state.profile
         });
+    }
+    storage_Rwd_icon() {
+        storage.ref("mypage/" + this.state.uid + "/icon.img").getDownloadURL().then((url) => {
+            if (this.state.image_url != url) this.setState({ image_url: url });
+        }).catch(() => { if (this.state.image_url != "") this.setState({ image_url: "" }); })
     }
     storage_rWd_icon(upload_file: any) {
         if (this.state.uid == "") return;
         if (stopf5.check("2", 500, true) == false) return; // To prevent high freq access
         storage.ref("mypage/" + this.state.uid + "/icon.img").put(upload_file);
-    }
-    storage_Rwd_icon() {
-        if (stopf5.check("3", 500,true) == false) return; // To prevent high freq access
-        storage.ref("mypage/" + this.state.uid + "/icon.img").getDownloadURL().then((url) => {
-            if (this.state.image_url != url) this.setState({ image_url: url });
-        }).catch(() => { if (this.state.image_url != "") this.setState({ image_url: "" }); })
     }
 
     //renders
@@ -92,11 +92,11 @@ export class Mypage_tsx extends React.Component<{}, State> {
                                 <h5 className="modal-title">{title}</h5>
                             </div>
                             <div className="modal-body row">
-                                <textarea className="form-control col-12" value={JSON.parse(this.state.profile)[state_element]} onChange={
+                                <textarea className="form-control col-12" value={this.state.profile[state_element]} onChange={
                                     (evt) => {
-                                        let tmp_profile_dict = JSON.parse(this.state.profile)
-                                        tmp_profile_dict[state_element] = evt.target.value
-                                        this.setState({ profile: JSON.stringify(tmp_profile_dict) });
+                                        let tmp_profile = Object.assign(this.state.profile)
+                                        tmp_profile[state_element] = evt.target.value
+                                        this.setState({ profile: tmp_profile });
                                     }} />
                             </div>
                             <div className="modal-footer">
@@ -118,7 +118,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
                     <div>
                         <div className="m-2 p-1" style={{ background: "khaki" }}>
                             <h4 className="d-flex justify-content-between">
-                                <div>{JSON.parse(this.state.profile)["nickname"]}</div>
+                                <div>{this.state.profile["nickname"]}</div>
                                 <div className="ml-auto">
                                     <div className="form-inline">
                                         {this.render_changebutton("nickname", "nickname")}{this.render_upicon()}
@@ -132,7 +132,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
                                         <h5 className="">PR</h5>
                                         <div className="ml-auto">{this.render_changebutton("PR", "pr")}</div>
                                     </div>
-                                    <h6 className="">{JSON.parse(this.state.profile)["pr"]}</h6>
+                                    <h6 className="">{this.state.profile["pr"]}</h6>
                                 </div>
                             </div>
                         </div>

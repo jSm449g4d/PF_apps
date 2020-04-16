@@ -8,7 +8,7 @@ const db = fb.firestore();
 
 interface State {
     uid: string; unsnaps: any; room: string; handlename: string;
-    thread: { [keys: string]: { attachment_dir: string, content: string, handlename: string } }
+    thread: { [tsuid: string]: { attachment_dir: string, content: string, handlename: string } }
 }
 
 export class Tptef_tsx extends React.Component<{}, State> {
@@ -103,7 +103,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
             const tmp_datum = []; {
                 //delete button
                 if (tsuids[i].split("_")[1] == this.state.uid) tmp_datum.push(
-                    <button key={1} className="btn btn-outline-danger btn-sm m-1 rounded-pill"
+                    <button key={1} className="btn btn-outline-danger btn-sm rounded-pill m-1"
                         onClick={(evt: any) => { this.db_RwD_delremark(evt.target.name) }} name={tsuids[i]}>delete</button>)
                 //attachment download button
                 if (doc_redoces[tsuids[i]]["attachment_dir"] != "") tmp_datum.push(

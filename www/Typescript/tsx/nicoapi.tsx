@@ -7,8 +7,9 @@ const storage = fb.storage();
 const db = fb.firestore()
 
 interface State {
-    uid: string; unsnaps: any; API_endpoint: string; service_name: string; fields: string; orders: string;
-
+    uid: string; unsnaps: any; API_endpoint: string; service_name: string;
+    fields: { [timestamp: string]: { field: string, value: string } };
+    orders: { [tsuid: string]: { request_urls: any, status: string, "User-Agent": string } };
 }
 
 export class Nicoapi_tsx extends React.Component<{}, State> {
@@ -17,7 +18,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         super(props);
         this.state = {
             uid: "", unsnaps: [], API_endpoint: "https://", service_name: "← Plz \"Select API_endpoint\"",
-            fields: JSON.stringify({}), orders: JSON.stringify({})
+            fields: {}, orders: {}
         };
         setInterval(() => {
             if (auth.currentUser) { if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid }); }
@@ -36,8 +37,8 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     db_Rwd_getorders() {
         if (this.state.uid == "") return () => { };
         return db.doc("nicoapi/" + this.state.uid).onSnapshot((doc) => {
-            if (doc.exists == false) { this.setState({ orders: JSON.stringify({}) }) }
-            else { this.setState({ orders: JSON.stringify(doc.data()) }) }
+            if (doc.exists == false) { this.setState({ orders: {} }) }
+            else { this.setState({ orders: doc.data() }) }
         });
     }
     db_rWd_genorders(urls_array: string[]) {
@@ -70,21 +71,21 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     }
     _genorders() {
         const request_urls = [this.state.API_endpoint + "?"];
-        const tmp_fields = JSON.parse(this.state.fields)
-        const keys = Object.keys(JSON.parse(this.state.fields)).sort();
-        for (let i = 0; i < keys.length; i++) {
-            if (tmp_fields[keys[i]]["field"] == "") continue;
-            if (tmp_fields[keys[i]]["value"].indexOf("$for(") == 0) {
-                const tmp_for = tmp_fields[keys[i]]["value"].split(/[(;)]/);
+        const tmp_fields = Object.assign(this.state.fields)
+        const timestamp = Object.keys(this.state.fields).sort();
+        for (let i = 0; i < timestamp.length; i++) {
+            if (tmp_fields[timestamp[i]]["field"] == "") continue;
+            if (tmp_fields[timestamp[i]]["value"].indexOf("$for(") == 0) {
+                const tmp_for = tmp_fields[timestamp[i]]["value"].split(/[(;)]/);
                 if (tmp_for.length != 5) { alert("wrong: fields→value"); return; }
                 const request_url_length_before = request_urls.length
                 for (let j = 0; j < request_url_length_before; j++) {
                     for (let k = Number(tmp_for[1]); k < Number(tmp_for[2]); k += Number(tmp_for[3]))
-                        request_urls.push(request_urls[j] + "&" + tmp_fields[keys[i]]["field"] + "=" + String(k));
+                        request_urls.push(request_urls[j] + "&" + tmp_fields[timestamp[i]]["field"] + "=" + String(k));
                 } request_urls.splice(0, request_url_length_before); continue;
             }
             for (let j = 0; j < request_urls.length; j++) {
-                request_urls[j] += "&" + tmp_fields[keys[i]]["field"] + "=" + tmp_fields[keys[i]]["value"]
+                request_urls[j] += "&" + tmp_fields[timestamp[i]]["field"] + "=" + tmp_fields[timestamp[i]]["value"]
             }
         }
         this.db_rWd_genorders(request_urls);
@@ -99,42 +100,42 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                     onClick={() => {
                         if (service_name == "ニコニコ動画") {
                             this.setState({
-                                API_endpoint: "https://api.search.nicovideo.jp/api/v2/video/contents/search", service_name: service_name, fields: JSON.stringify(
-                                    {
-                                        [String(Date.now() - 5)]: { field: "q", value: "ゆっくり解説" },
-                                        [String(Date.now() - 4)]: { field: "targets", value: "title,description,tags" },
-                                        [String(Date.now() - 3)]: { field: "fields", value: "contentId,title,description,tags" },
-                                        [String(Date.now() - 2)]: { field: "_sort", value: "viewCounter" },
-                                        [String(Date.now() - 1)]: { field: "_limit", value: "100" },
-                                        [String(Date.now() - 0)]: { field: "_offset", value: "$for(1;1601;100)" },
-                                    })
+                                API_endpoint: "https://api.search.nicovideo.jp/api/v2/video/contents/search", service_name: service_name, fields:
+                                {
+                                    [String(Date.now() - 5)]: { field: "q", value: "ゆっくり解説" },
+                                    [String(Date.now() - 4)]: { field: "targets", value: "title,description,tags" },
+                                    [String(Date.now() - 3)]: { field: "fields", value: "contentId,title,description,tags" },
+                                    [String(Date.now() - 2)]: { field: "_sort", value: "viewCounter" },
+                                    [String(Date.now() - 1)]: { field: "_limit", value: "100" },
+                                    [String(Date.now() - 0)]: { field: "_offset", value: "$for(1;1601;100)" },
+                                }
                             })
                         }
                         else if (service_name == "ニコニコ生放送") {
                             this.setState({
-                                API_endpoint: "https://api.search.nicovideo.jp/api/v2/live/contents/search", service_name: service_name, fields: JSON.stringify(
-                                    {
-                                        [String(Date.now() - 5)]: { field: "q", value: "ゆっくり解説" },
-                                        [String(Date.now() - 4)]: { field: "targets", value: "title,description,tags" },
-                                        [String(Date.now() - 3)]: { field: "fields", value: "contentId,title,description,tags" },
-                                        [String(Date.now() - 2)]: { field: "_sort", value: "viewCounter" },
-                                        [String(Date.now() - 1)]: { field: "_limit", value: "100" },
-                                        [String(Date.now() - 0)]: { field: "_offset", value: "$for(1;1601;100)" },
-                                    })
+                                API_endpoint: "https://api.search.nicovideo.jp/api/v2/live/contents/search", service_name: service_name, fields:
+                                {
+                                    [String(Date.now() - 5)]: { field: "q", value: "ゆっくり解説" },
+                                    [String(Date.now() - 4)]: { field: "targets", value: "title,description,tags" },
+                                    [String(Date.now() - 3)]: { field: "fields", value: "contentId,title,description,tags" },
+                                    [String(Date.now() - 2)]: { field: "_sort", value: "viewCounter" },
+                                    [String(Date.now() - 1)]: { field: "_limit", value: "100" },
+                                    [String(Date.now() - 0)]: { field: "_offset", value: "$for(1;1601;100)" },
+                                }
                             })
                         }
                         else if (service_name == "なろう小説") {
                             this.setState({
-                                API_endpoint: "https://api.syosetu.com/novelapi/api/", service_name: service_name, fields: JSON.stringify(
-                                    {
-                                        [String(Date.now() - 3)]: { field: "gzip", value: "5" },
-                                        [String(Date.now() - 2)]: { field: "out", value: "yaml" },
-                                        [String(Date.now() - 1)]: { field: "lim", value: "499" },
-                                        [String(Date.now() - 0)]: { field: "st", value: "$for(1;2000;499)" },
-                                    })
+                                API_endpoint: "https://api.syosetu.com/novelapi/api/", service_name: service_name, fields:
+                                {
+                                    [String(Date.now() - 3)]: { field: "gzip", value: "5" },
+                                    [String(Date.now() - 2)]: { field: "out", value: "yaml" },
+                                    [String(Date.now() - 1)]: { field: "lim", value: "499" },
+                                    [String(Date.now() - 0)]: { field: "st", value: "$for(1;2000;499)" },
+                                }
                             })
                         }
-                        else { this.setState({ API_endpoint: "https://", service_name: service_name, fields: JSON.stringify({}) }) }
+                        else { this.setState({ API_endpoint: "https://", service_name: service_name, fields: {} }) }
                     }}>{service_name}</button></td>
             <td>{API_reference == "" ? <div>None</div> : <a href={API_reference}>{API_reference}</a>}</td>
         </tr>)
@@ -166,32 +167,32 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             </div>)
     }
     render_filelds_table() {
-        const keys = Object.keys(JSON.parse(this.state.fields)).sort();
-        const tmp_record = []; let tmp_fields = JSON.parse(this.state.fields);
-        for (var i = 0; i < keys.length; i++) {
+        const timestamp = Object.keys(this.state.fields).sort();
+        const tmp_record = []; let tmp_fields = Object.assign(this.state.fields);
+        for (var i = 0; i < timestamp.length; i++) {
             const tmp_data = [];
             //Field (textform)
             tmp_data.push(<td key={1}><input type="text" className="form-control form-control-sm mx-1"
-                value={JSON.parse(this.state.fields)[keys[i]]["field"]}
+                value={this.state.fields[timestamp[i]]["field"]}
                 onChange={(evt: any) => {
-                    tmp_fields[evt.target.name]["field"] = evt.target.value; this.setState({ fields: JSON.stringify(tmp_fields) });
-                }} name={keys[i]} /></td>)
+                    tmp_fields[evt.target.name]["field"] = evt.target.value; this.setState({ fields: tmp_fields });
+                }} name={timestamp[i]} /></td>)
             //Value (textform)
             tmp_data.push(<td key={2}><input type="text" className="form-control form-control-sm mx-1"
-                value={JSON.parse(this.state.fields)[keys[i]]["value"]}
+                value={this.state.fields[timestamp[i]]["value"]}
                 onChange={(evt: any) => {
-                    tmp_fields[evt.target.name]["value"] = evt.target.value; this.setState({ fields: JSON.stringify(tmp_fields) });
-                }} name={keys[i]} /></td>)
+                    tmp_fields[evt.target.name]["value"] = evt.target.value; this.setState({ fields: tmp_fields });
+                }} name={timestamp[i]} /></td>)
             //Command (Delete button)
             tmp_data.push(<td key={3}><button className="btn btn-warning btn-sm" style={{ textAlign: "center" }}
                 onClick={(evt: any) => {
-                    tmp_fields[evt.target.name]["value"] = "$for(1;1601;500)"; this.setState({ fields: JSON.stringify(tmp_fields) })
-                }} name={keys[i]}>$for</button></td>)
+                    tmp_fields[evt.target.name]["value"] = "$for(1;1601;500)"; this.setState({ fields: tmp_fields })
+                }} name={timestamp[i]}>$for</button></td>)
             //Ops (Delete button)
             tmp_data.push(<td key={4}><button className="btn btn-outline-danger btn-sm rounded-pill" style={{ textAlign: "center" }}
                 onClick={(evt: any) => {
-                    delete tmp_fields[evt.target.name]; this.setState({ fields: JSON.stringify(tmp_fields) })
-                }} name={keys[i]}>Delete</button></td>)
+                    delete tmp_fields[evt.target.name]; this.setState({ fields: tmp_fields })
+                }} name={timestamp[i]}>Delete</button></td>)
             tmp_record.push(<tr key={i}>{tmp_data}</tr>)
         }
         return (
@@ -209,7 +210,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                     <tr className="my-2"><td />
                         <td className="d-flex justify-content-center"><button className="btn btn-outline-primary rounded-pill" style={{ width: "50%" }}
                             onClick={() => {
-                                this.setState({ fields: JSON.stringify(Object.assign(JSON.parse(this.state.fields), { [Date.now().toString()]: { field: "", value: "" } })) })
+                                this.setState({ fields: Object.assign(this.state.fields, { [Date.now().toString()]: { field: "", value: "" } }) })
                             }}>+Add</button>
                         </td>
                         <td><button className="btn btn-success" onClick={() => { this._genorders(); }}>Launch</button></td>
@@ -218,34 +219,34 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             </table>)
     }
     render_orders_text() {
-        let num: Number = 0; let keys = Object.keys(JSON.parse(this.state.orders));
-        for (let i = 0; i < keys.length; i++) { num += JSON.parse(this.state.orders)[keys[i]]["request_urls"].length }
-        return (<div className="mx-3">{"orders / requests: " + String(keys.length) + " / " + String(num)}</div>)
+        let num: Number = 0; let tsuids = Object.keys(this.state.orders);
+        for (let i = 0; i < tsuids.length; i++) { num += this.state.orders[tsuids[i]]["request_urls"].length }
+        return (<div className="mx-3">{"orders / requests: " + String(tsuids.length) + " / " + String(num)}</div>)
     }
     render_orders_table() {
-        const tsuids = Object.keys(JSON.parse(this.state.orders)).sort();
-        const tmp_record = []; let tmp_orders = JSON.parse(this.state.orders);
+        const tsuids = Object.keys(this.state.orders).sort();
+        const tmp_records = []; let doc_records = Object.assign(this.state.orders);
         for (var i = 0; i < tsuids.length; i++) {
             const tmp_data = [];
             tmp_data.push(<td key={1} style={{ textAlign: "center" }}>
-                {tsuids[i].split("_")[0]}<br />Status: {tmp_orders[tsuids[i]]["status"]}<br />UA: {tmp_orders[tsuids[i]]["User-Agent"]}</td>)
-            tmp_data.push(<td key={2} style={{ fontSize: "12px" }}><details><summary> {tmp_orders[tsuids[i]]["request_urls"][0]}</summary>
-                {tmp_orders[tsuids[i]]["request_urls"].slice(1).join('\n')}</details></td>)
+                {tsuids[i].split("_")[0]}<br />Status: {doc_records[tsuids[i]]["status"]}<br />UA: {doc_records[tsuids[i]]["User-Agent"]}</td>)
+            tmp_data.push(<td key={2} style={{ fontSize: "12px" }}><details><summary> {doc_records[tsuids[i]]["request_urls"][0]}</summary>
+                {doc_records[tsuids[i]]["request_urls"].slice(1).join('\n')}</details></td>)
             const tmp_datum = []; {// col: Ops
                 //download button
-                if (tmp_orders[tsuids[i]]["status"] == "processed") tmp_datum.push(
+                if (doc_records[tsuids[i]]["status"] == "processed") tmp_datum.push(
                     <button key={1} className="btn btn-primary btn-sm m-1"
                         onClick={(evt: any) => { this.storage_Rwd_dlorders(evt.target.name) }}
                         name={tsuids[i]}>Download</button>)
                 //attachment download button
-                if (tmp_orders[tsuids[i]]["status"] == "processed") tmp_datum.push(
+                if (doc_records[tsuids[i]]["status"] == "processed") tmp_datum.push(
                     <button key={2} className="btn btn-outline-danger btn-sm m-1"
                         onClick={(evt: any) => { this.storage_rwD_delorders(evt.target.name) }}
                         name={tsuids[i]}>Delete</button>)
             } tmp_data.push(<td key={3} style={{ textAlign: "center" }}>{tmp_datum}</td>)
-            tmp_record.push(<tr key={i}>{tmp_data}</tr>)
+            tmp_records.push(<tr key={i}>{tmp_data}</tr>)
         }
-        if (tsuids.length == 0) { tmp_record.push(<tr><td colSpan={3} style={{ textAlign: "center" }}>Not Exist</td></tr>); }
+        if (tsuids.length == 0) { tmp_records.push(<tr><td colSpan={3} style={{ textAlign: "center" }}>Not Exist</td></tr>); }
         return (
             <table className="table table-sm">
                 <thead>
@@ -256,7 +257,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                     </tr>
                 </thead>
                 <tbody>
-                    {tmp_record}
+                    {tmp_records}
                 </tbody>
             </table>)
     }

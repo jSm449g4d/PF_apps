@@ -15,7 +15,7 @@ RUN npm install --save jquery@3.4.1 popper.js@1.16.1 react react-dom react-boots
 # Typescript
 WORKDIR $APP/Typescript
 RUN npm install --save-dev @types/jquery @types/popper.js @types/react @types/react-dom @types/react-bootstrap @types/bootstrap  @types/firebase && \
-    npm install --save-dev typescript webpack webpack-cli webpack-glob-entry ts-loader source-map-loader style-loader css-loader html-loader
+    npm install --save-dev typescript webpack webpack-cli webpack-glob-entry ts-loader source-map-loader style-loader css-loader copy-webpack-plugin
 RUN npx webpack
 
 # Python3

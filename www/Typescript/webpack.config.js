@@ -1,11 +1,12 @@
 const path = require("path");
 const entry = require("webpack-glob-entry");
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: entry("./*.tsx"),
   output: {
-    path: path.resolve(__dirname, "../static/src"),
-    filename: "[name].js",
+    path: path.resolve(__dirname, "../../"),
+    filename: "./www/static/src/[name].js",
   },
 
   mode: "production",
@@ -35,12 +36,17 @@ module.exports = {
         test: /\.css$/,
         use: ["style-loader", "css-loader"],
       },
-      {
-        test: /\.html$/i,
-        loader: 'html-loader',
-      },
     ],
   },
+
+  plugins: [
+    new CopyPlugin([
+      {
+        from: "./www/**/*",
+        to: "./",
+      }
+    ]),
+  ],
 
   // When importing a module whose path matches one of the following, just
   // assume a corresponding global variable exists and use that instead.

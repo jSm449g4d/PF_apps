@@ -43,19 +43,16 @@ def indexpage_show():
 
 
 # FaaS: domain/Flask/**/*.py → www/Flask/**/*.py
+@app.route("/<path:name>.py")
 @app.route("/Flask/<path:name>.py")
-@app.route("/Flask/Flask/<path:name>.py")
 def py_show(name):
     try:
-        # Domain/Flask/* and Domain/* → Domain/* → Domain/Flask/*
-        #name = name.replace("Flask/", "")
         return importlib.import_module("Flask."+name.replace("/", ".").replace("..", "_")).show(flask.request)
     except Exception as e:
         return flask.render_template("error.html", STATUS_ERROR_TEXT=str(e)), 500
 
 # html: domain/* → www/html/*
 @app.route('/<path:name>')
-@app.route('/Flask/<path:name>')
 def favirobo(name):
     try:
         return flask.send_file(os.path.join("html", name).replace("\\", "/").replace("..", "_"))

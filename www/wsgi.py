@@ -12,7 +12,7 @@ import psutil
 # Flask_Startup
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(os.path.dirname(os.path.join("./", __file__)))
-app = flask.Flask(__name__)
+app = flask.Flask(__name__, template_folder="./Flask/templates/")
 wsgi_h = importlib.import_module("wsgi_h")
 app.config['MAX_CONTENT_LENGTH'] = 100000000
 os.makedirs("tmp", exist_ok=True)
@@ -25,7 +25,7 @@ def indexpage_show():
     except:  # Flask index
         try:
             wsgi_h.access_counter += 1
-            return flask.render_template("Flask_index.html",
+            return flask.render_template("index.html",
                                          STATUS_ACCESS_COUNTER=str(
                                              wsgi_h.access_counter),
                                          STATUS_ACCESS_TIMESTAMP=str(
@@ -39,38 +39,31 @@ def indexpage_show():
                                          ).used)+"[Byte] / "+'{:,}'.format(psutil.virtual_memory().total)+"[Byte]",
                                          STATUS_RESOURCE_HEALTH=wsgi_h.resouce_health,)
         except Exception as e:
-            return flask.render_template("Flask_error.html", STATUS_ERROR_TEXT=str(e)), 500
+            return flask.render_template("error.html", STATUS_ERROR_TEXT=str(e)), 500
 
 
-# domain/Flask/* ← favicon.ico and robots.txt
-@app.route('/<name>')
+# html: domain/* → www/html/*
+@app.route('/<path:name>')
+@app.route('/Flask/<path:name>')
 def favirobo(name):
     try:
         return flask.send_file(os.path.join("html", name).replace("\\", "/").replace("..", "_"))
     except:
-        return "error", 500
+        return "cant_access", 404
 
-# domain/html/**/*.html ← webpage
-@app.route("/<path:name>.html")
-def html_show(name):
-    try:
-        return flask.send_file(os.path.join("html", name).replace("\\", "/").replace("..", "_")+".html")
-    except Exception as e:
-        return flask.render_template("Flask_error.html", STATUS_ERROR_TEXT=str(e)), 500
-
-# domain/Flask/**/*.py ← FaaS
-@app.route("/<path:name>.py")
+# FaaS: domain/Flask/**/*.py → www/Flask/**/*.py
+@app.route("/Flask/<path:name>.py")
+@app.route("/Flask/Flask/<path:name>.py")
 def py_show(name):
     try:
         # Domain/Flask/* and Domain/* → Domain/* → Domain/Flask/*
-        name=name.replace("Flask/", "")
-        print(name)
+        #name = name.replace("Flask/", "")
         return importlib.import_module("Flask."+name.replace("/", ".").replace("..", "_")).show(flask.request)
     except Exception as e:
-        return flask.render_template("Flaks_error.html", STATUS_ERROR_TEXT=str(e)), 500
+        return flask.render_template("error.html", STATUS_ERROR_TEXT=str(e)), 500
 
 
-application=app
+application = app
 
 if __name__ == "__main__":
     app.run()

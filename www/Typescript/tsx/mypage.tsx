@@ -18,13 +18,13 @@ export class Mypage_tsx extends React.Component<{}, State> {
         this.state = {
             uid: "", unsnaps: [], image_url: "",
             profile: JSON.stringify({
-                nickname: "窓の民は名無し", pr: "私はJhon_Doe。窓の蛇遣いです。", timestamp: Date.now(),
+                nickname: "窓の民は名無し", pr: "私はJhon_Doe。窓の蛇遣いです。"
             }),
         };
         setInterval(() => {
             if (auth.currentUser) { if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid }); }
             else { if (this.state.uid != "") this.setState({ uid: "" }); }
-        }, 200)
+        }, 100)
     }
     componentDidUpdate(prevProps: object, prevState: State) {
         if (this.state.uid != prevState.uid) {
@@ -38,17 +38,23 @@ export class Mypage_tsx extends React.Component<{}, State> {
     db_Rwd_getprofile() {
         if (this.state.uid == "") return () => { };
         return db.doc("mypage/" + this.state.uid).onSnapshot((doc) => {
-            if (doc.exists) { this.setState({ profile: JSON.stringify(doc.data()) }); }
+            if (doc.exists) {
+                const tmp_recodes = doc.data()
+                const tsuids = Object.keys(tmp_recodes).sort()
+                this.setState({ profile: JSON.stringify(tmp_recodes[tsuids[0]]) });
+            }
         });
     }
     db_rWd_setpf() {
         if (this.state.uid == "") return;
-        if (stopf5.check("1", 500) == false) return; // To prevent high freq access
-        db.doc("mypage/" + this.state.uid).set(JSON.parse(this.state.profile), { merge: true });
+        if (stopf5.check("1", 500) == true) return; // To prevent high freq access
+        db.doc("mypage/" + this.state.uid).set({
+            [Date.now().toString() + "_" + this.state.uid]:JSON.parse(this.state.profile)
+        });
     }
     storage_rWd_icon(upload_file: any) {
         if (this.state.uid == "") return;
-        if (stopf5.check("2", 500) == false) return; // To prevent high freq access
+        if (stopf5.check("2", 500) == true) return; // To prevent high freq access
         storage.ref("mypage/" + this.state.uid + "/icon.img").put(upload_file);
     }
     storage_Rwd_icon() {

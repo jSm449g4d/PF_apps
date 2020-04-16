@@ -16,7 +16,7 @@ export class Index_tsx extends React.Component<{}, State> {
         setInterval(() => {
             if (auth.currentUser) { if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid }); }
             else { if (this.state.uid != "") this.setState({ uid: "" }); }
-        }, 200)
+        }, 100)
     }
     componentDidUpdate(prevProps: object, prevState: State) {
     }

@@ -45,18 +45,18 @@ def deamon():
         if len(recodes) < 1:
             docRef.delete()
             continue
-        for timestamp, order in recodes.items():
+        for tsuid, order in recodes.items():
             # 7days to delete
-            if int(datetime.now().timestamp()*1000) > int(timestamp)+604800000:
-                recodes[timestamp] = DELETE_FIELD
-                if storage.blob("nicoapi/"+docRef.id + "/"+timestamp + ".zip").exists() == True:
+            if int(datetime.now().timestamp()*1000) > int(tsuid.split("_")[0])+604800000:
+                recodes[tsuid] = DELETE_FIELD
+                if storage.blob("nicoapi/"+docRef.id + "/"+tsuid + ".zip").exists() == True:
                     storage.blob("nicoapi/"+docRef.id + "/" +
-                                 timestamp + ".zip").delete()
+                                 tsuid + ".zip").delete()
                 continue
             # downloaded data is not exist on GCS → delete
-            if recodes[timestamp]["status"] == "processed":
-                if storage.blob("nicoapi/"+docRef.id + "/"+timestamp + ".zip").exists() == False:
-                    recodes[timestamp] = DELETE_FIELD
+            if recodes[tsuid]["status"] == "processed":
+                if storage.blob("nicoapi/"+docRef.id + "/"+tsuid + ".zip").exists() == False:
+                    recodes[tsuid] = DELETE_FIELD
                 continue
             with io.BytesIO() as inmemory_zip:
                 # set https UserAgent
@@ -72,11 +72,11 @@ def deamon():
                         with zipfile.ZipFile(inmemory_zip, 'a', compression=zipfile.ZIP_DEFLATED) as zf:
                             zf.writestr(hashlib.md5(url.encode(
                                 'utf-8')).hexdigest(), json.dumps(resp_json, ensure_ascii=False))
-                        storage.blob("nicoapi/"+docRef.id + "/"+timestamp +
+                        storage.blob("nicoapi/"+docRef.id + "/"+tsuid +
                                      ".zip").upload_from_string(inmemory_zip.getvalue())
                     except:
                         pass
-            recodes[timestamp]["status"] = "processed"
+            recodes[tsuid]["status"] = "processed"
         docRef.set(recodes, merge=True)
     time.sleep(180)  # prevent high freq restart
 

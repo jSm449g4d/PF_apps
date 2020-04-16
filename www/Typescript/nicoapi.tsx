@@ -310,7 +310,11 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             </div>
         );
     };
-};//
-ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
+};
 
+const element: any = document.body
+element.insertAdjacentHTML('beforebegin', '<div id="account_tsx">account_tsx loading...</div>');
+element.insertAdjacentHTML('beforebegin', '<div id="nicoapi_tsx">nicoapi_tsx loading...</div>');
+
+ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
 ReactDOM.render(<Nicoapi_tsx />, document.getElementById("nicoapi_tsx"));

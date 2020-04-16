@@ -54,7 +54,7 @@ def py_show(name):
 
 # html: domain/* → www/html/*
 @app.route('/<path:name>')
-def favirobo(name):
+def html_show(name):
     try:
         return flask.send_file(os.path.join("html", name).replace("\\", "/").replace("..", "_"))
     except:

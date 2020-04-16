@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>NicoAPI</title>
+    <title>APP_TSX</title>
     <link rel="shortcut icon" href="/favicon.ico">
 </head>
 
@@ -45,7 +45,8 @@
     <!--app_tsx loader-->
     <script>
         const args = new URL(document.URL)
-        if (args.searchParams.get('app_tsx')) document.write('<script src="/static/src/' + args.searchParams.get('app_tsx') + '"><\/script>');
+        if (args.searchParams.get('app_tsx') == null) { document.write('<script src="/static/src/index.js"><\/script>') }
+        else { document.write('<script src="/static/src/' + args.searchParams.get('app_tsx') + '"><\/script>') };
     </script>
     <!--app_tsx loader-->
 </body>

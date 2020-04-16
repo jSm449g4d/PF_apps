@@ -11,3 +11,4 @@ export class stopf5_tsx {
         return true;
     }
 } export var stopf5 = new stopf5_tsx
+

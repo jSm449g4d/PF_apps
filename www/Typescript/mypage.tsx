@@ -138,8 +138,8 @@ export class Mypage_tsx extends React.Component<{}, State> {
 };
 
 const element: any = document.body
-element.insertAdjacentHTML('beforebegin', '<div id="account_tsx">account_tsx loading...</div>');
-element.insertAdjacentHTML('beforebegin', '<div id="mypage_tsx">mypage_tsx loading...</div>');
+element.insertAdjacentHTML('beforebegin', '<div id="account_tsx">account_tsx loading...<\/div>');
+element.insertAdjacentHTML('beforebegin', '<div id="mypage_tsx">mypage_tsx loading...<\/div>');
 
 ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
 ReactDOM.render(<Mypage_tsx />, document.getElementById("mypage_tsx"));

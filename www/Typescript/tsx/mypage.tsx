@@ -8,7 +8,7 @@ const db = fb.firestore()
 
 interface State {
     uid: string; unsnaps: any; image_url: string;
-    profile: { [keys: string]: string };
+    profile: { [keys: string]: string }; // refer to constructor about keys
 }
 
 
@@ -42,7 +42,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
             if (doc.exists) {
                 const tmp_recodes = doc.data()
                 const tsuids = Object.keys(tmp_recodes).sort()
-                this.setState({ profile: tmp_recodes[tsuids[0]] });
+                this.setState({ profile: Object.assign(Object.assign(this.state.profile), tmp_recodes[tsuids[0]]) });
             }
         });
     }

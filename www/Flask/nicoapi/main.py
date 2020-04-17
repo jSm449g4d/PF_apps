@@ -36,6 +36,7 @@ with open(os.path.join(os.path.dirname(__file__), "config.json"), "r", encoding=
 
 
 def deamon():
+    start_timestamp: int = int(datetime.now().timestamp()*1000)
     # DB layer
     docRefs = db.collection('nicoapi').list_documents()
     for docRef in docRefs:
@@ -78,7 +79,9 @@ def deamon():
                         pass
             recodes[tsuid]["status"] = "processed"
         docRef.set(recodes, merge=True)
-    time.sleep(180)  # prevent high freq restart
+    # prevent high freq restart
+    while int(datetime.now().timestamp()*1000) < start_timestamp+6000:
+        time.sleep(1)
 
 
 thread_d = threading.Thread(name='nicoapi_d', target=deamon)

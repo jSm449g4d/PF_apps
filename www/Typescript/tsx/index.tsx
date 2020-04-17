@@ -78,8 +78,8 @@ export class Index_tsx extends React.Component<{}, State> {
     };
 };
 
-document.body.insertAdjacentHTML('afterbegin', '<div id="index_tsx">index_tsx loading...<\/div>');
+document.body.insertAdjacentHTML('afterbegin', '<div id="app_tsx">app_tsx loading...<\/div>');
 document.body.insertAdjacentHTML('afterbegin', '<div id="account_tsx">account_tsx loading...<\/div>');
 
 ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
-ReactDOM.render(<Index_tsx />, document.getElementById("index_tsx"));
+ReactDOM.render(<Index_tsx />, document.getElementById("app_tsx"));

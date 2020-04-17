@@ -2,12 +2,13 @@ import React from 'react';
 import ReactDOM from "react-dom";
 import { Account_tsx, auth, fb, fb_errmsg } from "./component/account";
 import { stopf5 } from "./component/util_tsx";
+import { threadId } from 'worker_threads';
 
 const storage = fb.storage();
 const db = fb.firestore();
 
 interface State {
-    uid: string; unsnaps: any; room: string; tmproom: string, tmpcontent: string,
+    uid: string; unsnaps: any; room: string; tmproom: string, tmpcontent: string, tmpfile: any,
     thread: { [tsuid: string]: { attachment_dir: string, content: string, handlename: string, [keys: string]: string } }
     profile: { nickname: string, [keys: string]: string };
 }
@@ -17,7 +18,8 @@ export class Tptef_tsx extends React.Component<{}, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            uid: "", unsnaps: [], room: "main", tmproom: "main", tmpcontent: "", thread: {}, profile: { nickname: "窓の民は名無し" }
+            uid: "", unsnaps: [], room: "main", tmproom: "main", tmpcontent: "", tmpfile: null,
+            thread: {}, profile: { nickname: "窓の民は名無し" }
         };
         setInterval(() => {
             if (auth.currentUser) { if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid }); }
@@ -62,19 +64,19 @@ export class Tptef_tsx extends React.Component<{}, State> {
         })
     }
 
-    db_rWd_addremark(submit_content: string, attach_a_file: any) {
+    db_rWd_addremark() {
         if (this.state.uid == "" || this.state.room == "") return;
-        if (submit_content == "") { alert("Plz input content"); return; };
+        if (this.state.tmpcontent == "") { alert("Plz input content"); return; };
         if (stopf5.check("1", 500, true) == false) return; // To prevent high freq access
         let attachment_dir: string = "";
-        if (attach_a_file) {
-            attachment_dir = "tptef/" + this.state.uid + "/" + attach_a_file.name;
-            storage.ref(attachment_dir).put(attach_a_file).catch((err) => { fb_errmsg(err) });;
+        if (this.state.tmpfile) {
+            attachment_dir = "tptef/" + this.state.uid + "/" + this.state.tmpfile.name;
+            storage.ref(attachment_dir).put(this.state.tmpfile).catch((err) => { fb_errmsg(err) });;
         }
         db.doc("tptef/" + this.state.room).set({
             [Date.now().toString() + "_" + this.state.uid]: {
                 handlename: this.state.profile.nickname,
-                content: submit_content,
+                content: this.state.tmpcontent,
                 attachment_dir: attachment_dir,
             }
         }, { merge: true }).catch((err) => { fb_errmsg(err) });;
@@ -166,13 +168,16 @@ export class Tptef_tsx extends React.Component<{}, State> {
                         <div className="my-1 d-flex justify-content-between">
                             <div className="ml-auto">
                                 <div className="form-inline">
-                                    <input type="file" id="tptef_attachment" />
+                                    {/* select file */}
+                                    <button type="button" className="btn btn-warning btn-sm mx-1"
+                                        onClick={(evt) => { $(evt.currentTarget.children[0]).click(); }}>
+                                        {this.state.tmpfile == null ? "Plz select Attachment" : this.state.tmpfile.name}
+                                        <input type="file" className="d-none" value=""
+                                            onChange={(evt) => { this.setState({ tmpfile: evt.target.files[0] }) }} />
+                                    </button>
                                     <button className="btn btn-primary btn-sm mx-1" onClick={() => {
-                                        this.db_rWd_addremark(
-                                            this.state.tmpcontent,
-                                            (document.getElementById("tptef_attachment") as HTMLInputElement).files[0]);
-                                        this.setState({ tmpcontent: "" });
-                                        (document.getElementById("tptef_attachment") as HTMLInputElement).value = "";
+                                        this.db_rWd_addremark();
+                                        this.setState({ tmpcontent: "", tmpfile: null });
                                     }}>remark</button>
                                 </div>
                             </div>
@@ -182,10 +187,10 @@ export class Tptef_tsx extends React.Component<{}, State> {
             </div>
         );
     };
-};
+};//<input type="file" onChange={(evt) => { this.setState({ tmpfile: evt.target.files[0] }) }} />
 
-document.body.insertAdjacentHTML('afterbegin', '<div id="tptef_tsx">tptef_tsx loading...<\/div>');
+document.body.insertAdjacentHTML('afterbegin', '<div id="app_tsx">app_tsx loading...<\/div>');
 document.body.insertAdjacentHTML('afterbegin', '<div id="account_tsx">account_tsx loading...<\/div>');
 
 ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
-ReactDOM.render(<Tptef_tsx />, document.getElementById("tptef_tsx"));
+ReactDOM.render(<Tptef_tsx />, document.getElementById("app_tsx"));

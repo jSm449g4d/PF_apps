@@ -43,7 +43,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     }
     db_rWd_genorders(urls_array: string[]) {
         if (this.state.uid == "") return;
-        if (confirm(String(urls_array.length)+"[req]\nDo you really want to place this ORDER?") == false) return;
+        if (confirm(String(urls_array.length) + "[req]\nDo you really want to place this ORDER?") == false) return;
         if (stopf5.check("1", 6000, true) == false) return; // To prevent high freq access
         db.doc("nicoapi/" + this.state.uid).set(
             {
@@ -320,8 +320,8 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
 };
 
 
-document.body.insertAdjacentHTML('afterbegin', '<div id="nicoapi_tsx">nicoapi_tsx loading...<\/div>');
+document.body.insertAdjacentHTML('afterbegin', '<div id="app_tsx">app_tsx loading...<\/div>');
 document.body.insertAdjacentHTML('afterbegin', '<div id="account_tsx">account_tsx loading...<\/div>');
 
 ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
-ReactDOM.render(<Nicoapi_tsx />, document.getElementById("nicoapi_tsx"));
+ReactDOM.render(<Nicoapi_tsx />, document.getElementById("app_tsx"));

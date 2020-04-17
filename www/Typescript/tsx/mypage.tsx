@@ -67,18 +67,18 @@ export class Mypage_tsx extends React.Component<{}, State> {
     }
 
     //renders
-    render_icon() {
+    render_dlicon() {
         if (this.state.image_url == "") { return (<div>No Image</div>) }
         return (<div><img src={this.state.image_url} alt={this.state.image_url} width="156" height="156" /></div>)
     }
     render_upicon() {
         return (
-            <div><button type="button" className="btn btn-outline-success btn-sm m-1" onClick={
+            <button type="button" className="btn btn-outline-success btn-sm m-1" onClick={
                 (evt) => { $(evt.currentTarget.children[0]).click() }}>
                 Change_Icon
                 <input type="file" className="d-none" onChange={
                     (evt) => { this.storage_rWd_icon(evt.target.files[0]) }} accept="image/jpeg,image/png" />
-            </button></div>
+            </button>
         )
     }
     render_changebutton(title: string, state_element: string) {
@@ -121,7 +121,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
                     <div>
                         <div className="m-2" style={{ background: "khaki" }}>
                             <div className="d-flex justify-content-start">
-                                <div className="m-1">{this.render_icon()}</div>
+                                <div className="m-1">{this.render_dlicon()}</div>
                                 <div className="m-1 p-1 flex-grow-1" style={{ backgroundColor: "rgba(100,100,100,0.1)" }}>
                                     <div className="d-flex justify-content-start">
                                         <h3 className="flex-grow-1">{this.state.profile["nickname"]}</h3>
@@ -148,8 +148,8 @@ export class Mypage_tsx extends React.Component<{}, State> {
     };
 };
 
-document.body.insertAdjacentHTML('afterbegin', '<div id="mypage_tsx">mypage_tsx loading...<\/div>');
+document.body.insertAdjacentHTML('afterbegin', '<div id="app_tsx">app_tsx loading...<\/div>');
 document.body.insertAdjacentHTML('afterbegin', '<div id="account_tsx">account_tsx loading...<\/div>');
 
 ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
-ReactDOM.render(<Mypage_tsx />, document.getElementById("mypage_tsx"));
+ReactDOM.render(<Mypage_tsx />, document.getElementById("app_tsx"));

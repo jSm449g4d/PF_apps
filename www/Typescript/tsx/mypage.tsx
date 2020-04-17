@@ -63,30 +63,32 @@ export class Mypage_tsx extends React.Component<{}, State> {
         if (this.state.uid == "") return;
         if (stopf5.check("2", 500, true) == false) return; // To prevent high freq access
         storage.ref("mypage/" + this.state.uid + "/icon.img").put(upload_file);
-        setTimeout(()=>{this.storage_Rwd_icon()},1000)
+        setTimeout(() => { this.storage_Rwd_icon() }, 1000)
     }
 
     //renders
     render_icon() {
         this.storage_Rwd_icon();
         if (this.state.image_url == "") { return (<div>No Image</div>) }
-        return (<div><img src={this.state.image_url} alt={this.state.image_url} width="200" height="200" /></div>)
+        return (<div><img src={this.state.image_url} alt={this.state.image_url} width="156" height="156" /></div>)
     }
     render_upicon() {
         return (
-            <button type="button" className="btn btn-outline-success btn-sm" onClick={
+            <div><button type="button" className="btn btn-outline-success btn-sm m-1" onClick={
                 (evt) => { $(evt.currentTarget.children[0]).click() }}>
-                Upload_Icon
+                Change_Icon
                 <input type="file" className="d-none" onChange={
                     (evt) => { this.storage_rWd_icon(evt.target.files[0]) }} accept="image/jpeg,image/png" />
-            </button>
+            </button></div>
         )
     }
     render_changebutton(title: string, state_element: string) {
         let modal_id = "mygape_modal_" + title; let modal_id_s = "#" + modal_id;
         return (
             <div>
-                <button type="button" className="btn btn-outline-success btn-sm mx-1" data-toggle="modal" data-target={modal_id_s}>change</button>
+                <button type="button" className="btn btn-outline-success btn-sm m-1" data-toggle="modal" data-target={modal_id_s}>
+                    Change_{title}
+                </button>
                 <div className="modal fade" id={modal_id} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
@@ -118,24 +120,26 @@ export class Mypage_tsx extends React.Component<{}, State> {
                 {this.state.uid == "" ?
                     <h4 className="d-flex justify-content-center">This application cant use without login</h4> :
                     <div>
-                        <div className="m-2 p-1" style={{ background: "khaki" }}>
-                            <h4 className="d-flex justify-content-between">
-                                <div>{this.state.profile["nickname"]}</div>
-                                <div className="ml-auto">
-                                    <div className="form-inline">
-                                        {this.render_changebutton("nickname", "nickname")}{this.render_upicon()}
+                        <div className="m-2" style={{ background: "khaki" }}>
+                            <h4 className="d-flex justify-content-start">
+                                <div className="m-1">{this.render_icon()}</div>
+                                <div className="m-1 p-1 flex-grow-1" style={{ backgroundColor: "rgba(100,100,100,0.1)" }}>
+                                    <div className="d-flex justify-content-start">
+                                        <h3 className="flex-grow-1">{this.state.profile["nickname"]}</h3>
+                                        <div className="form-inline">
+                                            {this.render_changebutton("Nickname", "nickname")}{this.render_upicon()}
+                                        </div>
+                                    </div>
+                                    <div className="m-1" style={{ backgroundColor: "rgba(255,255,255,0.5)" }}>
+                                        <div className="m-1 d-flex justify-content-between">
+                                            <h5 className="">PR</h5>
+                                            <div className="">{this.render_changebutton("PR", "pr")}</div>
+                                        </div>
+                                        <h6 className="">{this.state.profile["pr"]}</h6>
                                     </div>
                                 </div>
                             </h4>
                             <div className="d-flex">
-                                <div className="">{this.render_icon()}</div>
-                                <div className="bg-light m-1">
-                                    <div className="d-flex justify-content-between bg-white m-1">
-                                        <h5 className="">PR</h5>
-                                        <div className="ml-auto">{this.render_changebutton("PR", "pr")}</div>
-                                    </div>
-                                    <h6 className="">{this.state.profile["pr"]}</h6>
-                                </div>
                             </div>
                         </div>
                     </div>

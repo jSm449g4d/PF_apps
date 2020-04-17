@@ -49,6 +49,9 @@ export class Account_tsx extends React.Component<{}, State> {
     auth_easyin(mail_addr: string = "a@b.com", mail_pass: string = "asdfgh") {
         auth.signInWithEmailAndPassword(mail_addr, mail_pass).catch(() => { this.auth_signup(mail_addr, mail_pass); })
     }
+    auth_easyin2(mail_addr: string = "c@d.com", mail_pass: string = "asdfgh") {
+        auth.signInWithEmailAndPassword(mail_addr, mail_pass).catch(() => { this.auth_signup(mail_addr, mail_pass); })
+    }
     auth_resetpass(mail_addr: string = this.state.mail_addr) {
         auth.sendPasswordResetEmail(mail_addr).then(() => { alert("SEND_EMAIL!") }).catch((err) => { fb_errmsg(err) });
     }
@@ -57,7 +60,7 @@ export class Account_tsx extends React.Component<{}, State> {
             auth.currentUser.delete().then(() => { alert("ACCOUNT_DELETED!") }).catch((err) => { fb_errmsg(err) });
         }
     }
-    auth_glogin() { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then().catch((err) => { fb_errmsg(err) }) }
+    auth_glogin() { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch((err) => { fb_errmsg(err) }) }
 
     //renders
     render_account_modal(title: string, func: any) {
@@ -100,14 +103,16 @@ export class Account_tsx extends React.Component<{}, State> {
                                 {this.render_account_modal("Sign_in", this.auth_signin)}
                                 {this.render_account_modal("Sign_up", this.auth_signup)}
                                 <button type="button" className="btn btn-warning mx-1 btn-sm" onClick={() => { this.auth_easyin() }}>Easy_login</button>
+                                <button type="button" className="btn btn-warning mx-1 btn-sm" onClick={() => { this.auth_easyin2() }}>→別垢版</button>
                             </div>
                         </div>
                     </div> :
                     <div className="d-flex justify-content-between">
                         <div className="form-inline">{auth.currentUser.photoURL ?
-                            <img src={auth.currentUser.photoURL} alt="user.photoURL" width="64" height="64" /> : <div />}
+                            <img src={auth.currentUser.photoURL} alt="user.photoURL" width="32" height="32" /> : <div />}
+                            <div className="mx-4" />
                             {auth.currentUser.displayName ?
-                                <h6>ようこそ {auth.currentUser.displayName} さん</h6> : <h6>ようこそ {auth.currentUser.email} さん</h6>}
+                                <h5>ようこそ {auth.currentUser.displayName} さん</h5> : <h5>ようこそ {auth.currentUser.email} さん</h5>}
                         </div>
                         <div className="form-inline">
                             <button type="button" className="btn btn-warning btn-sm mx-1" data-toggle="modal" data-target="#account_modal_config">config</button>

@@ -68,7 +68,6 @@ export class Mypage_tsx extends React.Component<{}, State> {
 
     //renders
     render_icon() {
-        this.storage_Rwd_icon();
         if (this.state.image_url == "") { return (<div>No Image</div>) }
         return (<div><img src={this.state.image_url} alt={this.state.image_url} width="156" height="156" /></div>)
     }

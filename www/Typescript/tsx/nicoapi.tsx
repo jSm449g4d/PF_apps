@@ -13,7 +13,7 @@ interface State {
 }
 
 export class Nicoapi_tsx extends React.Component<{}, State> {
-    //constructors
+    // constructors
     constructor(props: any) {
         super(props);
         this.state = {
@@ -33,7 +33,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     }
     componentWillUnmount() { for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() } }
 
-    //functions
+    // functions
     db_Rwd_getorders() {
         if (this.state.uid == "") return () => { };
         return db.doc("nicoapi/" + this.state.uid).onSnapshot((doc) => {
@@ -98,7 +98,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     }
 
 
-    //renders
+    // renders
     render_APIendpoint_record(service_name: string, API_reference: string = "") {
         return (<tr>
             <td>

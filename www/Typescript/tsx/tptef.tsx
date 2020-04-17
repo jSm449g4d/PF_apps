@@ -166,8 +166,8 @@ export class Tptef_tsx extends React.Component<{}, State> {
     };
 };
 
-document.body.insertAdjacentHTML('beforebegin', '<div id="account_tsx">account_tsx loading...<\/div>');
-document.body.insertAdjacentHTML('beforebegin', '<div id="tptef_tsx">tptef_tsx loading...<\/div>');
+document.body.insertAdjacentHTML('afterbegin', '<div id="account_tsx">account_tsx loading...<\/div>');
+document.body.insertAdjacentHTML('afterbegin', '<div id="tptef_tsx">tptef_tsx loading...<\/div>');
 
 ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
 ReactDOM.render(<Tptef_tsx />, document.getElementById("tptef_tsx"));

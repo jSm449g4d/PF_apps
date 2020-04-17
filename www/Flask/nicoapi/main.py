@@ -80,7 +80,7 @@ def deamon():
             recodes[tsuid]["status"] = "processed"
         docRef.set(recodes, merge=True)
     # prevent high freq restart
-    while int(datetime.now().timestamp()*1000) < start_timestamp+6000:
+    while int(datetime.now().timestamp()*1000) < start_timestamp+3000:
         time.sleep(1)
 
 
@@ -91,16 +91,18 @@ def show(request):
     # head ← (template)
     global access_counter
     access_counter += 1
-    status_dict: dict = {"access_counter": str(access_counter)}
+    status_dict: dict = {
+        "access_counter": str(access_counter),
+        "Thread": "Running", }
 
     # body
     global thread_d
     if thread_d.is_alive() == False:
         thread_d = threading.Thread(name='nicoapi_d', target=deamon)
         thread_d.start()
-        status_dict["Thread"] = "Start!!"
+        status_dict["Thread"] = "Start"
     if request.method == "POST":
-        return "Imalive", 200
+        return json.dumps(status_dict, ensure_ascii=False), 200
 
     # foot ← (template)
     status_lines: str = "<h6 class='text-center'>==STATUS==</h6>"

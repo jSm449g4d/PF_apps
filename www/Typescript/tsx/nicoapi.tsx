@@ -43,15 +43,21 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     }
     db_rWd_genorders(urls_array: string[]) {
         if (this.state.uid == "") return;
+        if (confirm("Do you really want to submit?") == false) return;
         if (stopf5.check("1", 6000, true) == false) return; // To prevent high freq access
-        if (confirm("Do you really want to submit?")) {
-            db.doc("nicoapi/" + this.state.uid).set(
-                {
-                    [Date.now().toString() + "_" + this.state.uid]: {
-                        "request_urls": urls_array, "status": "standby", "User-Agent": "nicoapi"
-                    }
-                }, { merge: true });
-        };
+        db.doc("nicoapi/" + this.state.uid).set(
+            {
+                [Date.now().toString() + "_" + this.state.uid]: {
+                    "request_urls": urls_array, "status": "standby", "User-Agent": "nicoapi"
+                }
+            }, { merge: true }).then(() => {
+                setTimeout(() => { // access to backend
+                    const xhr: XMLHttpRequest = new XMLHttpRequest();
+                    xhr.open("POST", "/Flask/nicoapi/main.py", true);
+                    xhr.onload = () => { if (xhr.readyState === 4 && xhr.status === 200) console.log(xhr.responseText); };
+                    xhr.send(null);
+                }, 3000)
+            }).catch((err) => fb_errmsg(err))
     }
     db_rwD_delorders(tsuid: string) {
         if (this.state.uid == "") return;
@@ -313,8 +319,9 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     };
 };
 
-document.body.insertAdjacentHTML('beforebegin', '<div id="account_tsx">account_tsx loading...<\/div>');
-document.body.insertAdjacentHTML('beforebegin', '<div id="nicoapi_tsx">nicoapi_tsx loading...<\/div>');
+
+document.body.insertAdjacentHTML('afterbegin', '<div id="account_tsx">account_tsx loading...<\/div>');
+document.body.insertAdjacentHTML('afterbegin', '<div id="nicoapi_tsx">nicoapi_tsx loading...<\/div>');
 
 ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
 ReactDOM.render(<Nicoapi_tsx />, document.getElementById("nicoapi_tsx"));

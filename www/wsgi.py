@@ -19,7 +19,7 @@ app.config['MAX_CONTENT_LENGTH'] = 100000000
 os.makedirs("tmp", exist_ok=True)
 
 # Index
-@app.route("/")
+@app.route("/", methods=["GET","POST"])
 def indexpage_show():
     try:  # Apache2.4 index
         return flask.send_file(os.path.join("html/index.html"))
@@ -44,8 +44,8 @@ def indexpage_show():
 
 
 # FaaS: domain/Flask/**/*.py → www/Flask/**/*.py
-@app.route("/<path:name>.py")
-@app.route("/Flask/<path:name>.py")
+@app.route("/<path:name>.py", methods=["GET","POST"])
+@app.route("/Flask/<path:name>.py", methods=["GET","POST"])
 def py_show(name):
     try:
         return importlib.import_module("Flask."+name.replace("/", ".").replace("..", "_")).show(flask.request)
@@ -53,7 +53,7 @@ def py_show(name):
         return flask.render_template("error.html", STATUS_ERROR_TEXT=str(e)), 500
 
 # html: domain/* → www/html/*
-@app.route('/<path:name>')
+@app.route('/<path:name>', methods=["GET","POST"])
 def html_show(name):
     try:
         return flask.send_file(os.path.join("html", name).replace("\\", "/").replace("..", "_"))

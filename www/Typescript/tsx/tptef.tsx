@@ -122,7 +122,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                         <th style={{ width: "15%" }}>Handlename</th>
                         <th>Content</th>
                         <th style={{ width: "15%" }} >Timestamp/uid</th>
-                        <th style={{ width: "15%" }}>Ops</th>
+                        <th style={{ width: "10%" }}>Ops</th>
                     </tr>
                 </thead>
                 <tbody>{tmp_recodes}</tbody>

@@ -43,6 +43,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
                 const tmp_recodes = doc.data()
                 const tsuids = Object.keys(tmp_recodes).sort()
                 this.setState({ profile: Object.assign(Object.assign(this.state.profile), tmp_recodes[tsuids[0]]) });
+                this.storage_Rwd_icon.bind(this)();
             }
         });
     }
@@ -62,6 +63,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
         if (this.state.uid == "") return;
         if (stopf5.check("2", 500, true) == false) return; // To prevent high freq access
         storage.ref("mypage/" + this.state.uid + "/icon.img").put(upload_file);
+        setTimeout(()=>{this.storage_Rwd_icon()},1000)
     }
 
     //renders

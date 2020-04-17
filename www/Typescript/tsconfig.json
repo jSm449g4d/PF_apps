@@ -1,6 +1,5 @@
 {
     "compilerOptions": {
-        "outDir": "../static/src/",
         "sourceMap": true,
         "noImplicitAny": true,
         "module": "es2020",

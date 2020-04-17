@@ -56,7 +56,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                     xhr.open("POST", "/Flask/nicoapi/main.py", true);
                     xhr.onload = () => { if (xhr.readyState === 4 && xhr.status === 200) console.log(xhr.responseText); };
                     xhr.send(null);
-                }, 3000)
+                }, 1000)
             }).catch((err) => fb_errmsg(err))
     }
     db_rwD_delorders(tsuid: string) {
@@ -134,8 +134,6 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                             this.setState({
                                 API_endpoint: "https://api.syosetu.com/novelapi/api/", service_name: service_name, fields:
                                 {
-                                    [String(Date.now() - 3)]: { field: "gzip", value: "5" },
-                                    [String(Date.now() - 2)]: { field: "out", value: "yaml" },
                                     [String(Date.now() - 1)]: { field: "lim", value: "499" },
                                     [String(Date.now() - 0)]: { field: "st", value: "$for(1;2000;499)" },
                                 }
@@ -320,8 +318,8 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
 };
 
 
-document.body.insertAdjacentHTML('afterbegin', '<div id="account_tsx">account_tsx loading...<\/div>');
 document.body.insertAdjacentHTML('afterbegin', '<div id="nicoapi_tsx">nicoapi_tsx loading...<\/div>');
+document.body.insertAdjacentHTML('afterbegin', '<div id="account_tsx">account_tsx loading...<\/div>');
 
 ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
 ReactDOM.render(<Nicoapi_tsx />, document.getElementById("nicoapi_tsx"));

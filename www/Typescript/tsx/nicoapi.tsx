@@ -48,7 +48,8 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         db.doc("nicoapi/" + this.state.uid).set(
             {
                 [Date.now().toString() + "_" + this.state.uid]: {
-                    "request_urls": urls_array, "status": "standby", "User-Agent": "nicoapi"
+                    "request_urls": urls_array, "status": "standby"
+                    , "User-Agent": String(Math.random() * 1000000).split(".")[0]
                 }
             }, { merge: true }).then(() => {
                 setTimeout(() => { // access to backend

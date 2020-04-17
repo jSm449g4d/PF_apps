@@ -43,7 +43,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     }
     db_rWd_genorders(urls_array: string[]) {
         if (this.state.uid == "") return;
-        if (confirm("Do you really want to submit?") == false) return;
+        if (confirm(String(urls_array.length)+"[req]\nDo you really want to place this ORDER?") == false) return;
         if (stopf5.check("1", 6000, true) == false) return; // To prevent high freq access
         db.doc("nicoapi/" + this.state.uid).set(
             {

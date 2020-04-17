@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from "react-dom";
 import { Account_tsx, auth, fb, fb_errmsg } from "./component/account";
-import { stopf5 } from "./component/stopf5";
+import { stopf5 } from "./component/util_tsx";
 
 const storage = fb.storage();
 const db = fb.firestore();
 
 interface State {
-    uid: string; unsnaps: any; room: string; handlename: string;
-    thread: { [tsuid: string]: { attachment_dir: string, content: string, handlename: string } }
+    uid: string; unsnaps: any; room: string; tmproom: string, tmpcontent: string,
+    thread: { [tsuid: string]: { attachment_dir: string, content: string, handlename: string, [keys: string]: string } }
+    profile: { nickname: string, [keys: string]: string };
 }
 
 export class Tptef_tsx extends React.Component<{}, State> {
@@ -16,7 +17,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            uid: "", unsnaps: [], room: "main", handlename: "窓の民は名無し", thread: {}
+            uid: "", unsnaps: [], room: "main", tmproom: "main", tmpcontent: "", thread: {}, profile: { nickname: "窓の民は名無し" }
         };
         setInterval(() => {
             if (auth.currentUser) { if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid }); }
@@ -25,12 +26,12 @@ export class Tptef_tsx extends React.Component<{}, State> {
     }
     componentDidMount() {
         for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() }
-        this.setState({ unsnaps: [this.db_Rwd_getroom.bind(this)(),] })
+        this.setState({ unsnaps: [this.db_Rwd_getroom.bind(this)(), this.db_Rwd_getmypage.bind(this)()] })
     }
     componentDidUpdate(prevProps: object, prevState: State) {
-        if (this.state.room != prevState.room) {
+        if (this.state.room != prevState.room || this.state.uid != prevState.uid) {
             for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() }
-            this.setState({ unsnaps: [this.db_Rwd_getroom.bind(this)(),] })
+            this.setState({ unsnaps: [this.db_Rwd_getroom.bind(this)(), this.db_Rwd_getmypage.bind(this)()] })
         }
     }
     componentWillUnmount() { for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() } }
@@ -50,6 +51,16 @@ export class Tptef_tsx extends React.Component<{}, State> {
             } else { this.setState({ thread: doc.data() }) }
         })
     }
+    db_Rwd_getmypage() {
+        if (this.state.uid == "") return () => { };
+        return db.doc("mypage/" + this.state.uid).onSnapshot((doc) => {
+            if (doc.exists) {
+                const tmp_recodes = doc.data()
+                const tsuids = Object.keys(tmp_recodes).sort()
+                this.setState({ profile: Object.assign(Object.assign(this.state.profile), tmp_recodes[tsuids[0]]) });
+            }
+        })
+    }
 
     db_rWd_addremark(submit_content: string, attach_a_file: any) {
         if (this.state.uid == "" || this.state.room == "") return;
@@ -62,7 +73,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
         }
         db.doc("tptef/" + this.state.room).set({
             [Date.now().toString() + "_" + this.state.uid]: {
-                handlename: this.state.handlename,
+                handlename: this.state.profile.nickname,
                 content: submit_content,
                 attachment_dir: attachment_dir,
             }
@@ -116,12 +127,12 @@ export class Tptef_tsx extends React.Component<{}, State> {
             tmp_recodes.push(<tr key={i}>{tmp_data}</tr>)
         }
         return (
-            <table className="table table-sm bg-light">
+            <table className="table table-sm table-bordered bg-light">
                 <thead>
                     <tr style={{ textAlign: "center" }}>
-                        <th style={{ width: "15%" }}>Handlename</th>
+                        <th style={{ width: "10%" }}>Handlename</th>
                         <th>Content</th>
-                        <th style={{ width: "15%" }} >Timestamp/uid</th>
+                        <th style={{ width: "10%" }} >Timestamp/uid</th>
                         <th style={{ width: "10%" }}>Ops</th>
                     </tr>
                 </thead>
@@ -131,29 +142,36 @@ export class Tptef_tsx extends React.Component<{}, State> {
     render() {
         return (
             <div className="m-2">
-                <h2 style={{ color: "black" }}>Chat_Room</h2>
                 <div className="d-flex justify-content-between">
-                    <input className="form-control" id="room_name" type="text" value={this.state.room} placeholder="Room"
-                        onChange={(evt) => { this.setState({ room: evt.target.value }) }} />
-                    <button className="btn btn-success btn-sm ml-auto" >Goto_Room</button>
+                    <h3 style={{ fontFamily: "Century", color: "mediumturquoise" }}>TPTEF: Chatroom</h3>
+                    <h3 style={{ color: "black" }}>{this.state.room}</h3>
+                    <div className="form-inline">
+                        <input className="form-control form-control-sm" type="text" value={this.state.tmproom}
+                            onChange={(evt) => { this.setState({ tmproom: evt.target.value }) }}
+                        />
+                        <button className="btn btn-success btn-sm"
+                            onClick={(evt) => { this.setState({ room: this.state.tmproom }) }}>Room Change</button>
+                    </div>
                 </div>
                 {this.render_thread_table()}
                 {this.state.uid == "" ?
-                    <h4 className="d-flex justify-content-center">Plz login to submit</h4> :
-                    <div className="mt-2 p-2" style={{ color: "#AAFEFE", border: "3px double silver", background: "#001111" }}>
-                        <h5 style={{ color: "white", fontStyle: "" }}>入力フォーム</h5>
-                        <textarea className="form-control my-1" id="tptef_content" rows={6}></textarea>
+                    <h5 className="d-flex justify-content-center">Plz login</h5> :
+                    <div className="mt-2 p-2" style={{ color: "#CCFFFF", border: "3px double silver", background: "#001111" }}>
+                        <div className="d-flex justify-content-between">
+                            <h4>{this.state.profile.nickname}</h4>
+                            <h5>入力フォーム</h5>
+                        </div>
+                        <textarea className="form-control my-1" id="tptef_content" rows={6} value={this.state.tmpcontent}
+                            onChange={(evt) => { this.setState({ tmpcontent: evt.target.value }) }}></textarea>
                         <div className="my-1 d-flex justify-content-between">
                             <div className="ml-auto">
                                 <div className="form-inline">
-                                    <input className="form-control form-control-sm mx-1" type="text" value={this.state.handlename}
-                                        onChange={(evt) => { this.setState({ handlename: evt.target.value }) }} />
                                     <input type="file" id="tptef_attachment" />
                                     <button className="btn btn-primary btn-sm mx-1" onClick={() => {
                                         this.db_rWd_addremark(
-                                            (document.getElementById("tptef_content") as HTMLInputElement).value,
+                                            this.state.tmpcontent,
                                             (document.getElementById("tptef_attachment") as HTMLInputElement).files[0]);
-                                        (document.getElementById("tptef_content") as HTMLInputElement).value = "";
+                                        this.setState({ tmpcontent: "" });
                                         (document.getElementById("tptef_attachment") as HTMLInputElement).value = "";
                                     }}>remark</button>
                                 </div>

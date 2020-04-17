@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from "react-dom";
 import { Account_tsx, auth, fb } from "./component/account";
-import { stopf5 } from "./component/stopf5";
+import { stopf5 } from "./component/util_tsx";
 
 const storage = fb.storage();
 const db = fb.firestore()
 
 interface State {
     uid: string; unsnaps: any; image_url: string;
-    profile: { [keys: string]: string }; // refer to constructor about keys
+    profile: { nickname: string, pr: string, [keys: string]: string };
 }
 
 

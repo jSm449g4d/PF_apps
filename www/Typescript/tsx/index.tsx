@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from "react-dom";
-import { Account_tsx, auth, fb } from "./component/account";
+import { Account_tsx, auth, } from "./component/account";
 
 
 interface State {
@@ -30,7 +30,20 @@ export class Index_tsx extends React.Component<{}, State> {
                     <h2 style={{ fontFamily: "OCRB", color: "navy" }}>React_Index</h2>
                     <h4 style={{ fontFamily: "Century", color: "mediumturquoise" }}>React+Bootstrap4</h4>
                 </div>
-                <table className="table table-sm table-bordered mt-2 table-success" style={{ backgroundColor: "lightcyan", color: "navy" }}>
+                <table className="table table-sm table-bordered" style={{ backgroundColor: "azure", color: "#555000" }}>
+                    <thead>
+                        <tr>
+                            <th className="text-center" colSpan={2}>STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>==</td>
+                            <td>{"=="}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table className="table table-sm table-bordered mt-2" style={{ backgroundColor: "lightcyan", color: "navy" }}>
                     <thead>
                         <tr>
                             <th className="text-center" colSpan={2}>Links</th>

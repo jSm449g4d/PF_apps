@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactDOM from "react-dom";
 import { Account_tsx, auth, fb, fb_errmsg } from "./component/account";
-import { stopf5 } from "./component/stopf5";
+import { stopf5 } from "./component/util_tsx";
 
 const storage = fb.storage();
 const db = fb.firestore()
 
 interface State {
     uid: string; unsnaps: any; API_endpoint: string; service_name: string;
-    fields: { [timestamp: string]: { field: string, value: string } };
-    orders: { [tsuid: string]: { request_urls: any, status: string, "User-Agent": string } };
+    fields: { [timestamp: string]: { field: string, value: string, [keys: string]: string } };
+    orders: { [tsuid: string]: { request_urls: any, status: string, "User-Agent": string, [keys: string]: string } };
 }
 
 export class Nicoapi_tsx extends React.Component<{}, State> {
@@ -211,7 +211,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                 </thead>
                 <tbody>
                     {tmp_record}
-                    <tr><td /><td style={{color:"rgba(255,255,255,0)"}}>===みつけたね？===</td></tr>
+                    <tr><td /><td style={{ color: "rgba(255,255,255,0)" }}>===みつけたね？===</td></tr>
                     <tr><td />
                         <td><button className="btn btn-outline-primary rounded-pill" style={{ width: "50%" }}
                             onClick={() => {
@@ -253,7 +253,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         }
         if (tsuids.length == 0) { tmp_records.push(<tr><td colSpan={3} style={{ textAlign: "center" }}>Not Exist</td></tr>); }
         return (
-            <table className="table table-sm">
+            <table className="table table-sm table-bordered">
                 <thead>
                     <tr style={{ textAlign: "center" }}>
                         <th style={{ width: "10%" }} >Timestamp/Info</th>

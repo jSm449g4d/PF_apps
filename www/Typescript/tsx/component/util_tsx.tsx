@@ -12,3 +12,10 @@ export class stopf5_tsx {
     }
 } export var stopf5 = new stopf5_tsx
 
+export function jpclock_func() {
+    const now: any = new Date();
+    const dayOfWeekStr: string[] = ["日 ", "月 ", "火 ", "水 ", "木 ", "金 ", "土 "];
+    return now.getFullYear() + "年 " + now.getMonth() +
+        "月 " + now.getDate() + "日 " + dayOfWeekStr[now.getDay()] +
+        "曜日 " + now.getHours() + ": " + now.getMinutes() + ": " + now.getSeconds();
+}

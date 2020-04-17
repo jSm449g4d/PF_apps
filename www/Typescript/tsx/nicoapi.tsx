@@ -200,9 +200,9 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             tmp_record.push(<tr key={i}>{tmp_data}</tr>)
         }
         return (
-            <table className="table table-sm">
+            <table className="table table-sm" style={{ textAlign: "center" }}>
                 <thead>
-                    <tr style={{ textAlign: "center" }}>
+                    <tr>
                         <th style={{ width: "10%" }}>Field</th>
                         <th>Value</th>
                         <th style={{ width: "8%" }}>Command</th>
@@ -211,13 +211,14 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                 </thead>
                 <tbody>
                     {tmp_record}
-                    <tr className="my-2"><td />
-                        <td className="d-flex justify-content-center"><button className="btn btn-outline-primary rounded-pill" style={{ width: "50%" }}
+                    <tr><td /><td style={{color:"rgba(255,255,255,0)"}}>===みつけたね？===</td></tr>
+                    <tr><td />
+                        <td><button className="btn btn-outline-primary rounded-pill" style={{ width: "50%" }}
                             onClick={() => {
                                 this.setState({ fields: Object.assign(this.state.fields, { [Date.now().toString()]: { field: "", value: "" } }) })
                             }}>+Add</button>
                         </td>
-                        <td><button className="btn btn-success" onClick={() => { this._genorders(); }}>Launch</button></td>
+                        <td colSpan={2}><button className="btn btn-success" onClick={() => { this._genorders(); }}>Launch</button></td>
                     </tr>
                 </tbody>
             </table>)

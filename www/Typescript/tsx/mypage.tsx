@@ -121,7 +121,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
                     <h4 className="d-flex justify-content-center">This application cant use without login</h4> :
                     <div>
                         <div className="m-2" style={{ background: "khaki" }}>
-                            <h4 className="d-flex justify-content-start">
+                            <div className="d-flex justify-content-start">
                                 <div className="m-1">{this.render_icon()}</div>
                                 <div className="m-1 p-1 flex-grow-1" style={{ backgroundColor: "rgba(100,100,100,0.1)" }}>
                                     <div className="d-flex justify-content-start">
@@ -130,15 +130,15 @@ export class Mypage_tsx extends React.Component<{}, State> {
                                             {this.render_changebutton("Nickname", "nickname")}{this.render_upicon()}
                                         </div>
                                     </div>
-                                    <div className="m-1" style={{ backgroundColor: "rgba(255,255,255,0.5)" }}>
-                                        <div className="m-1 d-flex justify-content-between">
-                                            <h5 className="">PR</h5>
+                                    <div className="m-1 p-1" style={{ backgroundColor: "rgba(255,255,255,0.5)" }}>
+                                        <div className="d-flex justify-content-between">
+                                            <h5>PR</h5>
                                             <div className="">{this.render_changebutton("PR", "pr")}</div>
                                         </div>
-                                        <h6 className="">{this.state.profile["pr"]}</h6>
+                                        <div>{this.state.profile["pr"]}</div>
                                     </div>
                                 </div>
-                            </h4>
+                            </div>
                             <div className="d-flex">
                             </div>
                         </div>

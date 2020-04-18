@@ -1,14 +1,13 @@
 import React from 'react';
 import ReactDOM from "react-dom";
 import { Account_tsx, auth, fb, fb_errmsg } from "./component/account";
-import { stopf5 } from "./component/util_tsx";
-import { threadId } from 'worker_threads';
+import { stopf5, jpclock_func } from "./component/util_tsx";
 
 const storage = fb.storage();
 const db = fb.firestore();
 
 interface State {
-    uid: string; unsnaps: any; room: string; tmproom: string, tmpcontent: string, tmpfile: any,
+    uid: string; unsnaps: any; room: string; tmproom: string, tmpcontent: string, tmpfile: any, jpclock_str: string,
     thread: { [tsuid: string]: { attachment_dir: string, content: string, handlename: string, [keys: string]: string } }
     profile: { nickname: string, [keys: string]: string };
 }
@@ -18,12 +17,13 @@ export class Tptef_tsx extends React.Component<{}, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            uid: "", unsnaps: [], room: "main", tmproom: "main", tmpcontent: "", tmpfile: null,
+            uid: "", unsnaps: [], room: "main", tmproom: "main", tmpcontent: "", tmpfile: null, jpclock_str: "now loading",
             thread: {}, profile: { nickname: "窓の民は名無し" }
         };
         setInterval(() => {
             if (auth.currentUser) { if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid }); }
             else { if (this.state.uid != "") this.setState({ uid: "" }); }
+            this.setState({ jpclock_str: jpclock_func() }) // Decoration
         }, 100)
     }
     componentDidMount() {
@@ -161,6 +161,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                     <div className="mt-2 p-2" style={{ color: "#CCFFFF", border: "3px double silver", background: "#001111" }}>
                         <div className="d-flex justify-content-between">
                             <h4>{this.state.profile.nickname}</h4>
+                            <h5>{this.state.jpclock_str}</h5>
                             <h5>入力フォーム</h5>
                         </div>
                         <textarea className="form-control my-1" id="tptef_content" rows={6} value={this.state.tmpcontent}

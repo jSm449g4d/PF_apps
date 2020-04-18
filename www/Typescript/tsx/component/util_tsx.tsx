@@ -13,10 +13,9 @@ export class stopf5_tsx {
 } export var stopf5 = new stopf5_tsx
 
 export function jpclock_func() {
-    const now: any = new Date();
-    const dayOfWeekStr: string[] = ["日 ", "月 ", "火 ", "水 ", "木 ", "金 ", "土 "];
+    const now: Date = new Date();
     return now.getFullYear() + "年 " + now.getMonth() +
-        "月 " + now.getDate() + "日 " + dayOfWeekStr[now.getDay()] +
+        "月 " + now.getDate() + "日 " + ["日 ", "月 ", "火 ", "水 ", "木 ", "金 ", "土 "][now.getDay()] +
         "曜日 " + now.getHours() + ": " + now.getMinutes() + ": " + now.getSeconds();
 }
 
@@ -36,6 +35,5 @@ export function Dict2Query(query_dict: { [key: string]: string }) {
     const tmpvalue_array: string[] = Object.values(query_dict);
     for (let i = 0; i < tmpkey_array.length; i++) {
         ret_str += tmpkey_array[i] + "=" + tmpvalue_array[i] + "&"
-    }
-    return ret_str
+    }; return ret_str
 }

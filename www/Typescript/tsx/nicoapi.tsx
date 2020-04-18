@@ -9,7 +9,7 @@ const db = fb.firestore()
 interface State {
     uid: string; unsnaps: any; API_endpoint: string; service_name: string;
     fields: { [timestamp: string]: { field: string, value: string, [keys: string]: string } };
-    orders: { [tsuid: string]: { request_urls: any, status: string, "User-Agent": string, [keys: string]: string } };
+    db_nicoapi: { [tsuid: string]: { request_urls: any, status: string, "User-Agent": string, [keys: string]: string } };
 }
 
 export class Nicoapi_tsx extends React.Component<{}, State> {
@@ -18,7 +18,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         super(props);
         this.state = {
             uid: "", unsnaps: [], API_endpoint: "https://", service_name: "← Plz \"Select API_endpoint\"",
-            fields: {}, orders: {}
+            fields: {}, db_nicoapi: {}
         };
         setInterval(() => {
             if (auth.currentUser) { if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid }); }
@@ -37,8 +37,8 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     db_Rwd_getorders() {
         if (this.state.uid == "") return () => { };
         return db.doc("nicoapi/" + this.state.uid).onSnapshot((doc) => {
-            if (doc.exists == false) { this.setState({ orders: {} }) }
-            else { this.setState({ orders: doc.data() }) }
+            if (doc.exists == false) { this.setState({ db_nicoapi: {} }) }
+            else { this.setState({ db_nicoapi: doc.data() }) }
         });
     }
     db_rWd_genorders(urls_array: string[]) {
@@ -225,13 +225,13 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             </table>)
     }
     render_orders_text() {
-        let num: Number = 0; let tsuids = Object.keys(this.state.orders);
-        for (let i = 0; i < tsuids.length; i++) { num += this.state.orders[tsuids[i]]["request_urls"].length }
+        let num: Number = 0; let tsuids = Object.keys(this.state.db_nicoapi);
+        for (let i = 0; i < tsuids.length; i++) { num += this.state.db_nicoapi[tsuids[i]]["request_urls"].length }
         return (<div className="mx-3">{"orders / requests: " + String(tsuids.length) + " / " + String(num)}</div>)
     }
     render_orders_table() {
-        const tsuids = Object.keys(this.state.orders).sort();
-        const tmp_records = []; let doc_records = Object.assign(this.state.orders);
+        const tsuids = Object.keys(this.state.db_nicoapi).sort();
+        const tmp_records = []; let doc_records = Object.assign(this.state.db_nicoapi);
         for (var i = 0; i < tsuids.length; i++) {
             const tmp_data = [];
             tmp_data.push(<td key={1} style={{ textAlign: "center" }}>

@@ -8,7 +8,7 @@ const db = fb.firestore();
 
 interface State {
     uid: string; unsnaps: any; room: string; tmproom: string, tmpcontent: string, tmpfile: any, jpclock_str: string,
-    thread: { [tsuid: string]: { attachment_dir: string, content: string, handlename: string, [keys: string]: string } }
+    db_tptef: { [tsuid: string]: { attachment_dir: string, content: string, handlename: string, [keys: string]: string } }
     profile: { nickname: string, [keys: string]: string };
 }
 
@@ -18,7 +18,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
         super(props);
         this.state = {
             uid: "", unsnaps: [], room: "main", tmproom: "main", tmpcontent: "", tmpfile: null, jpclock_str: "now loading",
-            thread: {}, profile: { nickname: "窓の民は名無し" }
+            db_tptef: {}, profile: { nickname: "窓の民は名無し" }
         };
         setInterval(() => {
             if (auth.currentUser) { if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid }); }
@@ -44,13 +44,13 @@ export class Tptef_tsx extends React.Component<{}, State> {
         return db.doc("tptef/" + this.state.room).onSnapshot((doc) => {
             if (doc.exists == false) {
                 this.setState({
-                    thread: {
+                    db_tptef: {
                         [Date.now().toString() + "_" + "NULL"]: {
                             handlename: "NULL", content: "Thread is not exist", attachment_dir: "",
                         }
                     }
                 })
-            } else { this.setState({ thread: doc.data() }) }
+            } else { this.setState({ db_tptef: doc.data() }) }
         })
     }
     db_Rwd_getmypage() {
@@ -104,7 +104,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
 
     //renders
     render_thread_table() {
-        const doc_redoces: any = Object.assign(this.state.thread);
+        const doc_redoces: any = Object.assign(this.state.db_tptef);
         const tmp_recodes = [];
         const tsuids = Object.keys(doc_redoces).sort();
         for (var i = 0; i < tsuids.length; i++) {

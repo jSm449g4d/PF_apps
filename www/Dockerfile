@@ -11,7 +11,8 @@ RUN apt update -q;apt upgrade -yq
 WORKDIR $APP/html/static
 RUN apt install npm -yq
 RUN npm install -g npm
-RUN npm install --save jquery@3.4.1 popper.js@1.16.1 crypto-js react react-dom react-bootstrap bootstrap firebase @fortawesome/fontawesome-free font-awesome-animation
+RUN npm install --save jquery@3.4.1 popper.js@1.16.1 crypto-js react react-dom react-bootstrap bootstrap firebase && \
+    npm @fortawesome/fontawesome-free font-awesome-animation
 # Typescript
 WORKDIR $APP/Typescript
 RUN npm install --save-dev @types/jquery @types/popper.js @types/crypto-js @types/react @types/react-dom @types/react-bootstrap @types/bootstrap  @types/firebase && \

@@ -87,7 +87,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
         const docRef = db.doc("tptef/" + this.state.room);
         docRef.get().then((doc) => {
             if (doc.exists) {
-                if (doc.data()[tsuid].attachment_dir) storage.ref(doc.data()[tsuid].attachment_dir).delete()
+                this.storage_rwD_attachment.bind(this)(doc.data()[tsuid].attachment_dir)
                 docRef.set({
                     [tsuid]: fb.firestore.FieldValue.delete()
                 }, { merge: true }).catch((err) => { fb_errmsg(err) });
@@ -100,6 +100,11 @@ export class Tptef_tsx extends React.Component<{}, State> {
         storage.ref(attachment_dir).getDownloadURL().then((url) => {
             window.open(url, '_blank');
         }).catch((err) => { fb_errmsg(err) });
+    }
+    storage_rwD_attachment(attachment_dir: string) {
+        if (attachment_dir == "") return;
+        if (stopf5.check("2", 500, true) == false) return; // To prevent high freq access
+        storage.ref(attachment_dir).delete().catch((err) => { fb_errmsg(err) })
     }
 
     //renders

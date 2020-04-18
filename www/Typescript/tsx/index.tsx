@@ -27,9 +27,9 @@ export class Index_tsx extends React.Component<{}, State> {
         return (
             <div className="m-2">
                 <div className="d-flex justify-content-between">
-                    <h2 style={{ fontFamily: "OCRB", color: "navy" }}>React_Index</h2>
+                    <h2 style={{ fontFamily: "Impact", color: "indigo" }}><i className="fas fa-book mx-2"></i>Index</h2>
                     <h4 style={{ fontFamily: "Century", color: "mediumturquoise" }}>
-                        <i className="fab fa-react fa-lg fa-spin mx-2" />React+Bootstrap4</h4>
+                        <i className="fab fa-react fa-lg fa-spin mx-2" ></i>React</h4>
                 </div>
                 <table className="table table-sm table-bordered" style={{ backgroundColor: "azure", color: "#555000" }}>
                     <thead>

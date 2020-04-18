@@ -99,7 +99,8 @@ export class Account_tsx extends React.Component<{}, State> {
                         <h5>サービスを利用するには、ログインしてください</h5>
                         <div className="ml-auto">
                             <div className="form-inline">
-                                <input type="button" value="Googleでログイン" className="btn btn-success mx-1 btn-sm" onClick={() => { this.auth_glogin() }} />
+                                <button type="button" className="btn btn-success mx-1 btn-sm" onClick={() => { this.auth_glogin() }}>
+                                    <i className="fab fa-google"> Googleでログイン</i></button>
                                 {this.render_account_modal("Sign_in", this.auth_signin)}
                                 {this.render_account_modal("Sign_up", this.auth_signup)}
                                 <button type="button" className="btn btn-warning mx-1 btn-sm" onClick={() => { this.auth_easyin() }}>Easy_login</button>
@@ -109,13 +110,14 @@ export class Account_tsx extends React.Component<{}, State> {
                     </div> :
                     <div className="d-flex justify-content-between">
                         <div className="form-inline">{auth.currentUser.photoURL ?
-                            <img src={auth.currentUser.photoURL} alt="user.photoURL" width="48" height="48" /> : <div />}
+                            <img src={auth.currentUser.photoURL} alt="user.photoURL" width="48" height="48" /> : <i className="fas fa-signature fa-lg"></i>}
                             <div className="mx-4" />
                             {auth.currentUser.displayName ?
                                 <h5>ようこそ {auth.currentUser.displayName} さん</h5> : <h5>ようこそ {auth.currentUser.email} さん</h5>}
                         </div>
                         <div className="form-inline">
-                            <button type="button" className="btn btn-secondary btn-sm mx-1" onClick={() => { auth.signOut(); }}>logout</button>
+                            <button type="button" className="btn btn-secondary btn-sm mx-1" onClick={() => { auth.signOut(); }}>
+                                <i className="fas fa-sign-out-alt"> logout</i></button>
                             <i className="fas fa-cog fa-lg mx-1 faa-wrench animated-hover" data-toggle="modal" data-target="#account_modal_config" />
                             <div className="modal fade" id="account_modal_config" role="dialog" aria-hidden="true">
                                 <div className="modal-dialog" role="document">

@@ -188,7 +188,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                 onChange={(evt: any) => {
                     tmp_fields[evt.target.name]["value"] = evt.target.value; this.setState({ fields: tmp_fields });
                 }} name={timestamp[i]} /></td>)
-            //Command (Delete button)
+            //Command (button)
             tmp_data.push(<td key={3}><button className="btn btn-warning btn-sm" style={{ textAlign: "center" }}
                 onClick={(evt: any) => {
                     tmp_fields[evt.target.name]["value"] = "$for(1;1601;500)"; this.setState({ fields: tmp_fields })
@@ -197,7 +197,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             tmp_data.push(<td key={4}><button className="btn btn-outline-danger btn-sm rounded-pill" style={{ textAlign: "center" }}
                 onClick={(evt: any) => {
                     delete tmp_fields[evt.target.name]; this.setState({ fields: tmp_fields })
-                }} name={timestamp[i]}>Delete</button></td>)
+                }} name={timestamp[i]}><i className="far fa-trash-alt"> Del</i></button></td>)
             tmp_record.push(<tr key={i}>{tmp_data}</tr>)
         }
         return (
@@ -219,7 +219,8 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                 this.setState({ fields: Object.assign(this.state.fields, { [Date.now().toString()]: { field: "", value: "" } }) })
                             }}>+Add</button>
                         </td>
-                        <td colSpan={2}><button className="btn btn-success" onClick={() => { this._genorders(); }}>Launch</button></td>
+                        <td colSpan={2}><button className="btn btn-success" onClick={() => { this._genorders(); }}>
+                        <i className ="fas fa-rocket"> Launch</i></button></td>
                     </tr>
                 </tbody>
             </table>)

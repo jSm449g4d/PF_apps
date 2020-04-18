@@ -92,11 +92,11 @@ export class Mypage_tsx extends React.Component<{}, State> {
             <div>
                 <h5>This page is not Exist</h5>
                 <button type="button" className="btn btn-outline-success btn-bg m-2"
-                    onClick={() => { this._gotomypage() }}>Return to Mypage</button>
+                    onClick={() => { this._gotomypage() }}><i className="fas fa-home"> Mypage</i></button>
             </div>)
     }
     render_dlicon() {
-        if (this.state.icon_url == "") { return (<div>No Image</div>) }
+        if (this.state.icon_url == "") { return (<i className="fab fa-themeisle fa-2x"><br />No Image</i>) }
         return (<div><img src={this.state.icon_url} alt={this.state.icon_url} width="156" height="156" /></div>)
     }
     render_upicon() {
@@ -104,7 +104,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
         return (
             <button type="button" className="btn btn-outline-success btn-sm m-1" onClick={
                 (evt) => { $(evt.currentTarget.children[0]).click() }}>
-                Change_Icon
+                <i className="fas fa-upload"> Icon</i>
                 <input type="file" className="d-none" onChange={
                     (evt) => { this.storage_rWd_icon(evt.target.files[0]) }} accept="image/jpeg,image/png" />
             </button>
@@ -116,7 +116,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
         return (
             <div>
                 <button type="button" className="btn btn-outline-success btn-sm m-1" data-toggle="modal" data-target={modal_id_s}>
-                    Change_{title}
+                    <i className="far fa-keyboard"> {title}</i>
                 </button>
                 <div className="modal fade" id={modal_id} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
@@ -169,7 +169,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
                                     </div>
                                 </div>
                             </div><button type="button" className="btn btn-success btn-sm m-2"
-                                onClick={() => { this._gotomypage() }}>Mypage</button>
+                                onClick={() => { this._gotomypage() }}><i className="fas fa-home"> Mypage</i></button>
                         </div>
                     }
                 </div>

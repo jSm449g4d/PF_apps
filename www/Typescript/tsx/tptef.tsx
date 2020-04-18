@@ -123,7 +123,8 @@ export class Tptef_tsx extends React.Component<{}, State> {
                 //delete button
                 if (tsuids[i].split("_")[1] == this.state.uid) tmp_datum.push(
                     <button key={2} className="btn btn-outline-danger btn-sm rounded-pill m-1"
-                        onClick={(evt: any) => { this.db_RwD_delremark(evt.target.name) }} name={tsuids[i]}>delete</button>)
+                        onClick={(evt: any) => { this.db_RwD_delremark(evt.target.name) }} name={tsuids[i]}>
+                        <i className="far fa-trash-alt"> Del</i></button>)
             }
             tmp_data.push(<td key={4} style={{ textAlign: "center" }}>{tmp_datum}</td>)
             tmp_recodes.push(<tr key={i}>{tmp_data}</tr>)
@@ -181,7 +182,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                                     <button className="btn btn-primary btn-sm mx-1" onClick={() => {
                                         this.db_rWd_addremark();
                                         this.setState({ tmpcontent: "", tmpfile: null });
-                                    }}>remark</button>
+                                    }}><i className="fas fa-fighter-jet"> Remark</i></button>
                                 </div>
                             </div>
                         </div>

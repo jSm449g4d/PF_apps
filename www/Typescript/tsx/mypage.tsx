@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from "react-dom";
 import { Account_tsx, auth, fb } from "./component/account";
-import { stopf5 } from "./component/util_tsx";
+import { stopf5, Query2Dict, Dict2Query } from "./component/util_tsx";
 
 const storage = fb.storage();
 const db = fb.firestore()
 
 interface State {
-    uid: string; unsnaps: any; image_url: string;
+    uid: string; unsnaps: any; icon_url: string;
     profile: { nickname: string, pr: string, [keys: string]: string };
 }
 
@@ -17,7 +17,8 @@ export class Mypage_tsx extends React.Component<{}, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            uid: "", unsnaps: [], image_url: "",
+            uid: "", unsnaps: [],
+            icon_url: "",
             profile: {
                 nickname: "窓の民は名無し", pr: "私はJhon_Doe。窓の蛇遣いです。"
             },
@@ -56,8 +57,8 @@ export class Mypage_tsx extends React.Component<{}, State> {
     }
     storage_Rwd_icon() {
         storage.ref("mypage/" + this.state.uid + "/icon.img").getDownloadURL().then((url) => {
-            if (this.state.image_url != url) this.setState({ image_url: url });
-        }).catch(() => { if (this.state.image_url != "") this.setState({ image_url: "" }); })
+            if (this.state.icon_url != url) this.setState({ icon_url: url });
+        }).catch(() => { if (this.state.icon_url != "") this.setState({ icon_url: "" }); })
     }
     storage_rWd_icon(upload_file: any) {
         if (this.state.uid == "") return;
@@ -68,8 +69,8 @@ export class Mypage_tsx extends React.Component<{}, State> {
 
     //renders
     render_dlicon() {
-        if (this.state.image_url == "") { return (<div>No Image</div>) }
-        return (<div><img src={this.state.image_url} alt={this.state.image_url} width="156" height="156" /></div>)
+        if (this.state.icon_url == "") { return (<div>No Image</div>) }
+        return (<div><img src={this.state.icon_url} alt={this.state.icon_url} width="156" height="156" /></div>)
     }
     render_upicon() {
         return (
@@ -116,8 +117,12 @@ export class Mypage_tsx extends React.Component<{}, State> {
     render() {
         return (
             <div>
-                {this.state.uid == "" ?
-                    <h4 className="d-flex justify-content-center">This application cant use without login</h4> :
+                {"showuid" in Query2Dict() == false ?
+                    <button type="button" className="btn btn-success btn-sm m-2" onClick={() => {
+                        window.location.search =
+                            Dict2Query(Object.assign(Query2Dict(), { showuid: this.state.uid }))
+                    }}>Goto Yourpage</button>
+                    :
                     <div>
                         <div className="m-2" style={{ background: "khaki" }}>
                             <div className="d-flex justify-content-start">

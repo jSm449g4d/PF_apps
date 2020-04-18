@@ -24,14 +24,14 @@ fb.analytics();
 export function fb_errmsg(error: any) { alert("error_code:" + error.code + "\nerror_message:" + error.message); }
 
 interface State {
-    uid: string, mail_addr: string, mail_pass: string
+    uid: string, tmpaddr: string, tmppass: string
 }
 export class Account_tsx extends React.Component<{}, State> {
     //constructors
     constructor(props: any) {
         super(props);
         this.state = {
-            uid: "", mail_addr: "", mail_pass: ""
+            uid: "", tmpaddr: "", tmppass: ""
         };
         setInterval(() => {
             if (auth.currentUser) { if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid }); }
@@ -40,10 +40,10 @@ export class Account_tsx extends React.Component<{}, State> {
     }
 
     //functions
-    auth_signup(mail_addr: string = this.state.mail_addr, mail_pass: string = this.state.mail_pass) {
+    auth_signup(mail_addr: string = this.state.tmpaddr, mail_pass: string = this.state.tmppass) {
         auth.createUserWithEmailAndPassword(mail_addr, mail_pass).catch((err) => { fb_errmsg(err) })
     }
-    auth_signin(mail_addr: string = this.state.mail_addr, mail_pass: string = this.state.mail_pass) {
+    auth_signin(mail_addr: string = this.state.tmpaddr, mail_pass: string = this.state.tmppass) {
         auth.signInWithEmailAndPassword(mail_addr, mail_pass).catch((err) => { fb_errmsg(err) })
     }
     auth_easyin(mail_addr: string = "a@b.com", mail_pass: string = "asdfgh") {
@@ -52,7 +52,7 @@ export class Account_tsx extends React.Component<{}, State> {
     auth_easyin2(mail_addr: string = "c@d.com", mail_pass: string = "asdfgh") {
         auth.signInWithEmailAndPassword(mail_addr, mail_pass).catch(() => { this.auth_signup(mail_addr, mail_pass); })
     }
-    auth_resetpass(mail_addr: string = this.state.mail_addr) {
+    auth_resetpass(mail_addr: string = this.state.tmpaddr) {
         auth.sendPasswordResetEmail(mail_addr).then(() => { alert("SEND_EMAIL!") }).catch((err) => { fb_errmsg(err) });
     }
     auth_deluser() {
@@ -77,9 +77,9 @@ export class Account_tsx extends React.Component<{}, State> {
                             </div>
                             <div className="modal-body">
                                 <div><input className="form-control m-1" type="text" size={40} name="mail_addr" placeholder="mail_address"
-                                    onChange={(evt: any) => { this.setState({ mail_addr: evt.target.value }); }} /></div>
+                                    onChange={(evt: any) => { this.setState({ tmpaddr: evt.target.value }); }} /></div>
                                 <div><input className="form-control m-1" type="text" size={40} name="mail_pass" placeholder="set_password"
-                                    onChange={(evt: any) => { this.setState({ mail_pass: evt.target.value }); }} /></div>
+                                    onChange={(evt: any) => { this.setState({ tmppass: evt.target.value }); }} /></div>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={func}>Submit</button>

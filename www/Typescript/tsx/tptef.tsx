@@ -114,16 +114,16 @@ export class Tptef_tsx extends React.Component<{}, State> {
             tmp_data.push(<td key={3} style={{ fontSize: "12px", textAlign: "center" }}>
                 {tsuids[i].split("_")[0]}<br />{tsuids[i].split("_")[1]}</td>)
             const tmp_datum = []; {
-                //delete button
-                if (tsuids[i].split("_")[1] == this.state.uid) tmp_datum.push(
-                    <button key={1} className="btn btn-outline-danger btn-sm rounded-pill m-1"
-                        onClick={(evt: any) => { this.db_RwD_delremark(evt.target.name) }} name={tsuids[i]}>delete</button>)
                 //attachment download button
                 if (doc_redoces[tsuids[i]]["attachment_dir"] != "") tmp_datum.push(
-                    <button key={2} className="btn btn-primary btn-sm m-1"
+                    <button key={1} className="btn btn-primary btn-sm m-1"
                         onClick={(evt: any) => { this.storage_Rwd_attachment(evt.target.name) }}
                         name={doc_redoces[tsuids[i]]["attachment_dir"]}>
                         {doc_redoces[tsuids[i]]["attachment_dir"].split("/").pop().slice(0, 15)}</button>)
+                //delete button
+                if (tsuids[i].split("_")[1] == this.state.uid) tmp_datum.push(
+                    <button key={2} className="btn btn-outline-danger btn-sm rounded-pill m-1"
+                        onClick={(evt: any) => { this.db_RwD_delremark(evt.target.name) }} name={tsuids[i]}>delete</button>)
             }
             tmp_data.push(<td key={4} style={{ textAlign: "center" }}>{tmp_datum}</td>)
             tmp_recodes.push(<tr key={i}>{tmp_data}</tr>)

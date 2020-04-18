@@ -104,9 +104,9 @@ export class Mypage_tsx extends React.Component<{}, State> {
         return (
             <button type="button" className="btn btn-outline-success btn-sm m-1" onClick={
                 (evt) => { $(evt.currentTarget.children[0]).click() }}>
-                <i className="fas fa-upload"> Icon</i>
                 <input type="file" className="d-none" onChange={
                     (evt) => { this.storage_rWd_icon(evt.target.files[0]) }} accept="image/jpeg,image/png" />
+                <i className="fas fa-upload"> Icon</i>
             </button>
         )
     }
@@ -168,8 +168,10 @@ export class Mypage_tsx extends React.Component<{}, State> {
                                         <div>{this.state.profile["pr"]}</div>
                                     </div>
                                 </div>
-                            </div><button type="button" className="btn btn-success btn-sm m-2"
-                                onClick={() => { this._gotomypage() }}><i className="fas fa-home"> Mypage</i></button>
+                            </div>
+                            {Query2Dict()["showuid"] == this.state.uid ? <div /> :
+                                <button type="button" className="btn btn-success btn-sm m-2"
+                                    onClick={() => { this._gotomypage() }}><i className="fas fa-home"> Mypage</i></button>}
                         </div>
                     }
                 </div>

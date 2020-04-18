@@ -34,6 +34,7 @@ export function Dict2Query(query_dict: { [key: string]: string }) {
     const tmpkey_array: string[] = Object.keys(query_dict);
     const tmpvalue_array: string[] = Object.values(query_dict);
     for (let i = 0; i < tmpkey_array.length; i++) {
+        if (tmpkey_array[i] == "") continue;
         ret_str += tmpkey_array[i] + "=" + tmpvalue_array[i] + "&"
     }; return ret_str
 }

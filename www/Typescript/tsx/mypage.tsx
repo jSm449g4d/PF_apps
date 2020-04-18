@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from "react-dom";
-import { Account_tsx, auth, fb } from "./component/account";
+import { Account_tsx, auth, fb, fb_errmsg } from "./component/account";
 import { stopf5, Query2Dict, Dict2Query } from "./component/util_tsx";
 
 const storage = fb.storage();
@@ -8,9 +8,10 @@ const db = fb.firestore()
 
 interface State {
     uid: string; unsnaps: any; icon_url: string;
-    profile: { nickname: string, pr: string, [keys: string]: string };
+    profile: { [keys: string]: string };
 }
 
+// Query2Dict():{showuid:string,}
 
 export class Mypage_tsx extends React.Component<{}, State> {
     //constructors
@@ -19,9 +20,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
         this.state = {
             uid: "", unsnaps: [],
             icon_url: "",
-            profile: {
-                nickname: "窓の民は名無し", pr: "私はJhon_Doe。窓の蛇遣いです。"
-            },
+            profile: {},
         };
         setInterval(() => {
             if (auth.currentUser) { if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid }); }
@@ -31,40 +30,55 @@ export class Mypage_tsx extends React.Component<{}, State> {
     componentDidUpdate(prevProps: object, prevState: State) {
         if (this.state.uid != prevState.uid) {
             for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() }
-            this.setState({ unsnaps: [this.db_Rwd_getprofile.bind(this)(),] })
+            this.setState({ unsnaps: [this.db_Rwd_getpf.bind(this)(),] })
         }
     }
     componentWillUnmount() { for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() } }
 
     //functions
-    db_Rwd_getprofile() {
-        if (this.state.uid == "") return () => { };
-        return db.doc("mypage/" + this.state.uid).onSnapshot((doc) => {
+    db_Rwd_getpf() {
+        if (Query2Dict()["showuid"] == "") return () => { };
+        return db.doc("mypage/" + Query2Dict()["showuid"]).onSnapshot((doc) => {
             if (doc.exists) {
                 const tmp_recodes = doc.data()
                 const tsuids = Object.keys(tmp_recodes).sort()
                 this.setState({ profile: Object.assign(Object.assign(this.state.profile), tmp_recodes[tsuids[0]]) });
                 this.storage_Rwd_icon.bind(this)();
             }
+            else { this.setState({ profile: {} }); }
         });
     }
     db_rWd_setpf() {
-        if (this.state.uid == "") return;
+        if (Query2Dict()["showuid"] == "") return;
+        if (Query2Dict()["showuid"] != this.state.uid) return;
         if (stopf5.check("1", 500, true) == false) return; // To prevent high freq access
-        db.doc("mypage/" + this.state.uid).set({
-            [Date.now().toString() + "_" + this.state.uid]: this.state.profile
-        });
+        db.doc("mypage/" + Query2Dict()["showuid"]).set({
+            [Date.now().toString() + "_" + Query2Dict()["showuid"]]: this.state.profile
+        }).catch((err) => { fb_errmsg(err) })
+    }
+    db_rWd_makepf() {
+        if (Query2Dict()["showuid"] == "") return;
+        if (Query2Dict()["showuid"] != this.state.uid) return;
+        if (stopf5.check("1", 500, true) == false) return; // To prevent high freq access
+        db.doc("mypage/" + Query2Dict()["showuid"]).set({
+            [Date.now().toString() + "_" + Query2Dict()["showuid"]]:
+                { nickname: "窓の民は名無し", pr: "私はJhon_Doe。窓の蛇遣いです。" }
+        }).catch((err) => { fb_errmsg(err) })
     }
     storage_Rwd_icon() {
-        storage.ref("mypage/" + this.state.uid + "/icon.img").getDownloadURL().then((url) => {
+        if (Query2Dict()["showuid"] == "") return;
+        storage.ref("mypage/" + Query2Dict()["showuid"] + "/icon.img").getDownloadURL().then((url) => {
             if (this.state.icon_url != url) this.setState({ icon_url: url });
         }).catch(() => { if (this.state.icon_url != "") this.setState({ icon_url: "" }); })
     }
     storage_rWd_icon(upload_file: any) {
-        if (this.state.uid == "") return;
+        if (Query2Dict()["showuid"] == "") return;
         if (stopf5.check("2", 500, true) == false) return; // To prevent high freq access
-        storage.ref("mypage/" + this.state.uid + "/icon.img").put(upload_file);
+        storage.ref("mypage/" + Query2Dict()["showuid"] + "/icon.img").put(upload_file);
         setTimeout(() => { this.storage_Rwd_icon() }, 1000)
+    }
+    _gotomypage() {
+        window.location.search = Dict2Query(Object.assign(Query2Dict(), { showuid: this.state.uid }))
     }
 
     //renders
@@ -73,6 +87,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
         return (<div><img src={this.state.icon_url} alt={this.state.icon_url} width="156" height="156" /></div>)
     }
     render_upicon() {
+        if (Query2Dict()["showuid"] != this.state.uid) return;
         return (
             <button type="button" className="btn btn-outline-success btn-sm m-1" onClick={
                 (evt) => { $(evt.currentTarget.children[0]).click() }}>
@@ -83,6 +98,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
         )
     }
     render_changebutton(title: string, state_element: string) {
+        if (Query2Dict()["showuid"] != this.state.uid) return;
         let modal_id = "mygape_modal_" + title; let modal_id_s = "#" + modal_id;
         return (
             <div>
@@ -116,14 +132,15 @@ export class Mypage_tsx extends React.Component<{}, State> {
     }
     render() {
         return (
-            <div>
-                {"showuid" in Query2Dict() == false ?
-                    <button type="button" className="btn btn-success btn-sm m-2" onClick={() => {
-                        window.location.search =
-                            Dict2Query(Object.assign(Query2Dict(), { showuid: this.state.uid }))
-                    }}>Goto Yourpage</button>
-                    :
-                    <div>
+            <div>{"showuid" in Query2Dict() == false ?
+                setTimeout(() => { this._gotomypage() }, 1000)
+                : <div>
+                    {"nickname" in this.state.profile == false ?
+                        <div>
+                            <button type="button" className="btn btn-outline-success btn-bg m-2"
+                                onClick={() => { this.db_rWd_makepf() }}>Create Mypage</button>
+                        </div>
+                        :
                         <div className="m-2" style={{ background: "khaki" }}>
                             <div className="d-flex justify-content-start">
                                 <div className="m-1">{this.render_dlicon()}</div>
@@ -143,12 +160,11 @@ export class Mypage_tsx extends React.Component<{}, State> {
                                     </div>
                                 </div>
                             </div>
-                            <div className="d-flex">
-                            </div>
                         </div>
-                    </div>
-                }
-            </div>
+                    }<button type="button" className="btn btn-outline-success btn-sm m-2"
+                        onClick={() => { this._gotomypage() }}>Mypage</button>
+                </div>
+            }</div>
         );
     };
 };

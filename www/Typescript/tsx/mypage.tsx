@@ -82,6 +82,19 @@ export class Mypage_tsx extends React.Component<{}, State> {
     }
 
     //renders
+    render_createmypage() {
+        if (this.state.uid == "")
+            return (<h4 className="d-flex justify-content-center">This application cant use without login</h4>)
+        if (this.state.uid == Query2Dict()["showuid"])
+            return (<button type="button" className="btn btn-outline-success btn-bg m-2"
+                onClick={() => { this.db_rWd_makepf() }}>Create Mypage</button>)
+        return (
+            <div>
+                <h5>This page is not Exist</h5>
+                <button type="button" className="btn btn-outline-success btn-bg m-2"
+                    onClick={() => { this._gotomypage() }}>Return to Mypage</button>
+            </div>)
+    }
     render_dlicon() {
         if (this.state.icon_url == "") { return (<div>No Image</div>) }
         return (<div><img src={this.state.icon_url} alt={this.state.icon_url} width="156" height="156" /></div>)
@@ -133,14 +146,10 @@ export class Mypage_tsx extends React.Component<{}, State> {
     render() {
         return (
             <div>{"showuid" in Query2Dict() == false ?
-                setTimeout(() => { this._gotomypage() }, 1000)
+                <div>Redirecting...{setTimeout(() => { this._gotomypage() }, 1000)}</div>
                 : <div>
                     {"nickname" in this.state.profile == false ?
-                        <div>
-                            <button type="button" className="btn btn-outline-success btn-bg m-2"
-                                onClick={() => { this.db_rWd_makepf() }}>Create Mypage</button>
-                        </div>
-                        :
+                        <div>{this.render_createmypage()}</div> :
                         <div className="m-2" style={{ background: "khaki" }}>
                             <div className="d-flex justify-content-start">
                                 <div className="m-1">{this.render_dlicon()}</div>
@@ -159,10 +168,10 @@ export class Mypage_tsx extends React.Component<{}, State> {
                                         <div>{this.state.profile["pr"]}</div>
                                     </div>
                                 </div>
-                            </div>
+                            </div><button type="button" className="btn btn-success btn-sm m-2"
+                                onClick={() => { this._gotomypage() }}>Mypage</button>
                         </div>
-                    }<button type="button" className="btn btn-outline-success btn-sm m-2"
-                        onClick={() => { this._gotomypage() }}>Mypage</button>
+                    }
                 </div>
             }</div>
         );

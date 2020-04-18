@@ -55,20 +55,16 @@ export class Index_tsx extends React.Component<{}, State> {
                             <td>MyPage</td>
                         </tr>
                         <tr>
-                            <td><a href="/app_tsx.html?app_tsx=tptef.js">Flaskなチャットルーム</a></td>
-                            <td>毎度実験に使われるSPAです</td>
+                            <td><a href="/app_tsx.html?app_tsx=tptef.js">TPTEF</a></td>
+                            <td>毎度実験に使われるチャットアプリです</td>
                         </tr>
                         <tr>
                             <td><a href="/app_tsx.html?app_tsx=nicoapi.js">NicoAPI</a></td>
-                            <td>NicoAPI</td>
+                            <td>APIクローラです</td>
                         </tr>
                         <tr>
-                            <td><a href="/Flask/janome_banilla/main.py">API</a></td>
-                            <td>APIテスト</td>
-                        </tr>
-                        <tr>
-                            <td><a href="/Flask/nicoapi/main.py">API2</a></td>
-                            <td>APIテスト2</td>
+                            <td><a href="/Flask/nicoapi/main.py">nicoapi_faas</a></td>
+                            <td>NicoAPIのクローラ本体です</td>
                         </tr>
                     </tbody>
                 </table>

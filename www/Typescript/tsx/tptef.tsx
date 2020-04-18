@@ -172,7 +172,9 @@ export class Tptef_tsx extends React.Component<{}, State> {
                                     {/* select file */}
                                     <button type="button" className="btn btn-warning btn-sm mx-1"
                                         onClick={(evt) => { $(evt.currentTarget.children[0]).click(); }}>
-                                        {this.state.tmpfile == null ? "Plz select Attachment" : this.state.tmpfile.name}
+                                        <i className="fas fa-paperclip">
+                                            {this.state.tmpfile == null ? "Plz select Attachment" : this.state.tmpfile.name}
+                                        </i>
                                         <input type="file" className="d-none" value=""
                                             onChange={(evt) => { this.setState({ tmpfile: evt.target.files[0] }) }} />
                                     </button>

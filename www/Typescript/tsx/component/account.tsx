@@ -115,8 +115,8 @@ export class Account_tsx extends React.Component<{}, State> {
                                 <h5>ようこそ {auth.currentUser.displayName} さん</h5> : <h5>ようこそ {auth.currentUser.email} さん</h5>}
                         </div>
                         <div className="form-inline">
-                            <button type="button" className="btn btn-warning btn-sm mx-1" data-toggle="modal" data-target="#account_modal_config">config</button>
                             <button type="button" className="btn btn-secondary btn-sm mx-1" onClick={() => { auth.signOut(); }}>logout</button>
+                            <i className="fas fa-cog fa-lg mx-1 faa-wrench animated-hover" data-toggle="modal" data-target="#account_modal_config" />
                             <div className="modal fade" id="account_modal_config" role="dialog" aria-hidden="true">
                                 <div className="modal-dialog" role="document">
                                     <div className="modal-content">

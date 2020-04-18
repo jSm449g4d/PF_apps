@@ -124,12 +124,13 @@ export class Tptef_tsx extends React.Component<{}, State> {
                     <button key={1} className="btn btn-primary btn-sm m-1"
                         onClick={(evt: any) => { this.storage_Rwd_attachment(evt.target.name) }}
                         name={doc_redoces[tsuids[i]]["attachment_dir"]}>
-                        {doc_redoces[tsuids[i]]["attachment_dir"].split("/").pop().slice(0, 15)}</button>)
+                        <i className="fas fa-paperclip mr-1"></i>
+                        {doc_redoces[tsuids[i]]["attachment_dir"].split("/").pop().slice(0, 10)}</button>)
                 //delete button
                 if (tsuids[i].split("_")[1] == this.state.uid) tmp_datum.push(
                     <button key={2} className="btn btn-outline-danger btn-sm rounded-pill m-1"
                         onClick={(evt: any) => { this.db_RwD_delremark(evt.target.name) }} name={tsuids[i]}>
-                        <i className="far fa-trash-alt"> Del</i></button>)
+                        <i className="far fa-trash-alt mr-1"></i>Del</button>)
             }
             tmp_data.push(<td key={4} style={{ textAlign: "center" }}>{tmp_datum}</td>)
             tmp_recodes.push(<tr key={i}>{tmp_data}</tr>)
@@ -141,7 +142,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                         <th style={{ width: "10%" }}>Handlename</th>
                         <th>Content</th>
                         <th style={{ width: "10%" }} >Timestamp/uid</th>
-                        <th style={{ width: "10%" }}>Ops</th>
+                        <th style={{ width: "15%" }}>Ops</th>
                     </tr>
                 </thead>
                 <tbody>{tmp_recodes}</tbody>
@@ -158,7 +159,8 @@ export class Tptef_tsx extends React.Component<{}, State> {
                             onChange={(evt) => { this.setState({ tmproom: evt.target.value }) }}
                         />
                         <button className="btn btn-success btn-sm"
-                            onClick={(evt) => { this.setState({ room: this.state.tmproom }) }}>Room Change</button>
+                            onClick={(evt) => { this.setState({ room: this.state.tmproom }) }}>
+                            <i className="fas fa-search mr-1"></i>Room</button>
                     </div>
                 </div>
                 {this.render_thread_table()}
@@ -166,8 +168,8 @@ export class Tptef_tsx extends React.Component<{}, State> {
                     <h5 className="d-flex justify-content-center">Plz login</h5> :
                     <div className="mt-2 p-2" style={{ color: "#CCFFFF", border: "3px double silver", background: "#001111" }}>
                         <div className="d-flex justify-content-between">
-                            <h4>{this.state.profile.nickname}</h4>
-                            <h5>{this.state.jpclock_str}</h5>
+                            <h4><i className="far fa-user mr-1"></i>{this.state.profile.nickname}</h4>
+                            <h5><i className="far fa-clock mr-1"></i>{this.state.jpclock_str}</h5>
                             <h5>入力フォーム</h5>
                         </div>
                         <textarea className="form-control my-1" id="tptef_content" rows={6} value={this.state.tmpcontent}
@@ -180,14 +182,13 @@ export class Tptef_tsx extends React.Component<{}, State> {
                                         onClick={(evt) => { $(evt.currentTarget.children[0]).click(); }}>
                                         <input type="file" className="d-none" value=""
                                             onChange={(evt) => { this.setState({ tmpfile: evt.target.files[0] }) }} />
-                                        <i className="fas fa-paperclip">
-                                            {this.state.tmpfile == null ? "Plz select Attachment" : this.state.tmpfile.name}
-                                        </i>
+                                        <i className="fas fa-paperclip mr-1"></i>
+                                        {this.state.tmpfile == null ? "Plz select Attachment" : this.state.tmpfile.name}
                                     </button>
                                     <button className="btn btn-primary btn-sm mx-1" onClick={() => {
                                         this.db_rWd_addremark();
                                         this.setState({ tmpcontent: "", tmpfile: null });
-                                    }}><i className="fas fa-fighter-jet"> Remark</i></button>
+                                    }}><i className="far fa-comment-dots mr-1"></i>Remark</button>
                                 </div>
                             </div>
                         </div>

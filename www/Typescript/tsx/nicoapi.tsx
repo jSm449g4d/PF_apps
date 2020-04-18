@@ -17,7 +17,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            uid: "", unsnaps: [], API_endpoint: "https://", service_name: "← Plz \"Select API_endpoint\"",
+            uid: "", unsnaps: [], API_endpoint: "https://", service_name: "← Click \"API_endpoint\"",
             fields: {}, db_nicoapi: {}
         };
         setInterval(() => {
@@ -220,7 +220,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                             }}>+Add</button>
                         </td>
                         <td colSpan={2}><button className="btn btn-success" onClick={() => { this._genorders(); }}>
-                        <i className ="fas fa-rocket"> Launch</i></button></td>
+                            <i className="fas fa-rocket"> Launch</i></button></td>
                     </tr>
                 </tbody>
             </table>)
@@ -287,8 +287,11 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                             {/* collapse navigation */}
                             <nav className="navbar" style={{ backgroundColor: "paleturquoise" }}>
                                 <div>
-                                    <button className="btn btn-success rounded-pill mx-1" data-toggle="collapse" data-target="#nicoapi_navber_help">HELP</button>
-                                    <button className="btn btn-primary mx-1" data-toggle="collapse" data-target="#nicoapi_navber_APIendpoint_selector">Select API_endpoint</button>
+                                    <i className="fas fa-question-circle fa-2x faa-wrench animated-hover mx-1" style={{ color: "darkorange" }}
+                                        data-toggle="collapse" data-target="#nicoapi_navber_help"></i>
+                                    <button className="btn btn-primary mx-1"
+                                        data-toggle="collapse" data-target="#nicoapi_navber_APIendpoint_selector">
+                                        <i className="far fa-caret-square-down mr-1"></i>API_endpoint</button>
                                 </div>
                                 {this.render_APIendpoint_textform()}
                             </nav>
@@ -303,7 +306,8 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                         <div style={{ backgroundColor: "lightyellow" }}>
                             <nav className="navbar" style={{ backgroundColor: "wheat" }}>
                                 <div className="form-inline">
-                                    <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#nicoapi_navber_orders">Orders</button>
+                                    <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#nicoapi_navber_orders">
+                                        <i className="far fa-file-alt mr-1"></i>Orders</button>
                                     {this.render_orders_text()}
                                 </div>
                             </nav>

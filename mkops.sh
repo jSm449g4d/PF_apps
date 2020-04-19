@@ -9,8 +9,7 @@ echo "start"
 sudo apt install p7zip-full
 sudo rm -r www.zip
 7z a www.zip www/html/
+7z a www.zip www/keys/
 7z a www.zip www/Flask/
-7z a www.zip www/templates/
-7z a www.zip www/FirebaseAdminKey.json
 7z a www.zip www/wsgi_h.py
 7z a www.zip www/wsgi.py

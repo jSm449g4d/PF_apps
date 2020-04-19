@@ -63,7 +63,7 @@ export class Account_tsx extends React.Component<{}, State> {
     auth_glogin() { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch((err) => { fb_errmsg(err) }) }
 
     //renders
-    render_account_modal(title: string, func: any) {
+    render_sign_modal(title: string, func: any) {
         const modal_id: string = title + "_modal";
         func = func.bind(this)
         return (
@@ -114,8 +114,8 @@ export class Account_tsx extends React.Component<{}, State> {
                             <div className="form-inline">
                                 <button className="btn btn-success mx-1 btn-sm" type="button" onClick={() => { this.auth_glogin() }}>
                                     <i className="fab fa-google mr-1"></i>Googleでログイン</button>
-                                {this.render_account_modal("Sign_in", this.auth_signin)}
-                                {this.render_account_modal("Sign_up", this.auth_signup)}
+                                {this.render_sign_modal("Sign_in", this.auth_signin)}
+                                {this.render_sign_modal("Sign_up", this.auth_signup)}
                                 <button className="btn btn-warning mx-1 btn-sm" type="button" onClick={() => { this.auth_easyin() }}>
                                     <i className="fas fa-sign-in-alt mr-1"></i>Easy_login</button>
                                 <button className="btn btn-warning mx-1 btn-sm" type="button" onClick={() => { this.auth_easyin2() }}>

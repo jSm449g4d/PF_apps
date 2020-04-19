@@ -100,7 +100,7 @@ def show(request):
     if thread_d.is_alive() == False:
         thread_d = threading.Thread(name='nicoapi_d', target=deamon)
         thread_d.start()
-        status_dict["Thread"] = "Start"
+        status_dict["thread"] = "start"
     if request.method == "POST":
         return json.dumps(status_dict, ensure_ascii=False), 200
 

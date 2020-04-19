@@ -7,7 +7,8 @@ const storage = fb.storage();
 const db = fb.firestore()
 
 interface State {
-    uid: string; unsnaps: any; API_endpoint: string; service_name: string;
+    uid: string; unsnaps: any; APIendpoint: string; service_name: string;
+    crawlerresp_dict: { thread: string, [key: string]: string };
     fields: { [timestamp: string]: { field: string, value: string, [keys: string]: string } };
     db_nicoapi: { [tsuid: string]: { request_urls: any, status: string, "User-Agent": string, [keys: string]: string } };
 }
@@ -17,7 +18,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            uid: "", unsnaps: [], API_endpoint: "https://", service_name: "← Click \"API_endpoint\"",
+            uid: "", unsnaps: [], APIendpoint: "https://", service_name: "← Click \"APIendpoint\"", crawlerresp_dict: { thread: "stop" },
             fields: {}, db_nicoapi: {}
         };
         setInterval(() => {
@@ -41,8 +42,9 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             else { this.setState({ db_nicoapi: doc.data() }) }
         });
     }
-    db_rWd_genorders(urls_array: string[]) {
+    db_rWd_genorders(urls_array: string[], urlslimit: number = 300) {
         if (this.state.uid == "") return;
+        if (urls_array.length > urlslimit) { alert("error: Too many → " + String(urls_array.length) + "[req]"); return; }
         if (confirm(String(urls_array.length) + "[req]\nDo you really want to place this ORDER?") == false) return;
         if (stopf5.check("1", 6000, true) == false) return; // To prevent high freq access
         db.doc("nicoapi/" + this.state.uid).set(
@@ -55,7 +57,12 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                 setTimeout(() => { // access to backend
                     const xhr: XMLHttpRequest = new XMLHttpRequest();
                     xhr.open("POST", "/Flask/nicoapi/main.py", true);
-                    xhr.onload = () => { if (xhr.readyState === 4 && xhr.status === 200) console.log(xhr.responseText); };
+                    xhr.onload = () => {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            console.log(xhr.responseText);
+                            this.setState({ crawlerresp_dict: JSON.parse(xhr.responseText) })
+                        }
+                    };
                     xhr.send(null);
                 }, 1000)
             }).catch((err) => fb_errmsg(err))
@@ -77,7 +84,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         this.db_rwD_delorders(tsuid)
     }
     _genorders() {
-        const request_urls = [this.state.API_endpoint + "?"];
+        const request_urls = [this.state.APIendpoint.replace("?", "") + "?"];
         const tmp_fields = Object.assign(this.state.fields)
         const timestamp = Object.keys(this.state.fields).sort();
         for (let i = 0; i < timestamp.length; i++) {
@@ -113,11 +120,11 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     render_APIendpoint_record(service_name: string, API_reference: string = "") {
         return (<tr>
             <td>
-                <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#nicoapi_navber_APIendpoint_selector"
+                <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#APIendpoint_navber"
                     onClick={() => {
                         if (service_name == "ニコニコ動画") {
                             this.setState({
-                                API_endpoint: "https://api.search.nicovideo.jp/api/v2/video/contents/search", service_name: service_name, fields:
+                                APIendpoint: "https://api.search.nicovideo.jp/api/v2/video/contents/search", service_name: service_name, fields:
                                 {
                                     [String(Date.now() - 5)]: { field: "q", value: "ゆっくり解説" },
                                     [String(Date.now() - 4)]: { field: "targets", value: "title,description,tags" },
@@ -130,7 +137,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                         }
                         else if (service_name == "ニコニコ生放送") {
                             this.setState({
-                                API_endpoint: "https://api.search.nicovideo.jp/api/v2/live/contents/search", service_name: service_name, fields:
+                                APIendpoint: "https://api.search.nicovideo.jp/api/v2/live/contents/search", service_name: service_name, fields:
                                 {
                                     [String(Date.now() - 5)]: { field: "q", value: "ゆっくり解説" },
                                     [String(Date.now() - 4)]: { field: "targets", value: "title,description,tags" },
@@ -143,14 +150,14 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                         }
                         else if (service_name == "なろう小説") {
                             this.setState({
-                                API_endpoint: "https://api.syosetu.com/novelapi/api/", service_name: service_name, fields:
+                                APIendpoint: "https://api.syosetu.com/novelapi/api/", service_name: service_name, fields:
                                 {
                                     [String(Date.now() - 1)]: { field: "lim", value: "499" },
                                     [String(Date.now() - 0)]: { field: "st", value: "$for(1;2000;499)" },
                                 }
                             })
                         }
-                        else { this.setState({ API_endpoint: "https://", service_name: service_name, fields: {} }) }
+                        else { this.setState({ APIendpoint: "https://", service_name: service_name, fields: {} }) }
                     }}>{service_name}</button></td>
             <td>{API_reference == "" ? <div>None</div> : <a href={API_reference}>{API_reference}</a>}</td>
         </tr>)
@@ -177,8 +184,8 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     render_APIendpoint_textform() {
         return (
             <div className="form-inline"><b>{this.state.service_name}</b>
-                <input type="text" className="form-control form-control-sm mx-1" size={60} value={this.state.API_endpoint}
-                    onChange={(evt: any) => { this.setState({ API_endpoint: evt.target.value, service_name: "カスタム" }); }} />
+                <input type="text" className="form-control form-control-sm mx-1" size={60} value={this.state.APIendpoint}
+                    onChange={(evt: any) => { this.setState({ APIendpoint: evt.target.value, service_name: "カスタム" }); }} />
             </div>)
     }
     render_filelds_table() {
@@ -230,7 +237,11 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                             }}>+Add</button>
                         </td>
                         <td colSpan={2}><button className="btn btn-success" onClick={() => { this._genorders(); }}>
-                            <i className="fas fa-rocket mr-1"></i>Launch</button></td>
+                            <i className="fas fa-rocket mr-1"></i>Launch</button>
+                            {this.state.crawlerresp_dict["thread"] == "stop" ?
+                                <i className="fab fa-ubuntu fa-2x mx-2" style={{ color: "darkorange" }}></i> :
+                                <i className="fab fa-ubuntu fa-2x fa-spin mx-2" style={{ color: "darkorange" }}></i>}
+                        </td>
                     </tr>
                 </tbody>
             </table>)
@@ -245,10 +256,12 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         const tmp_records = []; let doc_records = Object.assign(this.state.db_nicoapi);
         for (var i = 0; i < tsuids.length; i++) {
             const tmp_data = [];
-            tmp_data.push(<td key={1} style={{ textAlign: "center" }}>
-                {tsuids[i].split("_")[0]}<br />Status: {doc_records[tsuids[i]]["status"]}<br />UA: {doc_records[tsuids[i]]["User-Agent"]}</td>)
-            tmp_data.push(<td key={2} style={{ fontSize: "12px" }}><details><summary> {doc_records[tsuids[i]]["request_urls"][0]}</summary>
-                {doc_records[tsuids[i]]["request_urls"].slice(1).join('\n')}</details></td>)
+            tmp_data.push(<td key={1}>
+                {tsuids[i].split("_")[0]}<br />Status: {doc_records[tsuids[i]]["status"]}<br />
+                UA: {doc_records[tsuids[i]]["User-Agent"]}</td>)
+            tmp_data.push(<td key={2} style={{ fontSize: "12px", textAlign: "left" }}>
+                <details><summary> {doc_records[tsuids[i]]["request_urls"][0]}</summary>
+                    {doc_records[tsuids[i]]["request_urls"].slice(1).join('\n')}</details></td>)
             const tmp_datum = []; {// col: Ops
                 //download button
                 if (doc_records[tsuids[i]]["status"] == "processed") tmp_datum.push(
@@ -260,14 +273,14 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                     <button key={2} className="btn btn-outline-danger btn-sm m-1"
                         onClick={(evt: any) => { this.storage_rwD_delorders(evt.target.name) }}
                         name={tsuids[i]}>Delete</button>)
-            } tmp_data.push(<td key={3} style={{ textAlign: "center" }}>{tmp_datum}</td>)
+            } tmp_data.push(<td key={3}>{tmp_datum}</td>)
             tmp_records.push(<tr key={i}>{tmp_data}</tr>)
         }
-        if (tsuids.length == 0) { tmp_records.push(<tr><td colSpan={3} style={{ textAlign: "center" }}>Not Exist</td></tr>); }
+        if (tsuids.length == 0) { tmp_records.push(<tr><td colSpan={3}>Not Exist</td></tr>); }
         return (
-            <table className="table table-sm table-bordered">
+            <table className="table table-sm table-bordered" style={{ textAlign: "center" }}>
                 <thead>
-                    <tr style={{ textAlign: "center" }}>
+                    <tr>
                         <th style={{ width: "10%" }} >Timestamp/Info</th>
                         <th>Request URLs</th>
                         <th style={{ width: "10%" }} >Ops</th>
@@ -293,14 +306,13 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                     <i className="fas fa-question-circle fa-2x faa-wrench animated-hover mx-1" style={{ color: "darkorange" }}
                                         data-toggle="collapse" data-target="#help_navber"></i>
                                     <button className="btn btn-primary mx-1" data-toggle="collapse" data-target="#APIendpoint_navber">
-                                        <i className="far fa-caret-square-down mr-1"></i>API_endpoint</button>
+                                        <i className="far fa-caret-square-down mr-1"></i>APIendpoint</button>
                                 </div>
                                 {this.render_APIendpoint_textform()}
                             </nav>
                             <div className="collapse" id="APIendpoint_navber">{this.render_APIendpoint_table()}</div>
                         </div>
                         {this.render_filelds_table()}
-
                         {/* OUTPUT console */}
                         <div style={{ backgroundColor: "lightyellow" }}>
                             <nav className="navbar" style={{ backgroundColor: "wheat" }}>

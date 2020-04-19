@@ -96,7 +96,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
             </div>)
     }
     render_dlicon() {
-        if (this.state.icon_url == "") { return (<i className="fab fa-themeisle fa-2x"><br />No Image</i>) }
+        if (this.state.icon_url == "") { return (<i className="fab fa-themeisle fa-2x"><br />No Icon</i>) }
         return (<div><img src={this.state.icon_url} alt={this.state.icon_url} width="156" height="156" /></div>)
     }
     render_upicon() {
@@ -106,7 +106,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
                 (evt) => { $(evt.currentTarget.children[0]).click() }}>
                 <input type="file" className="d-none" onChange={
                     (evt) => { this.storage_rWd_icon(evt.target.files[0]) }} accept="image/jpeg,image/png" />
-                <i className="fas fa-upload"> Icon</i>
+                <i className="fas fa-upload mr-1"></i>Icon
             </button>
         )
     }
@@ -155,7 +155,10 @@ export class Mypage_tsx extends React.Component<{}, State> {
                                 <div className="m-1">{this.render_dlicon()}</div>
                                 <div className="m-1 p-1 flex-grow-1" style={{ backgroundColor: "rgba(100,100,100,0.1)" }}>
                                     <div className="d-flex justify-content-start">
-                                        <h3 className="flex-grow-1">{this.state.profile["nickname"]}</h3>
+                                        <h3 className="flex-grow-1">
+                                            <i className="far fa-user mr-1"></i>
+                                            {this.state.profile["nickname"]}
+                                        </h3>
                                         <div className="form-inline">
                                             {this.render_changebutton("Nickname", "nickname")}{this.render_upicon()}
                                         </div>

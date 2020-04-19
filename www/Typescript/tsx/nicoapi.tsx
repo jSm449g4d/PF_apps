@@ -220,7 +220,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                             }}>+Add</button>
                         </td>
                         <td colSpan={2}><button className="btn btn-success" onClick={() => { this._genorders(); }}>
-                            <i className="fas fa-rocket"> Launch</i></button></td>
+                            <i className="fas fa-rocket mr-1"></i>Launch</button></td>
                     </tr>
                 </tbody>
             </table>)

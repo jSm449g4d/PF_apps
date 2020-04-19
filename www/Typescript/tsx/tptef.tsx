@@ -197,7 +197,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
             </div>
         );
     };
-};//<input type="file" onChange={(evt) => { this.setState({ tmpfile: evt.target.files[0] }) }} />
+};
 
 document.body.insertAdjacentHTML('afterbegin', '<div id="app_tsx">app_tsx loading...<\/div>');
 document.body.insertAdjacentHTML('afterbegin', '<div id="account_tsx">account_tsx loading...<\/div>');

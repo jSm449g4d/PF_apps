@@ -68,24 +68,30 @@ export class Account_tsx extends React.Component<{}, State> {
         func = func.bind(this)
         return (
             <div>
-                <button type="button" className="btn btn-primary btn-sm mx-1" data-toggle="modal" data-target={"#" + modal_id}>{title}</button>
+                <button type="button" className="btn btn-primary btn-sm mx-1" data-toggle="modal" data-target={"#" + modal_id}>
+                    {title}
+                </button>
                 <div className="modal fade" id={modal_id} role="dialog" aria-hidden="true">
                     <div className="modal-dialog" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title">{title}</h5>
+                                <h5 className="modal-title">
+                                    <i className="fas fa-sign-in-alt mr-1"></i>{title}
+                                </h5>
                             </div>
                             <div className="modal-body">
-                                <div><input className="form-control m-1" type="text" size={40} name="mail_addr" placeholder="mail_address"
-                                    onChange={(evt: any) => { this.setState({ tmpaddr: evt.target.value }); }} /></div>
-                                <div><input className="form-control m-1" type="text" size={40} name="mail_pass" placeholder="set_password"
-                                    onChange={(evt: any) => { this.setState({ tmppass: evt.target.value }); }} /></div>
+                                <input className="form-control m-1" type="text" style={{ width: "100%" }} name="mail_addr" placeholder="mail_address"
+                                    onChange={(evt: any) => { this.setState({ tmpaddr: evt.target.value }); }} />
+                                <input className="form-control m-1" type="text" style={{ width: "100%" }} name="mail_pass" placeholder="set_password"
+                                    onChange={(evt: any) => { this.setState({ tmppass: evt.target.value }); }} />
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">
-                                    <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }}></i>Close</button>
+                                    <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }}></i>Close
+                                </button>
                                 <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={func}>
-                                    <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>Submit</button>
+                                    <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>Submit
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -95,12 +101,51 @@ export class Account_tsx extends React.Component<{}, State> {
     }
     render_displayaccount() {
         return (
-            <div className="form-inline">{auth.currentUser.photoURL ?
-                <img className="mr-2" src={auth.currentUser.photoURL} alt="user.photoURL" width="48" height="48" /> :
-                <i className="fas fa-signature fa-lg mr-2"></i>}
+            <div className="form-inline">
+                {auth.currentUser.photoURL ?
+                    <img className="mr-2" src={auth.currentUser.photoURL} alt="user.photoURL" width="48" height="48" />
+                    :
+                    <i className="fas fa-signature fa-lg mr-2"></i>
+                }
                 {auth.currentUser.displayName ?
-                    <h5>ようこそ <i className="fas fa-envelope mr-1"></i>{auth.currentUser.displayName} さん</h5> :
-                    <h5>ようこそ <i className="far fa-envelope mr-1"></i>{auth.currentUser.email} さん</h5>}
+                    <h5>ようこそ <i className="fas fa-envelope mr-1"></i>{auth.currentUser.displayName} さん</h5>
+                    :
+                    <h5>ようこそ <i className="far fa-envelope mr-1"></i>{auth.currentUser.email} さん</h5>
+                }
+            </div>
+        )
+    }
+    render_config() {
+        return (
+            <div className="m-2">
+                <i className="fas fa-cog fa-lg faa-wrench animated-hover" data-toggle="modal" data-target="#config_modal"></i>
+                <div className="modal fade" id="config_modal" role="dialog" aria-hidden="true">
+                    <div className="modal-dialog" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title"><i className="fas fa-cog mr-1"></i>Config</h5>
+                            </div>
+                            <div className="modal-body form-inline">
+                                <input className="form-control" type="text" name="mail_addr" size={40} placeholder="mail address" />
+                                <button className="btn btn-sm btn-warning m-2" type="button" data-dismiss="modal"
+                                    onClick={() => { this.auth_resetpass(); }}>
+                                    <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>RESRT
+                                </button>
+                            </div>
+                            <div className="modal-footer d-flex justify-content-start">
+                                <div className="flex-grow-1">
+                                    <button className="btn btn-secondary" type="button" data-dismiss="modal">
+                                        <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }}></i>Close
+                                    </button>
+                                </div>
+                                <button type="button" className="btn btn-sm btn-danger" data-dismiss="modal"
+                                    onClick={() => { this.auth_deluser(); }}>
+                                    <i className="fas fa-user-slash mr-1" style={{ pointerEvents: "none" }}></i>USER_DELETE
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }
@@ -113,42 +158,27 @@ export class Account_tsx extends React.Component<{}, State> {
                         <div className="ml-auto">
                             <div className="form-inline">
                                 <button className="btn btn-success mx-1 btn-sm" type="button" onClick={() => { this.auth_glogin() }}>
-                                    <i className="fab fa-google mr-1" style={{ pointerEvents: "none" }}></i>Googleでログイン</button>
+                                    <i className="fab fa-google mr-1" style={{ pointerEvents: "none" }}></i>Googleでログイン
+                                </button>
                                 {this.render_sign_modal("Sign_in", this.auth_signin)}
                                 {this.render_sign_modal("Sign_up", this.auth_signup)}
                                 <button className="btn btn-warning mx-1 btn-sm" type="button" onClick={() => { this.auth_easyin() }}>
-                                    <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>Easy_login</button>
+                                    <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>Easy_login
+                                </button>
                                 <button className="btn btn-warning mx-1 btn-sm" type="button" onClick={() => { this.auth_easyin2() }}>
-                                    <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>別垢版</button>
+                                    <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>別垢版
+                                </button>
                             </div>
                         </div>
-                    </div> :
+                    </div>
+                    :
                     <div className="d-flex justify-content-between">
                         {this.render_displayaccount()}
                         <div className="form-inline">
                             <button className="btn btn-secondary btn-sm mx-1" type="button" onClick={() => { auth.signOut(); }}>
-                                <i className="fas fa-sign-out-alt mr-1" style={{ pointerEvents: "none" }}></i>logout</button>
-                            <i className="fas fa-cog fa-lg faa-wrench animated-hover mx-1" data-toggle="modal" data-target="#config_modal" />
-                            <div className="modal fade" id="config_modal" role="dialog" aria-hidden="true">
-                                <div className="modal-dialog" role="document">
-                                    <div className="modal-content">
-                                        <div className="modal-header">
-                                            <h5 className="modal-title"><i className="fas fa-cog mr-1"></i>Config</h5>
-                                        </div>
-                                        <div className="modal-body form-inline">
-                                            <input className="form-control" type="text" name="mail_addr" size={40} placeholder="mail address" />
-                                            <button className="btn btn-sm btn-warning m-2" type="button" data-dismiss="modal" onClick={() => { this.auth_resetpass(); }}>
-                                                <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>RESRT</button>
-                                        </div>
-                                        <div className="modal-footer d-flex justify-content-start">
-                                            <div className="flex-grow-1"><button className="btn btn-secondary" type="button" data-dismiss="modal">
-                                                <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }}></i>Close</button></div>
-                                            <button type="button" className="btn btn-sm btn-danger" data-dismiss="modal" onClick={() => { this.auth_deluser(); }}>
-                                                <i className="fas fa-user-slash mr-1" style={{ pointerEvents: "none" }}></i>USER_DELETE</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                <i className="fas fa-sign-out-alt mr-1" style={{ pointerEvents: "none" }}></i>logout
+                            </button>
+                            {this.render_config()}
                         </div>
                     </div>
                 }

@@ -110,8 +110,12 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     render_helpapp() {
         return (
             <div className="p-1 border">
-                <h4 className="d-flex justify-content-center" style={{ fontStyle: "Sylfaen" }}>Command</h4>
-                <div className="d-flex justify-content-center">一度に複数のリクエストを行う為の、特殊なvalueの入力方法です。</div>
+                <h4 className="d-flex justify-content-center" style={{ fontStyle: "Sylfaen" }}>
+                    Command
+                </h4>
+                <div className="d-flex justify-content-center">
+                    一度に複数のリクエストを行う為の、特殊なvalueの入力方法です。
+                </div>
                 <h5>$for(A;B;C)</h5>
                 <li style={{ listStyle: "none" }}>A:開始の数値 B:終了条件の数値(上限) C:インクリメント</li>
                 <li style={{ listStyle: "none" }}>一度のリクエストで得られるレコード数(limit)が限られる際等に、繰り返し要求を出すときに使用します。</li>
@@ -126,8 +130,12 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     render_helpcmd() {
         return (
             <div className="p-1 border" style={{ backgroundColor: "wheat" }}>
-                <h4 className="d-flex justify-content-center" style={{ fontStyle: "Sylfaen" }}>Command</h4>
-                <div className="d-flex justify-content-center">一度に複数のリクエストを行う為の、特殊なvalueの入力方法です。</div>
+                <h4 className="d-flex justify-content-center" style={{ fontStyle: "Sylfaen" }}>
+                    Command
+                </h4>
+                <div className="d-flex justify-content-center">
+                    一度に複数のリクエストを行う為の、特殊なvalueの入力方法です。
+                </div>
                 <h5>$for(A;B;C)</h5>
                 <li style={{ listStyle: "none" }}>A:開始の数値 B:終了条件の数値(上限) C:インクリメント</li>
                 <li style={{ listStyle: "none" }}>一度のリクエストで得られるレコード数(limit)が限られる際等に、繰り返し要求を出すときに使用します。</li>
@@ -137,53 +145,63 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                     </button>
                 </div>
             </div>
-
         )
     }
     render_APIendpoint_record(service_name: string, API_reference: string = "") {
-        return (<tr>
-            <td>
-                <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#APIendpoint_collapse"
-                    onClick={() => {
-                        if (service_name == "ニコニコ動画") {
-                            this.setState({
-                                APIendpoint: "https://api.search.nicovideo.jp/api/v2/video/contents/search", service_name: service_name, fields:
-                                {
-                                    [String(Date.now() - 5)]: { field: "q", value: "ゆっくり解説" },
-                                    [String(Date.now() - 4)]: { field: "targets", value: "title,description,tags" },
-                                    [String(Date.now() - 3)]: { field: "fields", value: "contentId,title,description,tags" },
-                                    [String(Date.now() - 2)]: { field: "_sort", value: "viewCounter" },
-                                    [String(Date.now() - 1)]: { field: "_limit", value: "100" },
-                                    [String(Date.now() - 0)]: { field: "_offset", value: "$for(1;1601;100)" },
-                                }
-                            })
-                        }
-                        else if (service_name == "ニコニコ生放送") {
-                            this.setState({
-                                APIendpoint: "https://api.search.nicovideo.jp/api/v2/live/contents/search", service_name: service_name, fields:
-                                {
-                                    [String(Date.now() - 5)]: { field: "q", value: "ゆっくり解説" },
-                                    [String(Date.now() - 4)]: { field: "targets", value: "title,description,tags" },
-                                    [String(Date.now() - 3)]: { field: "fields", value: "contentId,title,description,tags" },
-                                    [String(Date.now() - 2)]: { field: "_sort", value: "viewCounter" },
-                                    [String(Date.now() - 1)]: { field: "_limit", value: "100" },
-                                    [String(Date.now() - 0)]: { field: "_offset", value: "$for(1;1601;100)" },
-                                }
-                            })
-                        }
-                        else if (service_name == "なろう小説") {
-                            this.setState({
-                                APIendpoint: "https://api.syosetu.com/novelapi/api/", service_name: service_name, fields:
-                                {
-                                    [String(Date.now() - 1)]: { field: "lim", value: "499" },
-                                    [String(Date.now() - 0)]: { field: "st", value: "$for(1;2000;499)" },
-                                }
-                            })
-                        }
-                        else { this.setState({ APIendpoint: "https://", service_name: service_name, fields: {} }) }
-                    }}>{service_name}</button></td>
-            <td>{API_reference == "" ? <div>None</div> : <a href={API_reference}>{API_reference}</a>}</td>
-        </tr>)
+        return (
+            <tr>
+                <td>
+                    <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#APIendpoint_collapse"
+                        onClick={() => {
+                            if (service_name == "ニコニコ動画") {
+                                this.setState({
+                                    APIendpoint: "https://api.search.nicovideo.jp/api/v2/video/contents/search", service_name: service_name, fields:
+                                    {
+                                        [String(Date.now() - 5)]: { field: "q", value: "ゆっくり解説" },
+                                        [String(Date.now() - 4)]: { field: "targets", value: "title,description,tags" },
+                                        [String(Date.now() - 3)]: { field: "fields", value: "contentId,title,description,tags" },
+                                        [String(Date.now() - 2)]: { field: "_sort", value: "viewCounter" },
+                                        [String(Date.now() - 1)]: { field: "_limit", value: "100" },
+                                        [String(Date.now() - 0)]: { field: "_offset", value: "$for(1;1601;100)" },
+                                    }
+                                })
+                            }
+                            else if (service_name == "ニコニコ生放送") {
+                                this.setState({
+                                    APIendpoint: "https://api.search.nicovideo.jp/api/v2/live/contents/search", service_name: service_name, fields:
+                                    {
+                                        [String(Date.now() - 5)]: { field: "q", value: "ゆっくり解説" },
+                                        [String(Date.now() - 4)]: { field: "targets", value: "title,description,tags" },
+                                        [String(Date.now() - 3)]: { field: "fields", value: "contentId,title,description,tags" },
+                                        [String(Date.now() - 2)]: { field: "_sort", value: "viewCounter" },
+                                        [String(Date.now() - 1)]: { field: "_limit", value: "100" },
+                                        [String(Date.now() - 0)]: { field: "_offset", value: "$for(1;1601;100)" },
+                                    }
+                                })
+                            }
+                            else if (service_name == "なろう小説") {
+                                this.setState({
+                                    APIendpoint: "https://api.syosetu.com/novelapi/api/", service_name: service_name, fields:
+                                    {
+                                        [String(Date.now() - 1)]: { field: "lim", value: "499" },
+                                        [String(Date.now() - 0)]: { field: "st", value: "$for(1;2000;499)" },
+                                    }
+                                })
+                            }
+                            else { this.setState({ APIendpoint: "https://", service_name: service_name, fields: {} }) }
+                        }}>
+                        {service_name}
+                    </button>
+                </td>
+                <td>
+                    {API_reference == "" ?
+                        <div>None</div>
+                        :
+                        <a href={API_reference}>{API_reference}</a>
+                    }
+                </td>
+            </tr>
+        )
     }
     render_APIendpoint_table() {
         return (
@@ -202,11 +220,11 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                 </tbody>
             </table>
         )
-
     }
     render_APIendpoint_formtext() {
         return (
-            <div className="form-inline"><b>{this.state.service_name}</b>
+            <div className="form-inline">
+                <b>{this.state.service_name}</b>
                 <input type="text" className="form-control form-control-sm mx-1" size={60} value={this.state.APIendpoint}
                     onChange={(evt: any) => { this.setState({ APIendpoint: evt.target.value, service_name: "カスタム" }); }} />
             </div>)
@@ -247,8 +265,9 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                         <th style={{ width: "10%" }}>Field</th>
                         <th>Value</th>
                         <th style={{ width: "10%" }}>
-                            <i className="fas fa-question-circle faa-wrench animated-hover mx-1" style={{ color: "darkorange" }}
-                                data-toggle="collapse" data-target="#helpcmd_collapse"></i>Command
+                            <i className="fas fa-question-circle fa-lg faa-wrench animated-hover mx-1" style={{ color: "darkorange" }}
+                                data-toggle="collapse" data-target="#helpcmd_collapse"></i>
+                            Command
                         </th>
                         <th style={{ width: "8%" }}>Ops</th>
                     </tr>
@@ -256,19 +275,26 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                 <tbody>
                     {tmp_record}
                     <tr><td /><td style={{ color: "rgba(255,255,255,0)" }}>===みつけたね？===</td></tr>
-                    <tr><td />
-                        <td><button className="btn btn-outline-primary rounded-pill" style={{ width: "50%" }}
-                            onClick={() => {
-                                this.setState({ fields: Object.assign(this.state.fields, { [Date.now().toString()]: { field: "", value: "" } }) })
-                            }}>+Add</button>
+                    <tr>
+                        <td />
+                        <td>
+                            <button className="btn btn-outline-primary rounded-pill" style={{ width: "50%" }}
+                                onClick={() => {
+                                    this.setState({ fields: Object.assign(this.state.fields, { [Date.now().toString()]: { field: "", value: "" } }) })
+                                }}>
+                                +Add
+                            </button>
                         </td>
                         <td colSpan={2}>
                             <div className="form-inline">
                                 <button className="btn btn-success" onClick={() => { this._genorders(); }}>
-                                    <i className="fas fa-rocket mr-1" style={{ pointerEvents: "none" }}></i>Launch</button>
+                                    <i className="fas fa-rocket mr-1" style={{ pointerEvents: "none" }}></i>Launch
+                                </button>
                                 {this.state.crawlerresp_dict["thread"] == "stop" ?
-                                    <i className="fab fa-ubuntu fa-2x mx-2" style={{ color: "darkorange" }}></i> :
-                                    <i className="fab fa-ubuntu fa-2x fa-spin mx-2" style={{ color: "darkorange" }}></i>}
+                                    <i className="fab fa-ubuntu fa-2x mx-2" style={{ color: "darkorange" }}></i>
+                                    :
+                                    <i className="fab fa-ubuntu fa-2x fa-spin mx-2" style={{ color: "darkorange" }}></i>
+                                }
                             </div>
                         </td>
                     </tr>
@@ -278,7 +304,11 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     render_orders_text() {
         let num: Number = 0; let tsuids = Object.keys(this.state.db_nicoapi);
         for (let i = 0; i < tsuids.length; i++) { num += this.state.db_nicoapi[tsuids[i]]["request_urls"].length }
-        return (<div className="mx-3">{"orders/requests: " + String(tsuids.length) + "/" + String(num)}</div>)
+        return (
+            <div className="mx-2">
+                {"orders/requests: " + String(tsuids.length) + "/" + String(num)}
+            </div>
+        )
     }
     render_orders_table() {
         const tsuids = Object.keys(this.state.db_nicoapi).sort();
@@ -318,29 +348,39 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                 <tbody>
                     {tmp_records}
                 </tbody>
-            </table>)
+            </table>
+        )
     }
     render() {
         return (
             <div className="m-2">
                 {this.state.uid == "" ?
-                    <h5><i className="fas fa-wind mr-1"></i>Plz login</h5> :
+                    <h5><i className="fas fa-wind mr-1"></i>Plz login</h5>
+                    :
                     <div>
                         {/* INPUT console */}
                         <div style={{ backgroundColor: "lightcyan" }}>
-                            <div className="collapse" id="helpapp_collapse">{this.render_helpapp()}</div>
+                            <div className="collapse" id="helpapp_collapse">
+                                {this.render_helpapp()}
+                            </div>
                             {/* collapse navigation */}
                             <nav className="navbar" style={{ backgroundColor: "paleturquoise" }}>
                                 <div className="form-inline">
                                     <i className="fas fa-question-circle fa-2x faa-wrench animated-hover mx-1" style={{ color: "darkorange" }}
-                                        data-toggle="collapse" data-target="#helpapp_collapse"></i>
+                                        data-toggle="collapse" data-target="#helpapp_collapse">
+                                    </i>
                                     <button className="btn btn-primary mx-1" data-toggle="collapse" data-target="#APIendpoint_collapse">
-                                        <i className="far fa-caret-square-down mr-1" style={{ pointerEvents: "none" }}></i>APIendpoint</button>
+                                        <i className="far fa-caret-square-down mr-1" style={{ pointerEvents: "none" }}></i>APIendpoint
+                                    </button>
                                 </div>
                                 {this.render_APIendpoint_formtext()}
                             </nav>
-                            <div className="collapse show" id="APIendpoint_collapse">{this.render_APIendpoint_table()}</div>
-                            <div className="collapse" id="helpcmd_collapse">{this.render_helpcmd()}</div>
+                            <div className="collapse show" id="APIendpoint_collapse">
+                                {this.render_APIendpoint_table()}
+                            </div>
+                            <div className="collapse" id="helpcmd_collapse">
+                                {this.render_helpcmd()}
+                            </div>
                         </div>
                         {this.render_filelds_table()}
                         {/* OUTPUT console */}
@@ -348,11 +388,14 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                             <nav className="navbar" style={{ backgroundColor: "wheat" }}>
                                 <div className="form-inline">
                                     <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#orders_collapse">
-                                        <i className="far fa-file-alt mr-1" style={{ pointerEvents: "none" }}></i>Orders</button>
+                                        <i className="far fa-file-alt mr-1" style={{ pointerEvents: "none" }}></i>Orders
+                                    </button>
                                     {this.render_orders_text()}
                                 </div>
                             </nav>
-                            <div className="collapse" id="orders_collapse">{this.render_orders_table()}</div>
+                            <div className="collapse" id="orders_collapse">
+                                {this.render_orders_table()}
+                            </div>
                         </div>
                     </div>
                 }

@@ -146,7 +146,8 @@ export class Tptef_tsx extends React.Component<{}, State> {
                     </tr>
                 </thead>
                 <tbody>{tmp_recodes}</tbody>
-            </table>)
+            </table>
+        )
     }
     render_submit_forms() {
         return (
@@ -169,10 +170,10 @@ export class Tptef_tsx extends React.Component<{}, State> {
                                 <i className="fas fa-paperclip mr-1" style={{ pointerEvents: "none" }}></i>
                                 {this.state.tmpfile == null ? "Non selected" : this.state.tmpfile.name}
                             </button>
-                            <button className="btn btn-primary btn-sm mx-1" onClick={() => {
-                                this.db_rWd_addremark();
-                                this.setState({ tmpcontent: "", tmpfile: null });
-                            }}><i className="far fa-comment-dots mr-1" style={{ pointerEvents: "none" }}></i>Remark</button>
+                            <button className="btn btn-primary btn-sm mx-1"
+                                onClick={() => { this.db_rWd_addremark(); this.setState({ tmpcontent: "", tmpfile: null }); }}>
+                                <i className="far fa-comment-dots mr-1" style={{ pointerEvents: "none" }}></i>Remark
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -187,16 +188,21 @@ export class Tptef_tsx extends React.Component<{}, State> {
                     <h3 style={{ color: "black" }}>{this.state.room}</h3>
                     <div className="form-inline">
                         <input className="form-control form-control-sm" type="text" value={this.state.tmproom}
-                            onChange={(evt) => { this.setState({ tmproom: evt.target.value }) }}
-                        />
+                            onChange={(evt) => { this.setState({ tmproom: evt.target.value }) }} />
                         <button className="btn btn-success btn-sm"
                             onClick={(evt) => { this.setState({ room: this.state.tmproom }) }}>
-                            <i className="fas fa-search mr-1" style={{ pointerEvents: "none" }}></i>Room</button>
+                            <i className="fas fa-search mr-1" style={{ pointerEvents: "none" }}></i>Room
+                        </button>
                     </div>
                 </div>
                 {this.render_thread_table()}
-                {this.state.uid == "" ? <h5 className="d-flex justify-content-center">
-                    <i className="fas fa-wind mr-1"></i>Plz login</h5> : this.render_submit_forms()}
+                {this.state.uid == "" ?
+                    <h5 className="d-flex justify-content-center">
+                        <i className="fas fa-wind mr-1"></i>Plz login
+                    </h5>
+                    :
+                    this.render_submit_forms()
+                }
             </div>
         );
     };

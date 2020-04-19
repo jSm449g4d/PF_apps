@@ -86,26 +86,37 @@ export class Mypage_tsx extends React.Component<{}, State> {
         if (this.state.uid == "")
             return (<h5><i className="fas fa-wind mr-1"></i>Plz login</h5>)
         if (this.state.uid == this.state.showuid)
-            return (<button type="button" className="btn btn-outline-success btn-bg m-2"
-                onClick={() => { this.db_rWd_makepf() }}>Create Mypage</button>)
+            return (
+                <button type="button" className="btn btn-outline-success btn-bg m-2"
+                    onClick={() => { this.db_rWd_makepf() }}>
+                    <i className="fas fa-file-signature mr-1" style={{ pointerEvents: "none" }}></i>Create Mypage
+                </button>
+            )
         return (
             <div>
                 <h5>This page is not Exist</h5>
                 <button type="button" className="btn btn-outline-success btn-bg m-2"
-                    onClick={() => { this._gotomypage() }}><i className="fas fa-home" style={{ pointerEvents: "none" }}> Mypage</i></button>
-            </div>)
+                    onClick={() => { this._gotomypage() }}>
+                    <i className="fas fa-home mr-1" style={{ pointerEvents: "none" }}></i>Mypage
+                </button>
+            </div>
+            )
     }
     render_dlicon() {
-        if (this.state.icon_url == "") { return (<i className="fab fa-themeisle fa-2x"><br />No Icon</i>) }
-        return (<div><img src={this.state.icon_url} alt={this.state.icon_url} width="156" height="156" /></div>)
+        if (this.state.icon_url == "") { return (<i className="fab fa-themeisle fa-2x m-2"><br />No Icon</i>) }
+        return (
+            <div className="m-2">
+                <img src={this.state.icon_url} alt={this.state.icon_url} width="156" height="156" />
+            </div>
+        )
     }
     render_upicon() {
         if (this.state.showuid != this.state.uid) return;
         return (
-            <button type="button" className="btn btn-outline-success btn-sm m-1" onClick={
-                (evt) => { $(evt.currentTarget.children[0]).click() }}>
-                <input type="file" className="d-none" onChange={
-                    (evt) => { this.storage_rWd_icon(evt.target.files[0]) }} accept="image/jpeg,image/png" />
+            <button type="button" className="btn btn-outline-success btn-sm m-1"
+                onClick={(evt) => { $(evt.currentTarget.children[0]).click() }}>
+                <input type="file" className="d-none" accept="image/jpeg,image/png"
+                    onChange={(evt) => { this.storage_rWd_icon(evt.target.files[0]) }} />
                 <i className="fas fa-upload mr-1" style={{ pointerEvents: "none" }}></i>Icon
             </button>
         )
@@ -116,7 +127,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
         return (
             <div>
                 <button type="button" className="btn btn-outline-success btn-sm m-1" data-toggle="modal" data-target={modal_id_s}>
-                    <i className="far fa-keyboard" style={{ pointerEvents: "none" }}> {title}</i>
+                    <i className="far fa-keyboard mr-1" style={{ pointerEvents: "none" }}></i>{title}
                 </button>
                 <div className="modal fade" id={modal_id} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
@@ -124,20 +135,22 @@ export class Mypage_tsx extends React.Component<{}, State> {
                             <div className="modal-header">
                                 <h5 className="modal-title">{title}</h5>
                             </div>
-                            <div className="modal-body row">
-                                <textarea className="form-control col-12" value={this.state.profile[state_element]} onChange={
-                                    (evt) => {
+                            <div className="modal-body">
+                                <textarea className="form-control" value={this.state.profile[state_element]} rows={4} style={{ width: "100%" }}
+                                    onChange={(evt) => {
                                         let tmp_profile = Object.assign(this.state.profile)
                                         tmp_profile[state_element] = evt.target.value
                                         this.setState({ profile: tmp_profile });
-                                    }} />
+                                    }}></textarea>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-sm btn-success" data-dismiss="modal"
                                     onClick={() => { this.db_rWd_setpf() }}>
-                                    <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>Submit</button>
+                                    <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>Submit
+                                </button>
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">
-                                    <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }}></i>Close</button>
+                                    <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }}></i>Close
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -149,15 +162,15 @@ export class Mypage_tsx extends React.Component<{}, State> {
         return (
             <div className="m-2">
                 {"nickname" in this.state.profile == false ?
-                    <div>{this.render_createmypage()}</div> :
+                    <div>{this.render_createmypage()}</div>
+                    :
                     <div className="m-2" style={{ background: "khaki" }}>
                         <div className="d-flex justify-content-start">
-                            <div className="m-1">{this.render_dlicon()}</div>
+                            {this.render_dlicon()}
                             <div className="m-1 p-1 flex-grow-1" style={{ backgroundColor: "rgba(100,100,100,0.1)" }}>
                                 <div className="d-flex justify-content-start">
                                     <h3 className="flex-grow-1">
-                                        <i className="far fa-user mr-1"></i>
-                                        {this.state.profile["nickname"]}
+                                        <i className="far fa-user mr-1"></i>{this.state.profile["nickname"]}
                                     </h3>
                                     <div className="form-inline">
                                         {this.render_changebutton("Nickname", "nickname")}{this.render_upicon()}
@@ -166,16 +179,20 @@ export class Mypage_tsx extends React.Component<{}, State> {
                                 <div className="m-1 p-1" style={{ backgroundColor: "rgba(255,255,255,0.5)" }}>
                                     <div className="d-flex justify-content-between">
                                         <h5>PR</h5>
-                                        <div>{this.render_changebutton("PR", "pr")}</div>
+                                        {this.render_changebutton("PR", "pr")}
                                     </div>
-                                    <div>{this.state.profile["pr"]}</div>
+                                    {this.state.profile["pr"]}
                                 </div>
                             </div>
                         </div>
-                        {this.state.showuid == this.state.uid ? <div /> :
+                        {this.state.showuid == this.state.uid ?
+                            <div />
+                            :
                             <button type="button" className="btn btn-success btn-sm m-2"
                                 onClick={() => { this._gotomypage() }}>
-                                    <i className="fas fa-home mr-1" style={{ pointerEvents: "none" }}></i>Mypage</button>}
+                                <i className="fas fa-home mr-1" style={{ pointerEvents: "none" }}></i>Mypage
+                            </button>
+                        }
                     </div>
                 }
             </div>

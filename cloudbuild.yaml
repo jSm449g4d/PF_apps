@@ -1,6 +1,6 @@
 steps:
       # insert keys
-    - name: gcr.io/cloud-builders/gsutil
+    - name: ubuntu
       args:
         - mkdir
         - -p

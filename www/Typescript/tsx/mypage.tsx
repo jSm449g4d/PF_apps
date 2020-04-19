@@ -94,13 +94,15 @@ export class Mypage_tsx extends React.Component<{}, State> {
             )
         return (
             <div>
-                <h5>This page is not Exist</h5>
+                <h5>
+                    <i className="fas fa-wind mr-1"></i>This account's page is not Exist
+                </h5>
                 <button type="button" className="btn btn-outline-success btn-bg m-2"
                     onClick={() => { this._gotomypage() }}>
                     <i className="fas fa-home mr-1" style={{ pointerEvents: "none" }}></i>Mypage
                 </button>
             </div>
-            )
+        )
     }
     render_dlicon() {
         if (this.state.icon_url == "") { return (<i className="fab fa-themeisle fa-2x m-2"><br />No Icon</i>) }

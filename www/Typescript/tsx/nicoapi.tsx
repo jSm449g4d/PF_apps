@@ -149,7 +149,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                     </div>
                 </div>
                 <div className="d-flex justify-content-center">
-                    <button className="btn btn-secondary btn-sm m-2" data-toggle="collapse" data-target="#helpapp_collapse">
+                    <button className="btn btn-secondary btn-sm m-2" data-toggle="collapse" data-target="#helpcmd_collapse">
                         <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }}></i>Close
                     </button>
                 </div>
@@ -315,7 +315,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         for (let i = 0; i < tsuids.length; i++) { num += this.state.db_nicoapi[tsuids[i]]["request_urls"].length }
         return (
             <div className="mx-2">
-                {"orders/requests: " + String(tsuids.length) + "/" + String(num)}
+                {"orders/reqs: " + String(tsuids.length) + "/" + String(num)}
             </div>
         )
     }

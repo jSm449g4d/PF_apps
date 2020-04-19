@@ -64,11 +64,11 @@ export class Account_tsx extends React.Component<{}, State> {
 
     //renders
     render_account_modal(title: string, func: any) {
-        let modal_id = "mygape_modal_" + title; let modal_id_s = "#" + modal_id;
+        const modal_id: string = title + "_modal";
         func = func.bind(this)
         return (
             <div>
-                <button type="button" className="btn btn-primary btn-sm mx-1" data-toggle="modal" data-target={modal_id_s}>{title}</button>
+                <button type="button" className="btn btn-primary btn-sm mx-1" data-toggle="modal" data-target={"#" + modal_id}>{title}</button>
                 <div className="modal fade" id={modal_id} role="dialog" aria-hidden="true">
                     <div className="modal-dialog" role="document">
                         <div className="modal-content">
@@ -96,7 +96,7 @@ export class Account_tsx extends React.Component<{}, State> {
             <div className="bg-light p-2">
                 {this.state.uid == "" ?
                     <div className="d-flex justify-content-between">
-                        <h5>サービスを利用するには、ログインしてください</h5>
+                        <h5><i className="fas fa-wind mr-1"></i>サービスを利用するには、ログインしてください</h5>
                         <div className="ml-auto">
                             <div className="form-inline">
                                 <button type="button" className="btn btn-success mx-1 btn-sm" onClick={() => { this.auth_glogin() }}>

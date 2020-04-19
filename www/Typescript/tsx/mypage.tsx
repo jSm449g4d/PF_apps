@@ -174,7 +174,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
                             </div>
                             {Query2Dict()["showuid"] == this.state.uid ? <div /> :
                                 <button type="button" className="btn btn-success btn-sm m-2"
-                                    onClick={() => { this._gotomypage() }}><i className="fas fa-home"> Mypage</i></button>}
+                                    onClick={() => { this._gotomypage() }}><i className="fas fa-home mr-1"></i>Mypage</button>}
                         </div>
                     }
                 </div>

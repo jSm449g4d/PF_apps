@@ -100,6 +100,16 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
 
 
     // renders
+    render_help() {
+        return (
+            <div>
+                <h4 className="d-flex justify-content-center" style={{ fontStyle: "Sylfaen" }}>Command</h4>
+                <div className="d-flex justify-content-center">一度に複数のリクエストを行う為の、特殊なvalueの入力方法です。</div>
+                <h5>$for(A;B;C)</h5>
+                <li style={{ listStyle: "none" }}>A:開始の数値 B:終了条件の数値(上限) C:インクリメント</li>
+                <li style={{ listStyle: "none" }}>一度のリクエストで得られるレコード数(limit)が限られる際等に、繰り返し要求を出すときに使用します。</li>
+            </div>)
+    }
     render_APIendpoint_record(service_name: string, API_reference: string = "") {
         return (<tr>
             <td>
@@ -272,33 +282,22 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         return (
             <div className="m-2">
                 {this.state.uid == "" ?
-                    <h4 className="d-flex justify-content-center">This application cant use without login</h4> :
+                    <h5><i className="fas fa-wind mr-1"></i>Plz login</h5> :
                     <div>
                         {/* INPUT console */}
                         <div style={{ backgroundColor: "lightcyan" }}>
-                            {/* HELP collapse */}
-                            <div className="collapse" id="nicoapi_navber_help">
-                                <h4 className="d-flex justify-content-center" style={{ fontStyle: "Sylfaen" }}>Command</h4>
-                                <div className="d-flex justify-content-center">一度に複数のリクエストを行う為の、特殊なvalueの入力方法です。</div>
-                                <h5>$for(A;B;C)</h5>
-                                <li style={{ listStyle: "none" }}>A:開始の数値 B:終了条件の数値(上限) C:インクリメント</li>
-                                <li style={{ listStyle: "none" }}>一度のリクエストで得られるレコード数(limit)が限られる際等に、繰り返し要求を出すときに使用します。</li>
-                            </div>
+                            <div className="collapse" id="help_navber">{this.render_help()}</div>
                             {/* collapse navigation */}
                             <nav className="navbar" style={{ backgroundColor: "paleturquoise" }}>
                                 <div>
                                     <i className="fas fa-question-circle fa-2x faa-wrench animated-hover mx-1" style={{ color: "darkorange" }}
-                                        data-toggle="collapse" data-target="#nicoapi_navber_help"></i>
-                                    <button className="btn btn-primary mx-1"
-                                        data-toggle="collapse" data-target="#nicoapi_navber_APIendpoint_selector">
+                                        data-toggle="collapse" data-target="#help_navber"></i>
+                                    <button className="btn btn-primary mx-1" data-toggle="collapse" data-target="#APIendpoint_navber">
                                         <i className="far fa-caret-square-down mr-1"></i>API_endpoint</button>
                                 </div>
                                 {this.render_APIendpoint_textform()}
                             </nav>
-                            {/* API_endpoint collapse */}
-                            <div className="collapse" id="nicoapi_navber_APIendpoint_selector">
-                                {this.render_APIendpoint_table()}
-                            </div>
+                            <div className="collapse" id="APIendpoint_navber">{this.render_APIendpoint_table()}</div>
                         </div>
                         {this.render_filelds_table()}
 
@@ -306,19 +305,15 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                         <div style={{ backgroundColor: "lightyellow" }}>
                             <nav className="navbar" style={{ backgroundColor: "wheat" }}>
                                 <div className="form-inline">
-                                    <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#nicoapi_navber_orders">
+                                    <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#orders_navber">
                                         <i className="far fa-file-alt mr-1"></i>Orders</button>
                                     {this.render_orders_text()}
                                 </div>
                             </nav>
-                            {/* Orderstable collapse */}
-                            <div className="collapse" id="nicoapi_navber_orders">
-                                {this.render_orders_table()}
-                            </div>
+                            <div className="collapse" id="orders_navber">{this.render_orders_table()}</div>
                         </div>
                     </div>
                 }
-
             </div>
         );
     };

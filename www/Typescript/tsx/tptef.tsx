@@ -124,13 +124,13 @@ export class Tptef_tsx extends React.Component<{}, State> {
                     <button key={1} className="btn btn-primary btn-sm m-1"
                         onClick={(evt: any) => { this.storage_Rwd_attachment(evt.target.name) }}
                         name={doc_redoces[tsuids[i]]["attachment_dir"]}>
-                        <i className="fas fa-paperclip mr-1"></i>
+                        <i className="fas fa-paperclip mr-1" style={{ pointerEvents: "none" }}></i>
                         {doc_redoces[tsuids[i]]["attachment_dir"].split("/").pop().slice(0, 10)}</button>)
                 //delete button
                 if (tsuids[i].split("_")[1] == this.state.uid) tmp_datum.push(
                     <button key={2} className="btn btn-outline-danger btn-sm rounded-pill m-1"
                         onClick={(evt: any) => { this.db_RwD_delremark(evt.target.name) }} name={tsuids[i]}>
-                        <i className="far fa-trash-alt mr-1"></i>Del</button>)
+                        <i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Del</button>)
             }
             tmp_data.push(<td key={4} style={{ textAlign: "center" }}>{tmp_datum}</td>)
             tmp_recodes.push(<tr key={i}>{tmp_data}</tr>)
@@ -166,13 +166,13 @@ export class Tptef_tsx extends React.Component<{}, State> {
                                 onClick={(evt) => { $(evt.currentTarget.children[0]).click(); }}>
                                 <input type="file" className="d-none" value=""
                                     onChange={(evt) => { this.setState({ tmpfile: evt.target.files[0] }) }} />
-                                <i className="fas fa-paperclip mr-1"></i>
+                                <i className="fas fa-paperclip mr-1" style={{ pointerEvents: "none" }}></i>
                                 {this.state.tmpfile == null ? "Non selected" : this.state.tmpfile.name}
                             </button>
                             <button className="btn btn-primary btn-sm mx-1" onClick={() => {
                                 this.db_rWd_addremark();
                                 this.setState({ tmpcontent: "", tmpfile: null });
-                            }}><i className="far fa-comment-dots mr-1"></i>Remark</button>
+                            }}><i className="far fa-comment-dots mr-1" style={{ pointerEvents: "none" }}></i>Remark</button>
                         </div>
                     </div>
                 </div>
@@ -191,7 +191,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
                         />
                         <button className="btn btn-success btn-sm"
                             onClick={(evt) => { this.setState({ room: this.state.tmproom }) }}>
-                            <i className="fas fa-search mr-1"></i>Room</button>
+                            <i className="fas fa-search mr-1" style={{ pointerEvents: "none" }}></i>Room</button>
                     </div>
                 </div>
                 {this.render_thread_table()}

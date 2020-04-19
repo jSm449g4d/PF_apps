@@ -117,7 +117,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                 <li style={{ listStyle: "none" }}>一度のリクエストで得られるレコード数(limit)が限られる際等に、繰り返し要求を出すときに使用します。</li>
                 <div className="d-flex justify-content-center">
                     <button className="btn btn-secondary btn-sm m-2" data-toggle="collapse" data-target="#helpapp_collapse">
-                        <i className="fas fa-caret-up mr-1"></i>Close
+                        <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }}></i>Close
                     </button>
                 </div>
             </div>
@@ -125,7 +125,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     }
     render_helpcmd() {
         return (
-            <div className="p-1 border" style={{backgroundColor:"wheat"}}>
+            <div className="p-1 border" style={{ backgroundColor: "wheat" }}>
                 <h4 className="d-flex justify-content-center" style={{ fontStyle: "Sylfaen" }}>Command</h4>
                 <div className="d-flex justify-content-center">一度に複数のリクエストを行う為の、特殊なvalueの入力方法です。</div>
                 <h5>$for(A;B;C)</h5>
@@ -133,7 +133,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                 <li style={{ listStyle: "none" }}>一度のリクエストで得られるレコード数(limit)が限られる際等に、繰り返し要求を出すときに使用します。</li>
                 <div className="d-flex justify-content-center">
                     <button className="btn btn-secondary btn-sm m-2" data-toggle="collapse" data-target="#helpcmd_collapse">
-                        <i className="fas fa-caret-up mr-1"></i>Close
+                        <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }}></i>Close
                     </button>
                 </div>
             </div>
@@ -237,7 +237,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             tmp_data.push(<td key={4}><button className="btn btn-outline-danger btn-sm rounded-pill" style={{ textAlign: "center" }}
                 onClick={(evt: any) => {
                     delete tmp_fields[evt.target.name]; this.setState({ fields: tmp_fields })
-                }} name={timestamp[i]}><i className="far fa-trash-alt"> Del</i></button></td>)
+                }} name={timestamp[i]}><i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Del</button></td >)
             tmp_record.push(<tr key={i}>{tmp_data}</tr>)
         }
         return (
@@ -265,7 +265,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                         <td colSpan={2}>
                             <div className="form-inline">
                                 <button className="btn btn-success" onClick={() => { this._genorders(); }}>
-                                    <i className="fas fa-rocket mr-1"></i>Launch</button>
+                                    <i className="fas fa-rocket mr-1" style={{ pointerEvents: "none" }}></i>Launch</button>
                                 {this.state.crawlerresp_dict["thread"] == "stop" ?
                                     <i className="fab fa-ubuntu fa-2x mx-2" style={{ color: "darkorange" }}></i> :
                                     <i className="fab fa-ubuntu fa-2x fa-spin mx-2" style={{ color: "darkorange" }}></i>}
@@ -335,7 +335,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                     <i className="fas fa-question-circle fa-2x faa-wrench animated-hover mx-1" style={{ color: "darkorange" }}
                                         data-toggle="collapse" data-target="#helpapp_collapse"></i>
                                     <button className="btn btn-primary mx-1" data-toggle="collapse" data-target="#APIendpoint_collapse">
-                                        <i className="far fa-caret-square-down mr-1"></i>APIendpoint</button>
+                                        <i className="far fa-caret-square-down mr-1" style={{ pointerEvents: "none" }}></i>APIendpoint</button>
                                 </div>
                                 {this.render_APIendpoint_formtext()}
                             </nav>
@@ -348,7 +348,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                             <nav className="navbar" style={{ backgroundColor: "wheat" }}>
                                 <div className="form-inline">
                                     <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#orders_collapse">
-                                        <i className="far fa-file-alt mr-1"></i>Orders</button>
+                                        <i className="far fa-file-alt mr-1" style={{ pointerEvents: "none" }}></i>Orders</button>
                                     {this.render_orders_text()}
                                 </div>
                             </nav>

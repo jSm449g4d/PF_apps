@@ -92,7 +92,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
             <div>
                 <h5>This page is not Exist</h5>
                 <button type="button" className="btn btn-outline-success btn-bg m-2"
-                    onClick={() => { this._gotomypage() }}><i className="fas fa-home"> Mypage</i></button>
+                    onClick={() => { this._gotomypage() }}><i className="fas fa-home" style={{ pointerEvents: "none" }}> Mypage</i></button>
             </div>)
     }
     render_dlicon() {
@@ -106,7 +106,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
                 (evt) => { $(evt.currentTarget.children[0]).click() }}>
                 <input type="file" className="d-none" onChange={
                     (evt) => { this.storage_rWd_icon(evt.target.files[0]) }} accept="image/jpeg,image/png" />
-                <i className="fas fa-upload mr-1"></i>Icon
+                <i className="fas fa-upload mr-1" style={{ pointerEvents: "none" }}></i>Icon
             </button>
         )
     }
@@ -116,7 +116,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
         return (
             <div>
                 <button type="button" className="btn btn-outline-success btn-sm m-1" data-toggle="modal" data-target={modal_id_s}>
-                    <i className="far fa-keyboard"> {title}</i>
+                    <i className="far fa-keyboard" style={{ pointerEvents: "none" }}> {title}</i>
                 </button>
                 <div className="modal fade" id={modal_id} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
@@ -135,9 +135,9 @@ export class Mypage_tsx extends React.Component<{}, State> {
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-sm btn-success" data-dismiss="modal"
                                     onClick={() => { this.db_rWd_setpf() }}>
-                                    <i className="fas fa-paper-plane mr-1"></i>Submit</button>
+                                    <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>Submit</button>
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">
-                                    <i className="fas fa-caret-up mr-1"></i>Close</button>
+                                    <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }}></i>Close</button>
                             </div>
                         </div>
                     </div>
@@ -166,7 +166,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
                                 <div className="m-1 p-1" style={{ backgroundColor: "rgba(255,255,255,0.5)" }}>
                                     <div className="d-flex justify-content-between">
                                         <h5>PR</h5>
-                                        <div className="">{this.render_changebutton("PR", "pr")}</div>
+                                        <div>{this.render_changebutton("PR", "pr")}</div>
                                     </div>
                                     <div>{this.state.profile["pr"]}</div>
                                 </div>
@@ -174,7 +174,8 @@ export class Mypage_tsx extends React.Component<{}, State> {
                         </div>
                         {this.state.showuid == this.state.uid ? <div /> :
                             <button type="button" className="btn btn-success btn-sm m-2"
-                                onClick={() => { this._gotomypage() }}><i className="fas fa-home mr-1"></i>Mypage</button>}
+                                onClick={() => { this._gotomypage() }}>
+                                    <i className="fas fa-home mr-1" style={{ pointerEvents: "none" }}></i>Mypage</button>}
                     </div>
                 }
             </div>

@@ -9,7 +9,7 @@ interface State {
 
 
 export class Index_tsx extends React.Component<{}, State> {
-    //constructors
+    // constructors
     constructor(props: any) {
         super(props);
         this.state = { uid: "", unsnaps: [] };
@@ -22,7 +22,7 @@ export class Index_tsx extends React.Component<{}, State> {
     }
     componentWillUnmount() { for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() } }
 
-    //functions
+    // functions
     render() {
         return (
             <div className="m-2">

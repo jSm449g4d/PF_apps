@@ -13,7 +13,7 @@ interface State {
 }
 
 export class Tptef_tsx extends React.Component<{}, State> {
-    //constructors
+    // constructors
     constructor(props: any) {
         super(props);
         this.state = {
@@ -38,7 +38,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
     }
     componentWillUnmount() { for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() } }
 
-    //functions
+    // functions
     db_Rwd_getroom() {
         if (this.state.room == "") return () => { };
         return db.doc("tptef/" + this.state.room).onSnapshot((doc) => {
@@ -107,7 +107,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
         storage.ref(attachment_dir).delete().catch((err) => { fb_errmsg(err) })
     }
 
-    //renders
+    // renders
     render_thread_table() {
         const doc_redoces: any = Object.assign(this.state.db_tptef);
         const tmp_recodes = [];

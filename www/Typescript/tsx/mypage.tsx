@@ -134,8 +134,10 @@ export class Mypage_tsx extends React.Component<{}, State> {
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-sm btn-success" data-dismiss="modal"
-                                    onClick={() => { this.db_rWd_setpf() }}>SUBMIT</button>
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    onClick={() => { this.db_rWd_setpf() }}>
+                                    <i className="fas fa-paper-plane mr-1"></i>Submit</button>
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal">
+                                    <i className="fas fa-caret-up mr-1"></i>Close</button>
                             </div>
                         </div>
                     </div>

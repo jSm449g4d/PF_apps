@@ -128,12 +128,12 @@ export class Account_tsx extends React.Component<{}, State> {
                         <div className="form-inline">
                             <button className="btn btn-secondary btn-sm mx-1" type="button" onClick={() => { auth.signOut(); }}>
                                 <i className="fas fa-sign-out-alt mr-1"></i>logout</button>
-                            <i className="fas fa-cog fa-lg faa-wrench animated-hover mx-1" data-toggle="modal" data-target="#account_modal_config" />
-                            <div className="modal fade" id="account_modal_config" role="dialog" aria-hidden="true">
+                            <i className="fas fa-cog fa-lg faa-wrench animated-hover mx-1" data-toggle="modal" data-target="#config_modal" />
+                            <div className="modal fade" id="config_modal" role="dialog" aria-hidden="true">
                                 <div className="modal-dialog" role="document">
                                     <div className="modal-content">
                                         <div className="modal-header">
-                                            <h5 className="modal-title">Config</h5>
+                                            <h5 className="modal-title"><i className="fas fa-cog mr-1"></i>Config</h5>
                                         </div>
                                         <div className="modal-body form-inline">
                                             <input className="form-control" type="text" name="mail_addr" size={40} placeholder="mail address" />
@@ -141,14 +141,10 @@ export class Account_tsx extends React.Component<{}, State> {
                                                 <i className="fas fa-paper-plane mr-1"></i>RESRT</button>
                                         </div>
                                         <div className="modal-footer d-flex justify-content-start">
-                                            <div className="flex-grow-1">
-                                                <button className="btn btn-secondary" type="button" data-dismiss="modal">
-                                                    <i className="fas fa-caret-up mr-1"></i>Close</button>
-                                            </div>
-                                            <div>
-                                                <button type="button" className="btn btn-sm btn-danger" data-dismiss="modal" onClick={() => { this.auth_deluser(); }}>
-                                                    <i className="fas fa-user-slash mr-1"></i>USER_DELETE</button>
-                                            </div>
+                                            <div className="flex-grow-1"><button className="btn btn-secondary" type="button" data-dismiss="modal">
+                                                <i className="fas fa-caret-up mr-1"></i>Close</button></div>
+                                            <button type="button" className="btn btn-sm btn-danger" data-dismiss="modal" onClick={() => { this.auth_deluser(); }}>
+                                                <i className="fas fa-user-slash mr-1"></i>USER_DELETE</button>
                                         </div>
                                     </div>
                                 </div>

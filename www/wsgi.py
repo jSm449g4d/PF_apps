@@ -21,11 +21,11 @@ os.makedirs("tmp", exist_ok=True)
 # Index
 @app.route("/", methods=["GET", "POST"])
 def indexpage_show():
+    wsgi_h.access_counter += 1
     try:  # Apache2.4 index
         return flask.send_file(os.path.join("html/index.html"))
     except:  # Flask index
         try:
-            wsgi_h.access_counter += 1
             return flask.render_template("index.html",
                                          STATUS_ACCESS_COUNTER=str(
                                              wsgi_h.access_counter),
@@ -47,6 +47,7 @@ def indexpage_show():
 @app.route("/<path:name>.py", methods=["GET", "POST"])
 @app.route("/Flask/<path:name>.py", methods=["GET", "POST"])
 def py_show(name):
+    wsgi_h.access_counter += 1
     try:
         return importlib.import_module("Flask."+name.replace("/", ".").replace("..", "_")).show(flask.request)
     except Exception as e:
@@ -55,6 +56,7 @@ def py_show(name):
 # html: domain/* → www/html/*
 @app.route('/<path:name>', methods=["GET", "POST"])
 def html_show(name):
+    wsgi_h.access_counter += 1
     try:
         return flask.send_file(os.path.join("html", name).replace("\\", "/").replace("..", "_"))
     except:

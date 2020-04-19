@@ -18,7 +18,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            uid: "", unsnaps: [], APIendpoint: "https://", service_name: "← Click \"APIendpoint\"", crawlerresp_dict: { thread: "stop" },
+            uid: "", unsnaps: [], APIendpoint: "https://", service_name: "カスタム", crawlerresp_dict: { thread: "stop" },
             fields: {}, db_nicoapi: {}
         };
         setInterval(() => {
@@ -107,20 +107,43 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
 
 
     // renders
-    render_help() {
+    render_helpapp() {
         return (
-            <div>
+            <div className="p-1 border">
                 <h4 className="d-flex justify-content-center" style={{ fontStyle: "Sylfaen" }}>Command</h4>
                 <div className="d-flex justify-content-center">一度に複数のリクエストを行う為の、特殊なvalueの入力方法です。</div>
                 <h5>$for(A;B;C)</h5>
                 <li style={{ listStyle: "none" }}>A:開始の数値 B:終了条件の数値(上限) C:インクリメント</li>
                 <li style={{ listStyle: "none" }}>一度のリクエストで得られるレコード数(limit)が限られる際等に、繰り返し要求を出すときに使用します。</li>
-            </div>)
+                <div className="d-flex justify-content-center">
+                    <button className="btn btn-secondary btn-sm m-2" data-toggle="collapse" data-target="#helpapp_collapse">
+                        <i className="fas fa-caret-up mr-1"></i>Close
+                    </button>
+                </div>
+            </div>
+        )
+    }
+    render_helpcmd() {
+        return (
+            <div className="p-1 border" style={{backgroundColor:"wheat"}}>
+                <h4 className="d-flex justify-content-center" style={{ fontStyle: "Sylfaen" }}>Command</h4>
+                <div className="d-flex justify-content-center">一度に複数のリクエストを行う為の、特殊なvalueの入力方法です。</div>
+                <h5>$for(A;B;C)</h5>
+                <li style={{ listStyle: "none" }}>A:開始の数値 B:終了条件の数値(上限) C:インクリメント</li>
+                <li style={{ listStyle: "none" }}>一度のリクエストで得られるレコード数(limit)が限られる際等に、繰り返し要求を出すときに使用します。</li>
+                <div className="d-flex justify-content-center">
+                    <button className="btn btn-secondary btn-sm m-2" data-toggle="collapse" data-target="#helpcmd_collapse">
+                        <i className="fas fa-caret-up mr-1"></i>Close
+                    </button>
+                </div>
+            </div>
+
+        )
     }
     render_APIendpoint_record(service_name: string, API_reference: string = "") {
         return (<tr>
             <td>
-                <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#APIendpoint_navber"
+                <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#APIendpoint_collapse"
                     onClick={() => {
                         if (service_name == "ニコニコ動画") {
                             this.setState({
@@ -181,7 +204,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         )
 
     }
-    render_APIendpoint_textform() {
+    render_APIendpoint_formtext() {
         return (
             <div className="form-inline"><b>{this.state.service_name}</b>
                 <input type="text" className="form-control form-control-sm mx-1" size={60} value={this.state.APIendpoint}
@@ -193,7 +216,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         const tmp_record = []; let tmp_fields = Object.assign(this.state.fields);
         for (var i = 0; i < timestamp.length; i++) {
             const tmp_data = [];
-            //Field (textform)
+            //Field (formtext)
             tmp_data.push(<td key={1}><input type="text" className="form-control form-control-sm mx-1"
                 value={this.state.fields[timestamp[i]]["field"]}
                 onChange={(evt: any) => {
@@ -223,7 +246,10 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                     <tr>
                         <th style={{ width: "10%" }}>Field</th>
                         <th>Value</th>
-                        <th style={{ width: "8%" }}>Command</th>
+                        <th style={{ width: "10%" }}>
+                            <i className="fas fa-question-circle faa-wrench animated-hover mx-1" style={{ color: "darkorange" }}
+                                data-toggle="collapse" data-target="#helpcmd_collapse"></i>Command
+                        </th>
                         <th style={{ width: "8%" }}>Ops</th>
                     </tr>
                 </thead>
@@ -236,11 +262,14 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                                 this.setState({ fields: Object.assign(this.state.fields, { [Date.now().toString()]: { field: "", value: "" } }) })
                             }}>+Add</button>
                         </td>
-                        <td colSpan={2}><button className="btn btn-success" onClick={() => { this._genorders(); }}>
-                            <i className="fas fa-rocket mr-1"></i>Launch</button>
-                            {this.state.crawlerresp_dict["thread"] == "stop" ?
-                                <i className="fab fa-ubuntu fa-2x mx-2" style={{ color: "darkorange" }}></i> :
-                                <i className="fab fa-ubuntu fa-2x fa-spin mx-2" style={{ color: "darkorange" }}></i>}
+                        <td colSpan={2}>
+                            <div className="form-inline">
+                                <button className="btn btn-success" onClick={() => { this._genorders(); }}>
+                                    <i className="fas fa-rocket mr-1"></i>Launch</button>
+                                {this.state.crawlerresp_dict["thread"] == "stop" ?
+                                    <i className="fab fa-ubuntu fa-2x mx-2" style={{ color: "darkorange" }}></i> :
+                                    <i className="fab fa-ubuntu fa-2x fa-spin mx-2" style={{ color: "darkorange" }}></i>}
+                            </div>
                         </td>
                     </tr>
                 </tbody>
@@ -249,7 +278,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     render_orders_text() {
         let num: Number = 0; let tsuids = Object.keys(this.state.db_nicoapi);
         for (let i = 0; i < tsuids.length; i++) { num += this.state.db_nicoapi[tsuids[i]]["request_urls"].length }
-        return (<div className="mx-3">{"orders / requests: " + String(tsuids.length) + " / " + String(num)}</div>)
+        return (<div className="mx-3">{"orders/requests: " + String(tsuids.length) + "/" + String(num)}</div>)
     }
     render_orders_table() {
         const tsuids = Object.keys(this.state.db_nicoapi).sort();
@@ -299,30 +328,31 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                     <div>
                         {/* INPUT console */}
                         <div style={{ backgroundColor: "lightcyan" }}>
-                            <div className="collapse" id="help_navber">{this.render_help()}</div>
+                            <div className="collapse" id="helpapp_collapse">{this.render_helpapp()}</div>
                             {/* collapse navigation */}
                             <nav className="navbar" style={{ backgroundColor: "paleturquoise" }}>
-                                <div>
+                                <div className="form-inline">
                                     <i className="fas fa-question-circle fa-2x faa-wrench animated-hover mx-1" style={{ color: "darkorange" }}
-                                        data-toggle="collapse" data-target="#help_navber"></i>
-                                    <button className="btn btn-primary mx-1" data-toggle="collapse" data-target="#APIendpoint_navber">
+                                        data-toggle="collapse" data-target="#helpapp_collapse"></i>
+                                    <button className="btn btn-primary mx-1" data-toggle="collapse" data-target="#APIendpoint_collapse">
                                         <i className="far fa-caret-square-down mr-1"></i>APIendpoint</button>
                                 </div>
-                                {this.render_APIendpoint_textform()}
+                                {this.render_APIendpoint_formtext()}
                             </nav>
-                            <div className="collapse" id="APIendpoint_navber">{this.render_APIendpoint_table()}</div>
+                            <div className="collapse show" id="APIendpoint_collapse">{this.render_APIendpoint_table()}</div>
+                            <div className="collapse" id="helpcmd_collapse">{this.render_helpcmd()}</div>
                         </div>
                         {this.render_filelds_table()}
                         {/* OUTPUT console */}
                         <div style={{ backgroundColor: "lightyellow" }}>
                             <nav className="navbar" style={{ backgroundColor: "wheat" }}>
                                 <div className="form-inline">
-                                    <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#orders_navber">
+                                    <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#orders_collapse">
                                         <i className="far fa-file-alt mr-1"></i>Orders</button>
                                     {this.render_orders_text()}
                                 </div>
                             </nav>
-                            <div className="collapse" id="orders_navber">{this.render_orders_table()}</div>
+                            <div className="collapse" id="orders_collapse">{this.render_orders_table()}</div>
                         </div>
                     </div>
                 }

@@ -109,16 +109,23 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     // renders
     render_helpapp() {
         return (
-            <div className="p-1 border">
+            <div className="p-1" style={{ backgroundColor: "wheat", border: "3px double silver" }}>
                 <h4 className="d-flex justify-content-center" style={{ fontStyle: "Sylfaen" }}>
-                    Command
+                    NicoNicoAPI Wrapper <i className="fab fa-react mx-2"></i>React edition
                 </h4>
                 <div className="d-flex justify-content-center">
-                    一度に複数のリクエストを行う為の、特殊なvalueの入力方法です。
+                    <div style={{ textAlign: "center" }}>
+                        <h5>使い方</h5>
+                        APIエンドポイントを選択or入力してください<br />
+                        欲しい条件を入力してください<br />
+                        Launchボタンを押すと、バックエンドがクローリングを開始します<br />
+                        <i className="fab fa-ubuntu fa-lg mx-2" style={{ color: "darkorange" }}></i>
+                        の回転開始は、バックエンドが正常に稼働開始したことを示します<br />
+                        暫く待ちます(画面リロードは必要ありません)<br />
+                        Ordersのcollapseのtableからzipファイルがダウンロードできます<br />
+                        ダウンロード終了後は、GCSのリソース節約の為にファイルを削除してください<br />
+                    </div>
                 </div>
-                <h5>$for(A;B;C)</h5>
-                <li style={{ listStyle: "none" }}>A:開始の数値 B:終了条件の数値(上限) C:インクリメント</li>
-                <li style={{ listStyle: "none" }}>一度のリクエストで得られるレコード数(limit)が限られる際等に、繰り返し要求を出すときに使用します。</li>
                 <div className="d-flex justify-content-center">
                     <button className="btn btn-secondary btn-sm m-2" data-toggle="collapse" data-target="#helpapp_collapse">
                         <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }}></i>Close
@@ -129,18 +136,20 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     }
     render_helpcmd() {
         return (
-            <div className="p-1 border" style={{ backgroundColor: "wheat" }}>
+            <div className="p-1" style={{ backgroundColor: "wheat", border: "3px double silver" }}>
                 <h4 className="d-flex justify-content-center" style={{ fontStyle: "Sylfaen" }}>
                     Command
                 </h4>
                 <div className="d-flex justify-content-center">
-                    一度に複数のリクエストを行う為の、特殊なvalueの入力方法です。
+                    <div style={{ textAlign: "center" }}>
+                        <h6>一度に複数のリクエストを行う為の、特殊なvalueの入力方法です。</h6>
+                        <h5>$for(A;B;C)</h5>
+                        A:開始の数値 B:終了条件の数値(上限) C:インクリメント<br />
+                        一度のリクエストで得られるレコード数(limit)が限られる際等に、繰り返し要求を出すときに使用します<br />
+                    </div>
                 </div>
-                <h5>$for(A;B;C)</h5>
-                <li style={{ listStyle: "none" }}>A:開始の数値 B:終了条件の数値(上限) C:インクリメント</li>
-                <li style={{ listStyle: "none" }}>一度のリクエストで得られるレコード数(limit)が限られる際等に、繰り返し要求を出すときに使用します。</li>
                 <div className="d-flex justify-content-center">
-                    <button className="btn btn-secondary btn-sm m-2" data-toggle="collapse" data-target="#helpcmd_collapse">
+                    <button className="btn btn-secondary btn-sm m-2" data-toggle="collapse" data-target="#helpapp_collapse">
                         <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }}></i>Close
                     </button>
                 </div>
@@ -315,23 +324,32 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         const tmp_records = []; let doc_records = Object.assign(this.state.db_nicoapi);
         for (var i = 0; i < tsuids.length; i++) {
             const tmp_data = [];
-            tmp_data.push(<td key={1}>
-                {tsuids[i].split("_")[0]}<br />Status: {doc_records[tsuids[i]]["status"]}<br />
-                UA: {doc_records[tsuids[i]]["User-Agent"]}</td>)
-            tmp_data.push(<td key={2} style={{ fontSize: "12px", textAlign: "left" }}>
-                <details><summary> {doc_records[tsuids[i]]["request_urls"][0]}</summary>
-                    {doc_records[tsuids[i]]["request_urls"].slice(1).join('\n')}</details></td>)
+            tmp_data.push(
+                <td key={1}>
+                    {tsuids[i].split("_")[0]}<br />
+                    Status: {doc_records[tsuids[i]]["status"]}<br />
+                    UA: {doc_records[tsuids[i]]["User-Agent"]}
+                </td>)
+            tmp_data.push(
+                <td key={2} style={{ fontSize: "12px", textAlign: "left" }}>
+                    <details>
+                        <summary> {doc_records[tsuids[i]]["request_urls"][0]}</summary>
+                        {doc_records[tsuids[i]]["request_urls"].slice(1).join('\n')}
+                    </details>
+                </td>)
             const tmp_datum = []; {// col: Ops
                 //download button
                 if (doc_records[tsuids[i]]["status"] == "processed") tmp_datum.push(
-                    <button key={1} className="btn btn-primary btn-sm m-1"
-                        onClick={(evt: any) => { this.storage_Rwd_dlorders(evt.target.name) }}
-                        name={tsuids[i]}>Download</button>)
+                    <button key={1} className="btn btn-primary btn-sm m-1" name={tsuids[i]}
+                        onClick={(evt: any) => { this.storage_Rwd_dlorders(evt.target.name) }}>
+                        <i className="fas fa-cloud-download-alt mr-1" style={{ pointerEvents: "none" }}></i>DL
+                    </button>)
                 //attachment download button
                 if (doc_records[tsuids[i]]["status"] == "processed") tmp_datum.push(
-                    <button key={2} className="btn btn-outline-danger btn-sm m-1"
-                        onClick={(evt: any) => { this.storage_rwD_delorders(evt.target.name) }}
-                        name={tsuids[i]}>Delete</button>)
+                    <button key={2} className="btn btn-outline-danger btn-sm m-1" name={tsuids[i]}
+                        onClick={(evt: any) => { this.storage_rwD_delorders(evt.target.name) }}>
+                        <i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Del
+                    </button>)
             } tmp_data.push(<td key={3}>{tmp_datum}</td>)
             tmp_records.push(<tr key={i}>{tmp_data}</tr>)
         }
@@ -342,7 +360,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
                     <tr>
                         <th style={{ width: "10%" }} >Timestamp/Info</th>
                         <th>Request URLs</th>
-                        <th style={{ width: "10%" }} >Ops</th>
+                        <th style={{ width: "8%" }} >Ops</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -112,8 +112,8 @@ export class Account_tsx extends React.Component<{}, State> {
                     </div> :
                     <div className="d-flex justify-content-between">
                         <div className="form-inline">{auth.currentUser.photoURL ?
-                            <img src={auth.currentUser.photoURL} alt="user.photoURL" width="48" height="48" /> : <i className="fas fa-signature fa-lg"></i>}
-                            <div className="mx-4" />
+                            <img className="mr-2" src={auth.currentUser.photoURL} alt="user.photoURL" width="48" height="48" /> :
+                            <i className="fas fa-signature fa-lg mr-2"></i>}
                             {auth.currentUser.displayName ?
                                 <h5>ようこそ <i className="fas fa-envelope mr-1"></i>{auth.currentUser.displayName} さん</h5> :
                                 <h5>ようこそ <i className="far fa-envelope mr-1"></i>{auth.currentUser.email} さん</h5>}

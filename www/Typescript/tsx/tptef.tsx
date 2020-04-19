@@ -103,7 +103,7 @@ export class Tptef_tsx extends React.Component<{}, State> {
     }
     storage_rwD_attachment(attachment_dir: string) {
         if (attachment_dir == "") return;
-        if (stopf5.check("2", 500, true) == false) return; // To prevent high freq access
+        if (stopf5.check("4", 500, true) == false) return; // To prevent high freq access
         storage.ref(attachment_dir).delete().catch((err) => { fb_errmsg(err) })
     }
 
@@ -148,6 +148,37 @@ export class Tptef_tsx extends React.Component<{}, State> {
                 <tbody>{tmp_recodes}</tbody>
             </table>)
     }
+    render_submit_forms() {
+        return (
+            <div className="mt-2 p-2" style={{ color: "#CCFFFF", border: "3px double silver", background: "#001111" }}>
+                <div className="d-flex justify-content-between">
+                    <h4><i className="far fa-user mr-1"></i>{this.state.profile.nickname}</h4>
+                    <h5><i className="far fa-clock mr-1"></i>{this.state.jpclock_str}</h5>
+                    <h5>入力フォーム</h5>
+                </div>
+                <textarea className="form-control my-1" id="tptef_content" rows={6} value={this.state.tmpcontent}
+                    onChange={(evt) => { this.setState({ tmpcontent: evt.target.value }) }}></textarea>
+                <div className="my-1 d-flex justify-content-between">
+                    <div className="ml-auto">
+                        <div className="form-inline">
+                            {/* select file */}
+                            <button type="button" className="btn btn-warning btn-sm mx-1"
+                                onClick={(evt) => { $(evt.currentTarget.children[0]).click(); }}>
+                                <input type="file" className="d-none" value=""
+                                    onChange={(evt) => { this.setState({ tmpfile: evt.target.files[0] }) }} />
+                                <i className="fas fa-paperclip mr-1"></i>
+                                {this.state.tmpfile == null ? "Non selected" : this.state.tmpfile.name}
+                            </button>
+                            <button className="btn btn-primary btn-sm mx-1" onClick={() => {
+                                this.db_rWd_addremark();
+                                this.setState({ tmpcontent: "", tmpfile: null });
+                            }}><i className="far fa-comment-dots mr-1"></i>Remark</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
     render() {
         return (
             <div className="m-2">
@@ -164,36 +195,8 @@ export class Tptef_tsx extends React.Component<{}, State> {
                     </div>
                 </div>
                 {this.render_thread_table()}
-                {this.state.uid == "" ?
-                    <h5 className="d-flex justify-content-center">Plz login</h5> :
-                    <div className="mt-2 p-2" style={{ color: "#CCFFFF", border: "3px double silver", background: "#001111" }}>
-                        <div className="d-flex justify-content-between">
-                            <h4><i className="far fa-user mr-1"></i>{this.state.profile.nickname}</h4>
-                            <h5><i className="far fa-clock mr-1"></i>{this.state.jpclock_str}</h5>
-                            <h5>入力フォーム</h5>
-                        </div>
-                        <textarea className="form-control my-1" id="tptef_content" rows={6} value={this.state.tmpcontent}
-                            onChange={(evt) => { this.setState({ tmpcontent: evt.target.value }) }}></textarea>
-                        <div className="my-1 d-flex justify-content-between">
-                            <div className="ml-auto">
-                                <div className="form-inline">
-                                    {/* select file */}
-                                    <button type="button" className="btn btn-warning btn-sm mx-1"
-                                        onClick={(evt) => { $(evt.currentTarget.children[0]).click(); }}>
-                                        <input type="file" className="d-none" value=""
-                                            onChange={(evt) => { this.setState({ tmpfile: evt.target.files[0] }) }} />
-                                        <i className="fas fa-paperclip mr-1"></i>
-                                        {this.state.tmpfile == null ? "Plz select Attachment" : this.state.tmpfile.name}
-                                    </button>
-                                    <button className="btn btn-primary btn-sm mx-1" onClick={() => {
-                                        this.db_rWd_addremark();
-                                        this.setState({ tmpcontent: "", tmpfile: null });
-                                    }}><i className="far fa-comment-dots mr-1"></i>Remark</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
+                {this.state.uid == "" ? <h5 className="d-flex justify-content-center">
+                    <i className="fas fa-wind mr-1"></i>Plz login</h5> : this.render_submit_forms()}
             </div>
         );
     };

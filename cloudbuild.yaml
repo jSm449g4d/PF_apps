@@ -2,6 +2,12 @@ steps:
       # insert keys
     - name: gcr.io/cloud-builders/gsutil
       args:
+        - mkdir
+        - -p
+        - ./keys/
+      dir: www
+    - name: gcr.io/cloud-builders/gsutil
+      args:
         - cp
         - $_GCS_KEYS
         - ./keys/

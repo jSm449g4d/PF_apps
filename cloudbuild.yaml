@@ -4,7 +4,7 @@ steps:
       args:
         - cp
         - $_GCS_KEYS
-        - ./
+        - ./keys/
       dir: www
       # build
     - name: gcr.io/cloud-builders/docker

@@ -39,15 +39,15 @@ export class Widgethead_tsx extends React.Component<{}, State> {
                         </a>
                         <a className="nav-item nav-link p-1" data-toggle="tab"
                             onClick={() => { this._switchapp2("homepage") }}>
-                            <i className="fas fa-database mr-1"></i>ホームページ
+                            <i className="fas fa-home mr-1"></i>ホームページ
                         </a>
                         <a className="nav-item nav-link p-1" data-toggle="tab"
                             onClick={() => { this._switchapp2("mypage") }}>
-                            <i className="fas fa-database mr-1"></i>マイページ
+                            <i className="far fa-address-card mr-1"></i>マイページ
                         </a>
                         <a className="nav-item nav-link p-1" data-toggle="tab"
                             onClick={() => { this._switchapp2("tptef") }}>
-                            <i className="fas fa-database mr-1"></i>TPTEF
+                            <i className="far fa-comments mr-1"></i>TPTEF
                         </a>
                         <a className="nav-item nav-link p-1" data-toggle="tab"
                             onClick={() => { this._switchapp2("nicoapi") }}>

@@ -3,10 +3,12 @@ const entry = require("webpack-glob-entry");
 const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
-  entry: entry("./tsx/*.tsx"),
+//  entry: entry("./tsx/*.tsx"),
+  entry: entry("./tsx/index.tsx"),
   output: {
     path: path.resolve(__dirname, "../"),
-    filename: "./html/static/src/[name].js",
+//    filename: "./html/static/src/[name].js",
+    filename: "./html/static/src/app_tsx.js",
   },
 
   mode: "production",

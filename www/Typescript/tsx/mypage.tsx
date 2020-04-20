@@ -1,8 +1,6 @@
 import React from 'react';
-import ReactDOM from "react-dom";
 import { auth, fb, fb_errmsg } from "./component/account";
-import { stopf5, Query2Dict, Dict2Query } from "./component/util_tsx";
-import { Widgethead_tsx } from "./component/widget";
+import { stopf5, Query2Dict } from "./component/util_tsx";
 
 const storage = fb.storage();
 const db = fb.firestore()
@@ -12,7 +10,7 @@ interface State {
     profile: { [keys: string]: string };
 }
 
-export class App_tsx extends React.Component<{}, State> {
+export class Mypage_tsx extends React.Component<{}, State> {
     // constructors
     constructor(props: any) {
         super(props);
@@ -202,9 +200,3 @@ export class App_tsx extends React.Component<{}, State> {
         );
     };
 };
-
-document.body.insertAdjacentHTML('beforeend', '<div id="widgethead_tsx">widgethead_tsx loading...<\/div>');
-document.body.insertAdjacentHTML('beforeend', '<div id="app_tsx">app_tsx loading...<\/div>');
-
-ReactDOM.render(<Widgethead_tsx />, document.getElementById("widgethead_tsx"));
-ReactDOM.render(<App_tsx />, document.getElementById("app_tsx"));

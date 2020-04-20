@@ -1,8 +1,6 @@
 import React from 'react';
-import ReactDOM from "react-dom";
 import { auth, fb, fb_errmsg } from "./component/account";
 import { stopf5 } from "./component/util_tsx";
-import { Widgethead_tsx } from "./component/widget";
 
 const storage = fb.storage();
 const db = fb.firestore()
@@ -14,7 +12,7 @@ interface State {
     db_nicoapi: { [tsuid: string]: { request_urls: any, status: string, "User-Agent": string, [keys: string]: string } };
 }
 
-export class App_tsx extends React.Component<{}, State> {
+export class Nicoapi_tsx extends React.Component<{}, State> {
     // constructors
     constructor(props: any) {
         super(props);
@@ -33,7 +31,8 @@ export class App_tsx extends React.Component<{}, State> {
             this.setState({ unsnaps: [this.db_Rwd_getorders.bind(this)(),] })
         }
     }
-    componentWillUnmount() { for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() } }
+    componentWillUnmount() {
+        for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() } }
 
     // functions
     db_Rwd_getorders() {
@@ -422,10 +421,3 @@ export class App_tsx extends React.Component<{}, State> {
         );
     };
 };
-
-
-document.body.insertAdjacentHTML('beforeend', '<div id="widgethead_tsx">widgethead_tsx loading...<\/div>');
-document.body.insertAdjacentHTML('beforeend', '<div id="app_tsx">app_tsx loading...<\/div>');
-
-ReactDOM.render(<Widgethead_tsx />, document.getElementById("widgethead_tsx"));
-ReactDOM.render(<App_tsx />, document.getElementById("app_tsx"));

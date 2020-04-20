@@ -1,7 +1,5 @@
 import React from 'react';
-import ReactDOM from "react-dom";
-import { auth, } from "./component/account";
-import { Widgethead_tsx } from "./component/widget";
+import { auth } from "./component/account";
 
 
 interface State {
@@ -9,7 +7,7 @@ interface State {
 }
 
 
-export class App_tsx extends React.Component<{}, State> {
+export class Homepage_tsx extends React.Component<{}, State> {
     // constructors
     constructor(props: any) {
         super(props);
@@ -32,9 +30,3 @@ export class App_tsx extends React.Component<{}, State> {
         );
     };
 };
-
-document.body.insertAdjacentHTML('beforeend', '<div id="widgethead_tsx">widgethead_tsx loading...<\/div>');
-document.body.insertAdjacentHTML('beforeend', '<div id="app_tsx">app_tsx loading...<\/div>');
-
-ReactDOM.render(<Widgethead_tsx />, document.getElementById("widgethead_tsx"));
-ReactDOM.render(<App_tsx />, document.getElementById("app_tsx"));

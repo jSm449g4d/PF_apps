@@ -1,6 +1,13 @@
 import React from 'react';
 import ReactDOM from "react-dom";
-import { Account_tsx, } from "./account";
+import { Account_tsx } from "./account";
+import { stopf5 } from "./util_tsx";
+// apps
+import { Index_tsx } from "../index";
+import { Homepage_tsx } from "../homepage";
+import { Mypage_tsx } from "../mypage";
+import { Nicoapi_tsx } from "../nicoapi";
+import { Tptef_tsx } from "../tptef";
 
 export function fb_errmsg(error: any) { alert("error_code:" + error.code + "\nerror_message:" + error.message); }
 
@@ -18,21 +25,50 @@ export class Widgethead_tsx extends React.Component<{}, State> {
 
         }, 100)
     }
+    componentDidMount() {
+        ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
+    }
+
+    // functions
+    _switchapp(appname: any) {
+        if (stopf5.check("_switchapp", 300, true) == false) return; // To prevent high freq access
+        ReactDOM.render(appname, document.getElementById("app_tsx"));
+    }
 
     //renders
     render() {
         return (
-            <nav className="navbar navbar-light">
-                <div className="d-flex justify-content-start">
-                    <a className="mx-2" href="/app_tsx.html?app_tsx=mypage.js">マイページ</a>
-                    <a className="mx-2" href="/app_tsx.html?app_tsx=tptef.js">TPTEF</a>
-                    <a className="mx-2" href="/app_tsx.html?app_tsx=nicoapi.js">NicoAPI</a>
-                </div>
-            </nav>
+            <div>
+                <div id="account_tsx">widgethead_tsx loading...</div>
+
+                <nav>
+                    <div className="nav nav-tabs" role="tablist">
+                        <a className="nav-item nav-link" data-toggle="tab"
+                            onClick={() => { this._switchapp(<Index_tsx />) }}>
+                            Index
+                        </a>
+                        <a className="nav-item nav-link" data-toggle="tab"
+                            onClick={() => { this._switchapp(<Homepage_tsx />) }}>
+                            ホームページ
+                        </a>
+                        <a className="nav-item nav-link" data-toggle="tab"
+                            onClick={() => { this._switchapp(<Mypage_tsx />) }}>
+                            マイページ
+                        </a>
+                        <a className="nav-item nav-link" data-toggle="tab"
+                            onClick={() => { this._switchapp(<Nicoapi_tsx />) }}>
+                            NicoAPI
+                        </a>
+                        <a className="nav-item nav-link" data-toggle="tab"
+                            onClick={() => { this._switchapp(<Tptef_tsx />) }}>
+                            TPTEF
+                        </a>
+                    </div>
+                </nav>
+
+            </div>
         );
     }
 }
 
-document.body.insertAdjacentHTML('beforeend', '<div id="account_tsx">account_tsx loading...<\/div>');
 
-ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));

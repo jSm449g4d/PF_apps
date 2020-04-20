@@ -5,10 +5,6 @@
     <meta charset="utf-8">
     <title>APP_TSX</title>
     <link rel="shortcut icon" href="/favicon.ico">
-</head>
-
-<body>
-
     <!--CSS_CDN-->
     <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet" media="print"
         onload="window.FA_css= 1;this.media='all';" />
@@ -18,6 +14,10 @@
         crossorigin="anonymous" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
         media="print" onload="window.Bs_css= 1;this.media='all';" />
     <!--CSS_CDN-->
+</head>
+
+<body>
+
     <!--Bootstrap + jQuery-->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
     <script>if (window.jQuery == null) document.write('<script src="/static/node_modules/jquery/dist/jquery.min.js"><\/script>');</script>
@@ -45,21 +45,16 @@
     <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-storage.js"></script>
     <script>if (window.firebase.storage == null) document.write('<script src="/static/node_modules/firebase/firebase-storage.js"><\/script>');</script>
     <!--firebase-->
+
+    <!--app_tsx loader-->
+    <script src="/static/src/app_tsx.js"></script>
+    <!--app_tsx loader-->
+
     <!--CSS_FB-->
     <script>if (window.FA_css == null) document.write('<link href="/static/node_modules/@fortawesome/fontawesome-free/css/all.css" rel="stylesheet" \/>');</script>
     <script>if (window.FAAcss == null) document.write('<link href="/static/node_modules/font-awesome-animation/dist/font-awesome-animation.min.css" rel="stylesheet" \/>');</script>
     <script>if (window.Bs_css == null) document.write('<link href="/static/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" \/>');</script>
     <!--CSS_FB-->
-
-    <!--app_tsx loader-->
-    <script>
-        if (new URL(document.URL).searchParams.get('app_tsx') == null) { document.write('<script src="/static/src/index.js"><\/script>') }
-        else { document.write('<script src="/static/src/' + new URL(document.URL).searchParams.get('app_tsx') + '"><\/script>') };
-    </script>
-    <!--app_tsx loader-->
-
-    <a class="btn btn-outline-success btn-sm m-2" href="/app_tsx.html">Back</a>
-
 </body>
 
 </html>

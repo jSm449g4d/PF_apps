@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from "react-dom";
 import { Account_tsx } from "./account";
-import { stopf5 } from "./util_tsx";
+import { stopf5, Query2Dict } from "./util_tsx";
 require.context('../application/', true, /\.ts(x?)$/)
 
 interface State { }
@@ -25,34 +25,28 @@ export class Widgethead_tsx extends React.Component<{}, State> {
             ReactDOM.render(<module.App_tsx />, document.getElementById("app_tsx"));
         })
     }
-
     // renders
+    render_navitem(icon: any, title: string, application: string) {
+        let addClassname: string = ""
+        if (Query2Dict()["application"] == application) { addClassname += " active"; }
+        return (
+            <a className={"nav-item nav-link p-1" + addClassname} data-toggle="tab"
+                onClick={() => { this._switchapp2(application) }}>
+                {icon}{title}
+            </a>
+        )
+    }
     render() {
         return (
             <div className="d-flex align-items-end">
                 <i className="fab fa-react fa-2x fa-spin m-2" style={{ color: "mediumturquoise" }}></i>
                 <nav>
                     <div className="nav nav-tabs" role="tablist">
-                        <a className="nav-item nav-link p-1" data-toggle="tab"
-                            onClick={() => { this._switchapp2("apacheindex") }}>
-                            <i className="fas fa-helicopter mr-1"></i>A_Index
-                        </a>
-                        <a className="nav-item nav-link p-1" data-toggle="tab"
-                            onClick={() => { this._switchapp2("homepage") }}>
-                            <i className="fas fa-home mr-1"></i>ホームページ
-                        </a>
-                        <a className="nav-item nav-link p-1" data-toggle="tab"
-                            onClick={() => { this._switchapp2("mypage") }}>
-                            <i className="far fa-address-card mr-1"></i>マイページ
-                        </a>
-                        <a className="nav-item nav-link p-1" data-toggle="tab"
-                            onClick={() => { this._switchapp2("tptef") }}>
-                            <i className="far fa-comments mr-1"></i>TPTEF
-                        </a>
-                        <a className="nav-item nav-link p-1" data-toggle="tab"
-                            onClick={() => { this._switchapp2("nicoapi") }}>
-                            <i className="fas fa-database mr-1"></i>NicoAPI
-                        </a>
+                        {this.render_navitem(<i className="fas fa-helicopter mr-1"></i>, "A_Index", "apacheindex")}
+                        {this.render_navitem(<i className="fas fa-home mr-1"></i>, "ホームページ", "homepage")}
+                        {this.render_navitem(<i className="far fa-address-card mr-1"></i>, "マイページ", "mypage")}
+                        {this.render_navitem(<i className="far fa-comments mr-1"></i>, "チャット", "tptef")}
+                        {this.render_navitem(<i className="fas fa-database mr-1"></i>, "NicoAPI", "nicoapi")}
                     </div>
                 </nav>
                 <div className="ml-auto">

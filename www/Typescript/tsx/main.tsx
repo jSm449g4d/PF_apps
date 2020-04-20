@@ -69,13 +69,13 @@ ReactDOM.render(<Widgethead_tsx />, document.getElementById("widgethead_tsx"));
 document.body.insertAdjacentHTML('beforeend', '<div id="app_tsx">app_tsx loading...<\/div>');
 require.context('./application/', true, /\.ts(x?)$/)
 // Alias / homepage
-if ("app_tsx" in Query2Dict() == false) { 
+if ("application" in Query2Dict() == false) { 
     import("./application/homepage").then((module) => {
         ReactDOM.render(<module.App_tsx />, document.getElementById("app_tsx"));
     })
 }
 else {
-    import("./application/" + Query2Dict()["app_tsx"]).then((module) => {
+    import("./application/" + Query2Dict()["application"]).then((module) => {
         ReactDOM.render(<module.App_tsx />, document.getElementById("app_tsx"));
     })
 }

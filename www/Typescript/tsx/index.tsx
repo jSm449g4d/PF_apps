@@ -5,26 +5,17 @@ import { Query2Dict } from "./component/util_tsx";
 import { Widgethead_tsx } from "./component/widget";
 
 interface State {
-    uid: string; unsnaps: any;
 }
 
 export class Index_tsx extends React.Component<{}, State> {
     // constructors
     constructor(props: any) {
         super(props);
-        this.state = { uid: "", unsnaps: [] };
-        setInterval(() => {
-            if (auth.currentUser) { if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid }); }
-            else { if (this.state.uid != "") this.setState({ uid: "" }); }
-        }, 100)
+        this.state = {};
     }
-    componentDidMount() {
-    }
-    componentDidUpdate(prevProps: object, prevState: State) {
-    }
-    componentWillUnmount() {
-        for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() }
-    }
+    componentDidMount() { }
+    componentDidUpdate(prevProps: object, prevState: State) { }
+    componentWillUnmount() { }
 
     // functions
     render() {

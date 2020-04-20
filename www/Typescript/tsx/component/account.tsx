@@ -38,6 +38,9 @@ export class Account_tsx extends React.Component<{}, State> {
             else { if (this.state.uid != "") this.setState({ uid: "" }); }
         }, 100)
     }
+    componentDidMount() { setInterval(this._tick.bind(this), 100); }
+    componentDidUpdate(prevProps: object, prevState: State) { }
+    componentWillUnmount() { }
 
     //functions
     auth_signup(mail_addr: string = this.state.tmpaddr, mail_pass: string = this.state.tmppass) {
@@ -61,6 +64,14 @@ export class Account_tsx extends React.Component<{}, State> {
         }
     }
     auth_glogin() { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch((err) => { fb_errmsg(err) }) }
+    _tick() {
+        // Auth
+        if (auth.currentUser) {
+            if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid });
+        } else {
+            if (this.state.uid != "") this.setState({ uid: "" });
+        }
+    }
 
     //renders
     render_sign_modal(title: string, func: any) {

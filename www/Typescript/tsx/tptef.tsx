@@ -19,13 +19,9 @@ export class Tptef_tsx extends React.Component<{}, State> {
             uid: "", unsnaps: [], room: "main", tmproom: "main", tmpcontent: "", tmpfile: null, jpclock_str: "now loading",
             db_tptef: {}, profile: { nickname: "窓の民は名無し" }
         };
-        setInterval(() => {
-            if (auth.currentUser) { if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid }); }
-            else { if (this.state.uid != "") this.setState({ uid: "" }); }
-            this.setState({ jpclock_str: jpclock_func() }) // Decoration
-        }, 100)
     }
     componentDidMount() {
+        setInterval(this._tick.bind(this), 100)
         for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() }
         this.setState({ unsnaps: [this.db_Rwd_getroom.bind(this)(), this.db_Rwd_getmypage.bind(this)()] })
     }
@@ -104,6 +100,16 @@ export class Tptef_tsx extends React.Component<{}, State> {
         if (attachment_dir == "") return;
         if (stopf5.check("4", 500, true) == false) return; // To prevent high freq access
         storage.ref(attachment_dir).delete().catch((err) => { fb_errmsg(err) })
+    }
+    _tick() {
+        // Auth
+        if (auth.currentUser) {
+            if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid });
+        } else {
+            if (this.state.uid != "") this.setState({ uid: "" });
+        }
+        // Clock
+        this.setState({ jpclock_str: jpclock_func() })
     }
 
     // renders

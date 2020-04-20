@@ -20,12 +20,9 @@ export class Mypage_tsx extends React.Component<{}, State> {
             icon_url: "",
             profile: {},
         };
-        setInterval(() => {
-            if (auth.currentUser) { if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid }); }
-            else { if (this.state.uid != "") this.setState({ uid: "" }); }
-        }, 100)
     }
 
+    componentDidMount() { setInterval(this._tick.bind(this), 100) }
     componentDidUpdate(prevProps: object, prevState: State) {
         if (this.state.uid != prevState.uid || this.state.showuid != prevState.showuid) {
             for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() }
@@ -75,6 +72,16 @@ export class Mypage_tsx extends React.Component<{}, State> {
         if (stopf5.check("2", 500, true) == false) return; // To prevent high freq access
         storage.ref("mypage/" + this.state.showuid + "/icon.img").put(upload_file);
         setTimeout(() => { this.storage_Rwd_icon() }, 1000)
+    }
+    _tick() {
+        // Auth
+        if (auth.currentUser) {
+            if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid });
+        } else {
+            if (this.state.uid != "") this.setState({ uid: "" });
+        }
+        // alias none mypage
+        if (this.state.showuid == "") this.setState({ showuid: this.state.uid })
     }
     _gotomypage() {
         this.setState({ showuid: this.state.uid })

@@ -20,11 +20,8 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
             uid: "", unsnaps: [], APIendpoint: "https://", service_name: "カスタム", crawlerresp_dict: { thread: "stop" },
             fields: {}, db_nicoapi: {}
         };
-        setInterval(() => {
-            if (auth.currentUser) { if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid }); }
-            else { if (this.state.uid != "") this.setState({ uid: "" }); }
-        }, 100)
     }
+    componentDidMount() { setInterval(this._tick.bind(this), 100) }
     componentDidUpdate(prevProps: object, prevState: State) {
         if (this.state.uid != prevState.uid) {
             for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() }
@@ -32,7 +29,8 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         }
     }
     componentWillUnmount() {
-        for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() } }
+        for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() }
+    }
 
     // functions
     db_Rwd_getorders() {
@@ -82,6 +80,14 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
         if (stopf5.check("3", 500) == false) return; // To prevent high freq access
         storage.ref("nicoapi/" + this.state.uid + "/" + tsuid + ".zip").delete().catch((err) => { fb_errmsg(err) });
         this.db_rwD_delorders(tsuid)
+    }
+    _tick() {
+        // Auth
+        if (auth.currentUser) {
+            if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid });
+        } else {
+            if (this.state.uid != "") this.setState({ uid: "" });
+        }
     }
     _genorders() {
         const request_urls = [this.state.APIendpoint.replace("?", "") + "?"];

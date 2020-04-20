@@ -12,22 +12,19 @@ import { Tptef_tsx } from "../tptef";
 export function fb_errmsg(error: any) { alert("error_code:" + error.code + "\nerror_message:" + error.message); }
 
 interface State {
-    uid: string, tmpaddr: string, tmppass: string
 }
+
 export class Widgethead_tsx extends React.Component<{}, State> {
     //constructors
     constructor(props: any) {
         super(props);
-        this.state = {
-            uid: "", tmpaddr: "", tmppass: ""
-        };
-        setInterval(() => {
-
-        }, 100)
+        this.state = {};
     }
     componentDidMount() {
         ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
     }
+    componentDidUpdate(prevProps: object, prevState: State) { }
+    componentWillUnmount() { }
 
     // functions
     _switchapp(appname: any) {
@@ -56,12 +53,12 @@ export class Widgethead_tsx extends React.Component<{}, State> {
                             マイページ
                         </a>
                         <a className="nav-item nav-link" data-toggle="tab"
-                            onClick={() => { this._switchapp(<Nicoapi_tsx />) }}>
-                            NicoAPI
-                        </a>
-                        <a className="nav-item nav-link" data-toggle="tab"
                             onClick={() => { this._switchapp(<Tptef_tsx />) }}>
                             TPTEF
+                        </a>
+                        <a className="nav-item nav-link" data-toggle="tab"
+                            onClick={() => { this._switchapp(<Nicoapi_tsx />) }}>
+                            NicoAPI
                         </a>
                     </div>
                 </nav>

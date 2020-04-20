@@ -2,11 +2,7 @@ import React from 'react';
 import ReactDOM from "react-dom";
 import { Account_tsx } from "./account";
 import { stopf5 } from "./util_tsx";
-
-// application
 require.context('../application/', true, /\.ts(x?)$/)
-
-export function fb_errmsg(error: any) { alert("error_code:" + error.code + "\nerror_message:" + error.message); }
 
 interface State { }
 

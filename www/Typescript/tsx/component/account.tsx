@@ -77,7 +77,7 @@ export class Account_tsx extends React.Component<{}, State> {
     render_signin_modal() {
         return (
             <div>
-                <button type="button" className="btn btn-success btn-sm mx-1" data-toggle="modal" data-target={"#signin_modal"}>
+                <button type="button" className="btn btn-success btn-sm m-1" data-toggle="modal" data-target={"#signin_modal"}>
                     <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>SignIn
                 </button>
                 <div className="modal fade" id="signin_modal" role="dialog" aria-hidden="true">
@@ -128,7 +128,7 @@ export class Account_tsx extends React.Component<{}, State> {
     render_signup_modal() {
         return (
             <div>
-                <button type="button" className="btn btn-primary btn-sm mx-1" data-toggle="modal" data-target={"#signup_modal"}>
+                <button type="button" className="btn btn-primary btn-sm m-1" data-toggle="modal" data-target={"#signup_modal"}>
                     <i className="fas fa-file-signature mr-1" style={{ pointerEvents: "none" }}></i>SignUp
                 </button>
                 <div className="modal fade" id="signup_modal" role="dialog" aria-hidden="true">
@@ -220,7 +220,7 @@ export class Account_tsx extends React.Component<{}, State> {
     }
     render() {
         return (
-            <div className="p-2">
+            <div>
                 {this.state.uid == "" ?
                     <div className="d-flex justify-content-between">
                         <div className="ml-auto">

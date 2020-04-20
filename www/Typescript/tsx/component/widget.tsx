@@ -34,6 +34,10 @@ export class Widgethead_tsx extends React.Component<{}, State> {
                 <nav>
                     <div className="nav nav-tabs" role="tablist">
                         <a className="nav-item nav-link p-1" data-toggle="tab"
+                            onClick={() => { this._switchapp2("apacheindex") }}>
+                            <i className="fas fa-helicopter mr-1"></i>A_Index
+                        </a>
+                        <a className="nav-item nav-link p-1" data-toggle="tab"
                             onClick={() => { this._switchapp2("homepage") }}>
                             <i className="fas fa-database mr-1"></i>ホームページ
                         </a>

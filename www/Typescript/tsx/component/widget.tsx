@@ -2,17 +2,16 @@ import React from 'react';
 import ReactDOM from "react-dom";
 import { Account_tsx } from "./account";
 import { stopf5 } from "./util_tsx";
-// apps
-import { Index_tsx } from "../index";
-import { Homepage_tsx } from "../homepage";
-import { Mypage_tsx } from "../mypage";
-import { Nicoapi_tsx } from "../nicoapi";
-import { Tptef_tsx } from "../tptef";
+
+// application
+import * as homepage from "../application/homepage";
+import * as mypage from "../application/mypage";
+import * as tptef from "../application/tptef";
+import * as nicoapi from "../application/nicoapi";
 
 export function fb_errmsg(error: any) { alert("error_code:" + error.code + "\nerror_message:" + error.message); }
 
-interface State {
-}
+interface State { }
 
 export class Widgethead_tsx extends React.Component<{}, State> {
     //constructors
@@ -32,32 +31,27 @@ export class Widgethead_tsx extends React.Component<{}, State> {
         ReactDOM.render(appname, document.getElementById("app_tsx"));
     }
 
-    //renders
+    // renders
     render() {
         return (
             <div>
                 <div id="account_tsx">widgethead_tsx loading...</div>
-
                 <nav>
                     <div className="nav nav-tabs" role="tablist">
                         <a className="nav-item nav-link" data-toggle="tab"
-                            onClick={() => { this._switchapp(<Index_tsx />) }}>
-                            Index
-                        </a>
-                        <a className="nav-item nav-link" data-toggle="tab"
-                            onClick={() => { this._switchapp(<Homepage_tsx />) }}>
+                            onClick={() => { this._switchapp(<homepage.App_tsx />) }}>
                             ホームページ
                         </a>
                         <a className="nav-item nav-link" data-toggle="tab"
-                            onClick={() => { this._switchapp(<Mypage_tsx />) }}>
+                            onClick={() => { this._switchapp(<mypage.App_tsx />) }}>
                             マイページ
                         </a>
                         <a className="nav-item nav-link" data-toggle="tab"
-                            onClick={() => { this._switchapp(<Tptef_tsx />) }}>
+                            onClick={() => { this._switchapp(<tptef.App_tsx />) }}>
                             TPTEF
                         </a>
                         <a className="nav-item nav-link" data-toggle="tab"
-                            onClick={() => { this._switchapp(<Nicoapi_tsx />) }}>
+                            onClick={() => { this._switchapp(<nicoapi.App_tsx />) }}>
                             NicoAPI
                         </a>
                     </div>
@@ -67,5 +61,3 @@ export class Widgethead_tsx extends React.Component<{}, State> {
         );
     }
 }
-
-

@@ -4,7 +4,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
 //  entry: entry("./tsx/*.tsx"),
-  entry: entry("./tsx/index.tsx"),
+  entry: entry("./tsx/main.tsx"),
   output: {
     path: path.resolve(__dirname, "../"),
 //    filename: "./html/static/src/[name].js",

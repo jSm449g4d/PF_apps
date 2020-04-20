@@ -1,6 +1,6 @@
 import React from 'react';
-import { auth, fb, fb_errmsg } from "./component/account";
-import { stopf5, Query2Dict } from "./component/util_tsx";
+import { auth, fb, fb_errmsg } from "../component/account";
+import { stopf5, Query2Dict } from "../component/util_tsx";
 
 const storage = fb.storage();
 const db = fb.firestore()
@@ -10,7 +10,7 @@ interface State {
     profile: { [keys: string]: string };
 }
 
-export class Mypage_tsx extends React.Component<{}, State> {
+export class App_tsx extends React.Component<{}, State> {
     // constructors
     constructor(props: any) {
         super(props);

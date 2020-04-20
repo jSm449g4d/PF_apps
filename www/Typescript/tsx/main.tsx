@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from "react-dom";
-import { auth, } from "./component/account";
 import { Query2Dict } from "./component/util_tsx";
 import { Widgethead_tsx } from "./component/widget";
 
 interface State {
 }
 
-export class Index_tsx extends React.Component<{}, State> {
+// IndexPage
+class App_tsx extends React.Component<{}, State> {
     // constructors
     constructor(props: any) {
         super(props);
@@ -61,18 +61,15 @@ export class Index_tsx extends React.Component<{}, State> {
     };
 };
 
-
+// Widget
 document.body.insertAdjacentHTML('beforeend', '<div id="widgethead_tsx">widgethead_tsx loading...<\/div>');
-document.body.insertAdjacentHTML('beforeend', '<div id="app_tsx">app_tsx loading...<\/div>');
-
-
 ReactDOM.render(<Widgethead_tsx />, document.getElementById("widgethead_tsx"));
-ReactDOM.render(<Index_tsx />, document.getElementById("app_tsx"));
+// App
+document.body.insertAdjacentHTML('beforeend', '<div id="app_tsx">app_tsx loading...<\/div>');
+ReactDOM.render(<App_tsx />, document.getElementById("app_tsx"));
 
-
-// Alias / homepage 
+// Alias / homepage
+import * as homepage from "./application/homepage";
 if (Query2Dict()["app_tsx"] != "index") {
-    import('./homepage').then((module) => {
-        ReactDOM.render(<module.Homepage_tsx />, document.getElementById("app_tsx"));
-    })
+    ReactDOM.render(<homepage.App_tsx />, document.getElementById("app_tsx"));
 }

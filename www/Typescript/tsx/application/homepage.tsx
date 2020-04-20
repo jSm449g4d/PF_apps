@@ -1,12 +1,12 @@
 import React from 'react';
-import { auth } from "./component/account";
+import { auth } from "../component/account";
 
 
 interface State {
     uid: string; unsnaps: any;
 }
 
-export class Homepage_tsx extends React.Component<{}, State> {
+export class App_tsx extends React.Component<{}, State> {
     // constructors
     constructor(props: any) {
         super(props);

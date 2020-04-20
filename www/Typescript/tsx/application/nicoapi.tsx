@@ -1,6 +1,6 @@
 import React from 'react';
-import { auth, fb, fb_errmsg } from "./component/account";
-import { stopf5 } from "./component/util_tsx";
+import { auth, fb, fb_errmsg } from "../component/account";
+import { stopf5 } from "../component/util_tsx";
 
 const storage = fb.storage();
 const db = fb.firestore()
@@ -12,7 +12,7 @@ interface State {
     db_nicoapi: { [tsuid: string]: { request_urls: any, status: string, "User-Agent": string, [keys: string]: string } };
 }
 
-export class Nicoapi_tsx extends React.Component<{}, State> {
+export class App_tsx extends React.Component<{}, State> {
     // constructors
     constructor(props: any) {
         super(props);

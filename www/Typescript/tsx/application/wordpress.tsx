@@ -19,13 +19,9 @@ export class App_tsx extends React.Component<{}, State> {
     // renders
     render() {
         return (
-            <div>
-                <iframe id="inline-frame"
-                    width="100%"
-                    height="100%"
-                    src="./wordpress">
-                </iframe>
-            </div>
+        <div>
+            {window.location.href = "./wordpress"}
+        </div>
         );
     };
 };

@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from "react-dom";
-import { Account_tsx, auth, fb, fb_errmsg } from "./component/account";
+import { auth, fb, fb_errmsg } from "./component/account";
 import { stopf5, Query2Dict, Dict2Query } from "./component/util_tsx";
+import { Widgethead_tsx } from "./component/widget";
 
 const storage = fb.storage();
 const db = fb.firestore()
@@ -11,7 +12,7 @@ interface State {
     profile: { [keys: string]: string };
 }
 
-export class Mypage_tsx extends React.Component<{}, State> {
+export class App_tsx extends React.Component<{}, State> {
     // constructors
     constructor(props: any) {
         super(props);
@@ -162,7 +163,7 @@ export class Mypage_tsx extends React.Component<{}, State> {
     }
     render() {
         return (
-            <div className="m-2">
+            <div className="p-2 bg-light">
                 {"nickname" in this.state.profile == false ?
                     <div>{this.render_createmypage()}</div>
                     :
@@ -202,8 +203,8 @@ export class Mypage_tsx extends React.Component<{}, State> {
     };
 };
 
-document.body.insertAdjacentHTML('afterbegin', '<div id="app_tsx">app_tsx loading...<\/div>');
-document.body.insertAdjacentHTML('afterbegin', '<div id="account_tsx">account_tsx loading...<\/div>');
+document.body.insertAdjacentHTML('beforeend', '<div id="widgethead_tsx">widgethead_tsx loading...<\/div>');
+document.body.insertAdjacentHTML('beforeend', '<div id="app_tsx">app_tsx loading...<\/div>');
 
-ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
-ReactDOM.render(<Mypage_tsx />, document.getElementById("app_tsx"));
+ReactDOM.render(<Widgethead_tsx />, document.getElementById("widgethead_tsx"));
+ReactDOM.render(<App_tsx />, document.getElementById("app_tsx"));

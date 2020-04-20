@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from "react-dom";
-import { Account_tsx, auth, fb, fb_errmsg } from "./component/account";
+import { auth, fb, fb_errmsg } from "./component/account";
 import { stopf5 } from "./component/util_tsx";
+import { Widgethead_tsx } from "./component/widget";
 
 const storage = fb.storage();
 const db = fb.firestore()
@@ -13,7 +14,7 @@ interface State {
     db_nicoapi: { [tsuid: string]: { request_urls: any, status: string, "User-Agent": string, [keys: string]: string } };
 }
 
-export class Nicoapi_tsx extends React.Component<{}, State> {
+export class App_tsx extends React.Component<{}, State> {
     // constructors
     constructor(props: any) {
         super(props);
@@ -371,7 +372,7 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
     }
     render() {
         return (
-            <div className="m-2">
+            <div className="p-2 bg-light">
                 {this.state.uid == "" ?
                     <h5><i className="fas fa-wind mr-1"></i>Plz login</h5>
                     :
@@ -423,8 +424,8 @@ export class Nicoapi_tsx extends React.Component<{}, State> {
 };
 
 
-document.body.insertAdjacentHTML('afterbegin', '<div id="app_tsx">app_tsx loading...<\/div>');
-document.body.insertAdjacentHTML('afterbegin', '<div id="account_tsx">account_tsx loading...<\/div>');
+document.body.insertAdjacentHTML('beforeend', '<div id="widgethead_tsx">widgethead_tsx loading...<\/div>');
+document.body.insertAdjacentHTML('beforeend', '<div id="app_tsx">app_tsx loading...<\/div>');
 
-ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
-ReactDOM.render(<Nicoapi_tsx />, document.getElementById("app_tsx"));
+ReactDOM.render(<Widgethead_tsx />, document.getElementById("widgethead_tsx"));
+ReactDOM.render(<App_tsx />, document.getElementById("app_tsx"));

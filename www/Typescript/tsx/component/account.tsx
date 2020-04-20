@@ -151,7 +151,7 @@ export class Account_tsx extends React.Component<{}, State> {
     }
     render() {
         return (
-            <div className="bg-light p-2">
+            <div className="p-2">
                 {this.state.uid == "" ?
                     <div className="d-flex justify-content-between">
                         <h5><i className="fas fa-wind mr-1"></i>サービスを利用するには、ログインしてください</h5>

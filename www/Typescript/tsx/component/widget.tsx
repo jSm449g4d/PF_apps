@@ -42,7 +42,7 @@ export class Widgethead_tsx extends React.Component<{}, State> {
                 <i className="fab fa-react fa-2x fa-spin m-2" style={{ color: "mediumturquoise" }}></i>
                 <nav>
                     <div className="nav nav-tabs" role="tablist">
-                        {this.render_navitem(<i className="fas fa-helicopter mr-1"></i>, "A_Index", "apacheindex")}
+                        {this.render_navitem(<i className="fab fa-wordpress mr-1"></i>, "Blog", "wordpress")}
                         {this.render_navitem(<i className="fas fa-home mr-1"></i>, "ホームページ", "homepage")}
                         {this.render_navitem(<i className="far fa-address-card mr-1"></i>, "マイページ", "mypage")}
                         {this.render_navitem(<i className="far fa-comments mr-1"></i>, "チャット", "tptef")}

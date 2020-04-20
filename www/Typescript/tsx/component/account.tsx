@@ -101,13 +101,16 @@ export class Account_tsx extends React.Component<{}, State> {
                                     </button>
                                 </div>
                                 <div>
-                                    <button className="btn btn-warning btn-sm m-1" type="button" onClick={() => { this.auth_easyin() }}>
+                                    <button className="btn btn-warning btn-sm m-1" type="button" data-dismiss="modal"
+                                        onClick={() => { this.auth_easyin() }}>
                                         <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>EzLogin
                                     </button>
-                                    <button className="btn btn-warning btn-sm m-1" type="button" onClick={() => { this.auth_easyin2() }}>
+                                    <button className="btn btn-warning btn-sm m-1" type="button" data-dismiss="modal"
+                                        onClick={() => { this.auth_easyin2() }}>
                                         <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>別垢版
                                     </button>
-                                    <button className="btn btn-primary btn-sm m-1" type="button" onClick={() => { this.auth_glogin() }}>
+                                    <button className="btn btn-primary btn-sm m-1" type="button" data-dismiss="modal"
+                                        onClick={() => { this.auth_glogin() }}>
                                         <i className="fab fa-google mr-1" style={{ pointerEvents: "none" }}></i>Google
                                     </button>
                                     <button className="btn btn-success btn-sm m-1" type="button" data-dismiss="modal"

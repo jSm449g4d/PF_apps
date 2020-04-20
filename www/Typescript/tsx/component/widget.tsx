@@ -4,10 +4,7 @@ import { Account_tsx } from "./account";
 import { stopf5 } from "./util_tsx";
 
 // application
-import * as homepage from "../application/homepage";
-import * as mypage from "../application/mypage";
-import * as tptef from "../application/tptef";
-import * as nicoapi from "../application/nicoapi";
+require.context('../application/', true, /\.ts(x?)$/)
 
 export function fb_errmsg(error: any) { alert("error_code:" + error.code + "\nerror_message:" + error.message); }
 
@@ -26,32 +23,34 @@ export class Widgethead_tsx extends React.Component<{}, State> {
     componentWillUnmount() { }
 
     // functions
-    _switchapp(appname: any) {
+    _switchapp2(appname: string) {
         if (stopf5.check("_switchapp", 300, true) == false) return; // To prevent high freq access
-        ReactDOM.render(appname, document.getElementById("app_tsx"));
+        import("../application/" + appname).then((module) => {
+            ReactDOM.render(<module.App_tsx />, document.getElementById("app_tsx"));
+        })
     }
 
     // renders
     render() {
         return (
             <div className="d-flex align-items-end">
-                <i className="fab fa-react fa-2x fa-spin m-2" style={{color:"mediumturquoise"}}></i>
+                <i className="fab fa-react fa-2x fa-spin m-2" style={{ color: "mediumturquoise" }}></i>
                 <nav>
                     <div className="nav nav-tabs" role="tablist">
-                        <a className="nav-item nav-link active p-1" data-toggle="tab"
-                            onClick={() => { this._switchapp(<homepage.App_tsx />) }}>
-                            <i className="fas fa-home mr-1"></i>ホームページ
+                        <a className="nav-item nav-link p-1" data-toggle="tab"
+                            onClick={() => { this._switchapp2("homepage") }}>
+                            <i className="fas fa-database mr-1"></i>ホームページ
                         </a>
                         <a className="nav-item nav-link p-1" data-toggle="tab"
-                            onClick={() => { this._switchapp(<mypage.App_tsx />) }}>
-                            <i className="far fa-address-card mr-1"></i>マイページ
+                            onClick={() => { this._switchapp2("mypage") }}>
+                            <i className="fas fa-database mr-1"></i>マイページ
                         </a>
                         <a className="nav-item nav-link p-1" data-toggle="tab"
-                            onClick={() => { this._switchapp(<tptef.App_tsx />) }}>
-                            <i className="far fa-comments mr-1"></i>TPTEF
+                            onClick={() => { this._switchapp2("tptef") }}>
+                            <i className="fas fa-database mr-1"></i>TPTEF
                         </a>
                         <a className="nav-item nav-link p-1" data-toggle="tab"
-                            onClick={() => { this._switchapp(<nicoapi.App_tsx />) }}>
+                            onClick={() => { this._switchapp2("nicoapi") }}>
                             <i className="fas fa-database mr-1"></i>NicoAPI
                         </a>
                     </div>

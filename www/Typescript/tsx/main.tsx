@@ -64,12 +64,17 @@ class App_tsx extends React.Component<{}, State> {
 // Widget
 document.body.insertAdjacentHTML('beforeend', '<div id="widgethead_tsx">widgethead_tsx loading...<\/div>');
 ReactDOM.render(<Widgethead_tsx />, document.getElementById("widgethead_tsx"));
+
 // App
 document.body.insertAdjacentHTML('beforeend', '<div id="app_tsx">app_tsx loading...<\/div>');
-ReactDOM.render(<App_tsx />, document.getElementById("app_tsx"));
-
-// Alias / homepage
-import * as homepage from "./application/homepage";
-if (Query2Dict()["app_tsx"] != "index") {
-    ReactDOM.render(<homepage.App_tsx />, document.getElementById("app_tsx"));
+require.context('./application/', true, /\.ts(x?)$/)
+if ("app_tsx" in Query2Dict() == false) { // Alias / homepage
+    import("./application/homepage").then((module) => {
+        ReactDOM.render(<module.App_tsx />, document.getElementById("app_tsx"));
+    })
+}
+else { // App
+    import("./application/" + Query2Dict()["app_tsx"]).then((module) => {
+        ReactDOM.render(<module.App_tsx />, document.getElementById("app_tsx"));
+    })
 }

@@ -7,7 +7,7 @@ module.exports = {
   entry: entry("./tsx/main.tsx"),
   output: {
     path: path.resolve(__dirname, "../"),
-//    filename: "./html/static/src/[name].js",
+    //    filename: "./html/static/src/[name].js",
     filename: "./html/static/src/app_tsx.js",
   },
 
@@ -15,7 +15,7 @@ module.exports = {
   devtool: "source-map",
 
   resolve: {
-    extensions: [".js",".ts", ".tsx"],
+    extensions: [".js", ".ts", ".tsx"],
   },
 
   module: {
@@ -29,7 +29,7 @@ module.exports = {
   plugins: [new CopyPlugin([{ from: "./html/**/*", to: "./" }])],
 
   externals: {
-    "react": "React",
+    react: "React",
     "react-dom": "ReactDOM",
     "firebase/app": "firebase",
     "firebase/analytics": "firebase",
@@ -38,3 +38,4 @@ module.exports = {
     "firebase/firestore": "firebase",
   },
 };
+

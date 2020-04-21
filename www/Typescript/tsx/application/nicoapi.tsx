@@ -349,7 +349,7 @@ export class App_tsx extends React.Component<{}, State> {
                 //attachment download button
                 if (doc_records[tsuids[i]]["status"] == "processed") tmp_datum.push(
                     <button key={2} className="btn btn-outline-danger btn-sm m-1" name={tsuids[i]}
-                        onClick={(evt: any) => { this.stD_DelOrderZip(evt.target.name) }}>
+                        onClick={(evt: any) => { this.dbD_DelOrder(evt.target.name),this.stD_DelOrderZip(evt.target.name) }}>
                         <i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Del
                     </button>)
             } tmp_data.push(<td key={3}>{tmp_datum}</td>)

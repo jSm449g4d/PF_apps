@@ -6,7 +6,7 @@ const storage = fb.storage();
 const db = fb.firestore();
 
 interface State {
-    uid: string; unsnaps: any; room: string; tmproom: string, tmpcontent: string, tmpfile: any, jpclock_str: string,
+    uid: string; db_snap: any; room: string; tmp_room: string, tmp_content: string, tmp_file: any, jpclock_str: string,
     db_tptef: { [tsuid: string]: { attachment_dir: string, content: string, handlename: string, [keys: string]: string } }
     profile: { nickname: string, [keys: string]: string };
 }
@@ -16,36 +16,36 @@ export class App_tsx extends React.Component<{}, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            uid: "", unsnaps: [], room: "main", tmproom: "main", tmpcontent: "", tmpfile: null, jpclock_str: "now loading",
+            uid: "", db_snap: [], room: "main", tmp_room: "main", tmp_content: "", tmp_file: null, jpclock_str: "now loading",
             db_tptef: {}, profile: { nickname: "窓の民は名無し" }
         };
     }
     componentDidMount() {
         setInterval(this._tick.bind(this), 100)
-        for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() }
-        this.setState({ unsnaps: [this.dbR_GetRoom.bind(this)(), this.dbR_getmypage.bind(this)()] })
+        for (let i = 0; i < this.state.db_snap.length; i++) { this.state.db_snap[i]() }
+        this.setState({ db_snap: [this.dbR_GetRoom.bind(this)(), this.dbR_GetMypage.bind(this)()] })
     }
     componentDidUpdate(prevProps: object, prevState: State) {
         if (this.state.room != prevState.room || this.state.uid != prevState.uid) {
-            for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() }
-            this.setState({ unsnaps: [this.dbR_GetRoom.bind(this)(), this.dbR_getmypage.bind(this)()] })
+            for (let i = 0; i < this.state.db_snap.length; i++) { this.state.db_snap[i]() }
+            this.setState({ db_snap: [this.dbR_GetRoom.bind(this)(), this.dbR_GetMypage.bind(this)()] })
         }
     }
-    componentWillUnmount() { for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() } }
+    componentWillUnmount() { for (let i = 0; i < this.state.db_snap.length; i++) { this.state.db_snap[i]() } }
 
     // functions
     dbC_AddRemark() {
-        if (this.state.tmpcontent == "") { alert("Plz input content"); return; };
-        if (stopf5.check("1", 500, true) == false) return; // To prevent high freq access
+        if (this.state.tmp_content == "") { alert("Plz input content"); return; };
+        if (stopf5.check("dbC_AddRemark", 500, true) == false) return; // To prevent high freq access
         let attachment_dir: string = "";
-        if (this.state.tmpfile) {
-            attachment_dir = "tptef/" + this.state.uid + "/" + this.state.tmpfile.name;
-            storage.ref(attachment_dir).put(this.state.tmpfile).catch((err) => { fb_errmsg(err) });;
+        if (this.state.tmp_file) {
+            attachment_dir = "tptef/" + this.state.uid + "/" + this.state.tmp_file.name;
+            storage.ref(attachment_dir).put(this.state.tmp_file).catch((err) => { fb_errmsg(err) });;
         }
         db.doc("tptef/" + this.state.room).set({
             [Date.now().toString() + "_" + this.state.uid]: {
                 handlename: this.state.profile.nickname,
-                content: this.state.tmpcontent,
+                content: this.state.tmp_content,
                 attachment_dir: attachment_dir,
             }
         }, { merge: true }).catch((err) => { fb_errmsg(err) });;
@@ -72,7 +72,7 @@ export class App_tsx extends React.Component<{}, State> {
             } else { this.setState({ db_tptef: doc.data() }) }
         })
     }
-    dbR_getmypage() {
+    dbR_GetMypage() {
         if (this.state.uid == "") return () => { };
         return db.doc("mypage/" + this.state.uid).onSnapshot((doc) => {
             if (doc.exists) {
@@ -93,6 +93,14 @@ export class App_tsx extends React.Component<{}, State> {
     stD_DelAttachment(attachment_dir: string) {
         if (attachment_dir == "") return;
         storage.ref(attachment_dir).delete().catch((err) => { fb_errmsg(err) })
+    }
+    _SetRoom(){
+        if (this.state.tmp_room==""){
+            this.setState({ tmp_room: this.state.room }) 
+        }
+        else{
+            this.setState({ room: this.state.tmp_room }) 
+        }
     }
     _tick() {
         // Auth
@@ -155,8 +163,8 @@ export class App_tsx extends React.Component<{}, State> {
                     <h5><i className="far fa-clock mr-1"></i>{this.state.jpclock_str}</h5>
                     <h5>入力フォーム</h5>
                 </div>
-                <textarea className="form-control my-1" id="tptef_content" rows={6} value={this.state.tmpcontent}
-                    onChange={(evt) => { this.setState({ tmpcontent: evt.target.value }) }}></textarea>
+                <textarea className="form-control my-1" id="tptef_content" rows={6} value={this.state.tmp_content}
+                    onChange={(evt) => { this.setState({ tmp_content: evt.target.value }) }}></textarea>
                 <div className="my-1 d-flex justify-content-between">
                     <div className="ml-auto">
                         <div className="form-inline">
@@ -164,12 +172,12 @@ export class App_tsx extends React.Component<{}, State> {
                             <button type="button" className="btn btn-warning btn-sm mx-1"
                                 onClick={(evt) => { $(evt.currentTarget.children[0]).click(); }}>
                                 <input type="file" className="d-none" value=""
-                                    onChange={(evt) => { this.setState({ tmpfile: evt.target.files[0] }) }} />
+                                    onChange={(evt) => { this.setState({ tmp_file: evt.target.files[0] }) }} />
                                 <i className="fas fa-paperclip mr-1" style={{ pointerEvents: "none" }}></i>
-                                {this.state.tmpfile == null ? "Non selected" : this.state.tmpfile.name}
+                                {this.state.tmp_file == null ? "Non selected" : this.state.tmp_file.name}
                             </button>
                             <button className="btn btn-primary btn-sm mx-1"
-                                onClick={() => { this.dbC_AddRemark(); this.setState({ tmpcontent: "", tmpfile: null }); }}>
+                                onClick={() => { this.dbC_AddRemark(); this.setState({ tmp_content: "", tmp_file: null }); }}>
                                 <i className="far fa-comment-dots mr-1" style={{ pointerEvents: "none" }}></i>Remark
                             </button>
                         </div>
@@ -185,15 +193,16 @@ export class App_tsx extends React.Component<{}, State> {
                     <h3 style={{ fontFamily: "Century", color: "mediumturquoise" }}>TPTEF: Chatroom</h3>
                     <h3 style={{ color: "black" }}>{this.state.room}</h3>
                     <div className="form-inline">
-                        <input className="form-control form-control-sm" type="text" value={this.state.tmproom}
-                            onChange={(evt) => { this.setState({ tmproom: evt.target.value }) }} />
+                        <input className="form-control form-control-sm" type="text" value={this.state.tmp_room}
+                            onChange={(evt) => { this.setState({ tmp_room: evt.target.value }) }} />
                         <button className="btn btn-success btn-sm"
-                            onClick={(evt) => { this.setState({ room: this.state.tmproom }) }}>
+                            onClick={() => { this._SetRoom()}}>
                             <i className="fas fa-search mr-1" style={{ pointerEvents: "none" }}></i>Room
                         </button>
                     </div>
                 </div>
                 {this.render_thread_table()}
+                {/* Input form */}
                 {this.state.uid == "" ?
                     <h5 className="d-flex justify-content-center">
                         <i className="fas fa-wind mr-1"></i>Plz login

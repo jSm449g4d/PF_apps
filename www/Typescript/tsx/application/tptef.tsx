@@ -23,44 +23,18 @@ export class App_tsx extends React.Component<{}, State> {
     componentDidMount() {
         setInterval(this._tick.bind(this), 100)
         for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() }
-        this.setState({ unsnaps: [this.db_Rwd_getroom.bind(this)(), this.db_Rwd_getmypage.bind(this)()] })
+        this.setState({ unsnaps: [this.dbR_getroom.bind(this)(), this.dbR_getmypage.bind(this)()] })
     }
     componentDidUpdate(prevProps: object, prevState: State) {
         if (this.state.room != prevState.room || this.state.uid != prevState.uid) {
             for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() }
-            this.setState({ unsnaps: [this.db_Rwd_getroom.bind(this)(), this.db_Rwd_getmypage.bind(this)()] })
+            this.setState({ unsnaps: [this.dbR_getroom.bind(this)(), this.dbR_getmypage.bind(this)()] })
         }
     }
     componentWillUnmount() { for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() } }
 
     // functions
-    db_Rwd_getroom() {
-        if (this.state.room == "") return () => { };
-        return db.doc("tptef/" + this.state.room).onSnapshot((doc) => {
-            if (doc.exists == false) {
-                this.setState({
-                    db_tptef: {
-                        [Date.now().toString() + "_" + "NULL"]: {
-                            handlename: "NULL", content: "Thread is not exist", attachment_dir: "",
-                        }
-                    }
-                })
-            } else { this.setState({ db_tptef: doc.data() }) }
-        })
-    }
-    db_Rwd_getmypage() {
-        if (this.state.uid == "") return () => { };
-        return db.doc("mypage/" + this.state.uid).onSnapshot((doc) => {
-            if (doc.exists) {
-                const tmp_recodes = doc.data()
-                const tsuids = Object.keys(tmp_recodes).sort()
-                this.setState({ profile: Object.assign(Object.assign(this.state.profile), tmp_recodes[tsuids[0]]) });
-            }
-        })
-    }
-
-    db_rWd_addremark() {
-        if (this.state.uid == "" || this.state.room == "") return;
+    dbC_addremark() {
         if (this.state.tmpcontent == "") { alert("Plz input content"); return; };
         if (stopf5.check("1", 500, true) == false) return; // To prevent high freq access
         let attachment_dir: string = "";
@@ -76,27 +50,48 @@ export class App_tsx extends React.Component<{}, State> {
             }
         }, { merge: true }).catch((err) => { fb_errmsg(err) });;
     }
-    db_RwD_delremark(tsuid: string) {
-        if (this.state.uid == "" || this.state.room == "") return;
+    dbC_delremark(tsuid: string) {
+        if (this.state.room == "") return;
         if (stopf5.check("2", 500, true) == false) return; // To prevent high freq access
-        const docRef = db.doc("tptef/" + this.state.room);
-        docRef.get().then((doc) => {
-            if (doc.exists) {
-                this.storage_rwD_attachment.bind(this)(doc.data()[tsuid].attachment_dir)
-                docRef.set({
-                    [tsuid]: fb.firestore.FieldValue.delete()
-                }, { merge: true }).catch((err) => { fb_errmsg(err) });
-            }
-            if (Object.keys(doc.data()).length < 2) docRef.delete().catch((err) => { fb_errmsg(err) });
-        });
+        this.stD_DelAttachment.bind(this)(this.state.db_tptef[tsuid].attachment_dir)
+        db.doc("tptef/" + this.state.room).set(
+            { [tsuid]: fb.firestore.FieldValue.delete() }, { merge: true }).catch((err) => { fb_errmsg(err) })
+        if (Object.keys(this.state.db_tptef).length < 2) this.dbD_DelRoom.bind(this)();
     }
-    storage_Rwd_attachment(attachment_dir: string) {
+    dbR_getroom() {
+        if (this.state.room == "") return () => { };
+        return db.doc("tptef/" + this.state.room).onSnapshot((doc) => {
+            if (doc.exists == false) {
+                this.setState({
+                    db_tptef: {
+                        [Date.now().toString() + "_" + "NULL"]: {
+                            handlename: "NULL", content: "Thread is not exist", attachment_dir: "",
+                        }
+                    }
+                })
+            } else { this.setState({ db_tptef: doc.data() }) }
+        })
+    }
+    dbR_getmypage() {
+        if (this.state.uid == "") return () => { };
+        return db.doc("mypage/" + this.state.uid).onSnapshot((doc) => {
+            if (doc.exists) {
+                const tmp_recodes = doc.data()
+                const tsuids = Object.keys(tmp_recodes).sort()
+                this.setState({ profile: Object.assign(Object.assign(this.state.profile), tmp_recodes[tsuids[0]]) });
+            }
+        })
+    }
+    dbD_DelRoom() {
+        db.doc("tptef/" + this.state.room).delete().catch((err) => { fb_errmsg(err) })
+    }
+    stR_GetAttachment(attachment_dir: string) {
         if (stopf5.check("3", 500) == false) return; // To prevent high freq access
         storage.ref(attachment_dir).getDownloadURL().then((url) => {
             window.open(url, '_blank');
         }).catch((err) => { fb_errmsg(err) });
     }
-    storage_rwD_attachment(attachment_dir: string) {
+    stD_DelAttachment(attachment_dir: string) {
         if (attachment_dir == "") return;
         if (stopf5.check("4", 500, true) == false) return; // To prevent high freq access
         storage.ref(attachment_dir).delete().catch((err) => { fb_errmsg(err) })
@@ -127,14 +122,14 @@ export class App_tsx extends React.Component<{}, State> {
                 //attachment download button
                 if (doc_redoces[tsuids[i]]["attachment_dir"] != "") tmp_datum.push(
                     <button key={1} className="btn btn-primary btn-sm m-1"
-                        onClick={(evt: any) => { this.storage_Rwd_attachment(evt.target.name) }}
+                        onClick={(evt: any) => { this.stR_GetAttachment(evt.target.name) }}
                         name={doc_redoces[tsuids[i]]["attachment_dir"]}>
                         <i className="fas fa-paperclip mr-1" style={{ pointerEvents: "none" }}></i>
                         {doc_redoces[tsuids[i]]["attachment_dir"].split("/").pop().slice(0, 10)}</button>)
                 //delete button
                 if (tsuids[i].split("_")[1] == this.state.uid) tmp_datum.push(
                     <button key={2} className="btn btn-outline-danger btn-sm rounded-pill m-1"
-                        onClick={(evt: any) => { this.db_RwD_delremark(evt.target.name) }} name={tsuids[i]}>
+                        onClick={(evt: any) => { this.dbC_delremark(evt.target.name) }} name={tsuids[i]}>
                         <i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Del</button>)
             }
             tmp_data.push(<td key={4} style={{ textAlign: "center" }}>{tmp_datum}</td>)
@@ -176,7 +171,7 @@ export class App_tsx extends React.Component<{}, State> {
                                 {this.state.tmpfile == null ? "Non selected" : this.state.tmpfile.name}
                             </button>
                             <button className="btn btn-primary btn-sm mx-1"
-                                onClick={() => { this.db_rWd_addremark(); this.setState({ tmpcontent: "", tmpfile: null }); }}>
+                                onClick={() => { this.dbC_addremark(); this.setState({ tmpcontent: "", tmpfile: null }); }}>
                                 <i className="far fa-comment-dots mr-1" style={{ pointerEvents: "none" }}></i>Remark
                             </button>
                         </div>

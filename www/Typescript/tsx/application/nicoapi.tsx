@@ -25,7 +25,7 @@ export class App_tsx extends React.Component<{}, State> {
     componentDidUpdate(prevProps: object, prevState: State) {
         if (this.state.uid != prevState.uid) {
             for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() }
-            this.setState({ unsnaps: [this.db_Rwd_getorders.bind(this)(),] })
+            this.setState({ unsnaps: [this.dbR_GetOrders.bind(this)(),] })
         }
     }
     componentWillUnmount() {
@@ -33,63 +33,7 @@ export class App_tsx extends React.Component<{}, State> {
     }
 
     // functions
-    db_Rwd_getorders() {
-        if (this.state.uid == "") return () => { };
-        return db.doc("nicoapi/" + this.state.uid).onSnapshot((doc) => {
-            if (doc.exists == false) { this.setState({ db_nicoapi: {} }) }
-            else { this.setState({ db_nicoapi: doc.data() }) }
-        });
-    }
-    db_rWd_genorders(urls_array: string[], urlslimit: number = 300) {
-        if (this.state.uid == "") return;
-        if (urls_array.length > urlslimit) { alert("error: Too many → " + String(urls_array.length) + "[req]"); return; }
-        if (confirm(String(urls_array.length) + "[req]\nDo you really want to place this ORDER?") == false) return;
-        if (stopf5.check("1", 6000, true) == false) return; // To prevent high freq access
-        db.doc("nicoapi/" + this.state.uid).set(
-            {
-                [Date.now().toString() + "_" + this.state.uid]: {
-                    "request_urls": urls_array, "status": "standby"
-                    , "User-Agent": String(Math.random() * 1000000).split(".")[0]
-                }
-            }, { merge: true }).then(() => {
-                setTimeout(() => { // access to backend
-                    const xhr: XMLHttpRequest = new XMLHttpRequest();
-                    xhr.open("POST", "/Flask/nicoapi/main.py", true);
-                    xhr.onload = () => {
-                        if (xhr.readyState === 4 && xhr.status === 200) {
-                            console.log(xhr.responseText);
-                            this.setState({ crawlerresp_dict: JSON.parse(xhr.responseText) })
-                        }
-                    };
-                    xhr.send(null);
-                }, 1000)
-            }).catch((err) => fb_errmsg(err))
-    }
-    db_rwD_delorders(tsuid: string) {
-        if (this.state.uid == "") return;
-        db.doc("nicoapi/" + this.state.uid)
-            .set({ [tsuid]: fb.firestore.FieldValue.delete() }, { merge: true }).catch((err) => fb_errmsg(err))
-    }
-    storage_Rwd_dlorders(tsuid: string) {
-        if (stopf5.check("2", 500) == false) return; // To prevent high freq access
-        storage.ref("nicoapi/" + this.state.uid + "/" + tsuid + ".zip")
-            .getDownloadURL().then((url) => { window.open(url, '_blank'); }).catch((err: any) => { fb_errmsg(err) })
-    }
-    storage_rwD_delorders(tsuid: string) {
-        if (this.state.uid == "") return;
-        if (stopf5.check("3", 500) == false) return; // To prevent high freq access
-        storage.ref("nicoapi/" + this.state.uid + "/" + tsuid + ".zip").delete().catch((err) => { fb_errmsg(err) });
-        this.db_rwD_delorders(tsuid)
-    }
-    _tick() {
-        // Auth
-        if (auth.currentUser) {
-            if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid });
-        } else {
-            if (this.state.uid != "") this.setState({ uid: "" });
-        }
-    }
-    _genorders() {
+    dbC_SetOrder(Limit_urls: number = 300) {
         const request_urls = [this.state.APIendpoint.replace("?", "") + "?"];
         const tmp_fields = Object.assign(this.state.fields)
         const timestamp = Object.keys(this.state.fields).sort();
@@ -108,9 +52,61 @@ export class App_tsx extends React.Component<{}, State> {
                 request_urls[j] += "&" + tmp_fields[timestamp[i]]["field"] + "=" + tmp_fields[timestamp[i]]["value"]
             }
         }
-        this.db_rWd_genorders(request_urls);
-    }
 
+        // submit
+        if (request_urls.length > Limit_urls) { alert("error: Too many → " + String(request_urls.length) + "[req]"); return; }
+        if (confirm(String(request_urls.length) + "[req]\nDo you really want to place this ORDER?") == false) return;
+        if (stopf5.check("1", 6000, true) == false) return; // To prevent high freq access
+        db.doc("nicoapi/" + this.state.uid).set(
+            {
+                [Date.now().toString() + "_" + this.state.uid]: {
+                    "request_urls": request_urls, "status": "standby"
+                    , "User-Agent": String(Math.random() * 1000000).split(".")[0]
+                }
+            }, { merge: true }).then(() => {
+                setTimeout(() => { // access to backend
+                    const xhr: XMLHttpRequest = new XMLHttpRequest();
+                    xhr.open("POST", "/Flask/nicoapi/main.py", true);
+                    xhr.onload = () => {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            console.log(xhr.responseText);
+                            this.setState({ crawlerresp_dict: JSON.parse(xhr.responseText) })
+                        }
+                    };
+                    xhr.send(null);
+                }, 1000)
+            }).catch((err) => fb_errmsg(err))
+
+    }
+    dbR_GetOrders() {
+        return db.doc("nicoapi/" + this.state.uid).onSnapshot((doc) => {
+            if (doc.exists == false) { this.setState({ db_nicoapi: {} }) }
+            else { this.setState({ db_nicoapi: doc.data() }) }
+        });
+    }
+    dbD_DelOrder(tsuid: string) {
+        db.doc("nicoapi/" + this.state.uid)
+            .set({ [tsuid]: fb.firestore.FieldValue.delete() }, { merge: true }).catch((err) => fb_errmsg(err))
+    }
+    stR_GetOrderZip(tsuid: string) {
+        if (stopf5.check("stR_GetOrderZip", 500) == false) return; // To prevent high freq access
+        storage.ref("nicoapi/" + this.state.uid + "/" + tsuid + ".zip")
+            .getDownloadURL().then((url) => { window.open(url, '_blank'); }).catch((err: any) => { fb_errmsg(err) })
+    }
+    stD_DelOrderZip(tsuid: string) {
+        if (this.state.uid == "") return;
+        if (stopf5.check("3", 500) == false) return; // To prevent high freq access
+        storage.ref("nicoapi/" + this.state.uid + "/" + tsuid + ".zip").delete().catch((err) => { fb_errmsg(err) });
+        this.dbD_DelOrder.bind(this)(tsuid)
+    }
+    _tick() {
+        // Auth
+        if (auth.currentUser) {
+            if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid });
+        } else {
+            if (this.state.uid != "") this.setState({ uid: "" });
+        }
+    }
 
     // renders
     render_helpapp() {
@@ -302,7 +298,7 @@ export class App_tsx extends React.Component<{}, State> {
                         </td>
                         <td colSpan={2}>
                             <div className="form-inline">
-                                <button className="btn btn-success" onClick={() => { this._genorders(); }}>
+                                <button className="btn btn-success" onClick={() => { this.dbC_SetOrder(); }}>
                                     <i className="fas fa-rocket mr-1" style={{ pointerEvents: "none" }}></i>Launch
                                 </button>
                                 {this.state.crawlerresp_dict["thread"] == "stop" ?
@@ -347,13 +343,13 @@ export class App_tsx extends React.Component<{}, State> {
                 //download button
                 if (doc_records[tsuids[i]]["status"] == "processed") tmp_datum.push(
                     <button key={1} className="btn btn-primary btn-sm m-1" name={tsuids[i]}
-                        onClick={(evt: any) => { this.storage_Rwd_dlorders(evt.target.name) }}>
+                        onClick={(evt: any) => { this.stR_GetOrderZip(evt.target.name) }}>
                         <i className="fas fa-cloud-download-alt mr-1" style={{ pointerEvents: "none" }}></i>DL
                     </button>)
                 //attachment download button
                 if (doc_records[tsuids[i]]["status"] == "processed") tmp_datum.push(
                     <button key={2} className="btn btn-outline-danger btn-sm m-1" name={tsuids[i]}
-                        onClick={(evt: any) => { this.storage_rwD_delorders(evt.target.name) }}>
+                        onClick={(evt: any) => { this.stD_DelOrderZip(evt.target.name) }}>
                         <i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Del
                     </button>)
             } tmp_data.push(<td key={3}>{tmp_datum}</td>)

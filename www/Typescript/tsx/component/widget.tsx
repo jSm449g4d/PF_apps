@@ -19,7 +19,7 @@ export class Widgethead_tsx extends React.Component<{}, State> {
     componentWillUnmount() { }
 
     // functions
-    _switchapp2(appname: string) {
+    _SwitchApp(appname: string) {
         if (stopf5.check("_switchapp", 300, true) == false) return; // To prevent high freq access
         import("../application/" + appname).then((module) => {
             ReactDOM.render(<module.App_tsx />, document.getElementById("app_tsx"));
@@ -31,7 +31,7 @@ export class Widgethead_tsx extends React.Component<{}, State> {
         if (Query2Dict()["application"] == application) { addClassname += " active"; }
         return (
             <a className={"nav-item nav-link p-1" + addClassname} data-toggle="tab"
-                onClick={() => { this._switchapp2(application) }}>
+                onClick={() => { this._SwitchApp(application) }}>
                 {icon}{title}
             </a>
         )

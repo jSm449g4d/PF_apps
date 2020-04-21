@@ -26,25 +26,13 @@ export class App_tsx extends React.Component<{}, State> {
     componentDidUpdate(prevProps: object, prevState: State) {
         if (this.state.uid != prevState.uid || this.state.showuid != prevState.showuid) {
             for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() }
-            this.setState({ unsnaps: [this.db_Rwd_getpf.bind(this)(),] })
+            this.setState({ unsnaps: [this.dbR_GetProfile.bind(this)(),] })
         }
     }
     componentWillUnmount() { for (let i = 0; i < this.state.unsnaps.length; i++) { this.state.unsnaps[i]() } }
 
     // functions
-    db_Rwd_getpf() {
-        if (this.state.showuid == "") return () => { };
-        return db.doc("mypage/" + this.state.showuid).onSnapshot((doc) => {
-            if (doc.exists) {
-                const tmp_recodes = doc.data()
-                const tsuids = Object.keys(tmp_recodes).sort()
-                this.setState({ profile: Object.assign(Object.assign(this.state.profile), tmp_recodes[tsuids[0]]) });
-                this.storage_Rwd_icon.bind(this)();
-            }
-            else { this.setState({ profile: {} }); }
-        });
-    }
-    db_rWd_setpf() {
+    dbC_SetProfile() {
         if (this.state.showuid == "") return;
         if (this.state.showuid != this.state.uid) return;
         if (stopf5.check("1", 500, true) == false) return; // To prevent high freq access
@@ -52,7 +40,7 @@ export class App_tsx extends React.Component<{}, State> {
             [Date.now().toString() + "_" + this.state.showuid]: this.state.profile
         }).catch((err) => { fb_errmsg(err) })
     }
-    db_rWd_makepf() {
+    dbC_MakeProfile() {
         if (this.state.showuid == "") return;
         if (this.state.showuid != this.state.uid) return;
         if (stopf5.check("1", 500, true) == false) return; // To prevent high freq access
@@ -61,17 +49,29 @@ export class App_tsx extends React.Component<{}, State> {
                 { nickname: "窓の民は名無し", pr: "私はJhon_Doe。窓の蛇遣いです。" }
         }).catch((err) => { fb_errmsg(err) })
     }
-    storage_Rwd_icon() {
+    dbR_GetProfile() {
+        if (this.state.showuid == "") return () => { };
+        return db.doc("mypage/" + this.state.showuid).onSnapshot((doc) => {
+            if (doc.exists) {
+                const tmp_recodes = doc.data()
+                const tsuids = Object.keys(tmp_recodes).sort()
+                this.setState({ profile: Object.assign(Object.assign(this.state.profile), tmp_recodes[tsuids[0]]) });
+                this.stR_GetIcon.bind(this)();
+            }
+            else { this.setState({ profile: {} }); }
+        });
+    }
+    stC_SetIcon(upload_file: any) {
+        if (this.state.showuid == "") return;
+        if (stopf5.check("2", 500, true) == false) return; // To prevent high freq access
+        storage.ref("mypage/" + this.state.showuid + "/icon.img").put(upload_file);
+        setTimeout(() => { this.stR_GetIcon.bind(this)() }, 1000)
+    }
+    stR_GetIcon() {
         if (this.state.showuid == "") return;
         storage.ref("mypage/" + this.state.showuid + "/icon.img").getDownloadURL().then((url) => {
             if (this.state.icon_url != url) this.setState({ icon_url: url });
         }).catch(() => { if (this.state.icon_url != "") this.setState({ icon_url: "" }); })
-    }
-    storage_rWd_icon(upload_file: any) {
-        if (this.state.showuid == "") return;
-        if (stopf5.check("2", 500, true) == false) return; // To prevent high freq access
-        storage.ref("mypage/" + this.state.showuid + "/icon.img").put(upload_file);
-        setTimeout(() => { this.storage_Rwd_icon() }, 1000)
     }
     _tick() {
         // Auth
@@ -83,7 +83,7 @@ export class App_tsx extends React.Component<{}, State> {
         // alias none mypage
         if (this.state.showuid == "") this.setState({ showuid: this.state.uid })
     }
-    _gotomypage() {
+    _GotoMypage() {
         this.setState({ showuid: this.state.uid })
     }
 
@@ -94,7 +94,7 @@ export class App_tsx extends React.Component<{}, State> {
         if (this.state.uid == this.state.showuid)
             return (
                 <button type="button" className="btn btn-outline-success btn-bg m-2"
-                    onClick={() => { this.db_rWd_makepf() }}>
+                    onClick={() => { this.dbC_MakeProfile() }}>
                     <i className="fas fa-file-signature mr-1" style={{ pointerEvents: "none" }}></i>Create Mypage
                 </button>
             )
@@ -104,7 +104,7 @@ export class App_tsx extends React.Component<{}, State> {
                     <i className="fas fa-wind mr-1"></i>This account's page is not Exist
                 </h5>
                 <button type="button" className="btn btn-outline-success btn-bg m-2"
-                    onClick={() => { this._gotomypage() }}>
+                    onClick={() => { this._GotoMypage() }}>
                     <i className="fas fa-home mr-1" style={{ pointerEvents: "none" }}></i>Mypage
                 </button>
             </div>
@@ -124,7 +124,7 @@ export class App_tsx extends React.Component<{}, State> {
             <button type="button" className="btn btn-outline-success btn-sm m-1"
                 onClick={(evt) => { $(evt.currentTarget.children[0]).click() }}>
                 <input type="file" className="d-none" accept="image/jpeg,image/png"
-                    onChange={(evt) => { this.storage_rWd_icon(evt.target.files[0]) }} />
+                    onChange={(evt) => { this.stC_SetIcon(evt.target.files[0]) }} />
                 <i className="fas fa-upload mr-1" style={{ pointerEvents: "none" }}></i>Icon
             </button>
         )
@@ -153,7 +153,7 @@ export class App_tsx extends React.Component<{}, State> {
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-sm btn-success" data-dismiss="modal"
-                                    onClick={() => { this.db_rWd_setpf() }}>
+                                    onClick={() => { this.dbC_SetProfile() }}>
                                     <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>Submit
                                 </button>
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">
@@ -197,7 +197,7 @@ export class App_tsx extends React.Component<{}, State> {
                             <div />
                             :
                             <button type="button" className="btn btn-success btn-sm m-2"
-                                onClick={() => { this._gotomypage() }}>
+                                onClick={() => { this._GotoMypage() }}>
                                 <i className="fas fa-home mr-1" style={{ pointerEvents: "none" }}></i>Mypage
                             </button>
                         }

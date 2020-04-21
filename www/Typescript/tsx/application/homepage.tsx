@@ -35,12 +35,7 @@ export class App_tsx extends React.Component<{}, State> {
     render() {
         return (
             <div className="p-2 bg-light" style={bgImage}>
-                Under Construction<br />Under Construction<br />Under Construction<br />Under Construction<br />Under Construction<br />
-                Under Construction<br />Under Construction<br />Under Construction<br />Under Construction<br />Under Construction<br />
-                Under Construction<br />Under Construction<br />Under Construction<br />Under Construction<br />Under Construction<br />
-                Under Construction<br />Under Construction<br />Under Construction<br />Under Construction<br />Under Construction<br />
-                Under Construction<br />Under Construction<br />Under Construction<br />Under Construction<br />Under Construction<br />
-                Under Construction<br />Under Construction<br />Under Construction<br />Under Construction<br />Under Construction<br />
+                Under Construction
             </div>
         );
     };

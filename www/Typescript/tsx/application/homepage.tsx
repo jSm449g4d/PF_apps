@@ -5,6 +5,11 @@ import { auth } from "../component/account";
 interface State {
     uid: string; unsnaps: any;
 }
+const bgImage: any = {
+    backgroundImage: "url(/static/img/publicdomainq-0014284zts.jpg)",
+    backgroundSize: "cover",
+    backgroundAttachment:"fixed",
+}
 
 export class App_tsx extends React.Component<{}, State> {
     // constructors
@@ -29,8 +34,13 @@ export class App_tsx extends React.Component<{}, State> {
     // renders
     render() {
         return (
-            <div className="p-2 bg-light">
-                Under Construction
+            <div className="p-2 bg-light" style={bgImage}>
+                Under Construction<br />Under Construction<br />Under Construction<br />Under Construction<br />Under Construction<br />
+                Under Construction<br />Under Construction<br />Under Construction<br />Under Construction<br />Under Construction<br />
+                Under Construction<br />Under Construction<br />Under Construction<br />Under Construction<br />Under Construction<br />
+                Under Construction<br />Under Construction<br />Under Construction<br />Under Construction<br />Under Construction<br />
+                Under Construction<br />Under Construction<br />Under Construction<br />Under Construction<br />Under Construction<br />
+                Under Construction<br />Under Construction<br />Under Construction<br />Under Construction<br />Under Construction<br />
             </div>
         );
     };

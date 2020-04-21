@@ -20,14 +20,6 @@ steps:
         - $_CONTAINER/$_APPNAME
         - .
       dir: www
-      # CI_test
-    - name: gcr.io/cloud-builders/docker
-      args:
-        - run
-        - --rm
-        - $_CONTAINER/$_APPNAME
-        - bash
-        - $_TESTSH
       # push image to Container Registry
     - name: gcr.io/cloud-builders/docker
       args:

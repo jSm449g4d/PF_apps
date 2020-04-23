@@ -1,3 +1,5 @@
+import { url } from "inspector";
+
 // To prevent high freq access
 export class stopf5_tsx {
     last_timestamp: { [label: string]: number }
@@ -37,4 +39,14 @@ export function Dict2Query(query_dict: { [key: string]: string }) {
         if (tmpkey_array[i] == "") continue;
         ret_str += tmpkey_array[i] + "=" + tmpvalue_array[i] + "&"
     }; return ret_str
+}
+export function dbUriCheck(uri: String) {
+    // schema1/ document → True
+    // else → False
+    const dirs: string[] = uri.split("/")
+    if (dirs.length < 2) { return false; }
+    for (let i = 0; i < dirs.length; i++) {
+        if (dirs[i].length < 1) { return false; }
+    }
+    return true;
 }

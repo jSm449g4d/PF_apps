@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import firebase from 'firebase/app';
 import "firebase/analytics";
 import "firebase/auth";
@@ -43,6 +43,8 @@ export const useAuth = () => {
 
     return [uid,]
 }
+
+// UC: studing Reducer
 export const useDb = (dbName: string) => {
     function dbUriCheck(uri: String) {
         // schema1/ document → True
@@ -66,10 +68,34 @@ export const useDb = (dbName: string) => {
             if (doc.exists) { _setDb(doc.data()); } else { _setDb({}); }
         });
     }
+
     return [localDb, setLocalDb, dbCreate, dbRead]
 }
 //const [a, b, c, d] = useDb("")
-
+function dbReducer(state: any, action: any) {
+    function dbUriCheck(uri: String) {
+        // schema1/ document → True
+        // else → False
+        const dirs: string[] = uri.split("/")
+        if (dirs.length < 2) { return false; }
+        for (let i = 0; i < dirs.length; i++) {
+            if (dirs[i].length < 1) { return false; }
+        }
+        return true;
+    }
+    switch (action.type) {
+        case 'add':
+            return [...state, {
+                text: action.text,
+                completed: false
+            }];
+        // ... other actions ...
+        default:
+            return state;
+    }
+}
+useReducer(dbReducer, []);
+// UC: studing Reducer
 
 export const AppAuth = () => {
     const [uid,] = useAuth()

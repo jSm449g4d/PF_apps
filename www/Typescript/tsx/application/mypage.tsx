@@ -11,8 +11,8 @@ export const App_tsx = () => {
     const [showUid, setShowUid] = useState("showuid" in Query2Dict() == false ? "" : Query2Dict()["showuid"])
     const [iconUrl, setIconUrl] = useState("")
     const [dbMypage, setDbMypage] = useState<{ [tptef: string]: any }>({})
-    const [now, setNow] = React.useState(new Date());
-    const [_, forceRender] = useReducer(x => x + 1, 0); //FIXME: Hooks have trouble in dict rendering
+    const [useInterval, setUseInterval] = React.useState(new Date());
+    const [_, forceRender] = useReducer(x => x + 1, 0); //FIXME: Hooks have trouble around rendering
     // FirebaseSnapping
     useEffect(() => {
         const _snaps = [dbRead("mypage/" + showUid, setDbMypage, stR_GetIcon)]
@@ -22,21 +22,21 @@ export const App_tsx = () => {
     useEffect(() => {
         const _intervalId = setInterval(() => {
             _tick();
-            setNow(new Date());
+            setUseInterval(new Date());
         }, 100);
         return () => { clearInterval(_intervalId) };
-    }, [now]);
+    }, [useInterval]);
 
     function dbCreate(uri: string, recodes: { [tsuid: string]: any }, ) {
         if (dbUriCheck(uri) == false) return
         db.doc(uri).set(recodes).catch((err) => { fb_errmsg(err) })
     }
     function dbRead(uri: string, setDbRecode: any, anyFunction: any = () => { }) {
-        const _dbCantRead: any = () => { setDbRecode({}); anyFunction(); forceRender(); }
+        const _dbCantRead: any = () => { setDbRecode({}); anyFunction();  }
         if (dbUriCheck(uri) == false) { _dbCantRead(); return () => { } }
         return db.doc(uri).onSnapshot((doc) => {
             if (doc.exists) {
-                setDbRecode(doc.data()); anyFunction(); forceRender();
+                setDbRecode(doc.data()); anyFunction();
             } else { _dbCantRead(); }
         });
     }

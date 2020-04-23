@@ -19,11 +19,15 @@ firebase.initializeApp({
 
 export const fb = firebase;
 export const auth = firebase.auth();
+const db = fb.firestore()
+const storage = fb.storage();
+
 fb.analytics();
 
 export function fb_errmsg(error: any) { alert("error_code:" + error.code + "\nerror_message:" + error.message); }
 
-export const AuthKit = () => {
+
+export const useAuth = () => {
     const [uid, setUid] = useState("")
     const [useInterval, setUseInterval] = React.useState(new Date());    // FirebaseSnapping
     // setInterval(Auth)
@@ -39,9 +43,36 @@ export const AuthKit = () => {
 
     return [uid,]
 }
+export const useDb = (dbName: string) => {
+    function dbUriCheck(uri: String) {
+        // schema1/ document → True
+        // else → False
+        const dirs: string[] = uri.split("/")
+        if (dirs.length < 2) { return false; }
+        for (let i = 0; i < dirs.length; i++) {
+            if (dirs[i].length < 1) { return false; }
+        }
+        return true;
+    }
+    
+    const [localDb, setLocalDb] = useState<{ [tptef: string]: any }>({})
+    const dbCreate = (uri: string, margeFlag: boolean = false, ) => {
+        if (dbUriCheck(uri) == false) return
+        db.doc(uri).set(localDb, { merge: margeFlag }).catch((err) => { fb_errmsg(err) })
+    }
+    const dbRead = (uri: string, afterFunc: any = () => { }) => {
+        const _setDb: any = (recodes: any) => { setLocalDb(recodes); afterFunc(); }
+        if (dbUriCheck(uri) == false) { _setDb({}); return () => { } }
+        return db.doc(uri).onSnapshot((doc) => {
+            if (doc.exists) { _setDb(doc.data()); } else { _setDb({}); }
+        });
+    }
+    return [localDb, setLocalDb, dbCreate, dbRead]
+}
+
 
 export const AppAuth = () => {
-    const [uid,] = AuthKit()
+    const [uid,] = useAuth()
     const [tmpAddress, setTmpAddress] = useState("")
     const [tmpPass, setTmpPass] = useState("")
 

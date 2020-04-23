@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { auth, fb, fb_errmsg } from "../component/account";
+import { fb, fb_errmsg, useAuth } from "../component/account";
 import { stopf5, jpclock, dbUriCheck } from "../component/util_tsx";
 
 const storage = fb.storage();
 const db = fb.firestore();
 
 export const App_tsx = () => {
+    const [uid,] = useAuth()
 
-    const [uid, setUid] = useState("")
     const [room, setRoom] = useState("main")
     const [tmpRoom, setTmpRoom] = useState(room)
     const [tmpContent, setTmpContent] = useState("")
@@ -85,12 +85,6 @@ export const App_tsx = () => {
         storage.ref(attachmentUri).delete().catch((err) => { fb_errmsg(err) })
     }
     function _tick() {
-        // Auth
-        if (auth.currentUser) {
-            if (uid != auth.currentUser.uid) setUid(auth.currentUser.uid);
-        } else {
-            if (uid != "") setUid("");
-        }
         // Clock
         setJpclockNow(jpclock())
     }

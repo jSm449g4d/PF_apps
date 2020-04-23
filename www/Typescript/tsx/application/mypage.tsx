@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer } from 'react';
-import { fb, fb_errmsg, AuthKit } from "../component/account";
+import { fb, fb_errmsg, useAuth } from "../component/account";
 import { stopf5, Query2Dict, dbUriCheck } from "../component/util_tsx";
 
 const storage = fb.storage();
@@ -7,12 +7,11 @@ const db = fb.firestore()
 
 
 export const App_tsx = () => {
-    const [uid,] = AuthKit()
+    const [uid,] = useAuth()
     // const [uid, setUid] = useState("")
     const [showUid, setShowUid] = useState("showuid" in Query2Dict() == false ? "" : Query2Dict()["showuid"])
     const [iconUrl, setIconUrl] = useState("")
     const [dbMypage, setDbMypage] = useState<{ [tptef: string]: any }>({})
-    const [useInterval, setUseInterval] = React.useState(new Date());
     const [_, forceRender] = useReducer(x => x + 1, 0); //FIXME: Hooks have trouble around rendering
     // FirebaseSnapping
     useEffect(() => {

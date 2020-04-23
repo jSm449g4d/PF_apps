@@ -1,4 +1,3 @@
-import { url } from "inspector";
 
 // To prevent high freq access
 export class stopf5_tsx {

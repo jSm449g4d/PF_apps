@@ -54,7 +54,7 @@ export const useDb = (dbName: string) => {
         }
         return true;
     }
-    
+
     const [localDb, setLocalDb] = useState<{ [tptef: string]: any }>({})
     const dbCreate = (uri: string, margeFlag: boolean = false, ) => {
         if (dbUriCheck(uri) == false) return

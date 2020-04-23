@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import firebase from 'firebase/app';
 import "firebase/analytics";
 import "firebase/auth";
@@ -23,58 +23,59 @@ fb.analytics();
 
 export function fb_errmsg(error: any) { alert("error_code:" + error.code + "\nerror_message:" + error.message); }
 
-interface State {
-    uid: string, tmpaddr: string, tmppass: string
-}
-export class Account_tsx extends React.Component<{}, State> {
-    //constructors
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            uid: "", tmpaddr: "", tmppass: ""
-        };
-        setInterval(() => {
-            if (auth.currentUser) { if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid }); }
-            else { if (this.state.uid != "") this.setState({ uid: "" }); }
-        }, 100)
+export const Account_tsx = () => {
+    const [uid, setUid] = useState("")
+    const [tmpAddress, setTmpAddress] = useState("")
+    const [tmpPass, setTmpPass] = useState("")
+    const [useInterval, setUseInterval] = React.useState(new Date());
+    // FirebaseSnapping
+    useEffect(() => {
+        const _snaps = [() => { }]
+        return () => { for (let i = 0; i < _snaps.length; i++) { _snaps[i](); } }
+    }, [])
+    // setInterval
+    useEffect(() => {
+        const _intervalId = setInterval(() => {
+            _tick();
+            setUseInterval(new Date());
+        }, 100);
+        return () => { clearInterval(_intervalId) };
+    }, [useInterval]);
+
+    function _tick() {
+        // Auth
+        if (auth.currentUser) {
+            if (uid != auth.currentUser.uid) setUid(auth.currentUser.uid);
+        } else {
+            if (uid != "") setUid("");
+        }
     }
-    componentDidMount() { setInterval(this._tick.bind(this), 100); }
-    componentDidUpdate(prevProps: object, prevState: State) { }
-    componentWillUnmount() { }
 
     //functions
-    auth_signup(mail_addr: string = this.state.tmpaddr, mail_pass: string = this.state.tmppass) {
-        auth.createUserWithEmailAndPassword(mail_addr, mail_pass).catch((err) => { fb_errmsg(err) })
+    function auth_signup(address: string = tmpAddress, pass: string = tmpPass) {
+        auth.createUserWithEmailAndPassword(address, pass).catch((err) => { fb_errmsg(err) })
     }
-    auth_signin(mail_addr: string = this.state.tmpaddr, mail_pass: string = this.state.tmppass) {
-        auth.signInWithEmailAndPassword(mail_addr, mail_pass).catch((err) => { fb_errmsg(err) })
+    function auth_signin(address: string = tmpAddress, pass: string = tmpPass) {
+        auth.signInWithEmailAndPassword(address, pass).catch((err) => { fb_errmsg(err) })
     }
-    auth_easyin(mail_addr: string = "a@b.com", mail_pass: string = "asdfgh") {
+    function auth_easyin(mail_addr: string = "a@b.com", mail_pass: string = "asdfgh") {
         auth.signInWithEmailAndPassword(mail_addr, mail_pass).catch(() => { this.auth_signup(mail_addr, mail_pass); })
     }
-    auth_easyin2(mail_addr: string = "c@d.com", mail_pass: string = "asdfgh") {
+    function auth_easyin2(mail_addr: string = "c@d.com", mail_pass: string = "asdfgh") {
         auth.signInWithEmailAndPassword(mail_addr, mail_pass).catch(() => { this.auth_signup(mail_addr, mail_pass); })
     }
-    auth_resetpass(mail_addr: string = this.state.tmpaddr) {
-        auth.sendPasswordResetEmail(mail_addr).then(() => { alert("SEND_EMAIL!") }).catch((err) => { fb_errmsg(err) });
+    function auth_resetpass(address: string = tmpAddress) {
+        auth.sendPasswordResetEmail(address).then(() => { alert("SEND_EMAIL!") }).catch((err) => { fb_errmsg(err) });
     }
-    auth_deluser() {
+    function auth_deluser() {
         if (window.confirm('Are you really DELETE:USER?\n')) {
             auth.currentUser.delete().then(() => { alert("ACCOUNT_DELETED!") }).catch((err) => { fb_errmsg(err) });
         }
     }
-    auth_glogin() { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch((err) => { fb_errmsg(err) }) }
-    _tick() {
-        // Auth
-        if (auth.currentUser) {
-            if (this.state.uid != auth.currentUser.uid) this.setState({ uid: auth.currentUser.uid });
-        } else {
-            if (this.state.uid != "") this.setState({ uid: "" });
-        }
-    }
+    function auth_glogin() { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch((err) => { fb_errmsg(err) }) }
 
     //renders
-    render_signin_modal() {
+    function render_signin_modal() {
         return (
             <div>
                 <button type="button" className="btn btn-success btn-sm m-1" data-toggle="modal" data-target={"#signin_modal"}>
@@ -90,9 +91,9 @@ export class Account_tsx extends React.Component<{}, State> {
                             </div>
                             <div className="modal-body">
                                 <input className="form-control m-1" type="text" style={{ width: "100%" }} name="mail_addr" placeholder="mail_address"
-                                    onChange={(evt: any) => { this.setState({ tmpaddr: evt.target.value }); }} />
+                                    onChange={(evt: any) => { setTmpAddress(evt.target.value); }} />
                                 <input className="form-control m-1" type="text" style={{ width: "100%" }} name="mail_pass" placeholder="set_password"
-                                    onChange={(evt: any) => { this.setState({ tmppass: evt.target.value }); }} />
+                                    onChange={(evt: any) => { setTmpPass(evt.target.value); }} />
                             </div>
                             <div className="modal-footer d-flex justify-content-start">
                                 <div className="flex-grow-1">
@@ -102,19 +103,19 @@ export class Account_tsx extends React.Component<{}, State> {
                                 </div>
                                 <div>
                                     <button className="btn btn-warning btn-sm m-1" type="button" data-dismiss="modal"
-                                        onClick={() => { this.auth_easyin() }}>
+                                        onClick={() => { auth_easyin() }}>
                                         <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>EzLogin
                                     </button>
                                     <button className="btn btn-warning btn-sm m-1" type="button" data-dismiss="modal"
-                                        onClick={() => { this.auth_easyin2() }}>
+                                        onClick={() => { auth_easyin2() }}>
                                         <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>別垢版
                                     </button>
                                     <button className="btn btn-primary btn-sm m-1" type="button" data-dismiss="modal"
-                                        onClick={() => { this.auth_glogin() }}>
+                                        onClick={() => { auth_glogin() }}>
                                         <i className="fab fa-google mr-1" style={{ pointerEvents: "none" }}></i>Google
                                     </button>
                                     <button className="btn btn-success btn-sm m-1" type="button" data-dismiss="modal"
-                                        onClick={() => { this.auth_signin() }}>
+                                        onClick={() => { auth_signin() }}>
                                         <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>SignIn
                                     </button>
                                 </div>
@@ -125,7 +126,7 @@ export class Account_tsx extends React.Component<{}, State> {
             </div>
         )
     }
-    render_signup_modal() {
+    function render_signup_modal() {
         return (
             <div>
                 <button type="button" className="btn btn-primary btn-sm m-1" data-toggle="modal" data-target={"#signup_modal"}>
@@ -141,9 +142,9 @@ export class Account_tsx extends React.Component<{}, State> {
                             </div>
                             <div className="modal-body">
                                 <input className="form-control m-1" type="text" style={{ width: "100%" }} name="mail_addr" placeholder="mail_address"
-                                    onChange={(evt: any) => { this.setState({ tmpaddr: evt.target.value }); }} />
+                                    onChange={(evt: any) => { setTmpAddress(evt.target.value); }} />
                                 <input className="form-control m-1" type="text" style={{ width: "100%" }} name="mail_pass" placeholder="set_password"
-                                    onChange={(evt: any) => { this.setState({ tmppass: evt.target.value }); }} />
+                                    onChange={(evt: any) => { setTmpPass(evt.target.value); }} />
                             </div>
                             <div className="modal-footer d-flex justify-content-start">
                                 <div className="flex-grow-1">
@@ -153,7 +154,7 @@ export class Account_tsx extends React.Component<{}, State> {
                                 </div>
                                 <div>
                                     <button className="btn btn-primary btn-sm m-2" type="button" data-dismiss="modal"
-                                        onClick={() => { this.auth_signup() }}>
+                                        onClick={() => { auth_signup() }}>
                                         <i className="far fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>Submit
                                     </button>
                                 </div>
@@ -164,7 +165,7 @@ export class Account_tsx extends React.Component<{}, State> {
             </div>
         )
     }
-    render_displayaccount() {
+    function render_displayaccount() {
         return (
             <div className="form-inline">
                 {auth.currentUser.photoURL ?
@@ -180,7 +181,7 @@ export class Account_tsx extends React.Component<{}, State> {
             </div>
         )
     }
-    render_config() {
+    function render_config() {
         return (
             <div className="p-2">
                 <i className="fas fa-cog fa-lg faa-wrench animated-hover" data-toggle="modal" data-target="#config_modal"></i>
@@ -196,7 +197,7 @@ export class Account_tsx extends React.Component<{}, State> {
                                 <div className="form-inline">
                                     <input className="form-control" type="text" name="mail_addr" size={40} placeholder="mail address" />
                                     <button className="btn btn-sm btn-warning m-2" type="button" data-dismiss="modal"
-                                        onClick={() => { this.auth_resetpass(); }}>
+                                        onClick={() => { auth_resetpass(); }}>
                                         <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>RESRT
                                     </button>
                                 </div>
@@ -208,7 +209,7 @@ export class Account_tsx extends React.Component<{}, State> {
                                     </button>
                                 </div>
                                 <button type="button" className="btn btn-sm btn-danger" data-dismiss="modal"
-                                    onClick={() => { this.auth_deluser(); }}>
+                                    onClick={() => { auth_deluser(); }}>
                                     <i className="fas fa-user-slash mr-1" style={{ pointerEvents: "none" }}></i>USER_DELETE
                                 </button>
                             </div>
@@ -218,30 +219,29 @@ export class Account_tsx extends React.Component<{}, State> {
             </div>
         )
     }
-    render() {
-        return (
-            <div>
-                {this.state.uid == "" ?
-                    <div className="d-flex justify-content-between">
-                        <div className="ml-auto">
-                            <div className="form-inline">
-                                {this.render_signin_modal()}
-                                {this.render_signup_modal()}
-                            </div>
-                        </div>
-                    </div>
-                    :
-                    <div className="d-flex justify-content-between">
+
+    return (
+        <div>
+            {uid == "" ?
+                <div className="d-flex justify-content-between">
+                    <div className="ml-auto">
                         <div className="form-inline">
-                            <button className="btn btn-secondary btn-sm mx-1" type="button" onClick={() => { auth.signOut(); }}>
-                                <i className="fas fa-sign-out-alt mr-1" style={{ pointerEvents: "none" }}></i>logout
-                            </button>
-                            {this.render_config()}
+                            {render_signin_modal()}
+                            {render_signup_modal()}
                         </div>
                     </div>
-                }
-            </div>
-        );
-    }
+                </div>
+                :
+                <div className="d-flex justify-content-between">
+                    <div className="form-inline">
+                        <button className="btn btn-secondary btn-sm mx-1" type="button" onClick={() => { auth.signOut(); }}>
+                            <i className="fas fa-sign-out-alt mr-1" style={{ pointerEvents: "none" }}></i>logout
+                            </button>
+                        {render_config()}
+                    </div>
+                </div>
+            }
+        </div>
+    );
 
 }

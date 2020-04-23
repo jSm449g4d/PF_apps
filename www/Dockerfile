@@ -17,6 +17,7 @@ RUN npm install --save jquery@3.4.1 popper.js@1.16.1 bootstrap react react-dom r
 WORKDIR $APP/Typescript
 RUN npm install --save-dev @types/jquery @types/popper.js @types/bootstrap && \
     npm install --save-dev @types/react @types/react-dom @types/react-bootstrap  @types/firebase && \
+    npm install --save-dev @types/redux @types/react-redux @reduxjs/toolkit && \
     npm install --save-dev typescript webpack webpack-cli @types/webpack-env webpack-glob-entry ts-loader source-map-loader style-loader css-loader copy-webpack-plugin
 RUN npx webpack
 

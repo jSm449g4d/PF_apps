@@ -23,6 +23,7 @@ export const App_tsx = () => {
             dbRead("tptef/" + room, setDbTptef),]
         return () => { for (let i = 0; i < _snaps.length; i++) { _snaps[i](); } }
     }, [uid, room])
+    // setInterval
     useEffect(() => {
         const _intervalId = setInterval(() => {
             _tick();

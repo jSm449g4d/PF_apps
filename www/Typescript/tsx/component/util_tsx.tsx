@@ -14,7 +14,7 @@ export class stopf5_tsx {
     }
 } export var stopf5 = new stopf5_tsx
 
-export function jpclock_func() {
+export function jpclock() {
     const now: Date = new Date();
     return now.getFullYear() + "年 " + now.getMonth() +
         "月 " + now.getDate() + "日 " + ["日 ", "月 ", "火 ", "水 ", "木 ", "金 ", "土 "][now.getDay()] +

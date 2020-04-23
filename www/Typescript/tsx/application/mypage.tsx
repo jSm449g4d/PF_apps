@@ -27,9 +27,9 @@ export const App_tsx = () => {
         return () => { clearInterval(_intervalId) };
     }, [useInterval]);
 
-    function dbCreate(uri: string, upRecodes: { [tsuid: string]: any }, ) {
+    function dbCreate(uri: string, upRecodes: { [tsuid: string]: any }, margeFlag:boolean = false, ) {
         if (dbUriCheck(uri) == false) return
-        db.doc(uri).set(upRecodes).catch((err) => { fb_errmsg(err) })
+        db.doc(uri).set(upRecodes, { merge: margeFlag }).catch((err) => { fb_errmsg(err) })
     }
     function dbRead(uri: string, setDbRecodes: any, afterFunc: any = () => { }) {
         const _setDb: any = (recodes: any) => { setDbRecodes(recodes); afterFunc(); }

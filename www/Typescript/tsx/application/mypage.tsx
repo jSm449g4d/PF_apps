@@ -27,23 +27,19 @@ export const App_tsx = () => {
         return () => { clearInterval(_intervalId) };
     }, [useInterval]);
 
-    function dbCreate(uri: string, recodes: { [tsuid: string]: any }, ) {
+    function dbCreate(uri: string, upRecodes: { [tsuid: string]: any }, ) {
         if (dbUriCheck(uri) == false) return
-        db.doc(uri).set(recodes).catch((err) => { fb_errmsg(err) })
+        db.doc(uri).set(upRecodes).catch((err) => { fb_errmsg(err) })
     }
-    function dbRead(uri: string, setDbRecode: any, anyFunction: any = () => { }) {
-        const _dbCantRead: any = () => { setDbRecode({}); anyFunction();  }
-        if (dbUriCheck(uri) == false) { _dbCantRead(); return () => { } }
+    function dbRead(uri: string, setDbRecodes: any, afterFunc: any = () => { }) {
+        const _setDb: any = (recodes: any) => { setDbRecodes(recodes); afterFunc(); }
+        if (dbUriCheck(uri) == false) { _setDb({}); return () => { } }
         return db.doc(uri).onSnapshot((doc) => {
-            if (doc.exists) {
-                setDbRecode(doc.data()); anyFunction();
-            } else { _dbCantRead(); }
+            if (doc.exists) { _setDb(doc.data()); } else { _setDb({}); }
         });
     }
-    function stC_SetIcon(upload_file: any) {
-        if (stopf5.check("2", 500, true) == false) return; // To prevent high freq access
-        storage.ref("mypage/" + showUid + "/icon.img").put(upload_file);
-        setTimeout(() => { stR_GetIcon() }, 1000)
+    function strageCreate(uri: string, upFile: any) {
+        storage.ref(uri).put(upFile).catch((err) => { fb_errmsg(err) })
     }
     function stR_GetIcon() {
         storage.ref("mypage/" + showUid + "/icon.img").getDownloadURL().then((url) => {
@@ -104,7 +100,11 @@ export const App_tsx = () => {
             <button type="button" className="btn btn-outline-success btn-sm m-1"
                 onClick={(evt) => { $(evt.currentTarget.children[0]).click() }}>
                 <input type="file" className="d-none" accept="image/jpeg,image/png"
-                    onChange={(evt) => { stC_SetIcon(evt.target.files[0]) }} />
+                    onChange={(evt) => {
+                        if (stopf5.check("upIcon", 500, true) == false) return; // To prevent high freq access
+                        strageCreate("mypage/" + showUid + "/icon.img", evt.target.files[0])
+                        setTimeout(() => { stR_GetIcon() }, 1000)
+                    }} />
                 <i className="fas fa-upload mr-1" style={{ pointerEvents: "none" }}></i>Icon
             </button>
         )

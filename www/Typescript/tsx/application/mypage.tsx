@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer } from 'react';
-import { auth, fb, fb_errmsg } from "../component/account";
+import { fb, fb_errmsg, AuthKit } from "../component/account";
 import { stopf5, Query2Dict, dbUriCheck } from "../component/util_tsx";
 
 const storage = fb.storage();
@@ -7,7 +7,8 @@ const db = fb.firestore()
 
 
 export const App_tsx = () => {
-    const [uid, setUid] = useState("")
+    const [uid,] = AuthKit()
+    // const [uid, setUid] = useState("")
     const [showUid, setShowUid] = useState("showuid" in Query2Dict() == false ? "" : Query2Dict()["showuid"])
     const [iconUrl, setIconUrl] = useState("")
     const [dbMypage, setDbMypage] = useState<{ [tptef: string]: any }>({})
@@ -18,16 +19,8 @@ export const App_tsx = () => {
         const _snaps = [dbRead("mypage/" + showUid, setDbMypage, stR_GetIcon)]
         return () => { for (let i = 0; i < _snaps.length; i++) { _snaps[i](); } }
     }, [uid, showUid])
-    // setInterval
-    useEffect(() => {
-        const _intervalId = setInterval(() => {
-            _tick();
-            setUseInterval(new Date());
-        }, 100);
-        return () => { clearInterval(_intervalId) };
-    }, [useInterval]);
 
-    function dbCreate(uri: string, upRecodes: { [tsuid: string]: any }, margeFlag:boolean = false, ) {
+    function dbCreate(uri: string, upRecodes: { [tsuid: string]: any }, margeFlag: boolean = false, ) {
         if (dbUriCheck(uri) == false) return
         db.doc(uri).set(upRecodes, { merge: margeFlag }).catch((err) => { fb_errmsg(err) })
     }
@@ -45,17 +38,6 @@ export const App_tsx = () => {
         storage.ref("mypage/" + showUid + "/icon.img").getDownloadURL().then((url) => {
             if (iconUrl != url) setIconUrl(url);
         }).catch(() => { if (iconUrl != "") setIconUrl(""); })
-    }
-    function _tick() {
-        // Auth
-        if (auth.currentUser) {
-            if (uid != auth.currentUser.uid) {
-                setUid(auth.currentUser.uid);
-            }
-        } else {
-            if (uid != "") setUid("");
-        }
-        if (showUid == "" && uid != "") { setShowUid(uid); }
     }
 
     function render_createmypage() {

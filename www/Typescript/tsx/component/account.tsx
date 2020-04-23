@@ -23,33 +23,27 @@ fb.analytics();
 
 export function fb_errmsg(error: any) { alert("error_code:" + error.code + "\nerror_message:" + error.message); }
 
-export const Account_tsx = () => {
+export const AuthKit = () => {
     const [uid, setUid] = useState("")
-    const [tmpAddress, setTmpAddress] = useState("")
-    const [tmpPass, setTmpPass] = useState("")
-    const [useInterval, setUseInterval] = React.useState(new Date());
-    // FirebaseSnapping
-    useEffect(() => {
-        const _snaps = [() => { }]
-        return () => { for (let i = 0; i < _snaps.length; i++) { _snaps[i](); } }
-    }, [])
-    // setInterval
+    const [useInterval, setUseInterval] = React.useState(new Date());    // FirebaseSnapping
+    // setInterval(Auth)
     useEffect(() => {
         const _intervalId = setInterval(() => {
-            _tick();
+            // Auth
+            if (auth.currentUser) { if (uid != auth.currentUser.uid) setUid(auth.currentUser.uid); }
+            else { if (uid != "") setUid(""); }
             setUseInterval(new Date());
         }, 100);
         return () => { clearInterval(_intervalId) };
     }, [useInterval]);
 
-    function _tick() {
-        // Auth
-        if (auth.currentUser) {
-            if (uid != auth.currentUser.uid) setUid(auth.currentUser.uid);
-        } else {
-            if (uid != "") setUid("");
-        }
-    }
+    return [uid,]
+}
+
+export const Account_tsx = () => {
+    const [uid,] = AuthKit()
+    const [tmpAddress, setTmpAddress] = useState("")
+    const [tmpPass, setTmpPass] = useState("")
 
     //functions
     function auth_signup(address: string = tmpAddress, pass: string = tmpPass) {

@@ -19,9 +19,10 @@ export class Widgethead_tsx extends React.Component<{}, State> {
     componentWillUnmount() { }
 
     // functions
-    _SwitchApp(appname: string) {
+    _SwitchApp(application: string) {
         if (stopf5.check("_switchapp", 300, true) == false) return; // To prevent high freq access
-        import("../application/" + appname).then((module) => {
+        import("../application/" + application).then((module) => {
+            ReactDOM.unmountComponentAtNode(document.getElementById("app_tsx"))
             ReactDOM.render(<module.App_tsx />, document.getElementById("app_tsx"));
         })
     }

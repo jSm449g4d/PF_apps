@@ -40,7 +40,7 @@ export const AuthKit = () => {
     return [uid,]
 }
 
-export const Account_tsx = () => {
+export const AppAuth = () => {
     const [uid,] = AuthKit()
     const [tmpAddress, setTmpAddress] = useState("")
     const [tmpPass, setTmpPass] = useState("")
@@ -156,22 +156,6 @@ export const Account_tsx = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-        )
-    }
-    function render_displayaccount() {
-        return (
-            <div className="form-inline">
-                {auth.currentUser.photoURL ?
-                    <img className="mr-2" src={auth.currentUser.photoURL} alt="user.photoURL" width="48" height="48" />
-                    :
-                    <i className="fas fa-signature fa-lg mr-2"></i>
-                }
-                {auth.currentUser.displayName ?
-                    <h5>ようこそ <i className="fas fa-envelope mr-1"></i>{auth.currentUser.displayName} さん</h5>
-                    :
-                    <h5>ようこそ <i className="far fa-envelope mr-1"></i>{auth.currentUser.email} さん</h5>
-                }
             </div>
         )
     }

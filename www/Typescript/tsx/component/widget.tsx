@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from "react-dom";
-import { Account_tsx } from "./account";
+import { AppAuth } from "./account";
 import { stopf5, Query2Dict } from "./util_tsx";
 require.context('../application/', true, /\.ts(x?)$/)
 
@@ -13,7 +13,7 @@ export class Widgethead_tsx extends React.Component<{}, State> {
         this.state = {};
     }
     componentDidMount() {
-        ReactDOM.render(<Account_tsx />, document.getElementById("account_tsx"));
+        ReactDOM.render(<AppAuth />, document.getElementById("account_tsx"));
     }
     componentDidUpdate(prevProps: object, prevState: State) { }
     componentWillUnmount() { }

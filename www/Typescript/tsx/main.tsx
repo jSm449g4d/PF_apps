@@ -5,7 +5,6 @@ import { Widgethead_tsx } from "./component/widget";
 
 // IndexPage
 const App_tsx = () => {
-
     return (
         <div className="p-2 bg-light">
             <div className="d-flex justify-content-between">

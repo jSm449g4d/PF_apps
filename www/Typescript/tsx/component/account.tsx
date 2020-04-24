@@ -94,7 +94,6 @@ function dbReducer(state: any, action: any) {
             return state;
     }
 }
-useReducer(dbReducer, []);
 // UC: studing Reducer
 
 export const AppAuth = () => {

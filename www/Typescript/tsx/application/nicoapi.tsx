@@ -30,9 +30,17 @@ export const App_tsx = () => {
             if (doc.exists) { _setDb(doc.data()); } else { _setDb({}); }
         });
     }
+    function dbDelete(uri: string, ) {
+        if (dbUriCheck(uri) == false) return
+        db.doc(uri).delete().catch((err) => { fb_errmsg(err) })
+    }
     function strageCreate(uri: string, upFile: any) {
         if (dbUriCheck(uri) == false) { return () => { } }
         storage.ref(uri).put(upFile).catch((err) => { fb_errmsg(err) })
+    }
+    function strageDelete(uri: string) {
+        if (dbUriCheck(uri) == false) { return () => { } }
+        storage.ref(uri).delete().catch((err) => { fb_errmsg(err) })
     }
 
     // functions

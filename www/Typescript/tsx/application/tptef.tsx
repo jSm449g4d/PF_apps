@@ -42,9 +42,17 @@ export const App_tsx = () => {
             if (doc.exists) { _setDb(doc.data()); } else { _setDb({}); }
         });
     }
+    function dbDelete(uri: string, ) {
+        if (dbUriCheck(uri) == false) return
+        db.doc(uri).delete().catch((err) => { fb_errmsg(err) })
+    }
     function strageCreate(uri: string, upFile: any) {
         if (dbUriCheck(uri) == false) { return () => { } }
         storage.ref(uri).put(upFile).catch((err) => { fb_errmsg(err) })
+    }
+    function strageDelete(uri: string) {
+        if (dbUriCheck(uri) == false) { return () => { } }
+        storage.ref(uri).delete().catch((err) => { fb_errmsg(err) })
     }
 
     // functions
@@ -68,21 +76,14 @@ export const App_tsx = () => {
     }
     function dbC_DelRemark(tsuid: string) {
         if (stopf5.check("2", 500, true) == false) return; // To prevent high freq access
-        stD_DelAttachment(dbTptef[tsuid]["attachmentUri"])
+        strageDelete(dbTptef[tsuid]["attachmentUri"])
         dbCreate("tptef/" + room, { [tsuid]: fb.firestore.FieldValue.delete() }, true);
-        if (Object.keys(dbTptef).length < 2) dbD_DelRoom();
-    }
-    function dbD_DelRoom() {
-        db.doc("tptef/" + room).delete().catch((err) => { fb_errmsg(err) })
+        if (Object.keys(dbTptef).length < 2) dbDelete("tptef/" + room);
     }
     function stR_GetAttachment(attachmentUri: string) {
         storage.ref(attachmentUri).getDownloadURL().then((url) => {
             window.open(url, '_blank');
         }).catch((err) => { fb_errmsg(err) });
-    }
-    function stD_DelAttachment(attachmentUri: string) {
-        if (attachmentUri == "") return;
-        storage.ref(attachmentUri).delete().catch((err) => { fb_errmsg(err) })
     }
     function _tick() {
         // Clock
@@ -91,30 +92,31 @@ export const App_tsx = () => {
 
     // renders
     const threadTable = () => {
-        const tmp_recodes = [];
+        const tmpRecodes = [];
         const tsuids = Object.keys(dbTptef).sort();
         for (var i = 0; i < tsuids.length; i++) {
-            const tmp_data = [];
-            tmp_data.push(<td key={1} style={{ textAlign: "center" }}>{dbTptef[tsuids[i]]["handlename"]}</td>)
-            tmp_data.push(<td key={2}>{dbTptef[tsuids[i]]["content"]}</td>)
-            tmp_data.push(<td key={3} style={{ fontSize: "12px", textAlign: "center" }}>
+            const tmpData = [];
+            tmpData.push(<td key={1} style={{ textAlign: "center" }}>{dbTptef[tsuids[i]]["handlename"]}</td>)
+            tmpData.push(<td key={2}>{dbTptef[tsuids[i]]["content"]}</td>)
+            tmpData.push(<td key={3} style={{ fontSize: "12px", textAlign: "center" }}>
                 {tsuids[i].split("_")[0]}<br />{tsuids[i].split("_")[1]}</td>)
-            const tmp_datum = []; {
-                //attachment download button
-                if (dbTptef[tsuids[i]]["attachmentUri"] != "") tmp_datum.push(
+            const tmpDatum = [];
+            //attachment download button
+            if (dbTptef[tsuids[i]]["attachmentUri"] != "")
+                tmpDatum.push(
                     <button key={1} className="btn btn-primary btn-sm m-1"
                         onClick={(evt: any) => { stR_GetAttachment(evt.target.name) }}
                         name={dbTptef[tsuids[i]]["attachmentUri"]}>
                         <i className="fas fa-paperclip mr-1" style={{ pointerEvents: "none" }}></i>
                         {dbTptef[tsuids[i]]["attachmentUri"].split("/").pop().slice(0, 10)}</button>)
-                //delete button
-                if (tsuids[i].split("_")[1] == uid) tmp_datum.push(
+            //delete button
+            if (tsuids[i].split("_")[1] == uid)
+                tmpDatum.push(
                     <button key={2} className="btn btn-outline-danger btn-sm rounded-pill m-1"
                         onClick={(evt: any) => { dbC_DelRemark(evt.target.name) }} name={tsuids[i]}>
                         <i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Del</button>)
-            }
-            tmp_data.push(<td key={4} style={{ textAlign: "center" }}>{tmp_datum}</td>)
-            tmp_recodes.push(<tr key={i}>{tmp_data}</tr>)
+            tmpData.push(<td key={4} style={{ textAlign: "center" }}>{tmpDatum}</td>)
+            tmpRecodes.push(<tr key={i}>{tmpData}</tr>)
         }
         return (
             <table className="table table-sm table-bordered bg-light">
@@ -126,7 +128,7 @@ export const App_tsx = () => {
                         <th style={{ width: "15%" }}>Ops</th>
                     </tr>
                 </thead>
-                <tbody>{tmp_recodes}</tbody>
+                <tbody>{tmpRecodes}</tbody>
             </table>
         )
     }

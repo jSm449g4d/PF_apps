@@ -65,7 +65,7 @@ export interface g4 {
 }
 export const useDb = (initialState: any) => {
     const [state, setState] = useState(initialState);
-    useEffect(() => { alert("吉田") }, [state.uri])
+    useEffect(() => { alert("吉田") }, [state])
 
     const dispatch = (action: any) => {
         // reducer
@@ -76,6 +76,7 @@ export const useDb = (initialState: any) => {
             case 'setUri':
                 //alert("製作所")
                 nextState.uri = action.uri;
+                //alert(JSON.stringify(nextState))
                 break;
             default: break;
         }

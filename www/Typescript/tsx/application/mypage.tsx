@@ -38,7 +38,7 @@ export const App_tsx = () => {
         }).catch(() => { if (iconUrl != "") setIconUrl(""); })
     }
 
-    function render_createmypage() {
+    const createMypage = () => {
         if (uid == "") return (<h5><i className="fas fa-wind mr-1"></i>Plz login</h5>)
         if (uid == showUid)
             return (
@@ -66,7 +66,7 @@ export const App_tsx = () => {
             </div>
         )
     }
-    function render_dlicon() {
+    const showIcon = () => {
         if (iconUrl == "") { return (<i className="fab fa-themeisle fa-2x m-2"><br />No Icon</i>) }
         return (
             <div className="m-2">
@@ -74,7 +74,7 @@ export const App_tsx = () => {
             </div>
         )
     }
-    function render_upicon() {
+    const uploadIcon = () => {
         if (showUid != uid) return;
         return (
             <button type="button" className="btn btn-outline-success btn-sm m-1"
@@ -89,7 +89,7 @@ export const App_tsx = () => {
             </button>
         )
     }
-    function render_changebutton(title: string, state_element: string) {
+    const changeProfile = (title: string, state_element: string) => {
         if (showUid != uid) return (<div />);
         let modal_id = "mygape_modal_" + title; let modal_id_s = "#" + modal_id;
         return (
@@ -134,24 +134,24 @@ export const App_tsx = () => {
     return (
         <div className="p-2 bg-light">
             {Object.keys(dbMypage).length < 1 ?
-                <div>{render_createmypage()}</div>
+                <div>{createMypage()}</div>
                 :
                 <div className="m-2" style={{ background: "khaki" }}>
                     <div className="d-flex justify-content-start">
-                        {render_dlicon()}
+                        {showIcon()}
                         <div className="m-1 p-1 flex-grow-1" style={{ backgroundColor: "rgba(100,100,100,0.1)" }}>
                             <div className="d-flex justify-content-start">
                                 <h3 className="flex-grow-1">
                                     <i className="far fa-user mr-1"></i>{Object.values(dbMypage)[0]["nickname"]}
                                 </h3>
                                 <div className="form-inline">
-                                    {render_changebutton("Nickname", "nickname")}{render_upicon()}
+                                    {changeProfile("Nickname", "nickname")}{uploadIcon()}
                                 </div>
                             </div>
                             <div className="m-1 p-1" style={{ backgroundColor: "rgba(255,255,255,0.5)" }}>
                                 <div className="d-flex justify-content-between">
                                     <h5>PR</h5>
-                                    {render_changebutton("PR", "pr")}
+                                    {changeProfile("PR", "pr")}
                                 </div>
                                 {Object.values(dbMypage)[0]["pr"]}
                             </div>

@@ -13,14 +13,14 @@ export class stopf5_tsx {
     }
 } export var stopf5 = new stopf5_tsx
 
-export function jpclock() {
+export const jpclock = () => {
     const now: Date = new Date();
     return now.getFullYear() + "年 " + now.getMonth() +
         "月 " + now.getDate() + "日 " + ["日 ", "月 ", "火 ", "水 ", "木 ", "金 ", "土 "][now.getDay()] +
         "曜日 " + now.getHours() + ": " + now.getMinutes() + ": " + now.getSeconds();
 }
 
-export function Query2Dict(query_str: string = window.location.search) {
+export const Query2Dict = (query_str: string = window.location.search) => {
     let ret_dict: { [key: string]: string } = {};
     if (query_str[0] == "?") query_str = query_str.slice(1)
     const data = query_str.split('&');
@@ -30,7 +30,7 @@ export function Query2Dict(query_str: string = window.location.search) {
         ret_dict[keyvalue[0]] = decodeURIComponent(keyvalue[1]).replace(/\+/g, ' ');
     }; return ret_dict;
 }
-export function Dict2Query(query_dict: { [key: string]: string }) {
+export const Dict2Query = (query_dict: { [key: string]: string }) => {
     let ret_str: string = "?"
     const tmpkey_array: string[] = Object.keys(query_dict);
     const tmpvalue_array: string[] = Object.values(query_dict);
@@ -39,7 +39,7 @@ export function Dict2Query(query_dict: { [key: string]: string }) {
         ret_str += tmpkey_array[i] + "=" + tmpvalue_array[i] + "&"
     }; return ret_str
 }
-export function dbUriCheck(uri: String) {
+export const dbUriCheck = (uri: String) => {
     // schema1/ document → True
     // else → False
     const dirs: string[] = uri.split("/")

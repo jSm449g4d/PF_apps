@@ -24,7 +24,7 @@ const storage = fb.storage();
 
 fb.analytics();
 
-export function fb_errmsg(error: any) { alert("error_code:" + error.code + "\nerror_message:" + error.message); }
+export const fb_errmsg = (error: any) => { alert("error_code:" + error.code + "\nerror_message:" + error.message); }
 
 
 export const useAuth = () => {
@@ -102,27 +102,27 @@ export const AppAuth = () => {
     const [tmpPass, setTmpPass] = useState("")
 
     //functions
-    function auth_signup(address: string = tmpAddress, pass: string = tmpPass) {
+    const signUp = (address: string = tmpAddress, pass: string = tmpPass) => {
         auth.createUserWithEmailAndPassword(address, pass).catch((err) => { fb_errmsg(err) })
     }
-    function auth_signin(address: string = tmpAddress, pass: string = tmpPass) {
+    const signIn = (address: string = tmpAddress, pass: string = tmpPass) => {
         auth.signInWithEmailAndPassword(address, pass).catch((err) => { fb_errmsg(err) })
     }
-    function auth_easyin(mail_addr: string = "a@b.com", mail_pass: string = "asdfgh") {
-        auth.signInWithEmailAndPassword(mail_addr, mail_pass).catch(() => { this.auth_signup(mail_addr, mail_pass); })
+    const easyIn = (mail_addr: string = "a@b.com", mail_pass: string = "asdfgh") => {
+        auth.signInWithEmailAndPassword(mail_addr, mail_pass).catch(() => { signUp(mail_addr, mail_pass); })
     }
-    function auth_easyin2(mail_addr: string = "c@d.com", mail_pass: string = "asdfgh") {
-        auth.signInWithEmailAndPassword(mail_addr, mail_pass).catch(() => { this.auth_signup(mail_addr, mail_pass); })
+    const easyIn2 = (mail_addr: string = "c@d.com", mail_pass: string = "asdfgh") => {
+        auth.signInWithEmailAndPassword(mail_addr, mail_pass).catch(() => { signUp(mail_addr, mail_pass); })
     }
-    function auth_resetpass(address: string = tmpAddress) {
+    const resetPass = (address: string = tmpAddress) => {
         auth.sendPasswordResetEmail(address).then(() => { alert("SEND_EMAIL!") }).catch((err) => { fb_errmsg(err) });
     }
-    function auth_deluser() {
+    const deleteUser = () => {
         if (window.confirm('Are you really DELETE:USER?\n')) {
             auth.currentUser.delete().then(() => { alert("ACCOUNT_DELETED!") }).catch((err) => { fb_errmsg(err) });
         }
     }
-    function auth_glogin() { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch((err) => { fb_errmsg(err) }) }
+    const googleIn = () => { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch((err) => { fb_errmsg(err) }) }
 
     //renders
     function render_signin_modal() {
@@ -153,19 +153,19 @@ export const AppAuth = () => {
                                 </div>
                                 <div>
                                     <button className="btn btn-warning btn-sm m-1" type="button" data-dismiss="modal"
-                                        onClick={() => { auth_easyin() }}>
+                                        onClick={() => { easyIn() }}>
                                         <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>EzLogin
                                     </button>
                                     <button className="btn btn-warning btn-sm m-1" type="button" data-dismiss="modal"
-                                        onClick={() => { auth_easyin2() }}>
+                                        onClick={() => { easyIn2() }}>
                                         <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>別垢版
                                     </button>
                                     <button className="btn btn-primary btn-sm m-1" type="button" data-dismiss="modal"
-                                        onClick={() => { auth_glogin() }}>
+                                        onClick={() => { googleIn() }}>
                                         <i className="fab fa-google mr-1" style={{ pointerEvents: "none" }}></i>Google
                                     </button>
                                     <button className="btn btn-success btn-sm m-1" type="button" data-dismiss="modal"
-                                        onClick={() => { auth_signin() }}>
+                                        onClick={() => { signIn() }}>
                                         <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>SignIn
                                     </button>
                                 </div>
@@ -204,7 +204,7 @@ export const AppAuth = () => {
                                 </div>
                                 <div>
                                     <button className="btn btn-primary btn-sm m-2" type="button" data-dismiss="modal"
-                                        onClick={() => { auth_signup() }}>
+                                        onClick={() => { signUp() }}>
                                         <i className="far fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>Submit
                                     </button>
                                 </div>
@@ -231,7 +231,7 @@ export const AppAuth = () => {
                                 <div className="form-inline">
                                     <input className="form-control" type="text" name="mail_addr" size={40} placeholder="mail address" />
                                     <button className="btn btn-sm btn-warning m-2" type="button" data-dismiss="modal"
-                                        onClick={() => { auth_resetpass(); }}>
+                                        onClick={() => { resetPass(); }}>
                                         <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>RESRT
                                     </button>
                                 </div>
@@ -243,7 +243,7 @@ export const AppAuth = () => {
                                     </button>
                                 </div>
                                 <button type="button" className="btn btn-sm btn-danger" data-dismiss="modal"
-                                    onClick={() => { auth_deluser(); }}>
+                                    onClick={() => { deleteUser(); }}>
                                     <i className="fas fa-user-slash mr-1" style={{ pointerEvents: "none" }}></i>USER_DELETE
                                 </button>
                             </div>

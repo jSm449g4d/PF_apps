@@ -98,7 +98,7 @@ export const App_tsx = () => {
     }
 
     // renders
-    function helpApp() {
+    const helpApp = () => {
         return (
             <div className="p-1" style={{ backgroundColor: "wheat", border: "3px double silver" }}>
                 <h4 className="d-flex justify-content-center" style={{ fontStyle: "Sylfaen" }}>
@@ -125,7 +125,7 @@ export const App_tsx = () => {
             </div>
         )
     }
-    function helpCmd() {
+    const helpCmd = () => {
         return (
             <div className="p-1" style={{ backgroundColor: "wheat", border: "3px double silver" }}>
                 <h4 className="d-flex justify-content-center" style={{ fontStyle: "Sylfaen" }}>
@@ -235,7 +235,7 @@ export const App_tsx = () => {
     }
     function render_filelds_table() {
         const _timestamp = Object.keys(fields).sort();
-        const _tmpRecode = []; let _tmpFields = Object.assign({},fields);
+        const _tmpRecode = []; let _tmpFields = Object.assign({}, fields);
         for (var i = 0; i < _timestamp.length; i++) {
             const tmp_data = [];
             //Field (formtext)

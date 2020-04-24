@@ -7,7 +7,7 @@ require.context('../application/', true, /\.ts(x?)$/)
 export const Widgethead_tsx = () => {
     useEffect(() => ReactDOM.render(<AppAuth />, document.getElementById("account_tsx")), [])
     // functions
-    function _SwitchApp(application: string) {
+    const _switchApp = (application: string) => {
         if (stopf5.check("_switchapp", 300, true) == false) return; // To prevent high freq access
         import("../application/" + application).then((module) => {
             ReactDOM.unmountComponentAtNode(document.getElementById("app_tsx"))
@@ -15,12 +15,12 @@ export const Widgethead_tsx = () => {
         })
     }
     // renders
-    function render_navitem(icon: any, title: string, application: string) {
+    const navitemApp = (icon: any, title: string, application: string) => {
         let addClassname: string = ""
         if (Query2Dict()["application"] == application) { addClassname += " active"; }
         return (
             <a className={"nav-item nav-link p-1" + addClassname} data-toggle="tab"
-                onClick={() => { _SwitchApp(application) }}>
+                onClick={() => { _switchApp(application) }}>
                 {icon}{title}
             </a>
         )
@@ -30,11 +30,11 @@ export const Widgethead_tsx = () => {
             <i className="fab fa-react fa-2x fa-spin m-2" style={{ color: "mediumturquoise" }}></i>
             <nav>
                 <div className="nav nav-tabs" role="tablist">
-                    {render_navitem(<i className="fab fa-wordpress mr-1"></i>, "Blog", "wordpress")}
-                    {render_navitem(<i className="fas fa-home mr-1"></i>, "ホームページ", "homepage")}
-                    {render_navitem(<i className="far fa-address-card mr-1"></i>, "マイページ", "mypage")}
-                    {render_navitem(<i className="far fa-comments mr-1"></i>, "チャット", "tptef")}
-                    {render_navitem(<i className="fas fa-database mr-1"></i>, "NicoAPI", "nicoapi")}
+                    {navitemApp(<i className="fab fa-wordpress mr-1"></i>, "Blog", "wordpress")}
+                    {navitemApp(<i className="fas fa-home mr-1"></i>, "ホームページ", "homepage")}
+                    {navitemApp(<i className="far fa-address-card mr-1"></i>, "マイページ", "mypage")}
+                    {navitemApp(<i className="far fa-comments mr-1"></i>, "チャット", "tptef")}
+                    {navitemApp(<i className="fas fa-database mr-1"></i>, "NicoAPI", "nicoapi")}
                 </div>
             </nav>
             <div className="ml-auto">

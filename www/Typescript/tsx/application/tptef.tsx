@@ -90,7 +90,7 @@ export const App_tsx = () => {
     }
 
     // renders
-    function render_thread_table() {
+    const threadTable = () => {
         const tmp_recodes = [];
         const tsuids = Object.keys(dbTptef).sort();
         for (var i = 0; i < tsuids.length; i++) {
@@ -130,7 +130,7 @@ export const App_tsx = () => {
             </table>
         )
     }
-    function render_submit_forms() {
+    const submitForms = () => {
         return (
             <div className="mt-2 p-2" style={{ color: "#CCFFFF", border: "3px double silver", background: "#001111" }}>
                 <div className="d-flex justify-content-between">
@@ -180,14 +180,14 @@ export const App_tsx = () => {
                         </button>
                 </div>
             </div>
-            {render_thread_table()}
+            {threadTable()}
             {/* Input form */}
             {uid == "" ?
                 <h5 className="d-flex justify-content-center">
                     <i className="fas fa-wind mr-1"></i>Plz login
                     </h5>
                 :
-                render_submit_forms()
+                submitForms()
             }
         </div>
     )

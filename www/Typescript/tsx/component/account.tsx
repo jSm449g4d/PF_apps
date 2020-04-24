@@ -55,16 +55,17 @@ export const useDb = (initialState: any = { uri: "", recodes: {} }) => {
         }
         return true;
     }
-
     const [recodes, setRecodes] = useState(initialState["recodes"]);
     const [uri, setUri] = useState(initialState["uri"]);
+    // dbRead
     useEffect(() => {
         alert("ヨシダヨシオの動画")
-        // dbReadBySnap
         const _snap = () => {
             if (uriCheck(uri) == false) { setRecodes({}); return () => { } }
             return db.doc(uri).onSnapshot((doc) => {
-                if (doc.exists) { setRecodes(doc.data()); } else { setRecodes({}); }
+                if (doc.exists) {
+                    setRecodes(doc.data()); alert(JSON.stringify(doc.data()));
+                } else { setRecodes({}); }
             })
         }
         return () => { _snap(); }
@@ -73,11 +74,25 @@ export const useDb = (initialState: any = { uri: "", recodes: {} }) => {
     const dispatch = (action: any) => {
         // reducer
         switch (action.type) {
+            // dbCreate
             case 'create':
+                if (uriCheck(uri) == false) break;
+                if (action["recodes"]) { setRecodes(action["recodes"]) } // action.type → commit
+                db.doc(uri).set(recodes, { merge: action["merge"] ? action["merge"] : false })
+                    .catch((err) => { fb_errmsg(err) })
+                break;
+            // dbDelete
+            case 'delete':
+                if (uriCheck(uri) == false) break;
+                db.doc(uri).delete().catch((err) => { fb_errmsg(err) })
+                break;
+            case 'commit':
+                if (uriCheck(uri) == false) break;
+                setRecodes(action["recodes"]);
                 break;
             case 'setUri':
                 setUri(action["uri"]);
-                setRecodes(initialState)
+                setRecodes(initialState["recodes"])
                 break;
             default: break;
         }

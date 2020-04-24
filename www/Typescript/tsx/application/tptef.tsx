@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { fb, fb_errmsg, useAuth,useDb } from "../component/account";
+import { fb, fb_errmsg, useAuth, useDb } from "../component/account";
 import { stopf5, jpclock, dbUriCheck } from "../component/util_tsx";
 
 const storage = fb.storage();
 const db = fb.firestore();
 
 export const App_tsx = () => {
-    const [tptef, dispatchTptef] = useDb()
-    
+    const [tptef, dispatchTptef] = useDb({ uri: "tptef/main", recodes: {} })
+
     //dispatchTptef({})
 
     const [uid,] = useAuth()
@@ -29,7 +29,7 @@ export const App_tsx = () => {
     // setInterval
     useEffect(() => {
         const _intervalId = setInterval(() => {
-            _tick();dispatchTptef({type:"setUri",uri:"s"});
+            _tick(); dispatchTptef({ type: "setUri", uri: "s" });
             setUseInterval(new Date());
         }, 100);
         return () => { clearInterval(_intervalId) };

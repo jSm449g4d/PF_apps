@@ -108,11 +108,11 @@ export const AppAuth = () => {
     const signIn = (address: string = tmpAddress, pass: string = tmpPass) => {
         auth.signInWithEmailAndPassword(address, pass).catch((err) => { fb_errmsg(err) })
     }
-    const easyIn = (mail_addr: string = "a@b.com", mail_pass: string = "asdfgh") => {
-        auth.signInWithEmailAndPassword(mail_addr, mail_pass).catch(() => { signUp(mail_addr, mail_pass); })
+    const easyIn = (address: string = "a@b.com", pass: string = "asdfgh") => {
+        auth.signInWithEmailAndPassword(address, pass).catch(() => { signUp(address, pass); })
     }
-    const easyIn2 = (mail_addr: string = "c@d.com", mail_pass: string = "asdfgh") => {
-        auth.signInWithEmailAndPassword(mail_addr, mail_pass).catch(() => { signUp(mail_addr, mail_pass); })
+    const easyIn2 = (address: string = "c@d.com", pass: string = "asdfgh") => {
+        auth.signInWithEmailAndPassword(address, pass).catch(() => { signUp(address, pass); })
     }
     const resetPass = (address: string = tmpAddress) => {
         auth.sendPasswordResetEmail(address).then(() => { alert("SEND_EMAIL!") }).catch((err) => { fb_errmsg(err) });
@@ -125,7 +125,7 @@ export const AppAuth = () => {
     const googleIn = () => { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch((err) => { fb_errmsg(err) }) }
 
     //renders
-    function render_signin_modal() {
+    const signInModal = () => {
         return (
             <div>
                 <button type="button" className="btn btn-success btn-sm m-1" data-toggle="modal" data-target={"#signin_modal"}>
@@ -176,7 +176,7 @@ export const AppAuth = () => {
             </div>
         )
     }
-    function render_signup_modal() {
+    const signUpModal = () => {
         return (
             <div>
                 <button type="button" className="btn btn-primary btn-sm m-1" data-toggle="modal" data-target={"#signup_modal"}>
@@ -215,7 +215,7 @@ export const AppAuth = () => {
             </div>
         )
     }
-    function render_config() {
+    const config = () => {
         return (
             <div className="p-2">
                 <i className="fas fa-cog fa-lg faa-wrench animated-hover" data-toggle="modal" data-target="#config_modal"></i>
@@ -260,8 +260,8 @@ export const AppAuth = () => {
                 <div className="d-flex justify-content-between">
                     <div className="ml-auto">
                         <div className="form-inline">
-                            {render_signin_modal()}
-                            {render_signup_modal()}
+                            {signInModal()}
+                            {signUpModal()}
                         </div>
                     </div>
                 </div>
@@ -271,7 +271,7 @@ export const AppAuth = () => {
                         <button className="btn btn-secondary btn-sm mx-1" type="button" onClick={() => { auth.signOut(); }}>
                             <i className="fas fa-sign-out-alt mr-1" style={{ pointerEvents: "none" }}></i>logout
                             </button>
-                        {render_config()}
+                        {config()}
                     </div>
                 </div>
             }

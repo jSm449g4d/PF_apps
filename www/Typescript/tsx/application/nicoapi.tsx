@@ -89,20 +89,10 @@ export const App_tsx = () => {
         }, 1000)
 
     }
-    function dbD_DelOrder(tsuid: string) {
-        db.doc("nicoapi/" + uid)
-            .set({ [tsuid]: fb.firestore.FieldValue.delete() }, { merge: true }).catch((err) => fb_errmsg(err))
-    }
     function stR_GetOrderZip(tsuid: string) {
         if (stopf5.check("stR_GetOrderZip", 500) == false) return; // To prevent high freq access
         storage.ref("nicoapi/" + uid + "/" + tsuid + ".zip")
             .getDownloadURL().then((url) => { window.open(url, '_blank'); }).catch((err: any) => { fb_errmsg(err) })
-    }
-    function stD_DelOrderZip(tsuid: string) {
-        if (uid == "") return;
-        if (stopf5.check("stD_DelOrderZip", 500) == false) return; // To prevent high freq access
-        storage.ref("nicoapi/" + uid + "/" + tsuid + ".zip").delete().catch((err) => { fb_errmsg(err) });
-        dbD_DelOrder.bind(tsuid)
     }
 
     // renders
@@ -350,7 +340,11 @@ export const App_tsx = () => {
                 //attachment download button
                 if (doc_records[tsuids[i]]["status"] == "processed") tmp_datum.push(
                     <button key={2} className="btn btn-outline-danger btn-sm m-1" name={tsuids[i]}
-                        onClick={(evt: any) => { dbD_DelOrder(evt.target.name), stD_DelOrderZip(evt.target.name) }}>
+                        onClick={(evt: any) => {
+                            if (stopf5.check("stD_DelOrderZip", 500) == false) return; // To prevent high freq access
+                            dbCreate("nicoapi/" + uid, { [evt.target.name]: fb.firestore.FieldValue.delete() }, true);
+                            strageDelete("nicoapi/" + uid + "/" + evt.target.name + ".zip");
+                        }}>
                         <i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Del
                     </button>)
             } tmp_data.push(<td key={3}>{tmp_datum}</td>)

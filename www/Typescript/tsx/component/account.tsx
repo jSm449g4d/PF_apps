@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect } from 'react';
 import firebase from 'firebase/app';
 import "firebase/analytics";
 import "firebase/auth";
@@ -29,7 +29,7 @@ export const fb_errmsg = (error: any) => { alert("error_code:" + error.code + "\
 
 export const useAuth = () => {
     const [uid, setUid] = useState("")
-    const [useInterval, setUseInterval] = React.useState(new Date());    // FirebaseSnapping
+    const [useInterval, setUseInterval] = useState(new Date());
     // setInterval(Auth)
     useEffect(() => {
         const _intervalId = setInterval(() => {
@@ -45,58 +45,59 @@ export const useAuth = () => {
 }
 
 // UC: studing Reducer
-export const useDb = (dbName: string) => {
-    function dbUriCheck(uri: String) {
-        // schema1/ document → True
-        // else → False
-        const dirs: string[] = uri.split("/")
-        if (dirs.length < 2) { return false; }
-        for (let i = 0; i < dirs.length; i++) {
-            if (dirs[i].length < 1) { return false; }
+
+/** 
+function reducer(state, action) {
+    switch (action.type) {
+        case 'increment':
+            return { count: state.count + 1 };
+        case 'decrement':
+            return { count: state.count - 1 };
+        case 'reset':
+            return init(action.payload);
+        default:
+            throw new Error();
+    }
+}*/
+
+export interface g4 {
+    uri: string, recodes: { [tsuid: string]: any },
+}
+export const reducerDb = (action: any, state: any) => {
+    switch (action.type) {
+        case 'create':
+            return state;
+        case 'setUri':
+            state.uri = action.uri;
+            return state;
+        default: return state;
+    }
+}
+export const useDb = (initialState: any) => {
+    const [state, setState] = useState(initialState);
+    useEffect(() => { alert("吉田") }, [state.uri])
+
+    const dispatch = (action: any) => {
+        // reducer
+        let nextState: any = state
+        switch (action.type) {
+            case 'create':
+                break;
+            case 'setUri':
+                alert("製作所")
+                nextState.uri = action.uri;
+                break;
         }
-        return true;
-    }
-    const [localDb, setLocalDb] = useState<{ [tptef: string]: any }>({})
-    const dbCreate = (uri: string, margeFlag: boolean = false, ) => {
-        if (dbUriCheck(uri) == false) return
-        db.doc(uri).set(localDb, { merge: margeFlag }).catch((err) => { fb_errmsg(err) })
-    }
-    const dbRead = (uri: string, afterFunc: any = () => { }) => {
-        const _setDb: any = (recodes: any) => { setLocalDb(recodes); afterFunc(); }
-        if (dbUriCheck(uri) == false) { _setDb({}); return () => { } }
-        return db.doc(uri).onSnapshot((doc) => {
-            if (doc.exists) { _setDb(doc.data()); } else { _setDb({}); }
-        });
+
+        setState(nextState);
+        return nextState
     }
 
-    return [localDb, setLocalDb, dbCreate, dbRead]
+    return [state, dispatch];
 }
-//const [a, b, c, d] = useDb("")
-function dbReducer(state: any, action: any) {
-    function dbUriCheck(uri: String) {
-        // schema1/ document → True
-        // else → False
-        const dirs: string[] = uri.split("/")
-        if (dirs.length < 2) { return false; }
-        for (let i = 0; i < dirs.length; i++) {
-            if (dirs[i].length < 1) { return false; }
-        }
-        return true;
-    }
-    switch (action.type) {
-        case 'add':
-            return [...state, {
-                text: action.text,
-                completed: false
-            }];
-        // ... other actions ...
-        default:
-            return state;
-    }
-}
-// UC: studing Reducer
 
 export const AppAuth = () => {
+
     const [uid,] = useAuth()
     const [tmpAddress, setTmpAddress] = useState("")
     const [tmpPass, setTmpPass] = useState("")

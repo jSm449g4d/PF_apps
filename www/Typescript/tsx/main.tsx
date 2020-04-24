@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from "react-dom";
 import { Query2Dict } from "./component/util_tsx";
-import { Widgethead_tsx } from "./component/widget";
+import { AppWidgetHead } from "./component/widget";
 
-// IndexPage
+// IndexPage (Not use)
 const App_tsx = () => {
     return (
         <div className="p-2 bg-light">
@@ -47,8 +47,8 @@ const App_tsx = () => {
 };
 
 // Widget
-document.body.insertAdjacentHTML('beforeend', '<div id="widgethead_tsx">widgethead_tsx loading...<\/div>');
-ReactDOM.render(<Widgethead_tsx />, document.getElementById("widgethead_tsx"));
+document.body.insertAdjacentHTML('beforeend', '<div id="AppWidgetHead">AppWidgetHead loading...<\/div>');
+ReactDOM.render(<AppWidgetHead />, document.getElementById("AppWidgetHead"));
 
 // App
 document.body.insertAdjacentHTML('beforeend', '<div id="app_tsx">app_tsx loading...<\/div>');

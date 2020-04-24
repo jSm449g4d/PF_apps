@@ -40,7 +40,7 @@ export const App_tsx = () => {
         if (dbUriCheck(uri) == false) { return () => { } }
         storage.ref(uri).delete().catch((err) => { fb_errmsg(err) })
     }
-    
+
     function stR_GetIcon() {
         storage.ref("mypage/" + showUid + "/icon.img").getDownloadURL().then((url) => {
             if (iconUrl != url) setIconUrl(url);
@@ -54,11 +54,11 @@ export const App_tsx = () => {
                 <button type="button" className="btn btn-outline-success btn-bg m-2"
                     onClick={() => {
                         if (stopf5.check("cleateMypage", 500, true) == false) return; // To prevent high freq access
-                        dbCreate("mypage/" + showUid,
+                        /*dbCreate("mypage/" + showUid,
                             {
                                 [Date.now().toString() + "_" + showUid]:
                                     { nickname: "窓の民は名無し", pr: "私はJhon_Doe。窓の蛇遣いです。" }
-                            })
+                            })*/
                     }}>
                     <i className="fas fa-file-signature mr-1" style={{ pointerEvents: "none" }}></i>Create Mypage
                 </button>
@@ -125,7 +125,7 @@ export const App_tsx = () => {
                                 <button type="button" className="btn btn-sm btn-success" data-dismiss="modal"
                                     onClick={() => {
                                         if (stopf5.check("1", 500, true) == false) return; // To prevent high freq access
-                                        dbCreate("mypage/" + showUid, dbMypage)
+                                        //dbCreate("mypage/" + showUid, dbMypage)
                                     }}>
                                     <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>Submit
                                 </button>

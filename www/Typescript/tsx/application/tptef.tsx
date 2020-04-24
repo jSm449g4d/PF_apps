@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { fb, fb_errmsg, useAuth } from "../component/account";
+import { fb, fb_errmsg, useAuth,useDb } from "../component/account";
 import { stopf5, jpclock, dbUriCheck } from "../component/util_tsx";
 
 const storage = fb.storage();
 const db = fb.firestore();
 
 export const App_tsx = () => {
+    const [tptef, dispatchTptef] = useDb({ uri: "", recodes: {} })
+    //dispatchTptef({"setUri":"s"})
+
     const [uid,] = useAuth()
     const [room, setRoom] = useState("main")
     const [tmpRoom, setTmpRoom] = useState(room)

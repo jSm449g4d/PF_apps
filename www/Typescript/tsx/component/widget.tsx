@@ -4,7 +4,7 @@ import { AppAuth } from "./account";
 import { stopf5, Query2Dict } from "./util_tsx";
 require.context('../application/', true, /\.ts(x?)$/)
 
-export const Widgethead_tsx = () => {
+export const AppWidgetHead = () => {
     useEffect(() => ReactDOM.render(<AppAuth />, document.getElementById("account_tsx")), [])
     // functions
     const _switchApp = (application: string) => {

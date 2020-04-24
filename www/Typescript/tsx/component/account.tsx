@@ -44,46 +44,45 @@ export const useAuth = () => {
     return [uid,]
 }
 
-// UC: studing Reducer
-
-/** 
-function reducer(state, action) {
-    switch (action.type) {
-        case 'increment':
-            return { count: state.count + 1 };
-        case 'decrement':
-            return { count: state.count - 1 };
-        case 'reset':
-            return init(action.payload);
-        default:
-            throw new Error();
+export const useDb = (initialState: any = { uri: "", recodes: {} }) => {
+    const uriCheck = (uri: String) => {
+        // schema1/ document → True
+        // else → False
+        const dirs: string[] = uri.split("/")
+        if (dirs.length < 2) { return false; }
+        for (let i = 0; i < dirs.length; i++) {
+            if (dirs[i].length < 1) { return false; }
+        }
+        return true;
     }
-}*/
 
-export interface g4 {
-    uri: string, recodes: { [tsuid: string]: any },
-}
-export const useDb = (initialState: any) => {
-    const [state, setState] = useState(initialState);
-    useEffect(() => { alert("吉田") }, [state])
+    const [recodes, setRecodes] = useState(initialState["recodes"]);
+    const [uri, setUri] = useState(initialState["uri"]);
+    useEffect(() => {
+        alert("ヨシダヨシオの動画")
+        // dbReadBySnap
+        const _snap = () => {
+            if (uriCheck(uri) == false) { setRecodes({}); return () => { } }
+            return db.doc(uri).onSnapshot((doc) => {
+                if (doc.exists) { setRecodes(doc.data()); } else { setRecodes({}); }
+            })
+        }
+        return () => { _snap(); }
+    }, [uri])
 
     const dispatch = (action: any) => {
         // reducer
-        let nextState: any = state
         switch (action.type) {
             case 'create':
                 break;
             case 'setUri':
-                //alert("製作所")
-                nextState.uri = action.uri;
-                //alert(JSON.stringify(nextState))
+                setUri(action["uri"]);
+                setRecodes(initialState)
                 break;
             default: break;
         }
-        setState(nextState);
     }
-
-    return [state, dispatch];
+    return [recodes, dispatch];
 }
 
 export const AppAuth = () => {

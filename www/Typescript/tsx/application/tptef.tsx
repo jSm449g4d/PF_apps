@@ -6,8 +6,9 @@ const storage = fb.storage();
 const db = fb.firestore();
 
 export const App_tsx = () => {
-    const [tptef, dispatchTptef] = useDb({ uri: "", recodes: {} })
-    //dispatchTptef({type:"setUri",uri:"s"})
+    const [tptef, dispatchTptef] = useDb()
+    
+    //dispatchTptef({})
 
     const [uid,] = useAuth()
     const [room, setRoom] = useState("main")
@@ -28,7 +29,7 @@ export const App_tsx = () => {
     // setInterval
     useEffect(() => {
         const _intervalId = setInterval(() => {
-            _tick();
+            _tick();dispatchTptef({type:"setUri",uri:"s"});
             setUseInterval(new Date());
         }, 100);
         return () => { clearInterval(_intervalId) };

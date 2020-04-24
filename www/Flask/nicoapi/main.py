@@ -96,7 +96,7 @@ def show(request):
     access_counter += 1
     status_dict: dict = {
         "access_counter": str(access_counter),
-        "Thread": "Running", }
+        "thread": "running", }
 
     # body
     global thread_d, restartflag

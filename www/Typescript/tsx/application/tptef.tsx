@@ -43,6 +43,7 @@ export const App_tsx = () => {
         });
     }
     function strageCreate(uri: string, upFile: any) {
+        if (dbUriCheck(uri) == false) { return () => { } }
         storage.ref(uri).put(upFile).catch((err) => { fb_errmsg(err) })
     }
 

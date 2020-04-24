@@ -5,7 +5,6 @@ import { stopf5, Query2Dict, dbUriCheck } from "../component/util_tsx";
 const storage = fb.storage();
 const db = fb.firestore()
 
-
 export const App_tsx = () => {
     const [uid,] = useAuth()
     const [showUid, setShowUid] = useState("showuid" in Query2Dict() == false ? "" : Query2Dict()["showuid"])
@@ -30,6 +29,7 @@ export const App_tsx = () => {
         });
     }
     function strageCreate(uri: string, upFile: any) {
+        if (dbUriCheck(uri) == false) { return () => { } }
         storage.ref(uri).put(upFile).catch((err) => { fb_errmsg(err) })
     }
     function stR_GetIcon() {

@@ -7,7 +7,7 @@ const db = fb.firestore();
 
 export const App_tsx = () => {
     const [tptef, dispatchTptef] = useDb({ uri: "", recodes: {} })
-    //dispatchTptef({"setUri":"s"})
+    dispatchTptef({type:"setUri",setUri:"s"})
 
     const [uid,] = useAuth()
     const [room, setRoom] = useState("main")

@@ -63,16 +63,6 @@ function reducer(state, action) {
 export interface g4 {
     uri: string, recodes: { [tsuid: string]: any },
 }
-export const reducerDb = (action: any, state: any) => {
-    switch (action.type) {
-        case 'create':
-            return state;
-        case 'setUri':
-            state.uri = action.uri;
-            return state;
-        default: return state;
-    }
-}
 export const useDb = (initialState: any) => {
     const [state, setState] = useState(initialState);
     useEffect(() => { alert("吉田") }, [state.uri])
@@ -84,13 +74,12 @@ export const useDb = (initialState: any) => {
             case 'create':
                 break;
             case 'setUri':
-                alert("製作所")
+                //alert("製作所")
                 nextState.uri = action.uri;
                 break;
+            default: break;
         }
-
         setState(nextState);
-        return nextState
     }
 
     return [state, dispatch];

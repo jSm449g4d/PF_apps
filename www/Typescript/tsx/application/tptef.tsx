@@ -7,7 +7,6 @@ const db = fb.firestore();
 
 export const App_tsx = () => {
     const [uid,] = useAuth()
-
     const [room, setRoom] = useState("main")
     const [tmpRoom, setTmpRoom] = useState(room)
     const [tmpContent, setTmpContent] = useState("")

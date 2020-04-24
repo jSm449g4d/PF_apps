@@ -8,7 +8,6 @@ const db = fb.firestore()
 
 export const App_tsx = () => {
     const [uid,] = useAuth()
-    // const [uid, setUid] = useState("")
     const [showUid, setShowUid] = useState("showuid" in Query2Dict() == false ? "" : Query2Dict()["showuid"])
     const [iconUrl, setIconUrl] = useState("")
     const [dbMypage, setDbMypage] = useState<{ [tptef: string]: any }>({})

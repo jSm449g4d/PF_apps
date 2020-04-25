@@ -25,6 +25,7 @@ const storage = fb.storage();
 fb.analytics();
 
 export const fb_errmsg = (error: any) => { alert("error_code:" + error.code + "\nerror_message:" + error.message); }
+export const fbErr = (error: any) => { alert("error_code:" + error.code + "\nerror_message:" + error.message); }
 
 
 export const useAuth = () => {
@@ -57,42 +58,33 @@ export const useDb = (initialState: any = { uri: "", recodes: {} }) => {
     }
     const [recodes, setRecodes] = useState(initialState["recodes"]);
     const [uri, setUri] = useState(initialState["uri"]);
-    // dbRead
+    // snap (Read)
     useEffect(() => {
-        alert("ヨシダヨシオの動画")
-        const _snap = () => {
-            if (uriCheck(uri) == false) { setRecodes({}); return () => { } }
-            return db.doc(uri).onSnapshot((doc) => {
-                if (doc.exists) {
-                    setRecodes(doc.data()); alert(JSON.stringify(doc.data()));
-                } else { setRecodes({}); }
+        const _snap = uriCheck(uri) ?
+            db.doc(uri).onSnapshot((doc) => {
+                if (doc.exists) { setRecodes(doc.data()); }
+                else { setRecodes(initialState["recodes"]); }
             })
-        }
+            : () => { }
         return () => { _snap(); }
     }, [uri])
 
     const dispatch = (action: any) => {
-        // reducer
+        // reducer (Create, Delete)
         switch (action.type) {
-            // dbCreate
-            case 'create':
+            case 'create': //{type:xxx, recodes:yyy, merge:zzz}
                 if (uriCheck(uri) == false) break;
-                if (action["recodes"]) { setRecodes(action["recodes"]) } // action.type → commit
-                db.doc(uri).set(recodes, { merge: action["merge"] ? action["merge"] : false })
-                    .catch((err) => { fb_errmsg(err) })
+                db.doc(uri).set(
+                    action["recodes"] ? action["recodes"] : initialState["recodes"],
+                    { merge: action["merge"] ? action["merge"] : false }
+                ).catch(err => fbErr(err))
                 break;
-            // dbDelete
-            case 'delete':
+            case 'delete': //{type:xxx}
                 if (uriCheck(uri) == false) break;
-                db.doc(uri).delete().catch((err) => { fb_errmsg(err) })
+                db.doc(uri).delete().catch(err => fbErr(err))
                 break;
-            case 'commit':
-                if (uriCheck(uri) == false) break;
-                setRecodes(action["recodes"]);
-                break;
-            case 'setUri':
+            case 'setUri': //{type:xxx, uri:yyy}
                 setUri(action["uri"]);
-                setRecodes(initialState["recodes"])
                 break;
             default: break;
         }

@@ -6,7 +6,6 @@ const storage = fb.storage();
 const db = fb.firestore();
 
 export const App_tsx = () => {
-    const [tptef, dispatchTptef] = useDb({ uri: "tptef/main", recodes: {} })
 
     //dispatchTptef({})
 
@@ -15,41 +14,23 @@ export const App_tsx = () => {
     const [tmpRoom, setTmpRoom] = useState(room)
     const [tmpContent, setTmpContent] = useState("")
     const [tmpFile, setTmpFile] = useState(null)
-    const [dbMypage, setDbMypage] = useState<{ [tptef: string]: any }>({ "_": { "nickname": "nanasi" } })
-    const [dbTptef, setDbTptef] = useState<{ [tptef: string]: any }>({})
     const [jpclockNow, setJpclockNow] = useState("")
     const [useInterval, setUseInterval] = React.useState(new Date());
-    // FirebaseSnapping
-    useEffect(() => {
-        const _snaps = [
-            dbRead("mypage/" + uid, setDbMypage),
-            dbRead("tptef/" + room, setDbTptef),]
-        return () => { for (let i = 0; i < _snaps.length; i++) { _snaps[i](); } }
-    }, [uid, room])
+
+    const [dbTptef, dispatchTptef] = useDb({ uri: "", recodes: {} })
+    const [dbMypage, dispatchMypage] = useDb({ uri: "", recodes: {} })
+    useEffect(() => { dispatchTptef({ type: "setUri", uri: "tptef/" + room }); }, [room])
+    useEffect(() => { dispatchMypage({ type: "setUri", uri: "mypage/" + uid }) }, [uid])
+
     // setInterval
     useEffect(() => {
         const _intervalId = setInterval(() => {
-            _tick(); dispatchTptef({ type: "setUri", uri: "s" });
+            _tick();
             setUseInterval(new Date());
-        }, 100);
+        }, 500);
         return () => { clearInterval(_intervalId) };
     }, [useInterval]);
 
-    function dbCreate(uri: string, upRecodes: { [tsuid: string]: any }, margeFlag: boolean = false, ) {
-        if (dbUriCheck(uri) == false) return
-        db.doc(uri).set(upRecodes, { merge: margeFlag }).catch((err) => { fb_errmsg(err) })
-    }
-    function dbRead(uri: string, setDbRecodes: any, afterFunc: any = () => { }) {
-        const _setDb: any = (recodes: any) => { setDbRecodes(recodes); afterFunc(); }
-        if (dbUriCheck(uri) == false) { _setDb({}); return () => { } }
-        return db.doc(uri).onSnapshot((doc) => {
-            if (doc.exists) { _setDb(doc.data()); } else { _setDb({}); }
-        });
-    }
-    function dbDelete(uri: string, ) {
-        if (dbUriCheck(uri) == false) return
-        db.doc(uri).delete().catch((err) => { fb_errmsg(err) })
-    }
     function strageCreate(uri: string, upFile: any) {
         if (dbUriCheck(uri) == false) { return () => { } }
         storage.ref(uri).put(upFile).catch((err) => { fb_errmsg(err) })
@@ -63,26 +44,21 @@ export const App_tsx = () => {
     function remark() {
         if (tmpContent == "") { alert("Plz input content"); return; };
         if (stopf5.check("dbC_AddRemark", 500, true) == false) return; // To prevent high freq access
-
-        let _attachmentUri: string = "";
-        if (tmpFile) {
-            _attachmentUri = "tptef/" + uid + "/" + tmpFile.name;
-            strageCreate(_attachmentUri, tmpFile)
-        }
-        dbCreate("tptef/" + room, {
-            [Date.now().toString() + "_" + uid]: {
-                // FIXME: Verbose
-                handlename: 0 < Object.values(dbMypage).length ? Object.values(dbMypage)[0]["nickname"] : "None",
-                content: tmpContent,
-                attachmentUri: _attachmentUri,
-            }
-        }, true);
+        dispatchTptef({
+            type: "create", recodes: {
+                [Date.now().toString() + "_" + uid]: {
+                    handlename: Object.values(dbMypage)[0] ? Object.values<any>(dbMypage)[0]["nickname"] : "None",
+                    content: tmpContent,
+                    attachmentUri: tmpFile ? "tptef/" + uid + "/" + tmpFile.name : "",
+                }
+            }, merge: true
+        })
+        if (tmpFile) { strageCreate("tptef/" + uid + "/" + tmpFile.name, tmpFile) }
     }
     function dbC_DelRemark(tsuid: string) {
         if (stopf5.check("2", 500, true) == false) return; // To prevent high freq access
-        strageDelete(dbTptef[tsuid]["attachmentUri"])
-        dbCreate("tptef/" + room, { [tsuid]: fb.firestore.FieldValue.delete() }, true);
-        if (Object.keys(dbTptef).length < 2) dbDelete("tptef/" + room);
+        if (dbTptef[tsuid]) strageDelete(dbTptef[tsuid].attachmentUri)
+        dispatchTptef({ type: "create", recodes: { [tsuid]: fb.firestore.FieldValue.delete() }, merge: true })
     }
     function stR_GetAttachment(attachmentUri: string) {
         storage.ref(attachmentUri).getDownloadURL().then((url) => {
@@ -140,9 +116,10 @@ export const App_tsx = () => {
         return (
             <div className="mt-2 p-2" style={{ color: "#CCFFFF", border: "3px double silver", background: "#001111" }}>
                 <div className="d-flex justify-content-between">
-                    <h4><i className="far fa-user mr-1"></i>{// FIXME: Verbose
-                        0 < Object.values(dbMypage).length ? Object.values(dbMypage)[0]["nickname"] : "None"
-                    }</h4>
+                    <h4>
+                        <i className="far fa-user mr-1"></i>
+                        {Object.values(dbMypage)[0] ? Object.values<any>(dbMypage)[0]["nickname"] : "None"}
+                    </h4>
                     <h5><i className="far fa-clock mr-1"></i>{jpclockNow}</h5>
                     <h5>入力フォーム</h5>
                 </div>

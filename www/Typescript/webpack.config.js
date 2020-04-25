@@ -3,7 +3,7 @@ const entry = require("webpack-glob-entry");
 const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
-//  entry: entry("./tsx/*.tsx"),
+  //  entry: entry("./tsx/*.tsx"),
   entry: entry("./tsx/main.tsx"),
   output: {
     path: path.resolve(__dirname, "../"),
@@ -20,7 +20,7 @@ module.exports = {
 
   module: {
     rules: [
-      { exclude: /node_modules/, test: /\.ts(x?)$/, loader: "ts-loader" },
+      { exclude: /node_modules/, test: /\.ts(x?)$/, loaders: ["ts-loader"] },
       { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
       { test: /\.css$/, use: ["style-loader", "css-loader"] },
     ],
@@ -38,4 +38,3 @@ module.exports = {
     "firebase/firestore": "firebase",
   },
 };
-

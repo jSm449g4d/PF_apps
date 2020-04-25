@@ -7,12 +7,13 @@ export const App_tsx = () => {
     const [showUid, setShowUid] = useState("showuid" in Query2Dict() == false ? "" : Query2Dict()["showuid"])
     const [iconUrl, setIconUrl] = useState("")
 
+
+    // TODO: 
+    // setIconUrl(dispatchMypage({ type: "download", uri: "mypage/" + showUid + "/icon.img" }))
+    // Display Icon!
+
     const [dbMypage, dispatchMypage] = useDb()
-    useEffect(() => {
-        dispatchMypage({ type: "setUri", uri: "mypage/" + showUid });
-        // HACK: UseDb will integrate useEffect in the future
-        setIconUrl(dispatchMypage({ type: "download", uri: "mypage/" + showUid + "/icon.img" }))
-    }, [showUid])
+    useEffect(() => { dispatchMypage({ type: "setUri", uri: "mypage/" + showUid }); }, [showUid])
 
     const createMypage = () => {
         if (uid == "") return (<h5><i className="fas fa-wind mr-1"></i>Plz login</h5>)
@@ -36,7 +37,9 @@ export const App_tsx = () => {
                     <i className="fas fa-wind mr-1"></i>This account's page is not Exist
                 </h5>
                 <button type="button" className="btn btn-outline-success btn-bg m-2"
-                    onClick={() => { setShowUid(uid) }}>
+                    onClick={() => {
+                        setShowUid(uid)
+                    }}>
                     <i className="fas fa-home mr-1" style={{ pointerEvents: "none" }}></i>Mypage
                 </button>
             </div>
@@ -142,7 +145,9 @@ export const App_tsx = () => {
                         <div />
                         :
                         <button type="button" className="btn btn-success btn-sm m-2"
-                            onClick={() => { setShowUid(uid) }}>
+                            onClick={() => {
+                                setShowUid(uid)
+                            }}>
                             <i className="fas fa-home mr-1" style={{ pointerEvents: "none" }}></i>Mypage
                         </button>
                     }

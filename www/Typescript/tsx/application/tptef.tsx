@@ -1,33 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { fb,  useAuth, useDb } from "../component/account";
+import { fb, useAuth, useDb } from "../component/account";
 import { stopf5, jpclock } from "../component/util_tsx";
 
 export const App_tsx = () => {
-
-    //dispatchTptef({})
-
     const [uid] = useAuth()
     const [room, setRoom] = useState("main")
     const [tmpRoom, setTmpRoom] = useState(room)
     const [tmpContent, setTmpContent] = useState("")
     const [tmpFile, setTmpFile] = useState(null)
 
-    const [dbTptef, dispatchTptef] = useDb({ uri: "", recodes: {} })
-    const [dbMypage, dispatchMypage] = useDb({ uri: "", recodes: {} })
+    const [dbTptef, dispatchTptef] = useDb()
+    const [dbMypage, dispatchMypage] = useDb()
     useEffect(() => { dispatchTptef({ type: "setUri", uri: "tptef/" + room }); }, [room])
     useEffect(() => { dispatchMypage({ type: "setUri", uri: "mypage/" + uid }) }, [uid])
 
-    // jpclock
+    // jpclock (decoration)
     const [jpclockNow, setJpclockNow] = useState("")
     useEffect(() => {
-        const _intervalId = setInterval(() => {
-            setJpclockNow(jpclock());
-        }, 500);
-        return () => { clearInterval(_intervalId) };
+        const _intervalId = setInterval(() => setJpclockNow(jpclock()), 500);
+        return () => clearInterval(_intervalId);
     }, []);
 
     // functions
-    function remark() {
+    const remark = () => {
         if (tmpContent == "") { alert("Plz input content"); return; };
         if (stopf5.check("dbC_AddRemark", 500, true) == false) return; // To prevent high freq access
         dispatchTptef({
@@ -40,14 +35,10 @@ export const App_tsx = () => {
             }, merge: true
         })
     }
-    function dbC_DelRemark(tsuid: string) {
+    const deleteRemark = (tsuid: string) => {
         if (stopf5.check("2", 500, true) == false) return; // To prevent high freq 
         dispatchTptef({ type: "erase", uri: dbTptef[tsuid].attachmentUri })
         dispatchTptef({ type: "create", recodes: { [tsuid]: fb.firestore.FieldValue.delete() }, merge: true })
-    }
-    function stR_GetAttachment(attachmentUri: string) {
-        const _url = dispatchTptef({ type: "download", uri: attachmentUri })
-        window.open(_url, '_blank');
     }
 
     // renders
@@ -76,7 +67,7 @@ export const App_tsx = () => {
             if (tsuids[i].split("_")[1] == uid)
                 tmpDatum.push(
                     <button key={2} className="btn btn-outline-danger btn-sm rounded-pill m-1"
-                        onClick={(evt: any) => { dbC_DelRemark(evt.target.name) }} name={tsuids[i]}>
+                        onClick={(evt: any) => { deleteRemark(evt.target.name) }} name={tsuids[i]}>
                         <i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Del</button>)
             tmpData.push(<td key={4} style={{ textAlign: "center" }}>{tmpDatum}</td>)
             tmpRecodes.push(<tr key={i}>{tmpData}</tr>)

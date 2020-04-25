@@ -1,39 +1,18 @@
-import React, { useState, useEffect, useReducer } from 'react';
-import { fb, fb_errmsg, useAuth } from "../component/account";
-import { stopf5, Query2Dict, dbUriCheck } from "../component/util_tsx";
-
-const storage = fb.storage();
-const db = fb.firestore()
+import React, { useState, useEffect } from 'react';
+import { fb, useAuth, useDb } from "../component/account";
+import { stopf5, Query2Dict } from "../component/util_tsx";
 
 export const App_tsx = () => {
     const [uid,] = useAuth()
     const [showUid, setShowUid] = useState("showuid" in Query2Dict() == false ? "" : Query2Dict()["showuid"])
     const [iconUrl, setIconUrl] = useState("")
-    const [dbMypage, setDbMypage] = useState<{ [tptef: string]: any }>({})
-    const [_, forceRender] = useReducer(x => x + 1, 0); //FIXME: Hooks have trouble around rendering
-    // FirebaseSnapping
+
+    const [dbMypage, dispatchMypage] = useDb()
     useEffect(() => {
-        const _snaps = [dbRead("mypage/" + showUid, setDbMypage, stR_GetIcon)]
-        return () => { for (let i = 0; i < _snaps.length; i++) { _snaps[i](); } }
-    }, [uid, showUid])
-
-    function dbRead(uri: string, setDbRecodes: any, afterFunc: any = () => { }) {
-        const _setDb: any = (recodes: any) => { setDbRecodes(recodes); afterFunc(); }
-        if (dbUriCheck(uri) == false) { _setDb({}); return () => { } }
-        return db.doc(uri).onSnapshot((doc) => {
-            if (doc.exists) { _setDb(doc.data()); } else { _setDb({}); }
-        });
-    }
-    function strageCreate(uri: string, upFile: any) {
-        if (dbUriCheck(uri) == false) { return () => { } }
-        storage.ref(uri).put(upFile).catch((err) => { fb_errmsg(err) })
-    }
-
-    function stR_GetIcon() {
-        storage.ref("mypage/" + showUid + "/icon.img").getDownloadURL().then((url) => {
-            if (iconUrl != url) setIconUrl(url);
-        }).catch(() => { if (iconUrl != "") setIconUrl(""); })
-    }
+        dispatchMypage({ type: "setUri", uri: "mypage/" + showUid });
+        // HACK: UseDb will integrate useEffect in the future
+        setIconUrl(dispatchMypage({ type: "download", uri: "mypage/" + showUid + "/icon.img" }))
+    }, [showUid])
 
     const createMypage = () => {
         if (uid == "") return (<h5><i className="fas fa-wind mr-1"></i>Plz login</h5>)
@@ -42,11 +21,11 @@ export const App_tsx = () => {
                 <button type="button" className="btn btn-outline-success btn-bg m-2"
                     onClick={() => {
                         if (stopf5.check("cleateMypage", 500, true) == false) return; // To prevent high freq access
-                        /*dbCreate("mypage/" + showUid,
-                            {
-                                [Date.now().toString() + "_" + showUid]:
-                                    { nickname: "窓の民は名無し", pr: "私はJhon_Doe。窓の蛇遣いです。" }
-                            })*/
+                        dispatchMypage({
+                            type: "create", recodes: {
+                                [Date.now().toString() + "_" + showUid]: { nickname: "窓の民は名無し", pr: "私はJhon_Doe。窓の蛇遣いです。" }
+                            }, merge: true
+                        })
                     }}>
                     <i className="fas fa-file-signature mr-1" style={{ pointerEvents: "none" }}></i>Create Mypage
                 </button>
@@ -79,8 +58,10 @@ export const App_tsx = () => {
                 <input type="file" className="d-none" accept="image/jpeg,image/png"
                     onChange={(evt) => {
                         if (stopf5.check("upIcon", 500, true) == false) return; // To prevent high freq access
-                        strageCreate("mypage/" + showUid + "/icon.img", evt.target.files[0])
-                        setTimeout(() => { stR_GetIcon() }, 1000)
+                        dispatchMypage({ type: "upload", file: evt.target.files[0], fileName: "icon.img" })
+                        setTimeout(() => {
+                            setIconUrl(dispatchMypage({ type: "download", uri: "mypage/" + showUid + "/icon.img" }))
+                        }, 1000)
                     }} />
                 <i className="fas fa-upload mr-1" style={{ pointerEvents: "none" }}></i>Icon
             </button>
@@ -88,10 +69,10 @@ export const App_tsx = () => {
     }
     const changeProfile = (title: string, state_element: string) => {
         if (showUid != uid) return (<div />);
-        let modal_id = "mygape_modal_" + title; let modal_id_s = "#" + modal_id;
+        const modal_id = "mygape_modal_" + title;
         return (
             <div>
-                <button type="button" className="btn btn-outline-success btn-sm m-1" data-toggle="modal" data-target={modal_id_s}>
+                <button type="button" className="btn btn-outline-success btn-sm m-1" data-toggle="modal" data-target={"#" + modal_id}>
                     <i className="far fa-keyboard mr-1" style={{ pointerEvents: "none" }}></i>{title}
                 </button>
                 <div className="modal fade" id={modal_id} role="dialog" aria-hidden="true">
@@ -101,19 +82,21 @@ export const App_tsx = () => {
                                 <h5 className="modal-title">{title}</h5>
                             </div>
                             <div className="modal-body">
-                                <textarea className="form-control" value={Object.values(dbMypage)[0][state_element]}
+                                <textarea className="form-control" value={
+                                    Object.values(dbMypage)[0] ? Object.values<any>(dbMypage)[0][state_element] : ""}
                                     rows={4} style={{ width: "100%" }}
                                     onChange={(evt) => {
-                                        let tmpMypage: any = Object.values(dbMypage)[0]
-                                        tmpMypage[state_element] = evt.target.value
-                                        setDbMypage({ [Date.now()]: tmpMypage })
-                                    }}></textarea>
+                                        let _mypage: any = Object.values(dbMypage)[0] ? Object.values(dbMypage)[0] : {}
+                                        _mypage[state_element] = evt.target.value
+                                        dispatchMypage({ type: "commit", recodes: { [Date.now() + "_" + uid]: _mypage }, merge: true })
+                                    }}>
+                                </textarea>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-sm btn-success" data-dismiss="modal"
                                     onClick={() => {
                                         if (stopf5.check("1", 500, true) == false) return; // To prevent high freq access
-                                        //dbCreate("mypage/" + showUid, dbMypage)
+                                        dispatchMypage({ type: "create" })
                                     }}>
                                     <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>Submit
                                 </button>
@@ -124,7 +107,7 @@ export const App_tsx = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
         )
     }
 
@@ -139,7 +122,8 @@ export const App_tsx = () => {
                         <div className="m-1 p-1 flex-grow-1" style={{ backgroundColor: "rgba(100,100,100,0.1)" }}>
                             <div className="d-flex justify-content-start">
                                 <h3 className="flex-grow-1">
-                                    <i className="far fa-user mr-1"></i>{Object.values(dbMypage)[0]["nickname"]}
+                                    <i className="far fa-user mr-1"></i>
+                                    {Object.values(dbMypage)[0] ? Object.values<any>(dbMypage)[0]["nickname"] : ""}
                                 </h3>
                                 <div className="form-inline">
                                     {changeProfile("Nickname", "nickname")}{uploadIcon()}
@@ -150,7 +134,7 @@ export const App_tsx = () => {
                                     <h5>PR</h5>
                                     {changeProfile("PR", "pr")}
                                 </div>
-                                {Object.values(dbMypage)[0]["pr"]}
+                                {Object.values(dbMypage)[0] ? Object.values<any>(dbMypage)[0]["pr"] : ""}
                             </div>
                         </div>
                     </div>

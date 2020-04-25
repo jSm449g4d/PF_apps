@@ -1,5 +1,5 @@
 import React from 'react';
-import { auth, useAuth } from "../component/account";
+import { useAuth } from "../component/account";
 
 const bgImage: any = {
     backgroundImage: "url(/static/img/publicdomainq-0014284zts.jpg)",

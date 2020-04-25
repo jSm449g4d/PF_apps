@@ -18,7 +18,7 @@ firebase.initializeApp({
 })
 
 export const fb = firebase;
-export const auth = firebase.auth();
+const auth = firebase.auth();
 const db = fb.firestore()
 const storage = fb.storage();
 
@@ -52,7 +52,7 @@ export const useDb = (initialState: any = { uri: "", recodes: {} }) => {
     }
     const [recodes, setRecodes] = useState(initialState["recodes"]);
     const [uri, setUri] = useState(initialState["uri"]);
-    // snap (Read)
+    // snap Db:(Read)
     useEffect(() => {
         const _snap = uriCheck(uri) ?
             db.doc(uri).onSnapshot((doc) => {
@@ -62,20 +62,31 @@ export const useDb = (initialState: any = { uri: "", recodes: {} }) => {
             : () => { }
         return () => _snap();
     }, [uri])
-    // (Create, Delete) (Upload Download Delete)
+    // Db:(Create, Delete) Storage:(Upload Download Delete)
     const dispatch = (action: any) => {
         // reducer 
         switch (action.type) {
             case 'create': //{type:xxx, recodes:yyy, merge:zzz}
                 if (uriCheck(uri) == false) break;
+                // If you want to push local commit
+                if (!action.recodes) {
+                    db.doc(uri).set(
+                        recodes,
+                        { merge: action["merge"] ? action["merge"] : false }
+                    ).catch(err => fbErr(err)); break;
+                }
                 db.doc(uri).set(
-                    action["recodes"] ? action["recodes"] : initialState["recodes"],
-                    { merge: action["merge"] ? action["merge"] : false }
+                    action.recodes ? action.recodes : action.recodes,
+                    { merge: action.merge ? action.merge : false }
                 ).catch(err => fbErr(err))
                 break;
             case 'delete': //{type:xxx}
                 if (uriCheck(uri) == false) break;
                 db.doc(uri).delete().catch(err => fbErr(err))
+                break;
+            case 'commit': //{type:xxx, recodes:yyy}
+                if (uriCheck(uri) == false) break;
+                setRecodes(action.recodes ? action.recodes : initialState.recodes)
                 break;
             case 'upload': //{type:xxx file:yyy fileName:zzz} → locationUri
                 if (uriCheck(uri) == false) return String("");
@@ -93,9 +104,9 @@ export const useDb = (initialState: any = { uri: "", recodes: {} }) => {
                 storage.ref(action.uri).delete().catch(err => fbErr(err))
                 break;
             case 'setUri': //{type:xxx, uri:yyy}
-                setUri(action["uri"]);
+                setUri(action.uri);
                 break;
-            default: alert("XXX: Plz check action.type");break;
+            default: alert("XXX: Plz check action.type"); break;
         }
     }
     return [recodes, dispatch];

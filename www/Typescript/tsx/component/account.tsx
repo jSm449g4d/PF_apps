@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import firebase from 'firebase/app';
 import "firebase/analytics";
 import "firebase/auth";
-import "firebase/storage";
 import "firebase/firestore";
+import "firebase/storage";
 
 
 firebase.initializeApp({
@@ -60,9 +60,9 @@ export const useDb = (initialState: any = { uri: "", recodes: {} }) => {
                 else { setRecodes(initialState["recodes"]); }
             })
             : () => { }
-        return () => { _snap(); }
+        return () => _snap();
     }, [uri])
-    // (Create, Delete)
+    // (Create, Delete) (Upload Download Delete)
     const dispatch = (action: any) => {
         // reducer 
         switch (action.type) {
@@ -77,10 +77,25 @@ export const useDb = (initialState: any = { uri: "", recodes: {} }) => {
                 if (uriCheck(uri) == false) break;
                 db.doc(uri).delete().catch(err => fbErr(err))
                 break;
+            case 'upload': //{type:xxx file:yyy fileName:zzz} → locationUri
+                if (uriCheck(uri) == false) return String("");
+                if (!action.file) return String("");
+                const _fileName = action.fileName ? action.fileName : action.file.name
+                storage.ref(uri + "/" + _fileName).put(action.file).catch(err => fbErr(err))
+                return String(uri + "/" + _fileName);
+            case 'download': //{type:xxx uri:yyy} → locationUrl
+                if (uriCheck(action.uri) == false) return String("");
+                storage.ref(action.uri).getDownloadURL().then(url => { return String(url) }).catch(err => fbErr(err));
+                return String("")
+            // HACK: DB and Storage must be common in 隙間
+            case 'erase': //{type:xxx uri:yyy}
+                if (uriCheck(action.uri) == false) break;
+                storage.ref(action.uri).delete().catch(err => fbErr(err))
+                break;
             case 'setUri': //{type:xxx, uri:yyy}
                 setUri(action["uri"]);
                 break;
-            default: break;
+            default: alert("XXX: Plz check action.type");break;
         }
     }
     return [recodes, dispatch];

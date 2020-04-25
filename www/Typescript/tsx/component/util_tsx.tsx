@@ -20,11 +20,11 @@ export const jpclock = () => {
         "曜日 " + now.getHours() + ": " + now.getMinutes() + ": " + now.getSeconds();
 }
 
-export const Query2Dict = (query_str: string = window.location.search) => {
+export const Query2Dict = (yourQuery: string = window.location.search) => {
     let ret_dict: { [key: string]: string } = {};
-    if (query_str[0] == "?") query_str = query_str.slice(1)
-    const data = query_str.split('&');
-    for (var i = 0; i < data.length; i++) {
+    if (yourQuery[0] == "?") yourQuery = yourQuery.slice(1)
+    const data = yourQuery.split('&');
+    for (let i = 0; i < data.length; i++) {
         let keyvalue: string[] = ["", ""]
         keyvalue = data[i].split('=');
         ret_dict[keyvalue[0]] = decodeURIComponent(keyvalue[1]).replace(/\+/g, ' ');

@@ -24,19 +24,10 @@ export const App_tsx = () => {
     const [jpclockNow, setJpclockNow] = useState("")
     useEffect(() => {
         const _intervalId = setInterval(() => {
-            setJpclockNow(jpclock()); 
+            setJpclockNow(jpclock());
         }, 500);
         return () => { clearInterval(_intervalId) };
     }, []);
-
-    function strageCreate(uri: string, upFile: any) {
-        if (dbUriCheck(uri) == false) { return () => { } }
-        storage.ref(uri).put(upFile).catch(err => fbErr(err))
-    }
-    function strageDelete(uri: string) {
-        if (dbUriCheck(uri) == false) { return () => { } }
-        storage.ref(uri).delete().catch(err => fbErr(err))
-    }
 
     // functions
     function remark() {
@@ -47,15 +38,14 @@ export const App_tsx = () => {
                 [Date.now().toString() + "_" + uid]: {
                     handlename: Object.values(dbMypage)[0] ? Object.values<any>(dbMypage)[0]["nickname"] : "None",
                     content: tmpContent,
-                    attachmentUri: tmpFile ? "tptef/" + uid + "/" + tmpFile.name : "",
+                    attachmentUri: dispatchTptef({ type: "upload", file: tmpFile }),
                 }
             }, merge: true
         })
-        if (tmpFile) { strageCreate("tptef/" + uid + "/" + tmpFile.name, tmpFile) }
     }
     function dbC_DelRemark(tsuid: string) {
-        if (stopf5.check("2", 500, true) == false) return; // To prevent high freq access
-        if (dbTptef[tsuid]) strageDelete(dbTptef[tsuid].attachmentUri)
+        if (stopf5.check("2", 500, true) == false) return; // To prevent high freq 
+        dispatchTptef({ type: "erase", uri: dbTptef[tsuid].attachmentUri })
         dispatchTptef({ type: "create", recodes: { [tsuid]: fb.firestore.FieldValue.delete() }, merge: true })
     }
     function stR_GetAttachment(attachmentUri: string) {

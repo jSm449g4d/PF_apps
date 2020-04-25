@@ -30,13 +30,13 @@ export const fbErr = (error: any) => { alert("error_code:" + error.code + "\nerr
 export const useAuth = () => {
     const [uid, setUid] = useState("")
     useEffect(() => {
-        const _intervalId = setInterval(() => {
-            if (auth.currentUser) { if (uid != auth.currentUser.uid) setUid(auth.currentUser.uid); }
-            else { if (uid != "") setUid(""); }
-        }, 100);
-        return () => { clearInterval(_intervalId) };
+        const _snap = firebase.auth().onAuthStateChanged(user => {
+            if (user) { setUid(auth.currentUser.uid); }
+            else { setUid(""); }
+        })
+        return () => _snap();
     }, []);
-    return [uid,]
+    return [uid]
 }
 
 export const useDb = (initialState: any = { uri: "", recodes: {} }) => {
@@ -87,7 +87,6 @@ export const useDb = (initialState: any = { uri: "", recodes: {} }) => {
 }
 
 export const AppAuth = () => {
-
     const [uid,] = useAuth()
     const [tmpAddress, setTmpAddress] = useState("")
     const [tmpPass, setTmpPass] = useState("")

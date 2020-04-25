@@ -9,7 +9,7 @@ export const App_tsx = () => {
 
     //dispatchTptef({})
 
-    const [uid,] = useAuth()
+    const [uid] = useAuth()
     const [room, setRoom] = useState("main")
     const [tmpRoom, setTmpRoom] = useState(room)
     const [tmpContent, setTmpContent] = useState("")

@@ -17,10 +17,6 @@ export const App_tsx = () => {
         return () => { for (let i = 0; i < _snaps.length; i++) { _snaps[i](); } }
     }, [uid, showUid])
 
-    function dbCreate(uri: string, upRecodes: { [tsuid: string]: any }, margeFlag: boolean = false, ) {
-        if (dbUriCheck(uri) == false) return
-        db.doc(uri).set(upRecodes, { merge: margeFlag }).catch((err) => { fb_errmsg(err) })
-    }
     function dbRead(uri: string, setDbRecodes: any, afterFunc: any = () => { }) {
         const _setDb: any = (recodes: any) => { setDbRecodes(recodes); afterFunc(); }
         if (dbUriCheck(uri) == false) { _setDb({}); return () => { } }
@@ -28,17 +24,9 @@ export const App_tsx = () => {
             if (doc.exists) { _setDb(doc.data()); } else { _setDb({}); }
         });
     }
-    function dbDelete(uri: string, ) {
-        if (dbUriCheck(uri) == false) return
-        db.doc(uri).delete().catch((err) => { fb_errmsg(err) })
-    }
     function strageCreate(uri: string, upFile: any) {
         if (dbUriCheck(uri) == false) { return () => { } }
         storage.ref(uri).put(upFile).catch((err) => { fb_errmsg(err) })
-    }
-    function strageDelete(uri: string) {
-        if (dbUriCheck(uri) == false) { return () => { } }
-        storage.ref(uri).delete().catch((err) => { fb_errmsg(err) })
     }
 
     function stR_GetIcon() {

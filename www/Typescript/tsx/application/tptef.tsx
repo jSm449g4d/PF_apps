@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { fb, fbErr, useAuth, useDb } from "../component/account";
-import { stopf5, jpclock, dbUriCheck } from "../component/util_tsx";
-
-const storage = fb.storage();
-const db = fb.firestore();
+import { fb,  useAuth, useDb } from "../component/account";
+import { stopf5, jpclock } from "../component/util_tsx";
 
 export const App_tsx = () => {
 
@@ -49,9 +46,8 @@ export const App_tsx = () => {
         dispatchTptef({ type: "create", recodes: { [tsuid]: fb.firestore.FieldValue.delete() }, merge: true })
     }
     function stR_GetAttachment(attachmentUri: string) {
-        storage.ref(attachmentUri).getDownloadURL().then((url) => {
-            window.open(url, '_blank');
-        }).catch(err => fbErr(err));
+        const _url = dispatchTptef({ type: "download", uri: attachmentUri })
+        window.open(_url, '_blank');
     }
 
     // renders
@@ -69,7 +65,10 @@ export const App_tsx = () => {
             if (dbTptef[tsuids[i]]["attachmentUri"] != "")
                 tmpDatum.push(
                     <button key={1} className="btn btn-primary btn-sm m-1"
-                        onClick={(evt: any) => { stR_GetAttachment(evt.target.name) }}
+                        onClick={(evt: any) => {
+                            const _url = dispatchTptef({ type: "download", uri: evt.target.name })
+                            window.open(_url, '_blank');
+                        }}
                         name={dbTptef[tsuids[i]]["attachmentUri"]}>
                         <i className="fas fa-paperclip mr-1" style={{ pointerEvents: "none" }}></i>
                         {dbTptef[tsuids[i]]["attachmentUri"].split("/").pop().slice(0, 10)}</button>)

@@ -57,8 +57,11 @@ export const App_tsx = () => {
                 tmpDatum.push(
                     <button key={1} className="btn btn-primary btn-sm m-1"
                         onClick={(evt: any) => {
-                            const _url = dispatchTptef({ type: "download", uri: evt.target.name })
-                            window.open(_url, '_blank');
+                            dispatchTptef({
+                                type: "download",
+                                uri: evt.target.name,
+                                func: (_url: any) => window.open(_url, '_blank')
+                            })
                         }}
                         name={dbTptef[tsuids[i]]["attachmentUri"]}>
                         <i className="fas fa-paperclip mr-1" style={{ pointerEvents: "none" }}></i>

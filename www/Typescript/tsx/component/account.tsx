@@ -4,6 +4,7 @@ import "firebase/analytics";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
+import { func } from 'prop-types';
 
 
 firebase.initializeApp({
@@ -24,7 +25,6 @@ const storage = fb.storage();
 
 fb.analytics();
 
-export const fb_errmsg = (error: any) => { alert("error_code:" + error.code + "\nerror_message:" + error.message); }
 export const fbErr = (error: any) => { alert("error_code:" + error.code + "\nerror_message:" + error.message); }
 
 export const useAuth = () => {
@@ -94,10 +94,10 @@ export const useDb = (initialState: any = { uri: "", recodes: {} }) => {
                 const _fileName = action.fileName ? action.fileName : action.file.name
                 storage.ref(uri + "/" + _fileName).put(action.file).catch(err => fbErr(err))
                 return String(uri + "/" + _fileName);
-            case 'download': //{type:xxx uri:yyy} → locationUrl
-                if (uriCheck(action.uri) == false) return String("");
-                storage.ref(action.uri).getDownloadURL().then(url => { return String(url) }).catch(err => fbErr(err));
-                return String("")
+            case 'download': //{type:xxx uri:yyy func:zzz}
+                if (uriCheck(action.uri) == false) break;
+                storage.ref(action.uri).getDownloadURL().then(url => action.func(url)).catch(err => fbErr(err));
+                break;
             // HACK: DB and Storage must be common in 隙間
             case 'erase': //{type:xxx uri:yyy}
                 if (uriCheck(action.uri) == false) break;

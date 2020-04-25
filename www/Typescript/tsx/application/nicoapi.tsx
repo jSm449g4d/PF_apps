@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { stopf5, dbUriCheck } from "../component/util_tsx";
-import { fb, fb_errmsg, useAuth } from "../component/account";
-
-const storage = fb.storage();
-const db = fb.firestore()
+import { stopf5 } from "../component/util_tsx";
+import { fb, useAuth, useDb } from "../component/account";
 
 export const App_tsx = () => {
     const [uid,] = useAuth()
@@ -11,32 +8,12 @@ export const App_tsx = () => {
     const [serviceName, setServiceName] = useState("カスタム")
     const [craloerResponse, setCraloerResponse] = useState<{ [keys: string]: any }>({})
     const [fields, setFields] = useState<{ [tptef: string]: any }>({})
-    const [dbNicoapi, setDbNicoapi] = useState<{ [tptef: string]: any }>({})
 
-    useEffect(() => {
-        const _snaps = [dbRead("nicoapi/" + uid, setDbNicoapi)]
-        return () => { for (let i = 0; i < _snaps.length; i++) { _snaps[i](); } }
-    }, [uid])
-
-
-    function dbCreate(uri: string, upRecodes: { [tsuid: string]: any }, margeFlag: boolean = false, ) {
-        if (dbUriCheck(uri) == false) return
-        db.doc(uri).set(upRecodes, { merge: margeFlag }).catch((err) => { fb_errmsg(err) })
-    }
-    function dbRead(uri: string, setDbRecodes: any, afterFunc: any = () => { }) {
-        const _setDb: any = (recodes: any) => { setDbRecodes(recodes); afterFunc(); }
-        if (dbUriCheck(uri) == false) { _setDb({}); return () => { } }
-        return db.doc(uri).onSnapshot((doc) => {
-            if (doc.exists) { _setDb(doc.data()); } else { _setDb({}); }
-        });
-    }
-    function strageDelete(uri: string) {
-        if (dbUriCheck(uri) == false) { return () => { } }
-        storage.ref(uri).delete().catch((err) => { fb_errmsg(err) })
-    }
+    const [dbNicoapi, dispatchNicoapi] = useDb()
+    useEffect(() => { dispatchNicoapi({ type: "setUri", uri: "nicoapi/" + uid }); }, [uid])
 
     // functions
-    function dbC_SetOrder(LimitUrls: number = 300) {
+    const submitOrder = (LimitUrls: number = 300) => {
         const request_urls = [apiEndpoint.replace("?", "") + "?"];
         const timestamp = Object.keys(fields).sort();
         for (let i = 0; i < timestamp.length; i++) {
@@ -59,13 +36,16 @@ export const App_tsx = () => {
         if (request_urls.length > LimitUrls) { alert("error: Too many → " + String(request_urls.length) + "[req]"); return; }
         if (confirm(String(request_urls.length) + "[req]\nDo you really want to place ORDER?") == false) return;
         if (stopf5.check("1", 6000, true) == false) return; // To prevent high freq access
-        dbCreate("nicoapi/" + uid,
-            {
+        dispatchNicoapi({
+            type: "create",
+            recodes: {
                 [Date.now().toString() + "_" + uid]: {
-                    "request_urls": request_urls, "status": "standby"
-                    , "User-Agent": String(Math.random() * 1000000).split(".")[0]
+                    "request_urls": request_urls, "status": "standby",
+                    "User-Agent": String(Math.random() * 1000000).split(".")[0]
                 }
-            }, true)
+            },
+            merge: true
+        })
 
         // access to backend
         setTimeout(() => {
@@ -80,11 +60,6 @@ export const App_tsx = () => {
             xhr.send(null);
         }, 1000)
 
-    }
-    function stR_GetOrderZip(tsuid: string) {
-        if (stopf5.check("stR_GetOrderZip", 500) == false) return; // To prevent high freq access
-        storage.ref("nicoapi/" + uid + "/" + tsuid + ".zip")
-            .getDownloadURL().then((url) => { window.open(url, '_blank'); }).catch((err: any) => { fb_errmsg(err) })
     }
 
     // renders
@@ -281,7 +256,7 @@ export const App_tsx = () => {
                         </td>
                         <td colSpan={2}>
                             <div className="form-inline">
-                                <button className="btn btn-success" onClick={() => { dbC_SetOrder(); }}>
+                                <button className="btn btn-success" onClick={() => { submitOrder(); }}>
                                     <i className="fas fa-rocket mr-1" style={{ pointerEvents: "none" }}></i>Launch
                                 </button>
                                 {craloerResponse["thread"] == "start" ?
@@ -296,46 +271,54 @@ export const App_tsx = () => {
             </table>)
     }
     function render_orders_text() {
-        let num: Number = 0; let tsuids = Object.keys(dbNicoapi);
-        for (let i = 0; i < tsuids.length; i++) { num += dbNicoapi[tsuids[i]]["request_urls"].length }
+        let _reqs: number = 0; const _tsuids = Object.keys(dbNicoapi);
+        for (let i = 0; i < _tsuids.length; i++) {
+            _reqs += dbNicoapi[_tsuids[i]]["request_urls"].length
+        }
         return (
             <div className="mx-2">
-                {"orders/reqs: " + String(tsuids.length) + "/" + String(num)}
+                {"orders/reqs: " + String(_tsuids.length) + "/" + String(_reqs)}
             </div>
         )
     }
     function render_orders_table() {
         const tsuids = Object.keys(dbNicoapi).sort();
-        const tmp_records = []; let doc_records = Object.assign(dbNicoapi);
+        const tmp_records = []; const _recodes = Object.assign({}, dbNicoapi);
         for (var i = 0; i < tsuids.length; i++) {
             const tmp_data = [];
             tmp_data.push(
                 <td key={1}>
                     {tsuids[i].split("_")[0]}<br />
-                    Status: {doc_records[tsuids[i]]["status"]}<br />
-                    UA: {doc_records[tsuids[i]]["User-Agent"]}
+                    Status: {_recodes[tsuids[i]]["status"]}<br />
+                    UA: {_recodes[tsuids[i]]["User-Agent"]}
                 </td>)
             tmp_data.push(
                 <td key={2} style={{ fontSize: "12px", textAlign: "left" }}>
                     <details>
-                        <summary> {doc_records[tsuids[i]]["request_urls"][0]}</summary>
-                        {doc_records[tsuids[i]]["request_urls"].slice(1).join('\n')}
+                        <summary> {_recodes[tsuids[i]]["request_urls"][0]}</summary>
+                        {_recodes[tsuids[i]]["request_urls"].slice(1).join('\n')}
                     </details>
                 </td>)
             const tmp_datum = []; {// col: Ops
                 //download button
-                if (doc_records[tsuids[i]]["status"] == "processed") tmp_datum.push(
+                if (_recodes[tsuids[i]]["status"] == "processed") tmp_datum.push(
                     <button key={1} className="btn btn-primary btn-sm m-1" name={tsuids[i]}
-                        onClick={(evt: any) => { stR_GetOrderZip(evt.target.name) }}>
+                        onClick={(evt: any) => {
+                            if (stopf5.check("stR_GetOrderZip", 500) == false) return; // To prevent high freq access
+                            dispatchNicoapi({
+                                type: "download", uri: "nicoapi/" + uid + "/" + evt.target.name + ".zip",
+                                func: (_url: any) => window.open(_url, '_blank')
+                            });
+                        }}>
                         <i className="fas fa-cloud-download-alt mr-1" style={{ pointerEvents: "none" }}></i>DL
                     </button>)
                 //attachment download button
-                if (doc_records[tsuids[i]]["status"] == "processed") tmp_datum.push(
+                if (_recodes[tsuids[i]]["status"] == "processed") tmp_datum.push(
                     <button key={2} className="btn btn-outline-danger btn-sm m-1" name={tsuids[i]}
                         onClick={(evt: any) => {
                             if (stopf5.check("stD_DelOrderZip", 500) == false) return; // To prevent high freq access
-                            dbCreate("nicoapi/" + uid, { [evt.target.name]: fb.firestore.FieldValue.delete() }, true);
-                            strageDelete("nicoapi/" + uid + "/" + evt.target.name + ".zip");
+                            dispatchNicoapi({ type: "create", recodes: { [evt.target.name]: fb.firestore.FieldValue.delete() }, merge: true })
+                            dispatchNicoapi({ type: "erase", uri: "nicoapi/" + uid + "/" + evt.target.name + ".zip" })
                         }}>
                         <i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Del
                     </button>)
@@ -396,11 +379,11 @@ export const App_tsx = () => {
                                 <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#orders_collapse">
                                     <i className="far fa-file-alt mr-1" style={{ pointerEvents: "none" }}></i>Orders
                                     </button>
-                                {render_orders_text()}
+                                {/**/}{render_orders_text()}
                             </div>
                         </nav>
                         <div className="collapse" id="orders_collapse">
-                            {render_orders_table()}
+                            {render_orders_table()}{/**/}
                         </div>
                     </div>
                 </div>

@@ -39,13 +39,3 @@ export const Dict2Query = (query_dict: { [key: string]: string }) => {
         ret_str += tmpkey_array[i] + "=" + tmpvalue_array[i] + "&"
     }; return ret_str
 }
-export const dbUriCheck = (uri: String) => {
-    // schema1/ document → True
-    // else → False
-    const dirs: string[] = uri.split("/")
-    if (dirs.length < 2) { return false; }
-    for (let i = 0; i < dirs.length; i++) {
-        if (dirs[i].length < 1) { return false; }
-    }
-    return true;
-}

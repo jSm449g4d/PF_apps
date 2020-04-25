@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fb, fb_errmsg, useAuth, useDb } from "../component/account";
+import { fb, fbErr, useAuth, useDb } from "../component/account";
 import { stopf5, jpclock, dbUriCheck } from "../component/util_tsx";
 
 const storage = fb.storage();
@@ -14,30 +14,28 @@ export const App_tsx = () => {
     const [tmpRoom, setTmpRoom] = useState(room)
     const [tmpContent, setTmpContent] = useState("")
     const [tmpFile, setTmpFile] = useState(null)
-    const [jpclockNow, setJpclockNow] = useState("")
-    const [useInterval, setUseInterval] = React.useState(new Date());
 
     const [dbTptef, dispatchTptef] = useDb({ uri: "", recodes: {} })
     const [dbMypage, dispatchMypage] = useDb({ uri: "", recodes: {} })
     useEffect(() => { dispatchTptef({ type: "setUri", uri: "tptef/" + room }); }, [room])
     useEffect(() => { dispatchMypage({ type: "setUri", uri: "mypage/" + uid }) }, [uid])
 
-    // setInterval
+    // jpclock
+    const [jpclockNow, setJpclockNow] = useState("")
     useEffect(() => {
         const _intervalId = setInterval(() => {
-            _tick();
-            setUseInterval(new Date());
+            setJpclockNow(jpclock()); 
         }, 500);
         return () => { clearInterval(_intervalId) };
-    }, [useInterval]);
+    }, []);
 
     function strageCreate(uri: string, upFile: any) {
         if (dbUriCheck(uri) == false) { return () => { } }
-        storage.ref(uri).put(upFile).catch((err) => { fb_errmsg(err) })
+        storage.ref(uri).put(upFile).catch(err => fbErr(err))
     }
     function strageDelete(uri: string) {
         if (dbUriCheck(uri) == false) { return () => { } }
-        storage.ref(uri).delete().catch((err) => { fb_errmsg(err) })
+        storage.ref(uri).delete().catch(err => fbErr(err))
     }
 
     // functions
@@ -63,11 +61,7 @@ export const App_tsx = () => {
     function stR_GetAttachment(attachmentUri: string) {
         storage.ref(attachmentUri).getDownloadURL().then((url) => {
             window.open(url, '_blank');
-        }).catch((err) => { fb_errmsg(err) });
-    }
-    function _tick() {
-        // Clock
-        setJpclockNow(jpclock())
+        }).catch(err => fbErr(err));
     }
 
     // renders

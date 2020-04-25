@@ -27,21 +27,15 @@ fb.analytics();
 export const fb_errmsg = (error: any) => { alert("error_code:" + error.code + "\nerror_message:" + error.message); }
 export const fbErr = (error: any) => { alert("error_code:" + error.code + "\nerror_message:" + error.message); }
 
-
 export const useAuth = () => {
     const [uid, setUid] = useState("")
-    const [useInterval, setUseInterval] = useState(new Date());
-    // setInterval(Auth)
     useEffect(() => {
         const _intervalId = setInterval(() => {
-            // Auth
             if (auth.currentUser) { if (uid != auth.currentUser.uid) setUid(auth.currentUser.uid); }
             else { if (uid != "") setUid(""); }
-            setUseInterval(new Date());
         }, 100);
         return () => { clearInterval(_intervalId) };
-    }, [useInterval]);
-
+    }, []);
     return [uid,]
 }
 
@@ -68,9 +62,9 @@ export const useDb = (initialState: any = { uri: "", recodes: {} }) => {
             : () => { }
         return () => { _snap(); }
     }, [uri])
-
+    // (Create, Delete)
     const dispatch = (action: any) => {
-        // reducer (Create, Delete)
+        // reducer 
         switch (action.type) {
             case 'create': //{type:xxx, recodes:yyy, merge:zzz}
                 if (uriCheck(uri) == false) break;
@@ -100,10 +94,10 @@ export const AppAuth = () => {
 
     //functions
     const signUp = (address: string = tmpAddress, pass: string = tmpPass) => {
-        auth.createUserWithEmailAndPassword(address, pass).catch((err) => { fb_errmsg(err) })
+        auth.createUserWithEmailAndPassword(address, pass).catch(err => fbErr(err))
     }
     const signIn = (address: string = tmpAddress, pass: string = tmpPass) => {
-        auth.signInWithEmailAndPassword(address, pass).catch((err) => { fb_errmsg(err) })
+        auth.signInWithEmailAndPassword(address, pass).catch(err => fbErr(err))
     }
     const easyIn = (address: string = "a@b.com", pass: string = "asdfgh") => {
         auth.signInWithEmailAndPassword(address, pass).catch(() => { signUp(address, pass); })
@@ -112,14 +106,14 @@ export const AppAuth = () => {
         auth.signInWithEmailAndPassword(address, pass).catch(() => { signUp(address, pass); })
     }
     const resetPass = (address: string = tmpAddress) => {
-        auth.sendPasswordResetEmail(address).then(() => { alert("SEND_EMAIL!") }).catch((err) => { fb_errmsg(err) });
+        auth.sendPasswordResetEmail(address).then(() => { alert("SEND_EMAIL!") }).catch(err => fbErr(err));
     }
     const deleteUser = () => {
         if (window.confirm('Are you really DELETE:USER?\n')) {
-            auth.currentUser.delete().then(() => { alert("ACCOUNT_DELETED!") }).catch((err) => { fb_errmsg(err) });
+            auth.currentUser.delete().then(() => { alert("ACCOUNT_DELETED!") }).catch(err => fbErr(err));
         }
     }
-    const googleIn = () => { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch((err) => { fb_errmsg(err) }) }
+    const googleIn = () => { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(err => fbErr(err)) }
 
     //renders
     const signInModal = () => {

@@ -84,7 +84,7 @@ export const AppMain = () => {
                     </div>
                 </div>
                 <div className="d-flex justify-content-center">
-                    <button className="btn btn-secondary btn-sm m-2" data-toggle="collapse" data-target="#helpapp_collapse">
+                    <button className="btn btn-secondary btn-sm m-2" data-toggle="collapse" data-target="#helpAppCollapse">
                         <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }}></i>Close
                     </button>
                 </div>
@@ -106,71 +106,14 @@ export const AppMain = () => {
                     </div>
                 </div>
                 <div className="d-flex justify-content-center">
-                    <button className="btn btn-secondary btn-sm m-2" data-toggle="collapse" data-target="#helpcmd_collapse">
+                    <button className="btn btn-secondary btn-sm m-2" data-toggle="collapse" data-target="#helpCmdCollapse">
                         <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }}></i>Close
                     </button>
                 </div>
             </div>
         )
     }
-    function render_APIendpoint_record(service_name: string, apiReference: string = "") {
-        return (
-            <tr>
-                <td>
-                    <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#APIendpoint_collapse"
-                        onClick={() => {
-                            if (service_name == "ニコニコ動画") {
-                                setApiEndpoint("https://api.search.nicovideo.jp/api/v2/video/contents/search")
-                                setServiceName(service_name)
-                                setFields({
-                                    [String(Date.now() - 5)]: { field: "q", value: "ゆっくり解説" },
-                                    [String(Date.now() - 4)]: { field: "targets", value: "title,description,tags" },
-                                    [String(Date.now() - 3)]: { field: "fields", value: "contentId,title,description,tags" },
-                                    [String(Date.now() - 2)]: { field: "_sort", value: "viewCounter" },
-                                    [String(Date.now() - 1)]: { field: "_limit", value: "100" },
-                                    [String(Date.now() - 0)]: { field: "_offset", value: "$for(1;1601;100)" },
-                                })
-                            }
-                            else if (service_name == "ニコニコ生放送") {
-                                setApiEndpoint("https://api.search.nicovideo.jp/api/v2/live/contents/search")
-                                setServiceName(service_name)
-                                setFields({
-                                    [String(Date.now() - 5)]: { field: "q", value: "ゆっくり解説" },
-                                    [String(Date.now() - 4)]: { field: "targets", value: "title,description,tags" },
-                                    [String(Date.now() - 3)]: { field: "fields", value: "contentId,title,description,tags" },
-                                    [String(Date.now() - 2)]: { field: "_sort", value: "viewCounter" },
-                                    [String(Date.now() - 1)]: { field: "_limit", value: "100" },
-                                    [String(Date.now() - 0)]: { field: "_offset", value: "$for(1;1601;100)" },
-                                })
-                            }
-                            else if (service_name == "なろう小説") {
-                                setApiEndpoint("https://api.syosetu.com/novelapi/api/")
-                                setServiceName(service_name)
-                                setFields({
-                                    [String(Date.now() - 1)]: { field: "lim", value: "499" },
-                                    [String(Date.now() - 0)]: { field: "st", value: "$for(1;2000;499)" },
-                                })
-                            }
-                            else {
-                                setApiEndpoint("https://")
-                                setServiceName(service_name)
-                                setFields({})
-                            }
-                        }}>
-                        {service_name}
-                    </button>
-                </td>
-                <td>
-                    {apiReference == "" ?
-                        <div>None</div>
-                        :
-                        <a href={apiReference}>{apiReference}</a>
-                    }
-                </td>
-            </tr>
-        )
-    }
-    function render_APIendpoint_table() {
+    const apiEndpointTable = () => {
         return (
             <table className="table table-sm">
                 <thead>
@@ -180,24 +123,116 @@ export const AppMain = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {render_APIendpoint_record("ニコニコ動画", "https://site.nicovideo.jp/search-api-docs/search.html")}
-                    {render_APIendpoint_record("ニコニコ生放送", "https://site.nicovideo.jp/search-api-docs/search.html")}
-                    {render_APIendpoint_record("なろう小説", "https://dev.syosetu.com/man/api/")}
-                    {render_APIendpoint_record("カスタム", "")}
+                    <tr>
+                        <td>
+                            <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#apiEndpointCollapse"
+                                onClick={() => {
+                                    setApiEndpoint("https://api.search.nicovideo.jp/api/v2/video/contents/search")
+                                    setServiceName("ニコニコ動画")
+                                    setFields({
+                                        [String(Date.now() - 5)]: { field: "q", value: "ゆっくり解説" },
+                                        [String(Date.now() - 4)]: { field: "targets", value: "title,description,tags" },
+                                        [String(Date.now() - 3)]: { field: "fields", value: "contentId,title,description,tags" },
+                                        [String(Date.now() - 2)]: { field: "_sort", value: "viewCounter" },
+                                        [String(Date.now() - 1)]: { field: "_limit", value: "100" },
+                                        [String(Date.now() - 0)]: { field: "_offset", value: "$for(1;1601;100)" },
+                                    })
+                                }}>
+                                ニコニコ動画
+                            </button>
+                        </td>
+                        <td>
+                            <a href="https://site.nicovideo.jp/search-api-docs/search.html">
+                                https://site.nicovideo.jp/search-api-docs/search.html
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#apiEndpointCollapse"
+                                onClick={() => {
+                                    setApiEndpoint("https://api.search.nicovideo.jp/api/v2/live/contents/search")
+                                    setServiceName("ニコニコ生放送")
+                                    setFields({
+                                        [String(Date.now() - 5)]: { field: "q", value: "ゆっくり解説" },
+                                        [String(Date.now() - 4)]: { field: "targets", value: "title,description,tags" },
+                                        [String(Date.now() - 3)]: { field: "fields", value: "contentId,title,description,tags" },
+                                        [String(Date.now() - 2)]: { field: "_sort", value: "viewCounter" },
+                                        [String(Date.now() - 1)]: { field: "_limit", value: "100" },
+                                        [String(Date.now() - 0)]: { field: "_offset", value: "$for(1;1601;100)" },
+                                    })
+                                }}>
+                                ニコニコ生放送
+                            </button>
+                        </td>
+                        <td>
+                            <a href="https://site.nicovideo.jp/search-api-docs/search.html">
+                                https://site.nicovideo.jp/search-api-docs/search.html
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#apiEndpointCollapse"
+                                onClick={() => {
+                                    setApiEndpoint("https://api.syosetu.com/novelapi/api/")
+                                    setServiceName("なろうAPI")
+                                    setFields({
+                                        [String(Date.now() - 1)]: { field: "lim", value: "499" },
+                                        [String(Date.now() - 0)]: { field: "st", value: "$for(1;2000;499)" },
+                                    })
+                                }}>
+                                なろうAPI
+                            </button>
+                        </td>
+                        <td>
+                            <a href="https://dev.syosetu.com/man/api/">
+                                https://dev.syosetu.com/man/api/
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#apiEndpointCollapse"
+                                onClick={() => {
+                                    setApiEndpoint("https://")
+                                    setServiceName("カスタム")
+                                    setFields({
+                                    })
+                                }}>
+                                カスタム
+                            </button>
+                        </td>
+                        <td>
+                            <a>
+                                None
+                            </a>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         )
     }
-    function render_APIendpoint_formtext() {
+    const apiEndpointNav = () => {
         return (
-            <div className="form-inline">
-                <b>{serviceName}</b>
-                <input type="text" className="form-control form-control-sm mx-1" size={60} value={apiEndpoint}
-                    onChange={(evt: any) => {
-                        setApiEndpoint(evt.target.value)
-                        setServiceName("カスタム")
-                    }} />
-            </div>)
+            <nav className="navbar" style={{ backgroundColor: "paleturquoise" }}>
+                <div className="form-inline">
+                    <i className="fas fa-question-circle fa-2x faa-wrench animated-hover mx-1" style={{ color: "darkorange" }}
+                        data-toggle="collapse" data-target="#helpAppCollapse">
+                    </i>
+                    <button className="btn btn-primary mx-1" data-toggle="collapse" data-target="#apiEndpointCollapse">
+                        <i className="far fa-caret-square-down mr-1" style={{ pointerEvents: "none" }}></i>APIendpoint
+                    </button>
+                </div>
+                <div className="form-inline">
+                    <b>{serviceName}</b>
+                    <input type="text" className="form-control form-control-sm mx-1" size={60} value={apiEndpoint}
+                        onChange={(evt: any) => {
+                            setApiEndpoint(evt.target.value);
+                            setServiceName("カスタム");
+                        }} />
+                </div>
+            </nav>)
     }
     function render_filelds_table() {
         const _timestamp = Object.keys(fields).sort();
@@ -236,7 +271,7 @@ export const AppMain = () => {
                         <th>Value</th>
                         <th style={{ width: "10%" }}>
                             <i className="fas fa-question-circle fa-lg faa-wrench animated-hover mx-1" style={{ color: "darkorange" }}
-                                data-toggle="collapse" data-target="#helpcmd_collapse"></i>
+                                data-toggle="collapse" data-target="#helpCmdCollapse"></i>
                             Command
                         </th>
                         <th style={{ width: "8%" }}>Ops</th>
@@ -271,7 +306,7 @@ export const AppMain = () => {
                 </tbody>
             </table>)
     }
-    function render_orders_text() {
+    const orderText = () => {
         let _reqs: number = 0; const _tsuids = Object.keys(dbNicoapi);
         for (let i = 0; i < _tsuids.length; i++) {
             _reqs += dbNicoapi[_tsuids[i]]["request_urls"].length
@@ -346,25 +381,14 @@ export const AppMain = () => {
         return (
             <div>
                 <div style={{ backgroundColor: "lightcyan" }}>
-                    <div className="collapse" id="helpapp_collapse">
+                    <div className="collapse" id="helpAppCollapse">{/*helpAppCollapse*/}
                         {helpApp()}
                     </div>
-                    {/* collapse navigation */}
-                    <nav className="navbar" style={{ backgroundColor: "paleturquoise" }}>
-                        <div className="form-inline">
-                            <i className="fas fa-question-circle fa-2x faa-wrench animated-hover mx-1" style={{ color: "darkorange" }}
-                                data-toggle="collapse" data-target="#helpapp_collapse">
-                            </i>
-                            <button className="btn btn-primary mx-1" data-toggle="collapse" data-target="#APIendpoint_collapse">
-                                <i className="far fa-caret-square-down mr-1" style={{ pointerEvents: "none" }}></i>APIendpoint
-                            </button>
-                        </div>
-                        {render_APIendpoint_formtext()}
-                    </nav>
-                    <div className="collapse show" id="APIendpoint_collapse">
-                        {render_APIendpoint_table()}
+                    {apiEndpointNav()}{/* helpAppCollapse apiEndpointCollapse */}
+                    <div className="collapse show" id="apiEndpointCollapse">{/* apiEndpointCollapse */}
+                        {apiEndpointTable()}
                     </div>
-                    <div className="collapse" id="helpcmd_collapse">
+                    <div className="collapse" id="helpCmdCollapse">{/*helpCmdCollapse*/}
                         {helpCmd()}
                     </div>
                 </div>
@@ -380,7 +404,7 @@ export const AppMain = () => {
                         <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#orders_collapse">
                             <i className="far fa-file-alt mr-1" style={{ pointerEvents: "none" }}></i>Orders
                         </button>
-                        {render_orders_text()}
+                        {orderText()}
                     </div>
                 </nav>
                 <div className="collapse" id="orders_collapse">

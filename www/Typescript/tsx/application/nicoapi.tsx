@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { stopf5 } from "../component/util_tsx";
 import { dbFieldDelete, useAuth, useDb } from "../component/firebaseWrapper";
 
-export const App_tsx = () => {
+export const AppMain = () => {
 
     const [uid] = useAuth()
     const [apiEndpoint, setApiEndpoint] = useState("https://")

@@ -10,8 +10,8 @@ export const AppWidgetHead = () => {
     const _switchApp = (application: string) => {
         if (stopf5.check("_switchapp", 300, true) == false) return; // To prevent high freq access
         import("../application/" + application).then((module) => {
-            ReactDOM.unmountComponentAtNode(document.getElementById("app_tsx"))
-            ReactDOM.render(<module.App_tsx />, document.getElementById("app_tsx"));
+            ReactDOM.unmountComponentAtNode(document.getElementById("appMain"))
+            ReactDOM.render(<module.AppMain />, document.getElementById("appMain"));
         })
     }
     // renders

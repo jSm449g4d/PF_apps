@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { dbFieldDelete, useAuth, useDb } from "../component/firebaseWrapper";
 import { stopf5, jpclock } from "../component/util_tsx";
 
-export const App_tsx = () => {
+export const AppMain = () => {
     const [uid] = useAuth()
     const [room, setRoom] = useState("main")
     const [tmpRoom, setTmpRoom] = useState(room)

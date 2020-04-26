@@ -7,7 +7,7 @@ const bgImage: any = {
     backgroundAttachment: "fixed",
 }
 
-export const App_tsx = () => {
+export const AppMain = () => {
     const [uid] = useAuth()
 
     return (

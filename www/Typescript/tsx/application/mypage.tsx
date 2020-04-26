@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth, useDb } from "../component/firebaseWrapper";
 import { stopf5, Query2Dict } from "../component/util_tsx";
 
-export const App_tsx = () => {
+export const AppMain = () => {
     const [uid] = useAuth()
     const [showUid, setShowUid] = useState("showuid" in Query2Dict() == false ? "" : Query2Dict()["showuid"])
     const [iconUrl, setIconUrl] = useState("")

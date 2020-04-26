@@ -3,6 +3,7 @@ import { stopf5 } from "../component/util_tsx";
 import { dbFieldDelete, useAuth, useDb } from "../component/firebaseWrapper";
 
 export const App_tsx = () => {
+
     const [uid] = useAuth()
     const [apiEndpoint, setApiEndpoint] = useState("https://")
     const [serviceName, setServiceName] = useState("カスタム")
@@ -318,7 +319,7 @@ export const App_tsx = () => {
                         onClick={(evt: any) => {
                             if (stopf5.check("stD_DelOrderZip", 500) == false) return; // To prevent high freq access
                             dispatchNicoapi({ type: "create", recodes: { [evt.target.name]: dbFieldDelete }, merge: true })
-                            dispatchNicoapi({ type: "erase", fileName: evt.target.name + ".zip" })
+                            dispatchNicoapi({ type: "strageDelete", fileName: evt.target.name + ".zip" })
                         }}>
                         <i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Del
                     </button>)
@@ -379,11 +380,11 @@ export const App_tsx = () => {
                                 <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#orders_collapse">
                                     <i className="far fa-file-alt mr-1" style={{ pointerEvents: "none" }}></i>Orders
                                     </button>
-                                {/**/}{render_orders_text()}
+                                {render_orders_text()}
                             </div>
                         </nav>
                         <div className="collapse" id="orders_collapse">
-                            {render_orders_table()}{/**/}
+                            {render_orders_table()}
                         </div>
                     </div>
                 </div>

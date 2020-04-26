@@ -37,10 +37,10 @@ export const App_tsx = () => {
     }
     const deleteRemark = (tsuid: string) => {
         if (stopf5.check("2", 500, true) == false) return; // To prevent high freq 
-        dispatchTptef({ type: "erase", fileName: dbTptef[tsuid].attachment })
+        dispatchTptef({ type: "strageDelete", fileName: dbTptef[tsuid].attachment })
         dispatchTptef({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true })
     }
-
+    
     // renders
     const threadTable = () => {
         const tmpRecodes = [];

@@ -29,7 +29,7 @@ module.exports = {
   plugins: [new CopyPlugin([{ from: "./html/**/*", to: "./" }])],
 
   externals: {
-    react: "React",
+    "react": "React",
     "react-dom": "ReactDOM",
     "firebase/app": "firebase",
     "firebase/analytics": "firebase",

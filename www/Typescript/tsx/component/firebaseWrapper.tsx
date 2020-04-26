@@ -100,7 +100,7 @@ export const useDb = (initialState: any = { uri: "", recodes: {} }) => {
                     .then(url => action.func(url)).catch(err => fbErr(err));
                 break;
             // HACK: DB and Storage must be common in 隙間
-            case 'erase': //{type:xxx fileName:yyy}
+            case 'strageDelete': //{type:xxx fileName:yyy}
                 if (uriCheck(uri) == false) break;
                 storage.ref(uri + "/" + action.fileName).delete().catch(err => fbErr(err))
                 break;

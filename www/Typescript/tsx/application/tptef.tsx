@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fb, useAuth, useDb } from "../component/account";
+import { dbFieldDelete, useAuth, useDb } from "../component/firebaseWrapper";
 import { stopf5, jpclock } from "../component/util_tsx";
 
 export const App_tsx = () => {
@@ -38,7 +38,7 @@ export const App_tsx = () => {
     const deleteRemark = (tsuid: string) => {
         if (stopf5.check("2", 500, true) == false) return; // To prevent high freq 
         dispatchTptef({ type: "erase", uri: dbTptef[tsuid].attachmentUri })
-        dispatchTptef({ type: "create", recodes: { [tsuid]: fb.firestore.FieldValue.delete() }, merge: true })
+        dispatchTptef({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true })
     }
 
     // renders

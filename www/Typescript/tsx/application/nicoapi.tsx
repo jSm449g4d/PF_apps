@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { stopf5 } from "../component/util_tsx";
-import { fb, useAuth, useDb } from "../component/account";
+import { dbFieldDelete, useAuth, useDb } from "../component/firebaseWrapper";
 
 export const App_tsx = () => {
     const [uid,] = useAuth()
@@ -317,7 +317,7 @@ export const App_tsx = () => {
                     <button key={2} className="btn btn-outline-danger btn-sm m-1" name={tsuids[i]}
                         onClick={(evt: any) => {
                             if (stopf5.check("stD_DelOrderZip", 500) == false) return; // To prevent high freq access
-                            dispatchNicoapi({ type: "create", recodes: { [evt.target.name]: fb.firestore.FieldValue.delete() }, merge: true })
+                            dispatchNicoapi({ type: "create", recodes: { [evt.target.name]: dbFieldDelete }, merge: true })
                             dispatchNicoapi({ type: "erase", uri: "nicoapi/" + uid + "/" + evt.target.name + ".zip" })
                         }}>
                         <i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Del

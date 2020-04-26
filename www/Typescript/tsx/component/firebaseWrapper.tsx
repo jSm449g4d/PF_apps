@@ -4,7 +4,6 @@ import "firebase/analytics";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
-import { func } from 'prop-types';
 
 
 firebase.initializeApp({
@@ -18,14 +17,15 @@ firebase.initializeApp({
     measurementId: "G-4N2QE70XC1"
 })
 
-export const fb = firebase;
+const fb = firebase;
 const auth = firebase.auth();
 const db = fb.firestore()
 const storage = fb.storage();
 
 fb.analytics();
 
-export const fbErr = (error: any) => { alert("error_code:" + error.code + "\nerror_message:" + error.message); }
+export const fbErr = (error: any) => { console.log("error_code:" + error.code + "\nerror_message:" + error.message); }
+export const dbFieldDelete = fb.firestore.FieldValue.delete()
 
 export const useAuth = () => {
     const [uid, setUid] = useState("")

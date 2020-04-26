@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fb, useAuth, useDb } from "../component/account";
+import { useAuth, useDb } from "../component/firebaseWrapper";
 import { stopf5, Query2Dict } from "../component/util_tsx";
 
 export const App_tsx = () => {
@@ -7,13 +7,16 @@ export const App_tsx = () => {
     const [showUid, setShowUid] = useState("showuid" in Query2Dict() == false ? "" : Query2Dict()["showuid"])
     const [iconUrl, setIconUrl] = useState("")
 
-
-    // TODO: 
-    // setIconUrl(dispatchMypage({ type: "download", uri: "mypage/" + showUid + "/icon.img" }))
-    // Display Icon!
-
     const [dbMypage, dispatchMypage] = useDb()
     useEffect(() => { dispatchMypage({ type: "setUri", uri: "mypage/" + showUid }); }, [showUid])
+    // readIcon
+    useEffect(() => {
+        setIconUrl("");
+        dispatchMypage({
+            type: "download", uri: "mypage/" + showUid + "/icon.img",
+            func: (_url: any) => setIconUrl(_url)
+        });
+    }, [showUid])
 
     const createMypage = () => {
         if (uid == "") return (<h5><i className="fas fa-wind mr-1"></i>Plz login</h5>)

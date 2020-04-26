@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuth } from "../component/account";
+import { useAuth } from "../component/firebaseWrapper";
 
 const bgImage: any = {
     backgroundImage: "url(/static/img/publicdomainq-0014284zts.jpg)",

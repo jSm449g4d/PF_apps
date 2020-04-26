@@ -40,7 +40,7 @@ export const AppMain = () => {
         dispatchTptef({ type: "strageDelete", fileName: dbTptef[tsuid].attachment })
         dispatchTptef({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true })
     }
-    
+
     // renders
     const threadTable = () => {
         const tmpRecodes = [];
@@ -89,7 +89,8 @@ export const AppMain = () => {
             </table>
         )
     }
-    const submitForms = () => {
+    const inputConsole = () => {
+        if (uid == "") { return (<h5> <i className="fas fa-wind mr-1"></i>Plz login</h5>); };
         return (
             <div className="mt-2 p-2" style={{ color: "#CCFFFF", border: "3px double silver", background: "#001111" }}>
                 <div className="d-flex justify-content-between">
@@ -123,32 +124,32 @@ export const AppMain = () => {
             </div>
         )
     }
+    const appBody = () => {
+        return (
+            <div>
+                <div className="d-flex justify-content-between">
+                    <h3 style={{ fontFamily: "Century", color: "mediumturquoise" }}>TPTEF: Chatroom</h3>
+                    <h3 style={{ color: "black" }}>{room}</h3>
+                    <div className="form-inline">
+                        <input className="form-control form-control-sm" type="text" value={tmpRoom}
+                            onChange={(evt) => { setTmpRoom(evt.target.value) }} />
+                        <button className="btn btn-success btn-sm"
+                            onClick={() => {
+                                if (tmpRoom == "") { setTmpRoom(room) }
+                                else { setRoom(tmpRoom) }
+                            }}>
+                            <i className="fas fa-search mr-1" style={{ pointerEvents: "none" }}></i>Room
+                        </button>
+                    </div>
+                </div>
+                {threadTable()}
+                {inputConsole()}
+            </div>
+        )
+    }
     return (
         <div className="p-2 bg-light">
-            <div className="d-flex justify-content-between">
-                <h3 style={{ fontFamily: "Century", color: "mediumturquoise" }}>TPTEF: Chatroom</h3>
-                <h3 style={{ color: "black" }}>{room}</h3>
-                <div className="form-inline">
-                    <input className="form-control form-control-sm" type="text" value={tmpRoom}
-                        onChange={(evt) => { setTmpRoom(evt.target.value) }} />
-                    <button className="btn btn-success btn-sm"
-                        onClick={() => {
-                            if (tmpRoom == "") { setTmpRoom(room) }
-                            else { setRoom(tmpRoom) }
-                        }}>
-                        <i className="fas fa-search mr-1" style={{ pointerEvents: "none" }}></i>Room
-                        </button>
-                </div>
-            </div>
-            {threadTable()}
-            {/* Input form */}
-            {uid == "" ?
-                <h5 className="d-flex justify-content-center">
-                    <i className="fas fa-wind mr-1"></i>Plz login
-                    </h5>
-                :
-                submitForms()
-            }
+            {appBody()}
         </div>
     )
 };

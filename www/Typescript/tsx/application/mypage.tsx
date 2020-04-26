@@ -109,45 +109,47 @@ export const AppMain = () => {
         )
     }
 
-    return (
-        <div className="p-2 bg-light">
-            {Object.keys(dbMypage).length < 1 ?
-                <div>{createMypage()}</div>
-                :
-                <div className="m-2" style={{ background: "khaki" }}>
-                    <div className="d-flex justify-content-start">
-                        {showIcon()}
-                        <div className="m-1 p-1 flex-grow-1" style={{ backgroundColor: "rgba(100,100,100,0.1)" }}>
-                            <div className="d-flex justify-content-start">
-                                <h3 className="flex-grow-1">
-                                    <i className="far fa-user mr-1"></i>
-                                    {Object.values(dbMypage)[0] ? Object.values<any>(dbMypage)[0]["nickname"] : ""}
-                                </h3>
-                                <div className="form-inline">
-                                    {changeProfile("Nickname", "nickname")}{uploadIcon()}
-                                </div>
-                            </div>
-                            <div className="m-1 p-1" style={{ backgroundColor: "rgba(255,255,255,0.5)" }}>
-                                <div className="d-flex justify-content-between">
-                                    <h5>PR</h5>
-                                    {changeProfile("PR", "pr")}
-                                </div>
-                                {Object.values(dbMypage)[0] ? Object.values<any>(dbMypage)[0]["pr"] : ""}
+    const appBody = () => {
+        if (Object.keys(dbMypage).length < 1) { return (<div>{createMypage()}</div>) }
+        return (
+            <div className="m-2" style={{ background: "khaki" }}>
+                <div className="d-flex justify-content-start">
+                    {showIcon()}
+                    <div className="m-1 p-1 flex-grow-1" style={{ backgroundColor: "rgba(100,100,100,0.1)" }}>
+                        <div className="d-flex justify-content-start">
+                            <h3 className="flex-grow-1">
+                                <i className="far fa-user mr-1"></i>
+                                {Object.values(dbMypage)[0] ? Object.values<any>(dbMypage)[0]["nickname"] : ""}
+                            </h3>
+                            <div className="form-inline">
+                                {changeProfile("Nickname", "nickname")}{uploadIcon()}
                             </div>
                         </div>
+                        <div className="m-1 p-1" style={{ backgroundColor: "rgba(255,255,255,0.5)" }}>
+                            <div className="d-flex justify-content-between">
+                                <h5>PR</h5>
+                                {changeProfile("PR", "pr")}
+                            </div>
+                            {Object.values(dbMypage)[0] ? Object.values<any>(dbMypage)[0]["pr"] : ""}
+                        </div>
                     </div>
-                    {showUid == uid ?
-                        <div />
-                        :
-                        <button type="button" className="btn btn-success btn-sm m-2"
-                            onClick={() => {
-                                setShowUid(uid)
-                            }}>
-                            <i className="fas fa-home mr-1" style={{ pointerEvents: "none" }}></i>Mypage
-                        </button>
-                    }
                 </div>
-            }
+                {showUid == uid ?
+                    <div />
+                    :
+                    <button type="button" className="btn btn-success btn-sm m-2"
+                        onClick={() => {
+                            setShowUid(uid)
+                        }}>
+                        <i className="fas fa-home mr-1" style={{ pointerEvents: "none" }}></i>Mypage
+                    </button>
+                }
+            </div>
+        )
+    }
+    return (
+        <div className="p-2 bg-light">
+            {appBody()}
         </div>
     );
 }

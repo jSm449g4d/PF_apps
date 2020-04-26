@@ -68,17 +68,14 @@ export const useDb = (initialState: any = { uri: "", recodes: {} }) => {
         switch (action.type) {
             case 'create': //{type:xxx, recodes:yyy, merge:zzz}
                 if (uriCheck(uri) == false) break;
-                // If you want to push local commit
-                if (!action.recodes) {
-                    db.doc(uri).set(
-                        recodes,
-                        { merge: action["merge"] ? action["merge"] : false }
-                    ).catch(err => fbErr(err)); break;
+                if (!action.recodes) { // If you want to push local commit
+                    db.doc(uri).set(recodes, { merge: action["merge"] ? action["merge"] : false })
+                        .catch(err => fbErr(err)); break;
                 }
-                db.doc(uri).set(
+                db.doc(uri).set( // Push directly
                     action.recodes ? action.recodes : action.recodes,
-                    { merge: action.merge ? action.merge : false }
-                ).catch(err => fbErr(err))
+                    { merge: action.merge ? action.merge : false })
+                    .catch(err => fbErr(err))
                 break;
             case 'delete': //{type:xxx}
                 if (uriCheck(uri) == false) break;

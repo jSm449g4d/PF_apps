@@ -342,53 +342,55 @@ export const AppMain = () => {
             </table>
         )
     }
-    return (
-        <div className="p-2 bg-light">
-            {uid == "" ?
-                <h5><i className="fas fa-wind mr-1"></i>Plz login</h5>
-                :
-                <div>
-                    {/* INPUT console */}
-                    <div style={{ backgroundColor: "lightcyan" }}>
-                        <div className="collapse" id="helpapp_collapse">
-                            {helpApp()}
-                        </div>
-                        {/* collapse navigation */}
-                        <nav className="navbar" style={{ backgroundColor: "paleturquoise" }}>
-                            <div className="form-inline">
-                                <i className="fas fa-question-circle fa-2x faa-wrench animated-hover mx-1" style={{ color: "darkorange" }}
-                                    data-toggle="collapse" data-target="#helpapp_collapse">
-                                </i>
-                                <button className="btn btn-primary mx-1" data-toggle="collapse" data-target="#APIendpoint_collapse">
-                                    <i className="far fa-caret-square-down mr-1" style={{ pointerEvents: "none" }}></i>APIendpoint
-                                    </button>
-                            </div>
-                            {render_APIendpoint_formtext()}
-                        </nav>
-                        <div className="collapse show" id="APIendpoint_collapse">
-                            {render_APIendpoint_table()}
-                        </div>
-                        <div className="collapse" id="helpcmd_collapse">
-                            {helpCmd()}
-                        </div>
+
+    const appBody = () => {
+        if (uid == "") { return (<h5><i className="fas fa-wind mr-1"></i>Plz login</h5>); };
+        return (
+            <div>
+                {/* INPUT console */}
+                <div style={{ backgroundColor: "lightcyan" }}>
+                    <div className="collapse" id="helpapp_collapse">
+                        {helpApp()}
                     </div>
-                    {render_filelds_table()}
-                    {/* OUTPUT console */}
-                    <div style={{ backgroundColor: "lightyellow" }}>
-                        <nav className="navbar" style={{ backgroundColor: "wheat" }}>
-                            <div className="form-inline">
-                                <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#orders_collapse">
-                                    <i className="far fa-file-alt mr-1" style={{ pointerEvents: "none" }}></i>Orders
-                                    </button>
-                                {render_orders_text()}
-                            </div>
-                        </nav>
-                        <div className="collapse" id="orders_collapse">
-                            {render_orders_table()}
+                    {/* collapse navigation */}
+                    <nav className="navbar" style={{ backgroundColor: "paleturquoise" }}>
+                        <div className="form-inline">
+                            <i className="fas fa-question-circle fa-2x faa-wrench animated-hover mx-1" style={{ color: "darkorange" }}
+                                data-toggle="collapse" data-target="#helpapp_collapse">
+                            </i>
+                            <button className="btn btn-primary mx-1" data-toggle="collapse" data-target="#APIendpoint_collapse">
+                                <i className="far fa-caret-square-down mr-1" style={{ pointerEvents: "none" }}></i>APIendpoint
+                            </button>
                         </div>
+                        {render_APIendpoint_formtext()}
+                    </nav>
+                    <div className="collapse show" id="APIendpoint_collapse">
+                        {render_APIendpoint_table()}
+                    </div>
+                    <div className="collapse" id="helpcmd_collapse">
+                        {helpCmd()}
                     </div>
                 </div>
-            }
+                {render_filelds_table()}
+                {/* OUTPUT console */}
+                <div style={{ backgroundColor: "lightyellow" }}>
+                    <nav className="navbar" style={{ backgroundColor: "wheat" }}>
+                        <div className="form-inline">
+                            <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#orders_collapse">
+                                <i className="far fa-file-alt mr-1" style={{ pointerEvents: "none" }}></i>Orders
+                            </button>
+                            {render_orders_text()}
+                        </div>
+                    </nav>
+                    <div className="collapse" id="orders_collapse">
+                        {render_orders_table()}
+                    </div>
+                </div>
+            </div>)
+    }
+    return (
+        <div className="p-1 bg-light">
+            <div>{appBody()}</div>
         </div>
     );
 };

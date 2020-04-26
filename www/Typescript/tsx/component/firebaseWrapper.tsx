@@ -61,7 +61,7 @@ export const useDb = (initialState: any = { uri: "", recodes: {} }) => {
             })
             : () => { }
         return () => _snap();
-    }, [uri])
+    }, [uri]);
     // Db:(Create, Delete) Storage:(Upload Download Delete)
     const dispatch = (action: any) => {
         // reducer 
@@ -88,20 +88,21 @@ export const useDb = (initialState: any = { uri: "", recodes: {} }) => {
                 if (uriCheck(uri) == false) break;
                 setRecodes(action.recodes ? action.recodes : initialState.recodes)
                 break;
-            case 'upload': //{type:xxx file:yyy fileName:zzz} → locationUri
+            case 'upload': //{type:xxx file:yyy fileName:zzz} → fileName
                 if (uriCheck(uri) == false) return String("");
                 if (!action.file) return String("");
-                const _fileName = action.fileName ? action.fileName : action.file.name
-                storage.ref(uri + "/" + _fileName).put(action.file).catch(err => fbErr(err))
-                return String(uri + "/" + _fileName);
-            case 'download': //{type:xxx uri:yyy func:zzz}
-                if (uriCheck(action.uri) == false) break;
-                storage.ref(action.uri).getDownloadURL().then(url => action.func(url)).catch(err => fbErr(err));
+                action.fileName = action.fileName ? action.fileName : action.file.name
+                storage.ref(uri + "/" + action.fileName).put(action.file).catch(err => fbErr(err))
+                return String(action.fileName);
+            case 'download': //{type:xxx fileName:yyy func:zzz}
+                if (uriCheck(uri) == false) break;
+                storage.ref(uri + "/" + action.fileName).getDownloadURL()
+                    .then(url => action.func(url)).catch(err => fbErr(err));
                 break;
             // HACK: DB and Storage must be common in 隙間
-            case 'erase': //{type:xxx uri:yyy}
-                if (uriCheck(action.uri) == false) break;
-                storage.ref(action.uri).delete().catch(err => fbErr(err))
+            case 'erase': //{type:xxx fileName:yyy}
+                if (uriCheck(uri) == false) break;
+                storage.ref(uri + "/" + action.fileName).delete().catch(err => fbErr(err))
                 break;
             case 'setUri': //{type:xxx, uri:yyy}
                 setUri(action.uri);

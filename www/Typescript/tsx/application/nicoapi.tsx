@@ -3,7 +3,7 @@ import { stopf5 } from "../component/util_tsx";
 import { dbFieldDelete, useAuth, useDb } from "../component/firebaseWrapper";
 
 export const App_tsx = () => {
-    const [uid,] = useAuth()
+    const [uid] = useAuth()
     const [apiEndpoint, setApiEndpoint] = useState("https://")
     const [serviceName, setServiceName] = useState("カスタム")
     const [craloerResponse, setCraloerResponse] = useState<{ [keys: string]: any }>({})
@@ -306,7 +306,7 @@ export const App_tsx = () => {
                         onClick={(evt: any) => {
                             if (stopf5.check("stR_GetOrderZip", 500) == false) return; // To prevent high freq access
                             dispatchNicoapi({
-                                type: "download", uri: "nicoapi/" + uid + "/" + evt.target.name + ".zip",
+                                type: "download", fileName: evt.target.name + ".zip",
                                 func: (_url: any) => window.open(_url, '_blank')
                             });
                         }}>
@@ -318,7 +318,7 @@ export const App_tsx = () => {
                         onClick={(evt: any) => {
                             if (stopf5.check("stD_DelOrderZip", 500) == false) return; // To prevent high freq access
                             dispatchNicoapi({ type: "create", recodes: { [evt.target.name]: dbFieldDelete }, merge: true })
-                            dispatchNicoapi({ type: "erase", uri: "nicoapi/" + uid + "/" + evt.target.name + ".zip" })
+                            dispatchNicoapi({ type: "erase", fileName: evt.target.name + ".zip" })
                         }}>
                         <i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Del
                     </button>)

@@ -3,20 +3,14 @@ import { useAuth, useDb } from "../component/firebaseWrapper";
 import { stopf5, Query2Dict } from "../component/util_tsx";
 
 export const App_tsx = () => {
-    const [uid,] = useAuth()
+    const [uid] = useAuth()
     const [showUid, setShowUid] = useState("showuid" in Query2Dict() == false ? "" : Query2Dict()["showuid"])
     const [iconUrl, setIconUrl] = useState("")
 
     const [dbMypage, dispatchMypage] = useDb()
     useEffect(() => { dispatchMypage({ type: "setUri", uri: "mypage/" + showUid }); }, [showUid])
     // readIcon
-    useEffect(() => {
-        setIconUrl("");
-        dispatchMypage({
-            type: "download", uri: "mypage/" + showUid + "/icon.img",
-            func: (_url: any) => setIconUrl(_url)
-        });
-    }, [showUid])
+    useEffect(() => { dispatchMypage({ type: "download", fileName: "icon.img", func: (_url: any) => setIconUrl(_url) }) }, [dbMypage])
 
     const createMypage = () => {
         if (uid == "") return (<h5><i className="fas fa-wind mr-1"></i>Plz login</h5>)
@@ -65,9 +59,7 @@ export const App_tsx = () => {
                     onChange={(evt) => {
                         if (stopf5.check("upIcon", 500, true) == false) return; // To prevent high freq access
                         dispatchMypage({ type: "upload", file: evt.target.files[0], fileName: "icon.img" })
-                        setTimeout(() => {
-                            setIconUrl(dispatchMypage({ type: "download", uri: "mypage/" + showUid + "/icon.img" }))
-                        }, 1000)
+                        dispatchMypage({ type: "download", fileName: "icon.img", func: (_url: any) => setIconUrl(_url) })
                     }} />
                 <i className="fas fa-upload mr-1" style={{ pointerEvents: "none" }}></i>Icon
             </button>

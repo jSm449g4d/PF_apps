@@ -8,7 +8,7 @@ const bgImage: any = {
 }
 
 export const App_tsx = () => {
-    const [uid,] = useAuth()
+    const [uid] = useAuth()
 
     return (
         <div className="p-2 bg-light" style={bgImage}>

@@ -342,12 +342,9 @@ export const AppMain = () => {
             </table>
         )
     }
-
-    const appBody = () => {
-        if (uid == "") { return (<h5><i className="fas fa-wind mr-1"></i>Plz login</h5>); };
+    const inputConsole = () => {
         return (
             <div>
-                {/* INPUT console */}
                 <div style={{ backgroundColor: "lightcyan" }}>
                     <div className="collapse" id="helpapp_collapse">
                         {helpApp()}
@@ -372,21 +369,34 @@ export const AppMain = () => {
                     </div>
                 </div>
                 {render_filelds_table()}
-                {/* OUTPUT console */}
-                <div style={{ backgroundColor: "lightyellow" }}>
-                    <nav className="navbar" style={{ backgroundColor: "wheat" }}>
-                        <div className="form-inline">
-                            <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#orders_collapse">
-                                <i className="far fa-file-alt mr-1" style={{ pointerEvents: "none" }}></i>Orders
-                            </button>
-                            {render_orders_text()}
-                        </div>
-                    </nav>
-                    <div className="collapse" id="orders_collapse">
-                        {render_orders_table()}
+            </div>
+        )
+    }
+    const outputConsole = () => {
+        return (
+            <div style={{ backgroundColor: "lightyellow" }}>
+                <nav className="navbar" style={{ backgroundColor: "wheat" }}>
+                    <div className="form-inline">
+                        <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#orders_collapse">
+                            <i className="far fa-file-alt mr-1" style={{ pointerEvents: "none" }}></i>Orders
+                        </button>
+                        {render_orders_text()}
                     </div>
+                </nav>
+                <div className="collapse" id="orders_collapse">
+                    {render_orders_table()}
                 </div>
-            </div>)
+            </div>
+        )
+    }
+    const appBody = () => {
+        if (uid == "") { return (<h5><i className="fas fa-wind mr-1"></i>Plz login</h5>); };
+        return (
+            <div>
+                {inputConsole()}
+                {outputConsole()}
+            </div>
+        )
     }
     return (
         <div className="p-1 bg-light">

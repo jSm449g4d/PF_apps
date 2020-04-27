@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useAuth } from "../component/firebaseWrapper";
 
 const bgImage: any = {
@@ -23,10 +23,30 @@ export const AppMain = () => {
             </h1>
         )
     }
+    const topicsSlide = () => {
+        const topicBlockIterator = useRef(0);
+        const tolicBlock = () => {
+            return (
+                <div className="d-flex justify-content-center solid_line">
+                    てすと
+                </div>)
+        }
+        const _topicBlocks = [tolicBlock(), tolicBlock(), tolicBlock(), tolicBlock(),]
+        return (
+            <div className="d-flex justify-content-center align-content-center">
+                <i className="fas fa-caret-left fa-4x mr-1" style={{ color: "lightcyan" }}></i>
+                {_topicBlocks[topicBlockIterator.current + 0]}
+                {_topicBlocks[topicBlockIterator.current + 1]}
+                {_topicBlocks[topicBlockIterator.current + 2]}
+                <i className="fas fa-caret-right fa-4x mr-1" style={{ color: "lightcyan" }}></i>
+            </div>
+        )
+    }
 
     return (
         <div className="p-2 bg-light" style={bgImage}>
-            {titleLogo()}
+            <div>{titleLogo()}</div>
+            <div>{topicsSlide()}</div>
             Under Construction<br />
 
         </div>

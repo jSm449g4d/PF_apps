@@ -39,3 +39,4 @@ export const Dict2Query = (query_dict: { [key: string]: string }) => {
         ret_str += tmpkey_array[i] + "=" + tmpvalue_array[i] + "&"
     }; return ret_str
 }
+

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from "../component/firebaseWrapper";
+import { bsCarousel } from "../component/reactbs_util";
 
 const bgImage: any = {
     backgroundImage: "url(/static/img/aircraft-2795557_1280.jpg)",
@@ -9,6 +10,8 @@ const bgImage: any = {
 
 export const AppMain = () => {
     const [uid] = useAuth()
+    // functions
+    // renders
     const titleLogo = () => {
         const titleLogoStyle: any = {
             borderTop: "solid 1px gray",
@@ -24,59 +27,28 @@ export const AppMain = () => {
         )
     }
     const topicsSlide = () => {
-        const [topicBlockIterator, setTopicBlockIterator] = useState(0);
-        const tolicBlock = (_text: string) => {
-            const tolicBlockBack: any = {
-                backgroundColor: "rgba(250,250,250,0.8)",
-            }
-            return (
-                <div className="d-flex justify-content-center m-2 p-1" style={tolicBlockBack}>
-                    てすと{_text}
-                </div>
-            )
+        const topicBackStyle: any = {
+            backgroundColor: "rgba(250,250,250,0.8)",
+            width: 300,
+            height: 300,
+            margin: 2,
+            padding: 2,
         }
-        const _topicBlocks = [tolicBlock("1"), tolicBlock("2"), tolicBlock("3"), tolicBlock("4"), tolicBlock("5")]
-        if (topicBlockIterator > _topicBlocks.length - 3) { setTopicBlockIterator(0); };
-        if (topicBlockIterator < 0) { setTopicBlockIterator(_topicBlocks.length - 3); };
-        /*
-            <div className="d-flex justify-content-center align-content-center">
-                <i className="fas fa-caret-left fa-4x mr-1" style={{ color: "lightcyan" }}
-                    onClick={() => { setTopicBlockIterator(topicBlockIterator - 1) }}></i>
-                {_topicBlocks[topicBlockIterator + 0]}
-                {_topicBlocks[topicBlockIterator + 1]}
-                {_topicBlocks[topicBlockIterator + 2]}
-                <i className="fas fa-caret-right fa-4x mr-1" style={{ color: "lightcyan" }}
-                    onClick={() => { setTopicBlockIterator(topicBlockIterator + 1) }}></i>
-            </div>*/
+        //<div className="w-50"><img src="/static/img/aircraft-2795557_1280.jpg"></img></div>,
+        const carouselContent = [
+            <div className="d-flex justify-content-center align-content-center" style={topicBackStyle}>Nicoapi</div>,
+            <div className="d-flex justify-content-center align-content-center" style={topicBackStyle}>Tptef</div>,
+        ]
+
         return (
-            <div id="topicBlockCarousel" className="carousel slide" data-ride="carousel">
-                <ol className="carousel-indicators">
-                    <li className="active" data-target="#topicBlockCarousel" data-slide-to="0"></li>
-                    <li data-target="#topicBlockCarousel" data-slide-to="1"></li>
-                    <li data-target="#topicBlockCarousel" data-slide-to="2"></li>
-                </ol>
-                <div className="carousel-inner">
-                    <div className="carousel-item active">
-                        <img className="d-block w-100" src="/static/img/aircraft-2795557_1280.jpg" alt="First slide">
-                        </img>
-                    </div>
-                    <div className="carousel-item">
-                        <img className="d-block w-100" src="/static/img/aircraft-2795557_1280.jpg" alt="Second slide">
-                        </img>
-                    </div>
-                    <div className="carousel-item">
-                        <img className="d-block w-100" src="/static/img/aircraft-2795557_1280.jpg" alt="Third slide">
-                        </img>
-                    </div>
-                    <a className="carousel-control-prev" href="#topicBlockCarousel" role="button" data-slide="prev">
-                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span className="sr-only">Previous</span>
-                    </a>
-                    <a className="carousel-control-next" href="#topicBlockCarousel" role="button" data-slide="next">
-                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span className="sr-only">Next</span>
-                    </a>
+            <div className="d-flex justify-content-center">
+                <div className="m-3">
+                    {bsCarousel("topicBlockCarousel", carouselContent)}
                 </div>
+                <div className="m-3">
+                    {bsCarousel("topicBlockCarousel3", carouselContent)}
+                </div>
+
             </div>
         )
     }

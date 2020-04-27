@@ -39,11 +39,11 @@ export const AppMain = () => {
         ]
         const carouselYoutube = [
             <div className="d-flex justify-content-center align-content-center" style={topicBackStyle}>
-                <iframe src="https://www.youtube.com/embed/2dJfxy8DIto" frameBorder="0"
+                <iframe className="lazyload" src="https://www.youtube.com/embed/2dJfxy8DIto" frameBorder="0"
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
             </div>,
             <div className="d-flex justify-content-center align-content-center" style={topicBackStyle}>
-                <iframe src="https://www.youtube.com/embed/_fj9U6pVNkM" frameBorder="0"
+                <iframe className="lazyload" src="https://www.youtube.com/embed/_fj9U6pVNkM" frameBorder="0"
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
             </div>,
         ]

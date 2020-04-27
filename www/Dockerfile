@@ -12,7 +12,7 @@ WORKDIR $APP/html/static
 RUN apt install npm -yq
 RUN npm install -g npm
 RUN npm install --save jquery@3.4.1 popper.js@1.16.1 bootstrap react react-dom react-bootstrap firebase && \
-    npm install @fortawesome/fontawesome-free font-awesome-animation
+    npm install @fortawesome/fontawesome-free font-awesome-animation lazysizes
 # Typescript
 WORKDIR $APP/Typescript
 RUN npm install --save-dev @types/jquery @types/popper.js @types/bootstrap && \

@@ -91,31 +91,30 @@ thread_d = threading.Thread(name='nicoapi_d', target=deamon)
 
 
 def show(request):
-    # head ← (template)
     global access_counter
     access_counter += 1
-    status_dict: dict = {
+    statusDict: dict = {
         "access_counter": str(access_counter),
         "thread": "running", }
 
-    # body
     global thread_d, restartflag
     if thread_d.is_alive() == False:
         restartflag = True
         thread_d = threading.Thread(name='nicoapi_d', target=deamon)
         thread_d.start()
-        status_dict["thread"] = "start"
+        statusDict["thread"] = "start"
     else:
         restartflag = True
 
     if request.method == "POST":
-        return json.dumps(status_dict, ensure_ascii=False), 200
+        return json.dumps(statusDict, ensure_ascii=False), 200
 
-    # foot ← (template)
-    status_lines: str = "<h6 class='text-center'>==STATUS==</h6>"
-    for key, value in status_dict.items():
-        status_lines += "<div class='text-center' >" + key+": "+value+"</div>"
-    kwargs = {"STATUS_LINES": status_lines}
+    # showStatus
+    statusLines: str = "<h6 class='text-center'>==STATUS==</h6>"
+    for key, value in statusDict.items():
+        statusLines += "<div class='text-center' >" + key+": "+value+"</div>"
+    kwargs = {"STATUS_LINES": statusLines}
+    # render
     with open(os.path.join(os.path.dirname(__file__), "main.html"), "r", encoding="utf-8") as f:
         html = f.read()
         for kw, arg in kwargs.items():

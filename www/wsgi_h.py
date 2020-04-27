@@ -13,63 +13,6 @@ access_counter = 0
 resouce_health = "×: FAULT"
 GCP_key = "keys/FirebaseAdminKey.json"
 
-
-# Firestore compatible
-class db_Ref:
-    # valiable
-    db_dict = {}
-    db_path = ""  # /root: www/db/{db_path}.json
-    id = ""
-
-    def __init__(self, db_path: str = ""):
-        if db_path == "":
-            os.makedirs("./db", exist_ok=True)
-            try:  # delete except for "json"
-                for root, _, files in os.walk("./db"):
-                    for file in files:
-                        if file.split(".")[-1] != "json":
-                            os.remove(os.path.join(root, file))
-                    # TODO: delete emp folder
-            except:
-                pass
-        self.db_path = db_path.replace("\\", "/").replace("..", "_")
-        self.id = os.path.basename(db_path)
-
-    def list_documents(self):
-        Refs = []
-        try:
-            for file in os.listdir(os.path.join("./db", self.db_path)):
-                Refs.append(
-                    db_Ref(os.path.splitext(
-                        os.path.join(self.db_path, file))[0])
-                )
-        except:
-            Refs = []
-        return Refs
-
-    def get(self):
-        try:
-            with open(os.path.join("./db", self.db_path), encoding="utf-8") as fp:
-                self.db_dict = json.load(fp)
-        except:
-            self.db_dict = {}
-        return self
-
-    def to_dict(self):
-        return json.dumps(self.db_dict, ensure_ascii=False)
-
-    def document(self, db_path: str = ""):
-        return db_Ref(db_path)
-    collection = document
-    doc = document
-
-    def delete(self):
-        try:
-            os.remove(os.path.join("./db", db_path)+".json")
-        except:
-            pass
-
-
 try:
     db = firestore.Client.from_service_account_json(GCP_key)
     DELETE_FIELD = firestore.DELETE_FIELD
@@ -77,7 +20,7 @@ try:
     resouce_health = "〇: GCP"
 except:
     # UC: STANDALONE mode
-    db = db_Ref()
+    db = 0
     DELETE_FIELD = None
     GCS = 0
-    resouce_health = "△: STANDALONE"
+    resouce_health = "UC: (△: STANDALONE)"

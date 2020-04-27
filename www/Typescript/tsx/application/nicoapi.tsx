@@ -8,7 +8,7 @@ export const AppMain = () => {
     const [apiEndpoint, setApiEndpoint] = useState("https://")
     const [serviceName, setServiceName] = useState("カスタム")
     const [craloerResponse, setCraloerResponse] = useState<{ [keys: string]: any }>({})
-    const [fields, setFields] = useState<{ [tptef: string]: any }>({})
+    const [fields, setFields] = useState<{ [_timestamp: string]: any }>({})
 
     const [dbNicoapi, dispatchNicoapi] = useDb()
     useEffect(() => { dispatchNicoapi({ type: "setUri", uri: "nicoapi/" + uid }); }, [uid])
@@ -113,302 +113,302 @@ export const AppMain = () => {
             </div>
         )
     }
-    const apiEndpointTable = () => {
-        return (
-            <table className="table table-sm">
-                <thead>
-                    <tr style={{ textAlign: "center" }}>
-                        <th>Endpoint</th>
-                        <th>Reference</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#apiEndpointCollapse"
-                                onClick={() => {
-                                    setApiEndpoint("https://api.search.nicovideo.jp/api/v2/video/contents/search")
-                                    setServiceName("ニコニコ動画")
-                                    setFields({
-                                        [String(Date.now() - 5)]: { field: "q", value: "ゆっくり解説" },
-                                        [String(Date.now() - 4)]: { field: "targets", value: "title,description,tags" },
-                                        [String(Date.now() - 3)]: { field: "fields", value: "contentId,title,description,tags" },
-                                        [String(Date.now() - 2)]: { field: "_sort", value: "viewCounter" },
-                                        [String(Date.now() - 1)]: { field: "_limit", value: "100" },
-                                        [String(Date.now() - 0)]: { field: "_offset", value: "$for(1;1601;100)" },
-                                    })
-                                }}>
-                                ニコニコ動画
+    const inputConsole = () => {
+        const apiEndpointTable = () => {
+            return (
+                <table className="table table-sm">
+                    <thead>
+                        <tr style={{ textAlign: "center" }}>
+                            <th>Endpoint</th>
+                            <th>Reference</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#apiEndpointCollapse"
+                                    onClick={() => {
+                                        setApiEndpoint("https://api.search.nicovideo.jp/api/v2/video/contents/search")
+                                        setServiceName("ニコニコ動画")
+                                        setFields({
+                                            [String(Date.now() - 5)]: { field: "q", value: "ゆっくり解説" },
+                                            [String(Date.now() - 4)]: { field: "targets", value: "title,description,tags" },
+                                            [String(Date.now() - 3)]: { field: "fields", value: "contentId,title,description,tags" },
+                                            [String(Date.now() - 2)]: { field: "_sort", value: "viewCounter" },
+                                            [String(Date.now() - 1)]: { field: "_limit", value: "100" },
+                                            [String(Date.now() - 0)]: { field: "_offset", value: "$for(1;1601;100)" },
+                                        })
+                                    }}>
+                                    ニコニコ動画
                             </button>
-                        </td>
-                        <td>
-                            <a href="https://site.nicovideo.jp/search-api-docs/search.html">
-                                https://site.nicovideo.jp/search-api-docs/search.html
+                            </td>
+                            <td>
+                                <a href="https://site.nicovideo.jp/search-api-docs/search.html">
+                                    https://site.nicovideo.jp/search-api-docs/search.html
                             </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#apiEndpointCollapse"
-                                onClick={() => {
-                                    setApiEndpoint("https://api.search.nicovideo.jp/api/v2/live/contents/search")
-                                    setServiceName("ニコニコ生放送")
-                                    setFields({
-                                        [String(Date.now() - 5)]: { field: "q", value: "ゆっくり解説" },
-                                        [String(Date.now() - 4)]: { field: "targets", value: "title,description,tags" },
-                                        [String(Date.now() - 3)]: { field: "fields", value: "contentId,title,description,tags" },
-                                        [String(Date.now() - 2)]: { field: "_sort", value: "viewCounter" },
-                                        [String(Date.now() - 1)]: { field: "_limit", value: "100" },
-                                        [String(Date.now() - 0)]: { field: "_offset", value: "$for(1;1601;100)" },
-                                    })
-                                }}>
-                                ニコニコ生放送
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#apiEndpointCollapse"
+                                    onClick={() => {
+                                        setApiEndpoint("https://api.search.nicovideo.jp/api/v2/live/contents/search")
+                                        setServiceName("ニコニコ生放送")
+                                        setFields({
+                                            [String(Date.now() - 5)]: { field: "q", value: "ゆっくり解説" },
+                                            [String(Date.now() - 4)]: { field: "targets", value: "title,description,tags" },
+                                            [String(Date.now() - 3)]: { field: "fields", value: "contentId,title,description,tags" },
+                                            [String(Date.now() - 2)]: { field: "_sort", value: "viewCounter" },
+                                            [String(Date.now() - 1)]: { field: "_limit", value: "100" },
+                                            [String(Date.now() - 0)]: { field: "_offset", value: "$for(1;1601;100)" },
+                                        })
+                                    }}>
+                                    ニコニコ生放送
                             </button>
-                        </td>
-                        <td>
-                            <a href="https://site.nicovideo.jp/search-api-docs/search.html">
-                                https://site.nicovideo.jp/search-api-docs/search.html
+                            </td>
+                            <td>
+                                <a href="https://site.nicovideo.jp/search-api-docs/search.html">
+                                    https://site.nicovideo.jp/search-api-docs/search.html
                             </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#apiEndpointCollapse"
-                                onClick={() => {
-                                    setApiEndpoint("https://api.syosetu.com/novelapi/api/")
-                                    setServiceName("なろうAPI")
-                                    setFields({
-                                        [String(Date.now() - 1)]: { field: "lim", value: "499" },
-                                        [String(Date.now() - 0)]: { field: "st", value: "$for(1;2000;499)" },
-                                    })
-                                }}>
-                                なろうAPI
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#apiEndpointCollapse"
+                                    onClick={() => {
+                                        setApiEndpoint("https://api.syosetu.com/novelapi/api/")
+                                        setServiceName("なろうAPI")
+                                        setFields({
+                                            [String(Date.now() - 1)]: { field: "lim", value: "499" },
+                                            [String(Date.now() - 0)]: { field: "st", value: "$for(1;2000;499)" },
+                                        })
+                                    }}>
+                                    なろうAPI
                             </button>
-                        </td>
-                        <td>
-                            <a href="https://dev.syosetu.com/man/api/">
-                                https://dev.syosetu.com/man/api/
+                            </td>
+                            <td>
+                                <a href="https://dev.syosetu.com/man/api/">
+                                    https://dev.syosetu.com/man/api/
                             </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#apiEndpointCollapse"
-                                onClick={() => {
-                                    setApiEndpoint("https://")
-                                    setServiceName("カスタム")
-                                    setFields({
-                                    })
-                                }}>
-                                カスタム
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button className="btn btn-primary btn-sm" data-toggle="collapse" data-target="#apiEndpointCollapse"
+                                    onClick={() => {
+                                        setApiEndpoint("https://")
+                                        setServiceName("カスタム")
+                                        setFields({
+                                        })
+                                    }}>
+                                    カスタム
                             </button>
-                        </td>
-                        <td>
-                            <a>
-                                None
+                            </td>
+                            <td>
+                                <a>
+                                    None
                             </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        )
-    }
-    const apiEndpointNav = () => {
-        return (
-            <nav className="navbar" style={{ backgroundColor: "paleturquoise" }}>
-                <div className="form-inline">
-                    <i className="fas fa-question-circle fa-2x faa-wrench animated-hover mx-1" style={{ color: "darkorange" }}
-                        data-toggle="collapse" data-target="#helpAppCollapse">
-                    </i>
-                    <button className="btn btn-primary mx-1" data-toggle="collapse" data-target="#apiEndpointCollapse">
-                        <i className="far fa-caret-square-down mr-1" style={{ pointerEvents: "none" }}></i>APIendpoint
-                    </button>
-                </div>
-                <div className="form-inline">
-                    <b>{serviceName}</b>
-                    <input type="text" className="form-control form-control-sm mx-1" size={60} value={apiEndpoint}
-                        onChange={(evt: any) => {
-                            setApiEndpoint(evt.target.value);
-                            setServiceName("カスタム");
-                        }} />
-                </div>
-            </nav>)
-    }
-    function render_filelds_table() {
-        const _timestamp = Object.keys(fields).sort();
-        const _tmpRecode = []; let _tmpFields = Object.assign({}, fields);
-        for (var i = 0; i < _timestamp.length; i++) {
-            const tmp_data = [];
-            //Field (formtext)
-            tmp_data.push(<td key={1}><input type="text" className="form-control form-control-sm mx-1"
-                value={fields[_timestamp[i]]["field"]}
-                onChange={(evt: any) => {
-                    _tmpFields[evt.target.name]["field"] = evt.target.value; setFields(_tmpFields);
-                }} name={_timestamp[i]} /></td>)
-            //Value (textform)
-            tmp_data.push(<td key={2}><input type="text" className="form-control form-control-sm mx-1"
-                value={fields[_timestamp[i]]["value"]}
-                onChange={(evt: any) => {
-                    _tmpFields[evt.target.name]["value"] = evt.target.value; setFields(_tmpFields);
-                }} name={_timestamp[i]} /></td>)
-            //Command (button)
-            tmp_data.push(<td key={3}><button className="btn btn-warning btn-sm" style={{ textAlign: "center" }}
-                onClick={(evt: any) => {
-                    _tmpFields[evt.target.name]["value"] = "$for(1;1601;500)"; setFields(_tmpFields);
-                }} name={_timestamp[i]}>$for</button></td>)
-            //Ops (Delete button)
-            tmp_data.push(<td key={4}><button className="btn btn-outline-danger btn-sm rounded-pill" style={{ textAlign: "center" }}
-                onClick={(evt: any) => {
-                    delete _tmpFields[evt.target.name]; setFields(_tmpFields);
-                }} name={_timestamp[i]}><i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Del</button></td >)
-            _tmpRecode.push(<tr key={i}>{tmp_data}</tr>)
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            )
         }
-        return (
-            <table className="table table-sm" style={{ textAlign: "center" }}>
-                <thead>
-                    <tr>
-                        <th style={{ width: "10%" }}>Field</th>
-                        <th>Value</th>
-                        <th style={{ width: "10%" }}>
-                            <i className="fas fa-question-circle fa-lg faa-wrench animated-hover mx-1" style={{ color: "darkorange" }}
-                                data-toggle="collapse" data-target="#helpCmdCollapse"></i>
+        const apiEndpointNav = () => {
+            return (
+                <nav className="navbar" style={{ backgroundColor: "paleturquoise" }}>
+                    <div className="form-inline">
+                        <i className="fas fa-question-circle fa-2x faa-wrench animated-hover mx-1" style={{ color: "darkorange" }}
+                            data-toggle="collapse" data-target="#helpAppCollapse">
+                        </i>
+                        <button className="btn btn-primary mx-1" data-toggle="collapse" data-target="#apiEndpointCollapse">
+                            <i className="far fa-caret-square-down mr-1" style={{ pointerEvents: "none" }}></i>APIendpoint
+                    </button>
+                    </div>
+                    <div className="form-inline">
+                        <b>{serviceName}</b>
+                        <input type="text" className="form-control form-control-sm mx-1" size={60} value={apiEndpoint}
+                            onChange={(evt: any) => {
+                                setApiEndpoint(evt.target.value);
+                                setServiceName("カスタム");
+                            }} />
+                    </div>
+                </nav>)
+        }
+        const fieldsTable = () => {
+            const _timestamp = Object.keys(fields).sort();
+            const _recode = []; let _fields = Object.assign({}, fields);
+            for (let i = 0; i < _timestamp.length; i++) {
+                const _data = [];
+                //Field (formtext)
+                _data.push(<td key={1}><input type="text" className="form-control form-control-sm mx-1"
+                    value={fields[_timestamp[i]]["field"]}
+                    onChange={(evt: any) => {
+                        _fields[evt.target.name]["field"] = evt.target.value; setFields(_fields);
+                    }} name={_timestamp[i]} /></td>)
+                //Value (textform)
+                _data.push(<td key={2}><input type="text" className="form-control form-control-sm mx-1"
+                    value={fields[_timestamp[i]]["value"]}
+                    onChange={(evt: any) => {
+                        _fields[evt.target.name]["value"] = evt.target.value; setFields(_fields);
+                    }} name={_timestamp[i]} /></td>)
+                //Command (button)
+                _data.push(<td key={3}><button className="btn btn-warning btn-sm" style={{ textAlign: "center" }}
+                    onClick={(evt: any) => {
+                        _fields[evt.target.name]["value"] = "$for(1;1601;500)"; setFields(_fields);
+                    }} name={_timestamp[i]}>$for</button></td>)
+                //Ops (Delete button)
+                _data.push(<td key={4}><button className="btn btn-outline-danger btn-sm rounded-pill" style={{ textAlign: "center" }}
+                    onClick={(evt: any) => {
+                        delete _fields[evt.target.name]; setFields(_fields);
+                    }} name={_timestamp[i]}><i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Del</button></td >)
+                _recode.push(<tr key={i}>{_data}</tr>)
+            }
+            return (
+                <table className="table table-sm" style={{ textAlign: "center" }}>
+                    <thead>
+                        <tr>
+                            <th style={{ width: "10%" }}>Field</th>
+                            <th>Value</th>
+                            <th style={{ width: "10%" }}>
+                                <i className="fas fa-question-circle fa-lg faa-wrench animated-hover mx-1" style={{ color: "darkorange" }}
+                                    data-toggle="collapse" data-target="#helpCmdCollapse"></i>
                             Command
                         </th>
-                        <th style={{ width: "8%" }}>Ops</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {_tmpRecode}
-                    <tr><td /><td style={{ color: "rgba(255,255,255,0)" }}>===みつけたね？===</td></tr>
-                    <tr>
-                        <td />
-                        <td>
-                            <button className="btn btn-outline-primary rounded-pill" style={{ width: "50%" }}
-                                onClick={() => {
-                                    setFields(Object.assign(fields, { [Date.now().toString()]: { field: "", value: "" } }))
-                                }}>
-                                +Add
+                            <th style={{ width: "8%" }}>Ops</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {_recode}
+                        <tr><td /><td style={{ color: "rgba(255,255,255,0)" }}>===みつけたね？===</td></tr>
+                        <tr>
+                            <td />
+                            <td>
+                                <button className="btn btn-outline-primary rounded-pill" style={{ width: "50%" }}
+                                    onClick={() => {
+                                        setFields(Object.assign(fields, { [Date.now().toString()]: { field: "", value: "" } }))
+                                    }}>
+                                    +Add
                             </button>
-                        </td>
-                        <td colSpan={2}>
-                            <div className="form-inline">
-                                <button className="btn btn-success" onClick={() => { submitOrder(); }}>
-                                    <i className="fas fa-rocket mr-1" style={{ pointerEvents: "none" }}></i>Launch
+                            </td>
+                            <td colSpan={2}>
+                                <div className="form-inline">
+                                    <button className="btn btn-success" onClick={() => { submitOrder(); }}>
+                                        <i className="fas fa-rocket mr-1" style={{ pointerEvents: "none" }}></i>Launch
                                 </button>
-                                {craloerResponse["thread"] == "start" ?
-                                    <i className="fab fa-ubuntu fa-2x fa-spin mx-2" style={{ color: "darkorange" }}></i>
-                                    :
-                                    <i className="fab fa-ubuntu fa-2x mx-2" style={{ color: "darkorange" }}></i>
-                                }
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>)
-    }
-    const orderText = () => {
-        let _reqs: number = 0; const _tsuids = Object.keys(dbNicoapi);
-        for (let i = 0; i < _tsuids.length; i++) {
-            _reqs += dbNicoapi[_tsuids[i]]["request_urls"].length
+                                    {craloerResponse["thread"] == "start" ?
+                                        <i className="fab fa-ubuntu fa-2x fa-spin mx-2" style={{ color: "darkorange" }}></i>
+                                        :
+                                        <i className="fab fa-ubuntu fa-2x mx-2" style={{ color: "darkorange" }}></i>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>)
         }
-        return (
-            <div className="mx-2">
-                {"orders/reqs: " + String(_tsuids.length) + "/" + String(_reqs)}
-            </div>
-        )
-    }
-    function render_orders_table() {
-        const tsuids = Object.keys(dbNicoapi).sort();
-        const tmp_records = []; const _recodes = Object.assign({}, dbNicoapi);
-        for (var i = 0; i < tsuids.length; i++) {
-            const tmp_data = [];
-            tmp_data.push(
-                <td key={1}>
-                    {tsuids[i].split("_")[0]}<br />
-                    Status: {_recodes[tsuids[i]]["status"]}<br />
-                    UA: {_recodes[tsuids[i]]["User-Agent"]}
-                </td>)
-            tmp_data.push(
-                <td key={2} style={{ fontSize: "12px", textAlign: "left" }}>
-                    <details>
-                        <summary> {_recodes[tsuids[i]]["request_urls"][0]}</summary>
-                        {_recodes[tsuids[i]]["request_urls"].slice(1).join('\n')}
-                    </details>
-                </td>)
-            const tmp_datum = []; {// col: Ops
-                //download button
-                if (_recodes[tsuids[i]]["status"] == "processed") tmp_datum.push(
-                    <button key={1} className="btn btn-primary btn-sm m-1" name={tsuids[i]}
-                        onClick={(evt: any) => {
-                            if (stopf5.check("stR_GetOrderZip", 500) == false) return; // To prevent high freq access
-                            dispatchNicoapi({
-                                type: "download", fileName: evt.target.name + ".zip",
-                                func: (_url: any) => window.open(_url, '_blank')
-                            });
-                        }}>
-                        <i className="fas fa-cloud-download-alt mr-1" style={{ pointerEvents: "none" }}></i>DL
-                    </button>)
-                //attachment download button
-                if (_recodes[tsuids[i]]["status"] == "processed") tmp_datum.push(
-                    <button key={2} className="btn btn-outline-danger btn-sm m-1" name={tsuids[i]}
-                        onClick={(evt: any) => {
-                            if (stopf5.check("stD_DelOrderZip", 500) == false) return; // To prevent high freq access
-                            dispatchNicoapi({ type: "create", recodes: { [evt.target.name]: dbFieldDelete }, merge: true })
-                            dispatchNicoapi({ type: "strageDelete", fileName: evt.target.name + ".zip" })
-                        }}>
-                        <i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Del
-                    </button>)
-            } tmp_data.push(<td key={3}>{tmp_datum}</td>)
-            tmp_records.push(<tr key={i}>{tmp_data}</tr>)
-        }
-        if (tsuids.length == 0) { tmp_records.push(<tr><td colSpan={3}>Not Exist</td></tr>); }
-        return (
-            <table className="table table-sm table-bordered" style={{ textAlign: "center" }}>
-                <thead>
-                    <tr>
-                        <th style={{ width: "10%" }} >Timestamp/Info</th>
-                        <th>Request URLs</th>
-                        <th style={{ width: "8%" }} >Ops</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {tmp_records}
-                </tbody>
-            </table>
-        )
-    }
-    const inputConsole = () => {
         return (
             <div>
                 <div style={{ backgroundColor: "lightcyan" }}>
-                    <div className="collapse" id="helpAppCollapse">{/*helpAppCollapse*/}
-                        {helpApp()}
+                    <div className="collapse" id="helpAppCollapse">
+                        {helpApp()}{/* helpAppCollapse*/}
                     </div>
                     {apiEndpointNav()}{/* helpAppCollapse apiEndpointCollapse */}
-                    <div className="collapse show" id="apiEndpointCollapse">{/* apiEndpointCollapse */}
-                        {apiEndpointTable()}
+                    <div className="collapse show" id="apiEndpointCollapse">
+                        {apiEndpointTable()}{/* apiEndpointCollapse */}
                     </div>
-                    <div className="collapse" id="helpCmdCollapse">{/*helpCmdCollapse*/}
-                        {helpCmd()}
+                    <div className="collapse" id="helpCmdCollapse">
+                        {helpCmd()}{/* helpCmdCollapse*/}
                     </div>
                 </div>
-                {render_filelds_table()}
+                {fieldsTable()}
             </div>
         )
     }
     const outputConsole = () => {
+        const orderText = () => {
+            let _reqs: number = 0; const _tsuids = Object.keys(dbNicoapi);
+            for (let i = 0; i < _tsuids.length; i++) {
+                _reqs += dbNicoapi[_tsuids[i]]["request_urls"].length
+            }
+            return (
+                <div className="mx-2">
+                    {"orders/reqs: " + String(_tsuids.length) + "/" + String(_reqs)}
+                </div>
+            )
+        }
+        const orederTable = () => {
+            const _tsuids = Object.keys(dbNicoapi).sort();
+            const _records = []; const _recodes = Object.assign({}, dbNicoapi);
+            for (let i = 0; i < _tsuids.length; i++) {
+                const _data = [];
+                _data.push(
+                    <td key={1}>
+                        {_tsuids[i].split("_")[0]}<br />
+                    Status: {_recodes[_tsuids[i]]["status"]}<br />
+                    UA: {_recodes[_tsuids[i]]["User-Agent"]}
+                    </td>)
+                _data.push(
+                    <td key={2} style={{ fontSize: "12px", textAlign: "left" }}>
+                        <details>
+                            <summary> {_recodes[_tsuids[i]]["request_urls"][0]}</summary>
+                            {_recodes[_tsuids[i]]["request_urls"].slice(1).join('\n')}
+                        </details>
+                    </td>)
+                const _datum = []; {// col: Ops
+                    //download button
+                    if (_recodes[_tsuids[i]]["status"] == "processed") _datum.push(
+                        <button key={1} className="btn btn-primary btn-sm m-1" name={_tsuids[i]}
+                            onClick={(evt: any) => {
+                                if (stopf5.check("stR_GetOrderZip", 500) == false) return; // To prevent high freq access
+                                dispatchNicoapi({
+                                    type: "download", fileName: evt.target.name + ".zip",
+                                    func: (_url: any) => window.open(_url, '_blank')
+                                });
+                            }}>
+                            <i className="fas fa-cloud-download-alt mr-1" style={{ pointerEvents: "none" }}></i>DL
+                    </button>)
+                    //attachment download button
+                    if (_recodes[_tsuids[i]]["status"] == "processed") _datum.push(
+                        <button key={2} className="btn btn-outline-danger btn-sm m-1" name={_tsuids[i]}
+                            onClick={(evt: any) => {
+                                if (stopf5.check("stD_DelOrderZip", 500) == false) return; // To prevent high freq access
+                                dispatchNicoapi({ type: "create", recodes: { [evt.target.name]: dbFieldDelete }, merge: true })
+                                dispatchNicoapi({ type: "strageDelete", fileName: evt.target.name + ".zip" })
+                            }}>
+                            <i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Del
+                    </button>)
+                } _data.push(<td key={3}>{_datum}</td>)
+                _records.push(<tr key={i}>{_data}</tr>)
+            }
+            if (_tsuids.length == 0) { _records.push(<tr><td colSpan={3}>Not Exist</td></tr>); }
+            return (
+                <table className="table table-sm table-bordered" style={{ textAlign: "center" }}>
+                    <thead>
+                        <tr>
+                            <th style={{ width: "10%" }} >Timestamp/Info</th>
+                            <th>Request URLs</th>
+                            <th style={{ width: "8%" }} >Ops</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {_records}
+                    </tbody>
+                </table>
+            )
+        }
         return (
             <div style={{ backgroundColor: "lightyellow" }}>
                 <nav className="navbar" style={{ backgroundColor: "wheat" }}>
                     <div className="form-inline">
-                        <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#orders_collapse">
+                        <button className="btn btn-info btn-sm" data-toggle="collapse" data-target="#ordersCollapse">
                             <i className="far fa-file-alt mr-1" style={{ pointerEvents: "none" }}></i>Orders
                         </button>
                         {orderText()}
                     </div>
                 </nav>
-                <div className="collapse" id="orders_collapse">
-                    {render_orders_table()}
+                <div className="collapse" id="ordersCollapse">
+                    {orederTable()}
                 </div>
             </div>
         )

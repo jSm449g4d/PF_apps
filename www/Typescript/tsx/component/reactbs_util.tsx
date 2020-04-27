@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 export const bsCarousel = (targetId: string, contents: any[]) => {
     const _indicator = (targetId: string, listNumber: number = 1) => {
-        const _listBar = [<li className="active" data-target={"#" + targetId} data-slide-to="0"></li>]
+        const _style = { backgroundColor:"olive" }
+        const _listBar = [<li className="active" data-target={"#" + targetId} data-slide-to="0" style={_style}></li>]
         for (let i = 1; i < listNumber; i++) {
-            _listBar.push(<li data-target={"#" + targetId} data-slide-to={String(i)}></li>)
+            _listBar.push(<li data-target={"#" + targetId} data-slide-to={String(i)} style={_style}></li>)
         }
         return (
             <ol className="carousel-indicators">
@@ -13,12 +14,12 @@ export const bsCarousel = (targetId: string, contents: any[]) => {
         )
     }
     if (contents.length < 1) { return (<div />) }
-    const _listContents = [<div className="carousel-item active">{contents[0]}</div>]
+    const _listContents = [<div className="carousel-item active col-12">{contents[0]}</div>]
     for (let i = 1; i < contents.length; i++) {
-        _listContents.push(<div className="carousel-item">{contents[i]}</div>)
+        _listContents.push(<div className="carousel-item col-12">{contents[i]}</div>)
     }
     return (
-        <div id={targetId} className="carousel slide" data-ride="carousel">
+        <div id={targetId} className="carousel slide row" data-ride="carousel">
             <div className="carousel-inner">
                 {_indicator(targetId, contents.length)}
                 {_listContents}

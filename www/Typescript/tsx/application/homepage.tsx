@@ -13,7 +13,7 @@ export const AppMain = () => {
     // functions
     // renders
     const titleLogo = () => {
-        const titleLogoStyle: any = {
+        const _style: any = {
             borderTop: "solid 1px gray",
             borderBottom: "solid 1px gray",
             fontWeight: "bold",
@@ -22,31 +22,35 @@ export const AppMain = () => {
         }
         return (
             <h1 className="d-flex justify-content-center solid_line">
-                <div style={titleLogoStyle}>VPSdeWP の ぽ～とふぉりお</div>
+                <div style={_style}>VPSdeWP の ぽ～とふぉりお</div>
             </h1>
         )
     }
     const topicsSlide = () => {
         const topicBackStyle: any = {
             backgroundColor: "rgba(250,250,250,0.8)",
-            width: 300,
             height: 300,
             margin: 2,
             padding: 2,
         }
         //<div className="w-50"><img src="/static/img/aircraft-2795557_1280.jpg"></img></div>,
         const carouselContent = [
-            <div className="d-flex justify-content-center align-content-center" style={topicBackStyle}>Nicoapi</div>,
+            <div className="d-flex justify-content-center align-content-center" style={topicBackStyle}>Tptef</div>,
+            <div className="d-flex justify-content-center align-content-center" style={topicBackStyle}>Tptef</div>,
+            <div className="d-flex justify-content-center align-content-center" style={topicBackStyle}>Tptef</div>,
             <div className="d-flex justify-content-center align-content-center" style={topicBackStyle}>Tptef</div>,
         ]
 
         return (
-            <div className="d-flex justify-content-center">
-                <div className="m-3">
-                    {bsCarousel("topicBlockCarousel", carouselContent)}
-                </div>
-                <div className="m-3">
+            <div className="row p-6">
+                <div className="col-4">
                     {bsCarousel("topicBlockCarousel3", carouselContent)}
+                </div>
+                <div className="col-4">
+                    {bsCarousel("topicBlockCarousel3s", carouselContent)}
+                </div>
+                <div className="col-4">
+                    {bsCarousel("topicBlockCarousel3s", carouselContent)}
                 </div>
 
             </div>

@@ -20,16 +20,16 @@ export const AppMain = () => {
             textShadow: "4px 4px 1px rgba(30,30,30,0.2)",
             color: "mediumturquoise",
         }
-        const WPdeVPS_no_zikoshoukaiButton = () => {
+        const VPSdeWP_no_zikoshoukaiButton = () => {
             return (
                 <div>
-                    <button className="btn btn-info m-2" data-toggle="collapse" data-target="#WPddeVPSnoCollapse">
-                        <i className="fas fa-person-booth mr-1"></i>自己紹介
+                    <button className="btn btn-info m-2" data-toggle="collapse" data-target="#VPSdeWPnoCollapse">
+                        <i className="fas fa-person-booth mr-1"></i>About me
                     </button>
                 </div>
             )
         }
-        const WPddeVPSnozikoshoukaiCollapse = () => {
+        const VPSdeWPnozikoshoukaiCollapse = () => {
             return (
                 <div style={{ backgroundColor: "rgba(250,250,250,0.8)", padding: 2, }}>
                     <h3 className="d-flex justify-content-center">
@@ -43,10 +43,17 @@ export const AppMain = () => {
                         <i className="fab fa-docker fa-2x mr-1"></i>
                     </div>
                     <div className="d-flex justify-content-center">
-                        <h5>GCP: Firebase, CloudRun, CloudBuild, CloudFunction</h5>
+                        <h5>GCP: Firebase, CloudBuild, CloudRun, CloudFunction</h5>
+                    </div>
+                    <h3 className="d-flex justify-content-center">
+                        <i className="fas fa-broadcast-tower mr-1"></i>技術発信
+                    </h3>
+                    <div className="d-flex justify-content-center">
+                        <a className="fab fa-wordpress fa-2x mr-1" href="https://huxiin.ga/wordpress"></a>
+                        <a className="fab fa-github fa-2x mr-1" href="https://github.com/jSm449g4d/"></a>
                     </div>
                     <div className="d-flex justify-content-center" >
-                        <button className="btn btn-sm btn-secondary m-2" data-toggle="collapse" data-target="#WPddeVPSnoCollapse">
+                        <button className="btn btn-sm btn-secondary m-2" data-toggle="collapse" data-target="#VPSdeWPnoCollapse">
                             Close
                         </button>
                     </div>
@@ -58,10 +65,10 @@ export const AppMain = () => {
                 <h1 className="d-flex justify-content-between">
                     <div />
                     <div style={_style}>VPSdeWP の ぽ～とふぉりお</div>
-                    <div>{WPdeVPS_no_zikoshoukaiButton()}</div>{/* WPddeVPSnoCollapse*/}
+                    <div>{VPSdeWP_no_zikoshoukaiButton()}</div>{/* VPSdeWPnoCollapse*/}
                 </h1>
-                <div className="collapse" id="WPddeVPSnoCollapse">
-                    {WPddeVPSnozikoshoukaiCollapse()}{/* WPddeVPSnoCollapse*/}
+                <div className="collapse" id="VPSdeWPnoCollapse">
+                    {VPSdeWPnozikoshoukaiCollapse()}{/* VPSdeWPnoCollapse*/}
                 </div>
             </div>
         )
@@ -75,15 +82,16 @@ export const AppMain = () => {
         //<div className="w-50"><img src="/static/img/aircraft-2795557_1280.jpg"></img></div>,
         const carouselApplication = [
             <div className="d-flex justify-content-center align-content-center" style={topicBackStyle}>Nicoapi</div>,
+            <div className="d-flex justify-content-center align-content-center" style={topicBackStyle}>Mypage</div>,
             <div className="d-flex justify-content-center align-content-center" style={topicBackStyle}>Tptef</div>,
         ]
         const carouselYoutube = [
             <div className="d-flex justify-content-center align-content-center" style={topicBackStyle}>
-                <iframe className="lazyload" src="https://www.youtube.com/embed/2dJfxy8DIto" frameBorder="0"
+                <iframe src="https://www.youtube.com/embed/_fj9U6pVNkM" frameBorder="0"
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
             </div>,
             <div className="d-flex justify-content-center align-content-center" style={topicBackStyle}>
-                <iframe className="lazyload" src="https://www.youtube.com/embed/_fj9U6pVNkM" frameBorder="0"
+                <iframe src="https://www.youtube.com/embed/2dJfxy8DIto" frameBorder="0"
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
             </div>,
         ]
@@ -123,8 +131,10 @@ export const AppMain = () => {
         <div className="p-2 bg-light" style={bgImage}>
             <div>{titleLogo()}</div>
             <div>{topicsSlide()}</div>
-            Under Construction<br />
-
+            <div className="d-flex justify-content-end">
+                <a className="fab fa-wordpress fa-2x mr-1" href="https://huxiin.ga/wordpress"></a>
+                <a className="fab fa-github fa-2x mr-1" href="https://github.com/jSm449g4d/"></a>
+            </div>
         </div>
     );
 };

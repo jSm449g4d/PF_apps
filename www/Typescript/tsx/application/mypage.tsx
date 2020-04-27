@@ -12,6 +12,8 @@ export const AppMain = () => {
     // readIcon
     useEffect(() => { dispatchMypage({ type: "download", fileName: "icon.img", func: (_url: any) => setIconUrl(_url) }) }, [dbMypage])
 
+    if (showUid != uid && showUid == "") setShowUid(uid);
+    
     const createMypage = () => {
         if (uid == "") return (<h5><i className="fas fa-wind mr-1"></i>Plz login</h5>)
         if (uid == showUid)

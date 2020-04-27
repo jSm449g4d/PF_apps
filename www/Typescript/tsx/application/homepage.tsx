@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import { useAuth } from "../component/firebaseWrapper";
 
 const bgImage: any = {
@@ -24,21 +24,29 @@ export const AppMain = () => {
         )
     }
     const topicsSlide = () => {
-        const topicBlockIterator = useRef(0);
-        const tolicBlock = () => {
+        const [topicBlockIterator, setTopicBlockIterator] = useState(0);
+        const tolicBlock = (_text: string) => {
+            const tolicBlockBack: any = {
+                backgroundColor: "rgba(250,250,250,0.8)",
+            }
             return (
-                <div className="d-flex justify-content-center solid_line">
-                    てすと
-                </div>)
+                <div className="d-flex justify-content-center m-2 p-1" style={tolicBlockBack}>
+                    てすと{_text}
+                </div>
+            )
         }
-        const _topicBlocks = [tolicBlock(), tolicBlock(), tolicBlock(), tolicBlock(),]
+        const _topicBlocks = [tolicBlock("1"), tolicBlock("2"), tolicBlock("3"), tolicBlock("4"), tolicBlock("5")]
+        if (topicBlockIterator > _topicBlocks.length - 3) { setTopicBlockIterator(0); };
+        if (topicBlockIterator < 0) { setTopicBlockIterator(_topicBlocks.length - 3); };
         return (
             <div className="d-flex justify-content-center align-content-center">
-                <i className="fas fa-caret-left fa-4x mr-1" style={{ color: "lightcyan" }}></i>
-                {_topicBlocks[topicBlockIterator.current + 0]}
-                {_topicBlocks[topicBlockIterator.current + 1]}
-                {_topicBlocks[topicBlockIterator.current + 2]}
-                <i className="fas fa-caret-right fa-4x mr-1" style={{ color: "lightcyan" }}></i>
+                <i className="fas fa-caret-left fa-4x mr-1" style={{ color: "lightcyan" }}
+                    onClick={() => { setTopicBlockIterator(topicBlockIterator - 1) }}></i>
+                {_topicBlocks[topicBlockIterator + 0]}
+                {_topicBlocks[topicBlockIterator + 1]}
+                {_topicBlocks[topicBlockIterator + 2]}
+                <i className="fas fa-caret-right fa-4x mr-1" style={{ color: "lightcyan" }}
+                    onClick={() => { setTopicBlockIterator(topicBlockIterator + 1) }}></i>
             </div>
         )
     }

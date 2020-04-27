@@ -20,10 +20,50 @@ export const AppMain = () => {
             textShadow: "4px 4px 1px rgba(30,30,30,0.2)",
             color: "mediumturquoise",
         }
+        const WPdeVPS_no_zikoshoukaiButton = () => {
+            return (
+                <div>
+                    <button className="btn btn-info m-2" data-toggle="collapse" data-target="#WPddeVPSnoCollapse">
+                        <i className="fas fa-person-booth mr-1"></i>自己紹介
+                    </button>
+                </div>
+            )
+        }
+        const WPddeVPSnozikoshoukaiCollapse = () => {
+            return (
+                <div style={{ backgroundColor: "rgba(250,250,250,0.8)", padding: 2, }}>
+                    <h3 className="d-flex justify-content-center">
+                        現在求職中です
+                    </h3>
+                    <div className="d-flex justify-content-center">
+                        <i className="fab fa-ubuntu fa-2x mr-1"></i>
+                        <i className="fab fa-react fa-2x mr-1"></i>
+                        <i className="fab fa-python fa-2x mr-1"></i>
+                        <i className="fab fa-bootstrap fa-2x mr-1"></i>
+                        <i className="fab fa-docker fa-2x mr-1"></i>
+                    </div>
+                    <div className="d-flex justify-content-center">
+                        <h5>GCP: Firebase, CloudRun, CloudBuild, CloudFunction</h5>
+                    </div>
+                    <div className="d-flex justify-content-center" >
+                        <button className="btn btn-sm btn-secondary m-2" data-toggle="collapse" data-target="#WPddeVPSnoCollapse">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )
+        }
         return (
-            <h1 className="d-flex justify-content-center">
-                <div style={_style}>VPSdeWP の ぽ～とふぉりお</div>
-            </h1>
+            <div>
+                <h1 className="d-flex justify-content-between">
+                    <div />
+                    <div style={_style}>VPSdeWP の ぽ～とふぉりお</div>
+                    <div>{WPdeVPS_no_zikoshoukaiButton()}</div>{/* WPddeVPSnoCollapse*/}
+                </h1>
+                <div className="collapse" id="WPddeVPSnoCollapse">
+                    {WPddeVPSnozikoshoukaiCollapse()}{/* WPddeVPSnoCollapse*/}
+                </div>
+            </div>
         )
     }
     const topicsSlide = () => {

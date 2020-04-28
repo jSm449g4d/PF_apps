@@ -78,14 +78,7 @@ export const AppMain = () => {
             <div style={topicBackStyle}>Tptef</div>,
         ]
         const carouselYoutube = [
-            <div style={topicBackStyle}>
-                <iframe src="https://www.youtube.com/embed/_fj9U6pVNkM" frameBorder="0"
-                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-            </div>,
-            <div style={topicBackStyle}>
-                <iframe src="https://www.youtube.com/embed/2dJfxy8DIto" frameBorder="0"
-                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-            </div>,
+            <div style={topicBackStyle}>Tptef</div>,
         ]
         const carouselX = [
             <div style={topicBackStyle}>Tptef</div>,
@@ -104,7 +97,7 @@ export const AppMain = () => {
                 </div>
                 <div className="col-lg-4 col-md-6 fadein-3">
                     <h4 style={{ color: "darkgoldenrod", backgroundColor: "rgba(250,250,250,0.8)", }}>
-                        君が代RICAL COMMUNICATION
+                        工事中です
                     </h4>
                     {bsCarousel("topicBlockCarousel3s", carouselYoutube, "false")}
                 </div>

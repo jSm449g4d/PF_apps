@@ -43,3 +43,12 @@ export const AppWidgetHead = () => {
         </div>
     );
 }
+
+export const AppWidgetFoot = () => {
+    return (
+        <div className="d-flex justify-content-end p-2" style={{backgroundColor:"rgba(190,190,190,0.8)"}}>
+            <a className="fab fa-wordpress fa-2x mr-1" href="https://huxiin.ga/wordpress"></a>
+            <a className="fab fa-github fa-2x mr-1" href="https://github.com/jSm449g4d/"></a>
+        </div>
+    );
+}

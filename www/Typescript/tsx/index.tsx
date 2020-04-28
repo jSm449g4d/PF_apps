@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from "react-dom";
 import { Query2Dict } from "./component/util_tsx";
-import { AppWidgetHead } from "./component/widget";
+import { AppWidgetHead, AppWidgetFoot } from "./component/widget";
 
 // IndexPage (Not use)
 const AppMain = () => {
@@ -20,7 +20,7 @@ const AppMain = () => {
     );
 };
 
-// Widget
+// WidgetHead
 document.body.insertAdjacentHTML('beforeend', '<div id="AppWidgetHead">AppWidgetHead loading...<\/div>');
 ReactDOM.render(<AppWidgetHead />, document.getElementById("AppWidgetHead"));
 
@@ -38,3 +38,7 @@ else {
         ReactDOM.render(<module.AppMain />, document.getElementById("appMain"));
     })
 }
+
+// WidgetFoot
+document.body.insertAdjacentHTML('beforeend', '<div id="AppWidgetFoot">AppWidgetFoot loading...<\/div>');
+ReactDOM.render(<AppWidgetFoot />, document.getElementById("AppWidgetFoot"));

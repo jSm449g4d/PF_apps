@@ -48,9 +48,11 @@ export const AppMain = () => {
                     <h3>
                         <i className="fas fa-broadcast-tower mr-1"></i>技術発信
                     </h3>
-                    <div>
-                        <a className="fab fa-wordpress fa-2x mr-1" href="https://huxiin.ga/wordpress"></a>
-                        <a className="fab fa-github fa-2x mr-1" href="https://github.com/jSm449g4d/"></a>
+                    <div className="m-2" style={{ color: "sienna" }}>
+                        <i className="fab fa-wordpress fa-2x faa-wrench animated-hover mr-1"
+                            onClick={() => window.location.href = "https://huxiin.ga/wordpress"}></i>
+                        <i className="fab fa-github fa-2x faa-wrench animated-hover mr-1"
+                            onClick={() => window.location.href = "https://github.com/jSm449g4d/"}></i>
                     </div>
                     <div>
                         <button className="btn btn-sm btn-secondary m-2" data-toggle="collapse" data-target="#VPSdeWPnoCollapse">
@@ -61,8 +63,8 @@ export const AppMain = () => {
             )
         }
         return (
-            <div className="row" style={{ textAlign: "center", }}>
-                <div className="col-md-2" />
+            <div className="row fadein-3" style={{ textAlign: "center", }}>
+                <div className="col-md-2"/> 
                 <div className="col-md-8"><h1 style={_style}>VPSdeWP の ぽ～とふぉりお</h1></div>
                 <div className="col-md-2" >{VPSdeWP_no_zikoshoukaiButton()}</div>{/* VPSdeWPnoCollapse*/}
                 <div className="collapse col-md-12" id="VPSdeWPnoCollapse">
@@ -101,19 +103,19 @@ export const AppMain = () => {
 
         return (
             <div className="row" style={{ textAlign: "center" }}>
-                <div className="col-md-4">
+                <div className="col-md-4 fadein-1">
                     <h4 style={{ color: "cadetblue", backgroundColor: "rgba(250,250,250,0.8)", }}>
                         制作物一覧
                     </h4>
                     {bsCarousel("carouselApplication", carouselApplication)}
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-4 fadein-3">
                     <h4 style={{ color: "darkgoldenrod", backgroundColor: "rgba(250,250,250,0.8)", }}>
                         君が代RICAL COMMUNICATION
                     </h4>
                     {bsCarousel("topicBlockCarousel3s", carouselYoutube, "false")}
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-4 fadein-5">
                     <h4 className="d-flex justify-content-center" style={{ backgroundColor: "rgba(250,250,250,0.8)", }}>
                         工事中です
                     </h4>

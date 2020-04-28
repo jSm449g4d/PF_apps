@@ -47,9 +47,9 @@ export const AppWidgetFoot = () => {
     return (
         <div className="d-flex justify-content-between p-2" style={{ color: "gold", backgroundColor: "royalblue" }}>
             <div className="m-2">
-                <i className="fab fa-wordpress fa-2x mr-1"
+                <i className="fab fa-wordpress fa-2x faa-wrench animated-hover mr-1"
                     onClick={() => window.location.href = "https://huxiin.ga/wordpress"}></i>
-                <i className="fab fa-github fa-2x mr-1"
+                <i className="fab fa-github fa-2x faa-wrench animated-hover mr-1"
                     onClick={() => window.location.href = "https://github.com/jSm449g4d/"}></i>
             </div>
             <div className="m-2">

@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useAuth } from "../component/firebaseWrapper";
+import React from 'react';
 import { bsCarousel } from "../component/reactbs_util";
 
 const bgImage: any = {
@@ -9,7 +8,6 @@ const bgImage: any = {
 }
 
 export const AppMain = () => {
-    const [uid] = useAuth()
     // functions
     // renders
     const titleLogo = () => {
@@ -103,19 +101,19 @@ export const AppMain = () => {
         return (
             <div className="row" style={{ textAlign: "center" }}>
                 <div className="col-md-4">
-                    <h4 className="d-flex justify-content-center" style={{ color: "cadetblue" }}>
+                    <h4 style={{ color: "cadetblue", backgroundColor: "rgba(250,250,250,0.8)", }}>
                         制作物一覧
                     </h4>
                     {bsCarousel("carouselApplication", carouselApplication)}
                 </div>
                 <div className="col-md-4">
-                    <h4 className="d-flex justify-content-center" style={{ color: "darkgoldenrod" }}>
+                    <h4 style={{ color: "darkgoldenrod", backgroundColor: "rgba(250,250,250,0.8)", }}>
                         君が代RICAL COMMUNICATION
                     </h4>
                     {bsCarousel("topicBlockCarousel3s", carouselYoutube, "false")}
                 </div>
                 <div className="col-md-4">
-                    <h4 className="d-flex justify-content-center">
+                    <h4 className="d-flex justify-content-center" style={{ backgroundColor: "rgba(250,250,250,0.8)", }}>
                         工事中です
                     </h4>
                     {bsCarousel("arouselX", carouselX)}
@@ -127,8 +125,8 @@ export const AppMain = () => {
 
     return (
         <div className="p-2 bg-light" style={bgImage}>
-            <div>{titleLogo()}</div>
-            <div>{topicsSlide()}</div>
+            <div className="m-1">{titleLogo()}</div>
+            <div className="m-1">{topicsSlide()}</div>
         </div>
     );
 };

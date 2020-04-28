@@ -1,5 +1,6 @@
 import React from 'react';
 import { bsCarousel } from "../component/reactbs_util";
+import "../stylecheets/style.sass";
 
 const bgImage: any = {
     backgroundImage: "url(/static/img/aircraft-2795557_1280.jpg)",
@@ -12,11 +13,12 @@ export const AppMain = () => {
     // renders
     const titleLogo = () => {
         const _style: any = {
+            fontFamily: "Century",
+            color: "mediumturquoise",
+            fontWeight: "bold",
             borderTop: "solid 1px gray",
             borderBottom: "solid 1px gray",
-            fontWeight: "bold",
             textShadow: "4px 4px 1px rgba(30,30,30,0.2)",
-            color: "mediumturquoise",
         }
         const VPSdeWP_no_zikoshoukaiButton = () => {
             return (
@@ -61,7 +63,7 @@ export const AppMain = () => {
         return (
             <div className="row" style={{ textAlign: "center", }}>
                 <div className="col-md-2" />
-                <div className="col-md-8" ><h1 style={_style}>VPSdeWP の ぽ～とふぉりお</h1></div>
+                <div className="col-md-8"><h1 style={_style}>VPSdeWP の ぽ～とふぉりお</h1></div>
                 <div className="col-md-2" >{VPSdeWP_no_zikoshoukaiButton()}</div>{/* VPSdeWPnoCollapse*/}
                 <div className="collapse col-md-12" id="VPSdeWPnoCollapse">
                     {VPSdeWPnozikoshoukaiCollapse()}{/* VPSdeWPnoCollapse*/}
@@ -75,7 +77,6 @@ export const AppMain = () => {
             height: 200,
             padding: 2,
         }
-        //<div className="w-50"><img src="/static/img/aircraft-2795557_1280.jpg"></img></div>,
         const carouselApplication = [
             <div style={topicBackStyle}>Nicoapi</div>,
             <div style={topicBackStyle}>Mypage</div>,
@@ -118,7 +119,6 @@ export const AppMain = () => {
                     </h4>
                     {bsCarousel("arouselX", carouselX)}
                 </div>
-
             </div>
         )
     }

@@ -21,10 +21,13 @@ module.exports = {
       { exclude: /node_modules/, test: /\.ts(x?)$/, loaders: ["ts-loader"] },
       { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
       { test: /\.css$/, use: ["style-loader", "css-loader"] },
+      { test: /\.s[ac]ss$/, use: ["style-loader", "css-loader", "sass-loader"] },
     ],
   },
 
-  plugins: [new CopyPlugin([{ from: "./html/**/*", to: "./" }])],
+  plugins: [
+    new CopyPlugin([{ from: "./html/**/*", to: "./" }]),
+  ],
 
   externals: {
     react: "React",

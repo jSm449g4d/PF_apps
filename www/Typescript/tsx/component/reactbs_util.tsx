@@ -34,5 +34,3 @@ export const bsCarousel = (targetId: string, contents: any[], dataInterval: stri
     )
 
 }
-//<span className="carousel-control-prev-icon" aria-hidden="true" style={_stylse}></span>
-//<span className="carousel-control-next-icon" aria-hidden="true"></span>

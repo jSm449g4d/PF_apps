@@ -286,16 +286,16 @@ export const AppMain = () => {
                             <td>
                                 <button className="btn btn-outline-primary rounded-pill" style={{ width: "50%" }}
                                     onClick={() => {
-                                        setFields(Object.assign(fields, { [Date.now().toString()]: { field: "", value: "" } }))
+                                        setFields(Object.assign({ [Date.now().toString()]: { field: "", value: "" } }, fields))
                                     }}>
                                     +Add
-                            </button>
+                                </button>
                             </td>
                             <td colSpan={2}>
                                 <div className="form-inline">
                                     <button className="btn btn-success" onClick={() => { submitOrder(); }}>
                                         <i className="fas fa-rocket mr-1" style={{ pointerEvents: "none" }}></i>Launch
-                                </button>
+                                    </button>
                                     {craloerResponse["thread"] == "start" ?
                                         <i className="fab fa-ubuntu fa-2x fa-spin mx-2" style={{ color: "darkorange" }}></i>
                                         :

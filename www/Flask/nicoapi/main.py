@@ -35,6 +35,47 @@ with open(os.path.join(os.path.dirname(__file__), "config.json"), "r", encoding=
         storage = firestorage.Client().get_bucket(json.load(fp)["GCS_bucket"])
 
 
+def documentCrawl(_docRef):
+    recodes: dict = _docRef.get().to_dict()
+    # No recode, No Document
+    if len(recodes) < 1:
+        _docRef.delete()
+        return
+    for tsuid, order in recodes.items():
+        # 7days to delete
+        if int(datetime.now().timestamp()*1000) > int(tsuid.split("_")[0])+604800000:
+            recodes[tsuid] = DELETE_FIELD
+            if storage.blob("nicoapi/"+_docRef.id + "/"+tsuid + ".zip").exists() == True:
+                storage.blob("nicoapi/"+_docRef.id + "/" +
+                             tsuid + ".zip").delete()
+            return
+        # downloaded data is not exist on GCS → delete
+        if recodes[tsuid]["status"] == "processed":
+            if storage.blob("nicoapi/"+_docRef.id + "/"+tsuid + ".zip").exists() == False:
+                recodes[tsuid] = DELETE_FIELD
+            continue
+        with io.BytesIO() as inmemory_zip:
+            # set https UserAgent
+            https = urllib3.PoolManager(cert_reqs='CERT_REQUIRED', ca_certs=certifi.where(
+            ), headers={"User-Agent": order["User-Agent"]})
+            # start Crawl
+            for url in order["request_urls"]:
+                print(hashlib.md5(url.encode('utf-8')).hexdigest())
+                time.sleep(3)
+                try:
+                    resp_json = https.request('GET', parse.quote(
+                        url, safe="=&-?:/%")).data.decode('utf-8')
+                    with zipfile.ZipFile(inmemory_zip, 'a', compression=zipfile.ZIP_DEFLATED) as zf:
+                        zf.writestr(hashlib.md5(url.encode(
+                            'utf-8')).hexdigest(), json.dumps(resp_json, ensure_ascii=False))
+                    storage.blob("nicoapi/"+_docRef.id + "/"+tsuid +
+                                 ".zip").upload_from_string(inmemory_zip.getvalue())
+                except:
+                    pass
+        recodes[tsuid]["status"] = "processed"
+    _docRef.set(recodes, merge=True)
+
+
 def deamon():
     global restartflag
     while restartflag == True:
@@ -43,45 +84,7 @@ def deamon():
         # DB layer
         docRefs = db.collection('nicoapi').list_documents()
         for docRef in docRefs:
-            recodes: dict = docRef.get().to_dict()
-            # Document layer
-            # No recode, No Document
-            if len(recodes) < 1:
-                docRef.delete()
-                continue
-            for tsuid, order in recodes.items():
-                # 7days to delete
-                if int(datetime.now().timestamp()*1000) > int(tsuid.split("_")[0])+604800000:
-                    recodes[tsuid] = DELETE_FIELD
-                    if storage.blob("nicoapi/"+docRef.id + "/"+tsuid + ".zip").exists() == True:
-                        storage.blob("nicoapi/"+docRef.id + "/" +
-                                     tsuid + ".zip").delete()
-                    continue
-                # downloaded data is not exist on GCS → delete
-                if recodes[tsuid]["status"] == "processed":
-                    if storage.blob("nicoapi/"+docRef.id + "/"+tsuid + ".zip").exists() == False:
-                        recodes[tsuid] = DELETE_FIELD
-                    continue
-                with io.BytesIO() as inmemory_zip:
-                    # set https UserAgent
-                    https = urllib3.PoolManager(cert_reqs='CERT_REQUIRED', ca_certs=certifi.where(
-                    ), headers={"User-Agent": order["User-Agent"]})
-                    # start Crawl
-                    for url in order["request_urls"]:
-                        print(hashlib.md5(url.encode('utf-8')).hexdigest())
-                        time.sleep(3)
-                        try:
-                            resp_json = https.request('GET', parse.quote(
-                                url, safe="=&-?:/%")).data.decode('utf-8')
-                            with zipfile.ZipFile(inmemory_zip, 'a', compression=zipfile.ZIP_DEFLATED) as zf:
-                                zf.writestr(hashlib.md5(url.encode(
-                                    'utf-8')).hexdigest(), json.dumps(resp_json, ensure_ascii=False))
-                            storage.blob("nicoapi/"+docRef.id + "/"+tsuid +
-                                         ".zip").upload_from_string(inmemory_zip.getvalue())
-                        except:
-                            pass
-                recodes[tsuid]["status"] = "processed"
-            docRef.set(recodes, merge=True)
+            documentCrawl(docRef)
         # prevent high freq restart
         while int(datetime.now().timestamp()*1000) < start_timestamp+3000:
             time.sleep(1)

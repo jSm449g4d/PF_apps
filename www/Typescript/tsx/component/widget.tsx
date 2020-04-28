@@ -15,7 +15,7 @@ export const AppWidgetHead = () => {
         })
     }
     // renders
-    const navitemApp = (icon: any, title: string, application: string) => {
+    const navitemApp = (icon: any, title: string, application: string, ) => {
         let addClassname: string = ""
         if (Query2Dict()["application"] == application) { addClassname += " active"; }
         return (

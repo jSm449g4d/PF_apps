@@ -30,7 +30,6 @@ export const AppWidgetHead = () => {
             <i className="fab fa-react fa-2x fa-spin m-2" style={{ color: "mediumturquoise" }}></i>
             <nav>
                 <div className="nav nav-tabs" role="tablist">
-                    {navitemApp(<i className="fab fa-wordpress mr-1"></i>, "Blog", "wordpress")}
                     {navitemApp(<i className="fas fa-home mr-1"></i>, "ホームページ", "homepage")}
                     {navitemApp(<i className="far fa-address-card mr-1"></i>, "マイページ", "mypage")}
                     {navitemApp(<i className="far fa-comments mr-1"></i>, "チャット", "tptef")}
@@ -46,9 +45,18 @@ export const AppWidgetHead = () => {
 
 export const AppWidgetFoot = () => {
     return (
-        <div className="d-flex justify-content-end p-2" style={{backgroundColor:"rgba(190,190,190,0.8)"}}>
-            <a className="fab fa-wordpress fa-2x mr-1" href="https://huxiin.ga/wordpress"></a>
-            <a className="fab fa-github fa-2x mr-1" href="https://github.com/jSm449g4d/"></a>
+        <div className="d-flex justify-content-between p-2" style={{ color: "gold", backgroundColor: "royalblue" }}>
+            <div className="m-2">
+                <i className="fab fa-wordpress fa-2x mr-1"
+                    onClick={() => window.location.href = "https://huxiin.ga/wordpress"}></i>
+                <i className="fab fa-github fa-2x mr-1"
+                    onClick={() => window.location.href = "https://github.com/jSm449g4d/"}></i>
+            </div>
+            <div className="m-2">
+                ===VPSdeWP===
+            </div>
+            <div className="m-2">
+            </div>
         </div>
     );
 }

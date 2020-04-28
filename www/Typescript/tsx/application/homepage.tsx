@@ -23,9 +23,9 @@ export const AppMain = () => {
         }
         const VPSdeWPnozikoshoukaiCollapse = () => {
             return (
-                <div style={{ backgroundColor: "rgba(250,250,250,0.8)", padding: 2, }}>
+                <div className="blackboard-transparent">
                     <h3>
-                        現在求職中です
+                        おはようございました
                     </h3>
                     <div>
                         <i className="fab fa-ubuntu fa-2x mr-1"></i>
@@ -33,14 +33,15 @@ export const AppMain = () => {
                         <i className="fab fa-python fa-2x mr-1"></i>
                         <i className="fab fa-bootstrap fa-2x mr-1"></i>
                         <i className="fab fa-docker fa-2x mr-1"></i>
+                        <i className="fab fa-sass fa-2x mr-1"></i>
                     </div>
                     <div>
                         <h5>GCP: Firebase, CloudBuild, CloudRun, CloudFunction</h5>
                     </div>
-                    <h3>
+                    <h3 className="mt-3">
                         <i className="fas fa-broadcast-tower mr-1"></i>技術発信
                     </h3>
-                    <div className="m-2" style={{ color: "sienna" }}>
+                    <div className="m-2" style={{ color: "gold" }}>
                         <i className="fab fa-wordpress fa-2x faa-wrench animated-hover mr-1"
                             onClick={() => window.location.href = "https://huxiin.ga/wordpress"}></i>
                         <i className="fab fa-github fa-2x faa-wrench animated-hover mr-1"
@@ -48,7 +49,7 @@ export const AppMain = () => {
                     </div>
                     <div>
                         <button className="btn btn-sm btn-secondary m-2" data-toggle="collapse" data-target="#VPSdeWPnoCollapse">
-                            Close
+                            <i className="fas fa-caret-up fa-btn" ></i>Close
                         </button>
                     </div>
                 </div>
@@ -95,19 +96,19 @@ export const AppMain = () => {
 
         return (
             <div className="row" style={{ textAlign: "center" }}>
-                <div className="col-md-4 fadein-1">
+                <div className="col-lg-4 col-md-6  fadein-1">
                     <h4 style={{ color: "cadetblue", backgroundColor: "rgba(250,250,250,0.8)", }}>
                         制作物一覧
                     </h4>
                     {bsCarousel("carouselApplication", carouselApplication)}
                 </div>
-                <div className="col-md-4 fadein-3">
+                <div className="col-lg-4 col-md-6 fadein-3">
                     <h4 style={{ color: "darkgoldenrod", backgroundColor: "rgba(250,250,250,0.8)", }}>
                         君が代RICAL COMMUNICATION
                     </h4>
                     {bsCarousel("topicBlockCarousel3s", carouselYoutube, "false")}
                 </div>
-                <div className="col-md-4 fadein-5">
+                <div className="col-lg-4 col-md-6 fadein-5">
                     <h4 className="d-flex justify-content-center" style={{ backgroundColor: "rgba(250,250,250,0.8)", }}>
                         工事中です
                     </h4>

@@ -45,7 +45,8 @@ export const AppWidgetHead = () => {
 
 export const AppWidgetFoot = () => {
     return (
-        <div className="d-flex justify-content-between p-2" style={{ color: "gold", backgroundColor: "royalblue" }}>
+        <div className="d-flex justify-content-between p-2"
+            style={{ color: "gold", backgroundColor: "royalblue", border: "3px double silver" }}>
             <div className="m-2">
                 <i className="fab fa-wordpress fa-2x faa-wrench animated-hover mr-1"
                     onClick={() => window.location.href = "https://huxiin.ga/wordpress"}></i>

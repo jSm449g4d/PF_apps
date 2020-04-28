@@ -1,13 +1,10 @@
 
-.fa-hover-big:hover
-  font-size: 150%
+$zero: 0;
+$nine: 9;
 
-.fadein-1
-  animation: fadein 1s ease 0s 1 normal
-.fadein-3
-  animation: fadein 3s ease 0s 1 normal
-.fadein-5
-  animation: fadein 5s ease 0s 1 normal
+@for $i from $zero through $nine
+  .fadein-#{$i}
+    animation: fadein #{$i}s ease 0s 1 normal
 @keyframes fadein
   0%
     opacity: 0%
@@ -29,3 +26,20 @@
     transform: translateX(600px) translateY(150px) rotate(-30deg)
   100%
     transform: translateX(0px) translateY(0px) rotate(0deg)
+
+.blackboard
+  color: #CCFFFF
+  border: 3px double silver
+  background: rgba(0,17,17,1)
+  padding: 
+
+.blackboard-transparent
+  color: #CCFFFF
+  border: 3px double silver
+  background: rgba(0,17,17,0.8)
+  padding: 2px
+
+.fa-btn
+  padding-right: 1px
+  pointer-event: none
+  

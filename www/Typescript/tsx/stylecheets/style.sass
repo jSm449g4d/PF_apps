@@ -1,17 +1,31 @@
 
 .fa-hover-big:hover
   font-size: 150%
-  
+
 .fadein-1
-  animation: fadeIn 1s ease 0s 1 normal
+  animation: fadein 1s ease 0s 1 normal
 .fadein-3
-  animation: fadeIn 3s ease 0s 1 normal
+  animation: fadein 3s ease 0s 1 normal
 .fadein-5
-  animation: fadeIn 5s ease 0s 1 normal
-@keyframes fadeIn
-  0% 
+  animation: fadein 5s ease 0s 1 normal
+@keyframes fadein
+  0%
     opacity: 0%
-    //height: 0%
   100%
     opacity: 100%
-    //height: 100%
+
+.titlelogo
+  font-family: Century
+  color: darkcyan
+  background-color: rgba(140,30,30,0.1)
+  font-weight: bold
+  border-top: solid 1px firebrick
+  border-bottom: solid 1px firebrick
+  text-shadow: 4px 4px 1px rgba(30,30,30,0.2)
+  animation: titlelogo-slidein 2s ease-out 0s 1 normal
+
+@keyframes titlelogo-slidein
+  0%
+    transform: translateX(600px) translateY(150px) rotate(-30deg)
+  100%
+    transform: translateX(0px) translateY(0px) rotate(0deg)

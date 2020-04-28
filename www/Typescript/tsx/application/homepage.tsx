@@ -12,14 +12,6 @@ export const AppMain = () => {
     // functions
     // renders
     const titleLogo = () => {
-        const _style: any = {
-            fontFamily: "Century",
-            color: "mediumturquoise",
-            fontWeight: "bold",
-            borderTop: "solid 1px gray",
-            borderBottom: "solid 1px gray",
-            textShadow: "4px 4px 1px rgba(30,30,30,0.2)",
-        }
         const VPSdeWP_no_zikoshoukaiButton = () => {
             return (
                 <div>
@@ -63,9 +55,9 @@ export const AppMain = () => {
             )
         }
         return (
-            <div className="row fadein-3" style={{ textAlign: "center", }}>
-                <div className="col-md-2"/> 
-                <div className="col-md-8"><h1 style={_style}>VPSdeWP の ぽ～とふぉりお</h1></div>
+            <div className="row" style={{ textAlign: "center", }}>
+                <div className="col-md-2" />
+                <div className="col-md-8"><h1 className="titlelogo">VPSdeWP の ぽ～とふぉりお</h1></div>
                 <div className="col-md-2" >{VPSdeWP_no_zikoshoukaiButton()}</div>{/* VPSdeWPnoCollapse*/}
                 <div className="collapse col-md-12" id="VPSdeWPnoCollapse">
                     {VPSdeWPnozikoshoukaiCollapse()}{/* VPSdeWPnoCollapse*/}

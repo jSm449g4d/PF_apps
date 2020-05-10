@@ -236,6 +236,21 @@ export const AppMain = () => {
                 </nav>)
         }
         const fieldsTable = () => {
+            const lauchButton = () => {
+                if (Object.keys(fields).length == 0) {
+                    return (
+                        <button className="btn btn-secondary" onClick={() => { submitOrder(); }} disabled>
+                            <i className="fas fa-rocket mr-1" style={{ pointerEvents: "none" }}></i>× PlzFill↑
+                        </button>
+                    )
+                }
+                return (
+                    <button className="btn btn-success" onClick={() => { submitOrder(); }}>
+                        <i className="fas fa-rocket mr-1" style={{ pointerEvents: "none" }}></i>Launch
+                    </button>
+                )
+            }
+
             const _timestamp = Object.keys(fields).sort();
             const _recode = []; let _fields = Object.assign({}, fields);
             for (let i = 0; i < _timestamp.length; i++) {
@@ -293,9 +308,7 @@ export const AppMain = () => {
                             </td>
                             <td colSpan={2}>
                                 <div className="form-inline">
-                                    <button className="btn btn-success" onClick={() => { submitOrder(); }}>
-                                        <i className="fas fa-rocket mr-1" style={{ pointerEvents: "none" }}></i>Launch
-                                    </button>
+                                    {lauchButton()}
                                     {craloerResponse["thread"] == "start" ?
                                         <i className="fab fa-ubuntu fa-2x fa-spin mx-2" style={{ color: "darkorange" }}></i>
                                         :

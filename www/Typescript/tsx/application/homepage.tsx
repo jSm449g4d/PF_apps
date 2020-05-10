@@ -89,23 +89,11 @@ export const AppMain = () => {
 
         return (
             <div className="row" style={{ textAlign: "center" }}>
-                <div className="col-lg-4 col-md-6  fadein-1">
+                <div className="col-lg-12 col-md-12  fadein-1">
                     <h4 style={{ color: "cadetblue", backgroundColor: "rgba(250,250,250,0.8)", }}>
                         制作物一覧
                     </h4>
                     {bsCarousel("carouselApplication", carouselApplication)}
-                </div>
-                <div className="col-lg-4 col-md-6 fadein-3">
-                    <h4 style={{ color: "darkgoldenrod", backgroundColor: "rgba(250,250,250,0.8)", }}>
-                        工事中です
-                    </h4>
-                    {bsCarousel("topicBlockCarousel3s", carouselYoutube, "false")}
-                </div>
-                <div className="col-lg-4 col-md-6 fadein-5">
-                    <h4 className="d-flex justify-content-center" style={{ backgroundColor: "rgba(250,250,250,0.8)", }}>
-                        工事中です
-                    </h4>
-                    {bsCarousel("arouselX", carouselX)}
                 </div>
             </div>
         )

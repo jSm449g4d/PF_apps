@@ -25,7 +25,7 @@ export const AppMain = () => {
             return (
                 <div className="blackboard-transparent">
                     <h3>
-                        おはようございました
+                        技術
                     </h3>
                     <div>
                         <i className="fab fa-ubuntu fa-2x mr-1"></i>
@@ -37,6 +37,7 @@ export const AppMain = () => {
                     </div>
                     <div>
                         <h5>GCP: Firebase, CloudBuild, CloudRun, CloudFunction</h5>
+                        <h5>ML: Tensorflow2.x, Word2Vec</h5>
                     </div>
                     <h3 className="mt-3">
                         <i className="fas fa-broadcast-tower mr-1"></i>技術発信
@@ -75,15 +76,6 @@ export const AppMain = () => {
         const carouselApplication = [
             <div style={topicBackStyle}>Nicoapi</div>,
             <div style={topicBackStyle}>Mypage</div>,
-            <div style={topicBackStyle}>Tptef</div>,
-        ]
-        const carouselYoutube = [
-            <div style={topicBackStyle}>Tptef</div>,
-        ]
-        const carouselX = [
-            <div style={topicBackStyle}>Tptef</div>,
-            <div style={topicBackStyle}>Tptef</div>,
-            <div style={topicBackStyle}>Tptef</div>,
             <div style={topicBackStyle}>Tptef</div>,
         ]
 

@@ -57,6 +57,7 @@ export const AppWidgetFoot = () => {
                 ===VPSdeWP===
             </div>
             <div className="m-2">
+                ご自由にお使いください
             </div>
         </div>
     );

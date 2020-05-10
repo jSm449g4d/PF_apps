@@ -25,7 +25,7 @@ export const AppMain = () => {
             return (
                 <div className="blackboard-transparent">
                     <h3>
-                        技術
+                        主な技術
                     </h3>
                     <div>
                         <i className="fab fa-ubuntu fa-2x mr-1"></i>
@@ -73,10 +73,61 @@ export const AppMain = () => {
             height: 200,
             padding: 2,
         }
+        const carousNicoapi = () => {
+            return (
+                <div style={topicBackStyle}>
+                    <h5>
+                        Nicoapi
+                    </h5>
+                    <div>
+                        ニコニコAPIやなろうAPI等をフォームで叩けるWEBクローラです
+                    </div>
+                    <div>
+                        データ収集や**禁則事項**な用途等にお使いいただけます
+                    </div>
+                    <b>
+                        開発状況: α版
+                    </b>
+                </div>
+            )
+        }
+        const carousMypage = () => {
+            return (
+                <div style={topicBackStyle}>
+                    <h5>
+                    Mypage
+                    </h5>
+                    <div>
+                        各ユーザー用のページです
+                    </div>
+                    <b>
+                        開発状況: α版
+                    </b>
+                </div>
+            )
+        }
+        const carousTptef = () => {
+            return (
+                <div style={topicBackStyle}>
+                    <h5>
+                    Tptef
+                    </h5>
+                    <div>
+                        チャットアプリです。ファイルもアップロード出来ます。
+                    </div>
+                    <div>
+                        ユーザー名はMypageから参照されます。
+                    </div>
+                    <b>
+                        開発状況: α版
+                    </b>
+                </div>
+            )
+        }
         const carouselApplication = [
-            <div style={topicBackStyle}>Nicoapi</div>,
-            <div style={topicBackStyle}>Mypage</div>,
-            <div style={topicBackStyle}>Tptef</div>,
+            carousNicoapi(),
+            carousMypage(),
+            carousTptef(),
         ]
 
         return (

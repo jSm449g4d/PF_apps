@@ -59,7 +59,7 @@ export const AppMain = () => {
                 onClick={(evt) => { $(evt.currentTarget.children[0]).click() }}>
                 <input type="file" className="d-none" accept="image/jpeg,image/png"
                     onChange={(evt) => {
-                        if (stopf5.check("upIcon", 500, true) == false) return; // To prevent high freq access
+                        setIconUrl("")
                         dispatchMypage({ type: "upload", file: evt.target.files[0], fileName: "icon.img" })
                         dispatchMypage({ type: "download", fileName: "icon.img", func: (_url: any) => setIconUrl(_url) })
                     }} />

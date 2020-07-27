@@ -14,17 +14,6 @@ export const AppWidgetHead = () => {
             ReactDOM.render(<module.AppMain />, document.getElementById("appMain"));
         })
     }
-    // renders
-    const navitemApp = (icon: any, title: string, application: string,) => {
-        let addClassname: string = ""
-        if (Query2Dict()["application"] == application) { addClassname += " active"; }
-        return (
-            <a className={"nav-item nav-link p-1" + addClassname} data-toggle="tab"
-                onClick={() => { _switchApp(application) }}>
-                {icon}{title}
-            </a>
-        )
-    }
     return (
         <div className="d-flex align-items-end">
             <i className="fab fa-react fa-2x fa-spin m-2" style={{ color: "mediumturquoise" }}></i>

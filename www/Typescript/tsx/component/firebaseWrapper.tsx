@@ -182,7 +182,7 @@ export const AppAuth = () => {
         return (
             <div>
                 <button type="button" className="btn btn-success btn-sm m-1" data-toggle="modal" data-target={"#signin_modal"}>
-                    <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>ログイン
+                    <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>Login
                 </button>
                 <div className="modal fade" id="signin_modal" role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
@@ -275,10 +275,12 @@ export const AppAuth = () => {
                 <div className="d-flex justify-content-between">
                     <div className="ml-auto">
                         <div className="form-inline">
-                            <button className="btn btn-warning btn-sm m-1" type="button" data-dismiss="modal"
+                            <button className="btn btn-warning btn m-1" type="button" data-dismiss="modal"
                                 onClick={() => { easyIn() }}>
-                                <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>EzLogin
-                                    </button>
+                                <b>
+                                    <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>おためしログイン
+                                </b>
+                            </button>
                             {LoginModal()}
                         </div>
                     </div>
@@ -287,7 +289,7 @@ export const AppAuth = () => {
                 <div className="d-flex justify-content-between">
                     <div className="form-inline">
                         <button className="btn btn-secondary btn-sm mx-1" type="button" onClick={() => { auth.signOut(); }}>
-                            <i className="fas fa-sign-out-alt mr-1" style={{ pointerEvents: "none" }}></i>logout
+                            <i className="fas fa-sign-out-alt mr-1" style={{ pointerEvents: "none" }}></i>Logout
                             </button>
                         {config()}
                     </div>

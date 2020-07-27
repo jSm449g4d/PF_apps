@@ -139,46 +139,13 @@ export const AppAuth = () => {
     const googleIn = () => { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(err => fbErr(err)) }
 
     //renders
-    const signUpModal = () => {
-        return (
-            <div className="modal fade" id="signup_modal" role="dialog" aria-hidden="true">
-                <div className="modal-dialog" role="document">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title">
-                                <i className="fas fa-file-signature mr-1"></i>SignUp
-                                </h5>
-                        </div>
-                        <div className="modal-body">
-                            <input className="form-control m-1" type="text" style={{ width: "100%" }} name="mail_addr" placeholder="mail_address"
-                                onChange={(evt: any) => { setTmpAddress(evt.target.value); }} />
-                            <input className="form-control m-1" type="text" style={{ width: "100%" }} name="mail_pass" placeholder="set_password"
-                                onChange={(evt: any) => { setTmpPass(evt.target.value); }} />
-                        </div>
-                        <div className="modal-footer d-flex justify-content-start">
-                            <div className="flex-grow-1">
-                                <button className="btn btn-secondary m-2" type="button" data-dismiss="modal">
-                                    <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }}></i>Close
-                                    </button>
-                            </div>
-                            <div>
-                                <button className="btn btn-primary btn-sm m-2" type="button" data-dismiss="modal"
-                                    onClick={() => { signUp() }}>
-                                    <i className="far fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>Submit
-                                    </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
-    }
     const LoginModal = () => {
         return (
             <div>
                 {/*Button*/}
-                <button type="button" className="btn btn-success btn-sm m-1" data-toggle="modal" data-target={"#signin_modal"}>
-                    <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>Login
+                <button type="button" className="btn btn-primary btn-sm m-1" data-toggle="modal" data-target={"#signin_modal"}>
+                    <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>
+                    <b>ログイン</b>
                 </button>
                 {/*signUp*/}
                 <div className="modal fade" id="signup_modal" role="dialog" aria-hidden="true">
@@ -186,7 +153,7 @@ export const AppAuth = () => {
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">
-                                    <i className="fas fa-file-signature mr-1"></i>アカウント作成
+                                    <i className="fas fa-file-signature mr-1"></i>アカウントの新規作成
                                 </h5>
                             </div>
                             <div className="modal-body">
@@ -194,6 +161,13 @@ export const AppAuth = () => {
                                     onChange={(evt: any) => { setTmpAddress(evt.target.value); }} />
                                 <input className="form-control m-1" type="text" style={{ width: "100%" }} name="mail_pass" placeholder="password"
                                     onChange={(evt: any) => { setTmpPass(evt.target.value); }} />
+                                <div className="d-flex flex-column">
+                                    <button className="btn btn-primary btn-sm m-2" type="button" data-dismiss="modal"
+                                        onClick={() => { signUp() }}>
+                                        <i className="far fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>
+                                        <b>作成する</b>
+                                    </button>
+                                </div>
                             </div>
                             <div className="modal-footer d-flex justify-content-start">
                                 <div className="flex-grow-1">
@@ -202,10 +176,6 @@ export const AppAuth = () => {
                                     </button>
                                 </div>
                                 <div>
-                                    <button className="btn btn-primary btn-sm m-2" type="button" data-dismiss="modal"
-                                        onClick={() => { signUp() }}>
-                                        <i className="far fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>Submit
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -226,19 +196,22 @@ export const AppAuth = () => {
                                 <input className="form-control m-1" type="text" style={{ width: "100%" }} name="mail_pass" placeholder="password"
                                     onChange={(evt: any) => { setTmpPass(evt.target.value); }} />
                                 <div className="d-flex flex-column">
-                                    <button className="btn btn-success btn m-1" type="button" data-dismiss="modal"
-                                        onClick={() => { signIn() }}>
-                                        <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>ログイン
-                                    </button>
                                     <button className="btn btn-primary btn m-1" type="button" data-dismiss="modal"
+                                        onClick={() => { signIn() }}>
+                                        <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>
+                                        <b>ログイン</b>
+                                    </button>
+                                    <p />
+                                    <button className="btn btn-light btn m-1" type="button" data-dismiss="modal"
                                         onClick={() => { googleIn() }}>
                                         <i className="fab fa-google mr-1" style={{ pointerEvents: "none" }}></i>
                                         Googleアカウントででログインする
                                     </button>
-                                    <button type="button" className="btn btn-warning btn-sm mx-1" data-dismiss="modal" data-target={"#signin_modal"}
+                                    <button type="button" className="btn btn-link btn mx-1" data-dismiss="modal" data-target={"#signin_modal"}
                                         onClick={(evt) => { $(evt.currentTarget.children[0]).click(); }}>
                                         <button type="button" className="d-none" data-toggle="modal" data-target={"#signup_modal"} />
-                                        <i className="fas fa-file-signature mr-1" style={{ pointerEvents: "none" }}></i>アカウントを作成する
+                                        <i className="fas fa-file-signature mr-1" style={{ pointerEvents: "none" }}></i>アカウントを新規作成する
+
                                     </button>
                                 </div>
                             </div>
@@ -324,8 +297,9 @@ export const AppAuth = () => {
                 <div className="d-flex justify-content-between">
                     <div className="form-inline">
                         <button className="btn btn-secondary btn-sm mx-1" type="button" onClick={() => { auth.signOut(); }}>
-                            <i className="fas fa-sign-out-alt mr-1" style={{ pointerEvents: "none" }}></i>Logout
-                            </button>
+                            <i className="fas fa-sign-out-alt mr-1" style={{ pointerEvents: "none" }}></i>
+                            <b>Logout</b>
+                        </button>
                         {config()}
                     </div>
                 </div>

@@ -34,6 +34,7 @@ export const AppWidgetHead = () => {
                     {navitemApp(<i className="far fa-address-card mr-1"></i>, "マイページ", "mypage")}
                     {navitemApp(<i className="far fa-comments mr-1"></i>, "チャット", "tptef")}
                     {navitemApp(<i className="fas fa-database mr-1"></i>, "NicoAPI", "nicoapi")}
+                    {navitemApp(<i className="fas fa-table mr-1"></i>, "OSZV", "oszv")}
                 </div>
             </nav>
             <div className="ml-auto">

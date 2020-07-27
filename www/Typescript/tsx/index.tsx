@@ -31,11 +31,13 @@ require.context('./application/', true, /\.ts(x?)$/)
 if ("application" in Query2Dict() == false) {
     import("./application/homepage").then((module) => {
         ReactDOM.render(<module.AppMain />, document.getElementById("appMain"));
+        ReactDOM.render(<module.titleLogo />, document.getElementById("titlelogo_tsx"));
     })
 }
 else {
     import("./application/" + Query2Dict()["application"]).then((module) => {
         ReactDOM.render(<module.AppMain />, document.getElementById("appMain"));
+        ReactDOM.render(<module.titleLogo />, document.getElementById("titlelogo_tsx"));
     })
 }
 

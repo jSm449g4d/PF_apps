@@ -10,13 +10,16 @@ export const AppWidgetHead = () => {
     const _switchApp = (application: string) => {
         if (stopf5.check("_switchapp", 50, true) == false) return; // To prevent high freq access
         import("../application/" + application).then((module) => {
-            ReactDOM.unmountComponentAtNode(document.getElementById("appMain"))
+            ReactDOM.unmountComponentAtNode(document.getElementById("appMain"));
             ReactDOM.render(<module.AppMain />, document.getElementById("appMain"));
+            ReactDOM.unmountComponentAtNode(document.getElementById("titlelogo_tsx"));
+            ReactDOM.render(<module.titleLogo />, document.getElementById("titlelogo_tsx"));
         })
     }
     return (
         <div className="d-flex align-items-end">
             <i className="fab fa-react fa-2x fa-spin m-2" style={{ color: "mediumturquoise" }}></i>
+            <div id="titlelogo_tsx">アプリケーションのタイトルが未設定です</div>
             <div className="ml-auto">
                 <div className="form-inline">
                     <button className="btn btn-link dropdown-toggle m-2 mr-5" type="button" data-toggle="dropdown">

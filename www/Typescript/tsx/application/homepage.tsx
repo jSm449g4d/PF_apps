@@ -171,3 +171,8 @@ export const AppMain = () => {
         </div>
     );
 };
+
+//titleLogo
+export const titleLogo = () => {
+    return (<h3 style={{ fontFamily: "Century", color: "black" }}>ホームページ</h3>)
+}

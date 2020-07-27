@@ -21,6 +21,7 @@ export const AppMain = () => {
         return () => clearInterval(_intervalId);
     }, []);
 
+
     // functions
     const remark = () => {
         if (tmpContent == "") { alert("Plz input content"); return; };
@@ -112,7 +113,6 @@ export const AppMain = () => {
         return (
             <div>
                 <div className="d-flex justify-content-between">
-                    <h3 style={{ fontFamily: "Century", color: "mediumturquoise" }}>общая система заказа и вызова</h3>
                     <h3 style={{ color: "black" }}>{room}</h3>
                     <div className="form-inline">
                         <input className="form-control form-control-sm" type="text" value={tmpRoom}
@@ -137,3 +137,8 @@ export const AppMain = () => {
         </div>
     )
 };
+
+//titleLogo
+export const titleLogo = () => {
+    return (<h3 style={{ fontFamily: "Century", color: "black" }}>общая система заказа и вызова</h3>)
+}

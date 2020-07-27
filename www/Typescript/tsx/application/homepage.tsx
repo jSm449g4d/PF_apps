@@ -73,6 +73,27 @@ export const AppMain = () => {
             height: 200,
             padding: 2,
         }
+        const carousOSZV = () => {
+            return (
+                <div style={topicBackStyle}>
+                    <h5>
+                    общая система заказа и вызова
+                    </h5>
+                    <div>
+                        注文及び呼び出しの為の汎用システム
+                    </div>
+                    <div>
+                        【ネタ】病院アンケートが、ツッコミどころ満載で面白すぎるwwwwwwww<p/>
+                        https://www.youtube.com/watch?v=UfAAooxe_k0<p/>
+                        の4:08の発言「医者のアナウンスが早すぎて聞き取れなくて飛ばされた」<p/>
+                        がきっかけです(忘れないようにね)
+                    </div>
+                    <b>
+                        開発状況: 計画中
+                    </b>
+                </div>
+            )
+        }
         const carousNicoapi = () => {
             return (
                 <div style={topicBackStyle}>

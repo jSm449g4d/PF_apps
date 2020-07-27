@@ -143,7 +143,7 @@ export const AppAuth = () => {
         return (
             <div>
                 <button type="button" className="btn btn-success btn-sm m-1" data-toggle="modal" data-target={"#signin_modal"}>
-                    <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>SignIn
+                    <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>ログイン
                 </button>
                 <div className="modal fade" id="signin_modal" role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">

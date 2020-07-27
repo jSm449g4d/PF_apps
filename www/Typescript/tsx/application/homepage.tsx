@@ -77,15 +77,15 @@ export const AppMain = () => {
             return (
                 <div style={topicBackStyle}>
                     <h5>
-                    общая система заказа и вызова
+                        общая система заказа и вызова
                     </h5>
                     <div>
                         注文及び呼び出しの為の汎用システム
                     </div>
                     <div>
-                        【ネタ】病院アンケートが、ツッコミどころ満載で面白すぎるwwwwwwww<p/>
-                        https://www.youtube.com/watch?v=UfAAooxe_k0<p/>
-                        の4:08の発言「医者のアナウンスが早すぎて聞き取れなくて飛ばされた」<p/>
+                        【ネタ】病院アンケートが、ツッコミどころ満載で面白すぎるwwwwwwww<p />
+                        https://www.youtube.com/watch?v=UfAAooxe_k0<p />
+                        の4:08の発言「医者のアナウンスが早すぎて聞き取れなくて飛ばされた」<p />
                         がきっかけです(忘れないようにね)
                     </div>
                     <b>
@@ -116,7 +116,7 @@ export const AppMain = () => {
             return (
                 <div style={topicBackStyle}>
                     <h5>
-                    Mypage
+                        Mypage
                     </h5>
                     <div>
                         各ユーザー用のページです
@@ -131,7 +131,7 @@ export const AppMain = () => {
             return (
                 <div style={topicBackStyle}>
                     <h5>
-                    Tptef
+                        Tptef
                     </h5>
                     <div>
                         チャットアプリです。ファイルもアップロード出来ます。
@@ -149,6 +149,7 @@ export const AppMain = () => {
             carousNicoapi(),
             carousMypage(),
             carousTptef(),
+            carousOSZV(),
         ]
 
         return (

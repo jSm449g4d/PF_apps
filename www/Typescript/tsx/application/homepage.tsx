@@ -146,10 +146,10 @@ export const AppMain = () => {
             )
         }
         const carouselApplication = [
+            carousOSZV(),
             carousNicoapi(),
             carousMypage(),
             carousTptef(),
-            carousOSZV(),
         ]
 
         return (

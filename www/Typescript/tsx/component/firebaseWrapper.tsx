@@ -143,7 +143,7 @@ export const AppAuth = () => {
         return (
             <div>
                 {/*Button*/}
-                <button type="button" className="btn btn-primary btn-sm m-1" data-toggle="modal" data-target={"#signin_modal"}>
+                <button type="button" className="btn btn-link btn-sm m-1" data-toggle="modal" data-target={"#signin_modal"}>
                     <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>
                     <b>ログイン</b>
                 </button>
@@ -298,7 +298,7 @@ export const AppAuth = () => {
                     <div className="form-inline">
                         <button className="btn btn-secondary btn-sm mx-1" type="button" onClick={() => { auth.signOut(); }}>
                             <i className="fas fa-sign-out-alt mr-1" style={{ pointerEvents: "none" }}></i>
-                            <b>Logout</b>
+                            <b>ログアウト</b>
                         </button>
                         {config()}
                     </div>

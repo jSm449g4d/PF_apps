@@ -149,7 +149,7 @@ export const AppAuth = () => {
                 </button>
                 {/*signUp*/}
                 <div className="modal fade" id="signup_modal" role="dialog" aria-hidden="true">
-                    <div className="modal-dialog" role="document">
+                    <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">
@@ -221,6 +221,9 @@ export const AppAuth = () => {
                                         <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }}></i>Close
                                     </button>
                                 </div>
+                                <h5 className="modal-title">
+                                    ※おためしログイン:
+                                </h5>
                                 <div>
                                     <button className="btn btn-warning btn-sm m-1" type="button" data-dismiss="modal"
                                         onClick={() => { easyIn() }}>

@@ -11,7 +11,7 @@ export const AppMain = () => {
 
     const [dbTptef, dispatchTptef] = useDb()
     const [dbMypage, dispatchMypage] = useDb()
-    useEffect(() => { dispatchTptef({ type: "setUri", uri: "tptef/" + room }); }, [room])
+    useEffect(() => { dispatchTptef({ type: "setUri", uri: "oszv/" + room }); }, [room])
     useEffect(() => { dispatchMypage({ type: "setUri", uri: "mypage/" + uid }) }, [uid])
 
     // jpclock (decoration)
@@ -29,15 +29,13 @@ export const AppMain = () => {
             type: "create", recodes: {
                 [Date.now().toString() + "_" + uid]: {
                     handlename: Object.values(dbMypage)[0] ? Object.values<any>(dbMypage)[0]["nickname"] : "None",
-                    content: tmpContent,
-                    attachment: dispatchTptef({ type: "upload", file: tmpFile }),
+                    content: tmpContent
                 }
             }, merge: true
         })
     }
     const deleteRemark = (tsuid: string) => {
         if (stopf5.check("2", 500, true) == false) return; // To prevent high freq 
-        dispatchTptef({ type: "strageDelete", fileName: dbTptef[tsuid].attachment })
         dispatchTptef({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true })
     }
 
@@ -52,20 +50,6 @@ export const AppMain = () => {
             tmpData.push(<td key={3} style={{ fontSize: "12px", textAlign: "center" }}>
                 {tsuids[i].split("_")[0]}<br />{tsuids[i].split("_")[1]}</td>)
             const tmpDatum = [];
-            //attachment download button
-            if (dbTptef[tsuids[i]]["attachment"] != "")
-                tmpDatum.push(
-                    <button key={1} className="btn btn-primary btn-sm m-1"
-                        onClick={(evt: any) => {
-                            dispatchTptef({
-                                type: "download",
-                                fileName: evt.target.name,
-                                func: (_url: any) => window.open(_url, '_blank')
-                            })
-                        }}
-                        name={dbTptef[tsuids[i]]["attachment"]}>
-                        <i className="fas fa-paperclip mr-1" style={{ pointerEvents: "none" }}></i>
-                        {dbTptef[tsuids[i]]["attachment"].split("/").pop().slice(0, 10)}</button>)
             //delete button
             if (tsuids[i].split("_")[1] == uid)
                 tmpDatum.push(

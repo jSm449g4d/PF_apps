@@ -70,7 +70,7 @@ export const AppMain = () => {
     const topicsSlide = () => {
         const topicBackStyle: any = {
             backgroundColor: "rgba(250,250,250,0.8)",
-            height: 200,
+            height: 300,
             padding: 2,
         }
         const carousOSZV = () => {

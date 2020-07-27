@@ -9,9 +9,9 @@ export const AppMain = () => {
     const [tmpContent, setTmpContent] = useState("")
     const [tmpFile, setTmpFile] = useState(null)
 
-    const [dbTptef, dispatchTptef] = useDb()
+    const [dbOszv_s, dispatchOszv_s] = useDb()
     const [dbMypage, dispatchMypage] = useDb()
-    useEffect(() => { dispatchTptef({ type: "setUri", uri: "oszv/" + room }); }, [room])
+    useEffect(() => { dispatchOszv_s({ type: "setUri", uri: "oszv_s/" + room }); }, [room])
     useEffect(() => { dispatchMypage({ type: "setUri", uri: "mypage/" + uid }) }, [uid])
 
     // jpclock (decoration)
@@ -25,7 +25,7 @@ export const AppMain = () => {
     const remark = () => {
         if (tmpContent == "") { alert("Plz input content"); return; };
         if (stopf5.check("dbC_AddRemark", 500, true) == false) return; // To prevent high freq access
-        dispatchTptef({
+        dispatchOszv_s({
             type: "create", recodes: {
                 [Date.now().toString() + "_" + uid]: {
                     handlename: Object.values(dbMypage)[0] ? Object.values<any>(dbMypage)[0]["nickname"] : "None",
@@ -36,17 +36,17 @@ export const AppMain = () => {
     }
     const deleteRemark = (tsuid: string) => {
         if (stopf5.check("2", 500, true) == false) return; // To prevent high freq 
-        dispatchTptef({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true })
+        dispatchOszv_s({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true })
     }
 
     // renders
     const threadTable = () => {
         const tmpRecodes = [];
-        const tsuids = Object.keys(dbTptef).sort();
+        const tsuids = Object.keys(dbOszv_s).sort();
         for (var i = 0; i < tsuids.length; i++) {
             const tmpData = [];
-            tmpData.push(<td key={1} style={{ textAlign: "center" }}>{dbTptef[tsuids[i]]["handlename"]}</td>)
-            tmpData.push(<td key={2}>{dbTptef[tsuids[i]]["content"]}</td>)
+            tmpData.push(<td key={1} style={{ textAlign: "center" }}>{dbOszv_s[tsuids[i]]["handlename"]}</td>)
+            tmpData.push(<td key={2}>{dbOszv_s[tsuids[i]]["content"]}</td>)
             tmpData.push(<td key={3} style={{ fontSize: "12px", textAlign: "center" }}>
                 {tsuids[i].split("_")[0]}<br />{tsuids[i].split("_")[1]}</td>)
             const tmpDatum = [];

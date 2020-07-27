@@ -162,7 +162,7 @@ export const AppAuth = () => {
                                 <input className="form-control m-1" type="text" style={{ width: "100%" }} name="mail_pass" placeholder="password"
                                     onChange={(evt: any) => { setTmpPass(evt.target.value); }} />
                                 <div className="d-flex flex-column">
-                                    <button className="btn btn-primary btn-sm m-2" type="button" data-dismiss="modal"
+                                    <button className="btn btn-primary btn m-2" type="button" data-dismiss="modal"
                                         onClick={() => { signUp() }}>
                                         <i className="far fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>
                                         <b>作成する</b>

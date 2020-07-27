@@ -139,7 +139,46 @@ export const AppAuth = () => {
     const googleIn = () => { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(err => fbErr(err)) }
 
     //renders
-    const signInModal = () => {
+    const signUpModal = () => {
+        return (
+            <div>
+                <button type="button" className="btn btn-primary btn-sm m-1" data-toggle="modal" data-target={"#signup_modal"}>
+                    <i className="fas fa-file-signature mr-1" style={{ pointerEvents: "none" }}></i>SignUp
+                </button>
+                <div className="modal fade" id="signup_modal" role="dialog" aria-hidden="true">
+                    <div className="modal-dialog" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">
+                                    <i className="fas fa-file-signature mr-1"></i>SignUp
+                                </h5>
+                            </div>
+                            <div className="modal-body">
+                                <input className="form-control m-1" type="text" style={{ width: "100%" }} name="mail_addr" placeholder="mail_address"
+                                    onChange={(evt: any) => { setTmpAddress(evt.target.value); }} />
+                                <input className="form-control m-1" type="text" style={{ width: "100%" }} name="mail_pass" placeholder="set_password"
+                                    onChange={(evt: any) => { setTmpPass(evt.target.value); }} />
+                            </div>
+                            <div className="modal-footer d-flex justify-content-start">
+                                <div className="flex-grow-1">
+                                    <button className="btn btn-secondary m-2" type="button" data-dismiss="modal">
+                                        <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }}></i>Close
+                                    </button>
+                                </div>
+                                <div>
+                                    <button className="btn btn-primary btn-sm m-2" type="button" data-dismiss="modal"
+                                        onClick={() => { signUp() }}>
+                                        <i className="far fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>Submit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+    const LoginModal = () => {
         return (
             <div>
                 <button type="button" className="btn btn-success btn-sm m-1" data-toggle="modal" data-target={"#signin_modal"}>
@@ -182,45 +221,7 @@ export const AppAuth = () => {
                                         onClick={() => { signIn() }}>
                                         <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>SignIn
                                     </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
-    }
-    const signUpModal = () => {
-        return (
-            <div>
-                <button type="button" className="btn btn-primary btn-sm m-1" data-toggle="modal" data-target={"#signup_modal"}>
-                    <i className="fas fa-file-signature mr-1" style={{ pointerEvents: "none" }}></i>SignUp
-                </button>
-                <div className="modal fade" id="signup_modal" role="dialog" aria-hidden="true">
-                    <div className="modal-dialog" role="document">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title">
-                                    <i className="fas fa-file-signature mr-1"></i>SignUp
-                                </h5>
-                            </div>
-                            <div className="modal-body">
-                                <input className="form-control m-1" type="text" style={{ width: "100%" }} name="mail_addr" placeholder="mail_address"
-                                    onChange={(evt: any) => { setTmpAddress(evt.target.value); }} />
-                                <input className="form-control m-1" type="text" style={{ width: "100%" }} name="mail_pass" placeholder="set_password"
-                                    onChange={(evt: any) => { setTmpPass(evt.target.value); }} />
-                            </div>
-                            <div className="modal-footer d-flex justify-content-start">
-                                <div className="flex-grow-1">
-                                    <button className="btn btn-secondary m-2" type="button" data-dismiss="modal">
-                                        <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }}></i>Close
-                                    </button>
-                                </div>
-                                <div>
-                                    <button className="btn btn-primary btn-sm m-2" type="button" data-dismiss="modal"
-                                        onClick={() => { signUp() }}>
-                                        <i className="far fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>Submit
-                                    </button>
+                                    {signUpModal()}
                                 </div>
                             </div>
                         </div>
@@ -274,8 +275,11 @@ export const AppAuth = () => {
                 <div className="d-flex justify-content-between">
                     <div className="ml-auto">
                         <div className="form-inline">
-                            {signInModal()}
-                            {signUpModal()}
+                            <button className="btn btn-warning btn-sm m-1" type="button" data-dismiss="modal"
+                                onClick={() => { easyIn() }}>
+                                <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>EzLogin
+                                    </button>
+                            {LoginModal()}
                         </div>
                     </div>
                 </div>

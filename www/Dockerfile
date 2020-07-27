@@ -18,7 +18,7 @@ WORKDIR $APP/Typescript
 RUN npm install --save-dev @types/jquery @types/popper.js @types/bootstrap && \
     npm install --save-dev @types/react @types/react-dom @types/react-bootstrap  @types/firebase
 # Webpack
-RUN npm install --save-dev typescript webpack webpack-cli @types/webpack-env webpack-glob-entry && \
+RUN npm install --save-dev typescript webpack webpack-cli @types/webpack-env @types/webpack-env webpack-glob-entry && \
     npm install --save-dev ts-loader source-map-loader style-loader css-loader copy-webpack-plugin && \
     npm install --save-dev node-sass sass-loader
 RUN npx webpack

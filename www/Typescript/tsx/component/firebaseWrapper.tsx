@@ -143,7 +143,7 @@ export const AppAuth = () => {
         return (
             <div>
                 {/*Button*/}
-                <button type="button" className="btn btn-link btn-sm m-1" data-toggle="modal" data-target={"#signin_modal"}>
+                <button type="button" className="btn btn-link m-2" data-toggle="modal" data-target={"#signin_modal"}>
                     <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>
                     <b>ログイン</b>
                 </button>
@@ -151,10 +151,13 @@ export const AppAuth = () => {
                 <div className="modal fade" id="signup_modal" role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
-                            <div className="modal-header">
+                            <div className="modal-header justify-content-between">
                                 <h5 className="modal-title">
                                     <i className="fas fa-file-signature mr-1"></i>アカウントの新規作成
                                 </h5>
+                                <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
+                                    <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
+                                </button>
                             </div>
                             <div className="modal-body">
                                 <input className="form-control m-1" type="text" style={{ width: "100%" }} name="mail_addr" placeholder="mail_address"
@@ -162,19 +165,14 @@ export const AppAuth = () => {
                                 <input className="form-control m-1" type="text" style={{ width: "100%" }} name="mail_pass" placeholder="password"
                                     onChange={(evt: any) => { setTmpPass(evt.target.value); }} />
                                 <div className="d-flex flex-column">
-                                    <button className="btn btn-primary btn m-2" type="button" data-dismiss="modal"
+                                    <button className="btn btn-primary m-2" type="button" data-dismiss="modal"
                                         onClick={() => { signUp() }}>
                                         <i className="far fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>
                                         <b>作成する</b>
                                     </button>
                                 </div>
                             </div>
-                            <div className="modal-footer d-flex justify-content-start">
-                                <div className="flex-grow-1">
-                                    <button className="btn btn-secondary m-2" type="button" data-dismiss="modal">
-                                        <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }}></i>Close
-                                    </button>
-                                </div>
+                            <div className="modal-footer">
                                 <div>
                                 </div>
                             </div>
@@ -185,10 +183,13 @@ export const AppAuth = () => {
                 <div className="modal fade" id="signin_modal" role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
-                            <div className="modal-header">
+                            <div className="modal-header justify-content-between">
                                 <h5 className="modal-title">
                                     <i className="fas fa-signature mr-1"></i>ログイン
                                 </h5>
+                                <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
+                                    <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
+                                </button>
                             </div>
                             <div className="modal-body">
                                 <input className="form-control m-1" type="text" style={{ width: "100%" }} name="mail_addr" placeholder="mailAddress"
@@ -217,9 +218,6 @@ export const AppAuth = () => {
                             </div>
                             <div className="modal-footer d-flex justify-content-start">
                                 <div className="flex-grow-1">
-                                    <button className="btn btn-secondary m-1" type="button" data-dismiss="modal">
-                                        <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }}></i>Close
-                                    </button>
                                 </div>
                                 <h5 className="modal-title">
                                     ※おためしログイン:
@@ -248,8 +246,11 @@ export const AppAuth = () => {
                 <div className="modal fade" id="config_modal" role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
-                            <div className="modal-header">
+                            <div className="modal-header justify-content-between">
                                 <h5 className="modal-title"><i className="fas fa-cog mr-1"></i>Config</h5>
+                                <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
+                                    <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
+                                </button>
                             </div>
                             <div className="modal-body">
                                 <h6><i className="fas fa-user mr-1"></i>{auth.currentUser.displayName}</h6>
@@ -267,9 +268,6 @@ export const AppAuth = () => {
                             </div>
                             <div className="modal-footer d-flex justify-content-start">
                                 <div className="flex-grow-1">
-                                    <button className="btn btn-secondary" type="button" data-dismiss="modal">
-                                        <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }}></i>Close
-                                    </button>
                                 </div>
                                 <button type="button" className="btn btn-sm btn-danger" data-dismiss="modal"
                                     onClick={() => { deleteUser(); }}>

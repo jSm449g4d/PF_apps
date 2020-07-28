@@ -53,12 +53,24 @@ export const AppMain = () => {
                 <div className="modal fade" id={num + "_modal"} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
-                            <div className="modal-header">
+                            <div className="modal-header d-flex justify-content-between">
                                 <h5 className="modal-title">{num}</h5>
+                                <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
+                                    <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
+                                </button>
                             </div>
                             <div className="modal-body">
                             </div>
-                            <div className="modal-footer">
+                            <div className="modal-footer d-flex justify-content-between">
+                                {position == "client" ?
+                                    <button className="btn btn-success m-2" type="button" data-dismiss="modal">
+                                        <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>注文
+                                    </button>
+                                    :
+                                    <button className="btn btn-danger m-2" type="button" data-dismiss="modal">
+                                        <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
+                                    </button>
+                                }
                             </div>
                         </div>
                     </div>
@@ -76,12 +88,21 @@ export const AppMain = () => {
                 <div className="modal fade" id={num + "_modal"} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
-                            <div className="modal-header">
+                            <div className="modal-header justify-content-between">
                                 <h5 className="modal-title">{num}</h5>
+                                <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
+                                    <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
+                                </button>
                             </div>
                             <div className="modal-body">
                             </div>
-                            <div className="modal-footer">
+                            <div className="modal-footer d-flex justify-content-between">
+                                <button className="btn btn-danger m-2" type="button" data-dismiss="modal">
+                                    <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
+                                </button>
+                                <button className="btn btn-warning m-2" type="button" data-dismiss="modal">
+                                    <i className="fas fa-bell mr-1" style={{ pointerEvents: "none" }}></i>呼び出し
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -113,10 +134,9 @@ export const AppMain = () => {
                             </div>
                             :
                             <div>現在: <b>店主</b>
-                                <button className="btn btn-link btn-sm ml-5" onClick={() => {setPosition("client") }}>
+                                <button className="btn btn-link btn-sm ml-5" onClick={() => { setPosition("client") }}>
                                     客として操作
                                 </button>
-
                             </div>
                         }
                     </div>

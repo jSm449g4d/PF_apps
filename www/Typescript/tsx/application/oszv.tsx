@@ -46,7 +46,7 @@ export const AppMain = () => {
 
     const itemModal = (num: string) => {
         return (
-            <div className="col-sm-6 col-lg-2">
+            <div className="col-sm-6 col-md-4 col-lg-2">
                 <a data-toggle="modal" data-target={"#" + num + "_modal"}>
                     <img className="img-fluid" src="/static/img/publicdomainq-0014284zts.jpg" />
                     写真付きのメニュー{num}
@@ -149,32 +149,32 @@ export const AppMain = () => {
                         }
                     </div>
                 </div>
-                <ul className="nav nav-tabs nav-fill" role="tablist">
+                <ul className="nav nav-tabs nav-fill mb-2" role="tablist">
                     <li className="nav-item">
                         <a className="nav-link active" id="item1-tab" data-toggle="tab" href="#item1" role="tab" aria-controls="item1" aria-selected="true">
-                            サービス
+                            <b>サービス</b>
                         </a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" id="item2-tab" data-toggle="tab" href="#item2" role="tab" aria-controls="item2" aria-selected="false">
-                            注文
+                            <b>注文</b>
                         </a>
                     </li>
                 </ul>
                 <div className="tab-content">
                     <div className="tab-pane fade show active" id="item1" role="tabpanel" aria-labelledby="item1-tab">
-                        <div className="row">
-                            {position == "client" ?
-                                <div></div>
-                                :
-                                <div className="col-12 p-2 row">
-                                    <div className="col-1"></div>
-                                    <button className="btn btn-outline-primary btn-lg rounded-pill col-10" onClick={() => { }}>
-                                        <b>+サービスを追加</b>
-                                    </button>
-                                    <div className="col-1"></div>
-                                </div>
-                            }
+                        {position == "client" ?
+                            <div></div>
+                            :
+                            <div className="row">
+                                <div className="col-1"></div>
+                                <button className="btn btn-outline-primary btn-lg rounded-pill col-10" onClick={() => { }}>
+                                    <b>+サービスを追加</b>
+                                </button>
+                                <div className="col-1"></div>
+                            </div>
+                        }
+                        <div className="row mt-2">
                             {itemModal("s")}{itemModal("sa")}{itemModal("sv")}
                             {itemModal("ss")}{itemModal("ssa")}{itemModal("ssv")}
                             {itemModal("sss")}{itemModal("sssa")}{itemModal("sssv")}

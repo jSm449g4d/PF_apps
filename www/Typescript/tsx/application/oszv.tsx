@@ -111,23 +111,45 @@ export const AppMain = () => {
     }
     const appBody = () => {
         return (
-            <div>
-                <div className="d-flex justify-content-between">
-                    <h3 style={{ color: "black" }}>{room}</h3>
-                    <div className="form-inline">
-                        <input className="form-control form-control-sm" type="text" value={tmpRoom}
-                            onChange={(evt) => { setTmpRoom(evt.target.value) }} />
-                        <button className="btn btn-success btn-sm"
-                            onClick={() => {
-                                if (tmpRoom == "") { setTmpRoom(room) }
-                                else { setRoom(tmpRoom) }
-                            }}>
-                            <i className="fas fa-search mr-1" style={{ pointerEvents: "none" }}></i>Room
+            <div className="row">
+                <div className="col-3">582</div>
+                <div className="col-9">
+                    <div className="d-flex justify-content-between">
+                        <div className="d-flex justify-content-between">
+                            <h3 style={{ color: "black" }}>{room}</h3>
+                            <div className="form-inline">
+                                <input className="form-control form-control-sm" type="text" value={tmpRoom}
+                                    onChange={(evt) => { setTmpRoom(evt.target.value) }} />
+                                <button className="btn btn-success btn-sm"
+                                    onClick={() => {
+                                        if (tmpRoom == "") { setTmpRoom(room) }
+                                        else { setRoom(tmpRoom) }
+                                    }}>
+                                    <i className="fas fa-search mr-1" style={{ pointerEvents: "none" }}></i>Room
                         </button>
+                            </div>
+                        </div>
+                    </div>
+                    <ul className="nav nav-tabs" role="tablist">
+                        <li className="nav-item">
+                            <a className="nav-link active" id="item1-tab" data-toggle="tab" href="#item1" role="tab" aria-controls="item1" aria-selected="true">Item#1</a>
+                        </li>
+                        <li className="nav-item">
+                            <a className="nav-link" id="item2-tab" data-toggle="tab" href="#item2" role="tab" aria-controls="item2" aria-selected="false">Item#2</a>
+                        </li>
+                        <li className="nav-item">
+                            <a className="nav-link" id="item3-tab" data-toggle="tab" href="#item3" role="tab" aria-controls="item3" aria-selected="false">Item#3</a>
+                        </li>
+                    </ul>
+                    <div className="tab-content">
+                        <div className="tab-pane fade show active" id="item1" role="tabpanel" aria-labelledby="item1-tab">
+                            {threadTable()}
+                            {inputConsole()}
+                        </div>
+                        <div className="tab-pane fade" id="item2" role="tabpanel" aria-labelledby="item2-tab">This is a text of item#2.</div>
+                        <div className="tab-pane fade" id="item3" role="tabpanel" aria-labelledby="item3-tab">This is a text of item#3.</div>
                     </div>
                 </div>
-                {threadTable()}
-                {inputConsole()}
             </div>
         )
     }

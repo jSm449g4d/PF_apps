@@ -22,9 +22,14 @@ export const AppWidgetHead = () => {
             <div id="titlelogo_tsx">アプリケーションのタイトルが未設定です</div>
             <div className="ml-auto">
                 <div className="form-inline">
-                    <button className="btn btn-link dropdown-toggle m-2 mr-5" type="button" data-toggle="dropdown">
-                        <b>アプリ一覧</b>
-                    </button>
+                    {/*ポートフォリオの場合、アプリ一覧を操作不能にします */}
+                    {Query2Dict()["portfolio"] ?
+                        <div></div>
+                        :
+                        <button className="btn btn-link dropdown-toggle m-2 mr-5" type="button" data-toggle="dropdown">
+                            <b>アプリ一覧</b>
+                        </button>
+                    }
                     <div className="dropdown-menu">
                         <a className="dropdown-item" href="#" onClick={() => { _switchApp("homepage") }}>
                             <i className="fas fa-home mr-1"></i>ホームページ

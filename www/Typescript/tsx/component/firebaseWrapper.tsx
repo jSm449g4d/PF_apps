@@ -246,7 +246,7 @@ export const AppAuth = () => {
             <div className="p-2">
                 <i className="fas fa-cog fa-lg faa-wrench animated-hover" data-toggle="modal" data-target="#config_modal"></i>
                 <div className="modal fade" id="config_modal" role="dialog" aria-hidden="true">
-                    <div className="modal-dialog" role="document">
+                    <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title"><i className="fas fa-cog mr-1"></i>Config</h5>
@@ -254,11 +254,14 @@ export const AppAuth = () => {
                             <div className="modal-body">
                                 <h6><i className="fas fa-user mr-1"></i>{auth.currentUser.displayName}</h6>
                                 <h6><i className="far fa-envelope mr-1"></i>{auth.currentUser.email}</h6>
-                                <div className="form-inline">
+                                <p />
+                                <div className="d-flex flex-column text-center">
+                                    <h5>メールアドレスを変更する</h5>
                                     <input className="form-control" type="text" name="mail_addr" size={40} placeholder="mail address" />
                                     <button className="btn btn-sm btn-warning m-2" type="button" data-dismiss="modal"
                                         onClick={() => { resetPass(); }}>
-                                        <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>RESRT
+                                        <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>
+                                        確認メールを送信
                                     </button>
                                 </div>
                             </div>
@@ -299,6 +302,13 @@ export const AppAuth = () => {
                 :
                 <div className="d-flex justify-content-between">
                     <div className="form-inline">
+                        <h6 className="d-flex flex-column">
+                            <div>よおこそ</div>
+                            {auth.currentUser.displayName == "" ?
+                                <div><i className="fas fa-user mr-1"></i>{auth.currentUser.displayName}</div>
+                                :
+                                <div><i className="far fa-envelope mr-1"></i>{auth.currentUser.email}</div>}
+                        </h6>
                         <button className="btn btn-secondary btn-sm mx-1" type="button" onClick={() => { auth.signOut(); }}>
                             <i className="fas fa-sign-out-alt mr-1" style={{ pointerEvents: "none" }}></i>
                             <b>ログアウト</b>

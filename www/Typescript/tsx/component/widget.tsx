@@ -23,7 +23,7 @@ export const AppWidgetHead = () => {
             <div className="ml-auto">
                 <div className="form-inline">
                     <button className="btn btn-link dropdown-toggle m-2 mr-5" type="button" data-toggle="dropdown">
-                        <b>サービス一覧</b>
+                        <b>アプリ一覧</b>
                     </button>
                     <div className="dropdown-menu">
                         <a className="dropdown-item" href="#" onClick={() => { _switchApp("homepage") }}>

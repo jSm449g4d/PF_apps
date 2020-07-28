@@ -122,10 +122,10 @@ export const AppAuth = () => {
     const signIn = (address: string = tmpAddress, pass: string = tmpPass) => {
         auth.signInWithEmailAndPassword(address, pass).catch(err => fbErr(err))
     }
-    const easyIn = (address: string = "a@b.com", pass: string = "asdfgh") => {
+    const easyIn = (address: string = "test@mail.com", pass: string = "asdfgh") => {
         auth.signInWithEmailAndPassword(address, pass).catch(() => { signUp(address, pass); })
     }
-    const easyIn2 = (address: string = "c@d.com", pass: string = "asdfgh") => {
+    const easyIn2 = (address: string = "test2@mail.com", pass: string = "asdfgh") => {
         auth.signInWithEmailAndPassword(address, pass).catch(() => { signUp(address, pass); })
     }
     const resetPass = (address: string = tmpAddress) => {

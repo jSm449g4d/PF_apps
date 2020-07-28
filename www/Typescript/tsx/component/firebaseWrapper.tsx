@@ -303,7 +303,7 @@ export const AppAuth = () => {
                 <div className="d-flex justify-content-between">
                     <div className="form-inline">
                         <h6 className="d-flex flex-column">
-                            <div>よおこそ</div>
+                            <div>ようこそ</div>
                             {auth.currentUser.displayName == "" ?
                                 <div><i className="fas fa-user mr-1"></i>{auth.currentUser.displayName}</div>
                                 :

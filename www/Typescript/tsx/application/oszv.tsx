@@ -4,14 +4,14 @@ import { stopf5, jpclock } from "../component/util_tsx";
 
 export const AppMain = () => {
     const [uid] = useAuth()
-    const [room, setRoom] = useState("main")
-    const [tmpRoom, setTmpRoom] = useState(room)
+    const [service, setservice] = useState("main")
+    const [tmpservice, setTmpservice] = useState(service)
     const [tmpContent, setTmpContent] = useState("")
     const [tmpFile, setTmpFile] = useState(null)
 
     const [dbOszv_s, dispatchOszv_s] = useDb()
     const [dbMypage, dispatchMypage] = useDb()
-    useEffect(() => { dispatchOszv_s({ type: "setUri", uri: "oszv_s/" + room }); }, [room])
+    useEffect(() => { dispatchOszv_s({ type: "setUri", uri: "oszv_s/" + service }); }, [service])
     useEffect(() => { dispatchMypage({ type: "setUri", uri: "mypage/" + uid }) }, [uid])
 
     // jpclock (decoration)
@@ -112,18 +112,25 @@ export const AppMain = () => {
     const appBody = () => {
         return (
             <div className="row">
-                <div className="col-3">582</div>
+                <div className="col-3">
+                    <div className="d-flex justify-content-between p-1"
+                        style={{ backgroundColor: "#f0f6da", border: "3px doublesilver" }}>
+                        <div className="m-2">
+                            ===VPSdeWP===
+                        </div>
+                    </div>
+                </div>
                 <div className="col-9">
                     <div className="d-flex justify-content-between">
                         <div className="d-flex justify-content-between">
-                            <h3 style={{ color: "black" }}>{room}</h3>
+                            <h3 style={{ color: "black" }}>{service}</h3>
                             <div className="form-inline">
-                                <input className="form-control form-control-sm" type="text" value={tmpRoom}
-                                    onChange={(evt) => { setTmpRoom(evt.target.value) }} />
+                                <input className="form-control form-control-sm" type="text" value={tmpservice}
+                                    onChange={(evt) => { setTmpservice(evt.target.value) }} />
                                 <button className="btn btn-success btn-sm"
                                     onClick={() => {
-                                        if (tmpRoom == "") { setTmpRoom(room) }
-                                        else { setRoom(tmpRoom) }
+                                        if (tmpservice == "") { setTmpservice(service) }
+                                        else { setservice(tmpservice) }
                                     }}>
                                     <i className="fas fa-search mr-1" style={{ pointerEvents: "none" }}></i>Room
                         </button>

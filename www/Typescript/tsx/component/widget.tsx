@@ -44,7 +44,7 @@ export const AppWidgetHead = () => {
                             <i className="fas fa-database mr-1"></i>NicoAPI
                     </a>
                         <a className="dropdown-item" href="#" onClick={() => { _switchApp("oszv") }}>
-                            <i className="fas fa-table mr-1"></i>OSZV
+                            <i className="fas fa-table mr-1"></i>ウェイターくん
                     </a>
                     </div>
                     <div id="account_tsx">widgethead_tsx loading...</div>

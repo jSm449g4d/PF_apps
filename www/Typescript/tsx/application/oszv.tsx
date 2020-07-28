@@ -112,9 +112,9 @@ export const AppMain = () => {
     const appBody = () => {
         return (
             <div className="row">
-                <div className="col-3">
+                <div className="col-2">
                     <div className="d-flex justify-content-between p-1"
-                        style={{ backgroundColor: "#f0f6da", border: "3px doublesilver" }}>
+                        style={{ backgroundColor: "#f0f6da", border: "3px double silver" }}>
                         <div className="m-2">
                             ===VPSdeWP===
                         </div>
@@ -152,10 +152,36 @@ export const AppMain = () => {
                     </ul>
                     <div className="tab-content">
                         <div className="tab-pane fade show active" id="item1" role="tabpanel" aria-labelledby="item1-tab">
-                            {threadTable()}
-                            {inputConsole()}
+                            <div className="row">
+                            <div className=" col-md-6 col-lg-2">
+                                asdf
+                            </div>
+                            <div className=" col-md-6 col-lg-2">
+                                asdf
+                            </div>
+                            <div className=" col-md-6 col-lg-2">
+                                asdf
+                            </div>
+                            <div className=" col-md-6 col-lg-2">
+                                asdf
+                            </div>
+                            <div className=" col-md-6 col-lg-2">
+                                asdf
+                            </div>
+                            <div className=" col-md-6 col-lg-2">
+                                asdf
+                            </div>
+                            <div className=" col-md-6 col-lg-2">
+                                asdf
+                            </div>
+                            </div>
                         </div>
-                        <div className="tab-pane fade" id="item2" role="tabpanel" aria-labelledby="item2-tab">This is a text of item#2.</div>
+                        <div className="tab-pane fade" id="item2" role="tabpanel" aria-labelledby="item2-tab">
+                            <div className="row">
+                                {threadTable()}
+                                {inputConsole()}
+                            </div>
+                        </div>
                         <div className="tab-pane fade" id="item3" role="tabpanel" aria-labelledby="item3-tab">This is a text of item#3.</div>
                     </div>
                 </div>
@@ -171,5 +197,7 @@ export const AppMain = () => {
 
 //titleLogo
 export const titleLogo = () => {
-    return (<h3 style={{ fontFamily: "Century", color: "black" }}>общая система заказа и вызова</h3>)
+    return (<h3 style={{ fontFamily: "Century", color: "black" }}>ウェイターくん</h3>)
+    {/*正式名称 */}
+    //return (<h3 style={{ fontFamily: "Century", color: "black" }}>общая система заказа и вызова</h3>)
 }

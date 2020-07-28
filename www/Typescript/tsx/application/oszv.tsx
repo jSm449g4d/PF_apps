@@ -4,15 +4,15 @@ import { stopf5, jpclock } from "../component/util_tsx";
 
 export const AppMain = () => {
     const [uid] = useAuth()
-    const [service, setservice] = useState("とある飲食店")
-    const [tmpservice, setTmpservice] = useState(service)
+    const [shop, setservice] = useState("とある飲食店")
+    const [tmpShop, setTmpShop] = useState(shop)
     const [tmpContent, setTmpContent] = useState("")
     const [tmpFile, setTmpFile] = useState(null)
 
     const [dbOszv_s, dispatchOszv_s] = useDb()
     const [dbOszv_c, dispatchOszv_c] = useDb()
     const [dbMypage, dispatchMypage] = useDb()
-    useEffect(() => { dispatchOszv_s({ type: "setUri", uri: "oszv_s/" + service }); }, [service])
+    useEffect(() => { dispatchOszv_s({ type: "setUri", uri: "oszv_s/" + shop }); }, [shop])
     useEffect(() => { dispatchOszv_s({ type: "setUri", uri: "oszv_c/" + uid }); }, [uid])
     useEffect(() => { dispatchMypage({ type: "setUri", uri: "mypage/" + uid }) }, [uid])
 
@@ -45,9 +45,32 @@ export const AppMain = () => {
 
     const itemModal = (num: string) => {
         return (
-            <div>
-                <a className=" col-sm-6 col-lg-2" data-toggle="modal" data-target={"#" + num + "_modal"}>
+            <div className="col-sm-6 col-lg-2">
+                <a data-toggle="modal" data-target={"#" + num + "_modal"}>
                     写真付きのメニュー{num}
+                </a>
+                <div className="modal fade" id={num + "_modal"} role="dialog" aria-hidden="true">
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">{num}</h5>
+                            </div>
+                            <div className="modal-body">
+                            </div>
+                            <div className="modal-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+    const orderModal = (num: string) => {
+        return (
+            <div className="col-12">
+                <a className="row" data-toggle="modal" data-target={"#" + num + "_modal"}>
+                    <div className="col-sm-12 col-lg-6">名称{num}</div>
+                    <div className="col-sm-12 col-lg-6">コンソール{num}</div>
                 </a>
                 <div className="modal fade" id={num + "_modal"} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
@@ -70,12 +93,8 @@ export const AppMain = () => {
         const tmpRecodes = [];
         const tsuids = Object.keys(dbOszv_s).sort();
         for (var i = 0; i < 1 + tsuids.length; i++) {
-            tmpRecodes.push(<div className="col-sm-12 col-lg-6">画像</div>)
-            tmpRecodes.push(<div className="col-sm-6 col-lg-3">名称</div>)
-            tmpRecodes.push(<div className="col-sm-6 col-lg-3">コンソール</div>)
-            tmpRecodes.push(<div className="col-sm-12 col-lg-6">画像</div>)
-            tmpRecodes.push(<div className="col-sm-6 col-lg-3">名称</div>)
-            tmpRecodes.push(<div className="col-sm-6 col-lg-3">コンソール</div>)
+            tmpRecodes.push(orderModal("Rv"))
+            tmpRecodes.push(orderModal("RF"))
         }
         return (<div className="row">{tmpRecodes}</div>)
     }
@@ -83,7 +102,7 @@ export const AppMain = () => {
         return (
             <div>
                 <div className="d-flex justify-content-between">
-                    <h3>{service}</h3>
+                    <h3>{shop}</h3>
                     <div className="form-inline">
                         <button className="btn btn-link btn-sm ml-5" onClick={() => { }}>
                             店主として操作

@@ -62,6 +62,12 @@ export const AppMain = () => {
                             <div className="modal-body">
                             </div>
                             <div className="modal-footer d-flex justify-content-between">
+                                {position == "client" ? <div></div>
+                                    :
+                                    <button className="btn btn-warning m-2" type="button" data-dismiss="modal">
+                                        <i className="fas fa-wrench mr-1" style={{ pointerEvents: "none" }}></i>編集
+                                    </button>
+                                }
                                 {position == "client" ?
                                     <button className="btn btn-success m-2" type="button" data-dismiss="modal">
                                         <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>注文
@@ -156,6 +162,17 @@ export const AppMain = () => {
                 <div className="tab-content">
                     <div className="tab-pane fade show active" id="item1" role="tabpanel" aria-labelledby="item1-tab">
                         <div className="row">
+                            {position == "client" ?
+                                <div></div>
+                                :
+                                <div className="col-12 p-2 row">
+                                    <div className="col-1"></div>
+                                    <button className="btn btn-outline-primary btn-lg rounded-pill col-10" onClick={() => { }}>
+                                        <b>+サービスを追加</b>
+                                    </button>
+                                    <div className="col-1"></div>
+                                </div>
+                            }
                             {itemModal("s")}{itemModal("sa")}{itemModal("sv")}
                             {itemModal("ss")}{itemModal("ssa")}{itemModal("ssv")}
                         </div>

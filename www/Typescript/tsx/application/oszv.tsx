@@ -4,7 +4,7 @@ import { stopf5, jpclock } from "../component/util_tsx";
 
 export const AppMain = () => {
     const [uid] = useAuth()
-    const [service, setservice] = useState("main")
+    const [service, setservice] = useState("とある飲食店")
     const [tmpservice, setTmpservice] = useState(service)
     const [tmpContent, setTmpContent] = useState("")
     const [tmpFile, setTmpFile] = useState(null)
@@ -122,30 +122,32 @@ export const AppMain = () => {
                 </div>
                 <div className="col-9">
                     <div className="d-flex justify-content-between">
-                        <div className="d-flex justify-content-between">
-                            <h3 style={{ color: "black" }}>{service}</h3>
-                            <div className="form-inline">
-                                <input className="form-control form-control-sm" type="text" value={tmpservice}
-                                    onChange={(evt) => { setTmpservice(evt.target.value) }} />
-                                <button className="btn btn-success btn-sm"
-                                    onClick={() => {
-                                        if (tmpservice == "") { setTmpservice(service) }
-                                        else { setservice(tmpservice) }
-                                    }}>
-                                    <i className="fas fa-search mr-1" style={{ pointerEvents: "none" }}></i>Room
-                        </button>
-                            </div>
+                        <h3>{service}</h3>
+                        <div className="form-inline">
+                            <input className="form-control form-control-sm" type="text" value={tmpservice}
+                                onChange={(evt) => { setTmpservice(evt.target.value) }} />
+                            <button className="btn btn-success btn-sm mr-1"
+                                onClick={() => {
+                                    if (tmpservice == "") { setTmpservice(service) }
+                                    else { setservice(tmpservice) }
+                                }}>
+                                <i className="fas fa-search mr-1" style={{ pointerEvents: "none" }}></i>店を指定
+                                </button>
+                            <button className="btn btn-link btn-sm ml-5" onClick={() => { }}>
+                                店主として操作
+                            </button>
                         </div>
                     </div>
                     <ul className="nav nav-tabs" role="tablist">
                         <li className="nav-item">
-                            <a className="nav-link active" id="item1-tab" data-toggle="tab" href="#item1" role="tab" aria-controls="item1" aria-selected="true">Item#1</a>
+                            <a className="nav-link active" id="item1-tab" data-toggle="tab" href="#item1" role="tab" aria-controls="item1" aria-selected="true">
+                                サービス
+                            </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" id="item2-tab" data-toggle="tab" href="#item2" role="tab" aria-controls="item2" aria-selected="false">Item#2</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" id="item3-tab" data-toggle="tab" href="#item3" role="tab" aria-controls="item3" aria-selected="false">Item#3</a>
+                            <a className="nav-link" id="item2-tab" data-toggle="tab" href="#item2" role="tab" aria-controls="item2" aria-selected="false">
+                                注文
+                            </a>
                         </li>
                     </ul>
                     <div className="tab-content">

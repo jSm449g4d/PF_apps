@@ -8,6 +8,7 @@ export const AppMain = () => {
     const [tmpShop, setTmpShop] = useState(shop)
     const [tmpContent, setTmpContent] = useState("")
     const [tmpFile, setTmpFile] = useState(null)
+    const [position, setPosition] = useState("client")//client,owner
 
     const [dbOszv_s, dispatchOszv_s] = useDb()
     const [dbOszv_c, dispatchOszv_c] = useDb()
@@ -104,9 +105,20 @@ export const AppMain = () => {
                 <div className="d-flex justify-content-between">
                     <h3>{shop}</h3>
                     <div className="form-inline">
-                        <button className="btn btn-link btn-sm ml-5" onClick={() => { }}>
-                            店主として操作
-                        </button>
+                        {position == "client" ?
+                            <div>現在: <b>客</b>
+                                <button className="btn btn-link btn-sm ml-5" onClick={() => { setPosition("owner") }}>
+                                    店主として操作
+                                </button>
+                            </div>
+                            :
+                            <div>現在: <b>店主</b>
+                                <button className="btn btn-link btn-sm ml-5" onClick={() => {setPosition("client") }}>
+                                    客として操作
+                                </button>
+
+                            </div>
+                        }
                     </div>
                 </div>
                 <ul className="nav nav-tabs nav-fill" role="tablist">

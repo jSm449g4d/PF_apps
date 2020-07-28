@@ -42,6 +42,29 @@ export const AppMain = () => {
         dispatchOszv_s({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true })
     }
 
+
+    const itemModal = (num: string) => {
+        return (
+            <div>
+                <a className=" col-sm-6 col-lg-2" data-toggle="modal" data-target={"#" + num + "_modal"}>
+                    写真付きのメニュー{num}
+                </a>
+                <div className="modal fade" id={num + "_modal"} role="dialog" aria-hidden="true">
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">{num}</h5>
+                            </div>
+                            <div className="modal-body">
+                            </div>
+                            <div className="modal-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
     // renders
     const orderColumn = () => {
         const tmpRecodes = [];
@@ -67,45 +90,23 @@ export const AppMain = () => {
                         </button>
                     </div>
                 </div>
-                <ul className="nav nav-tabs" role="tablist">
+                <ul className="nav nav-tabs nav-fill" role="tablist">
                     <li className="nav-item">
                         <a className="nav-link active" id="item1-tab" data-toggle="tab" href="#item1" role="tab" aria-controls="item1" aria-selected="true">
                             サービス
-                            </a>
+                        </a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" id="item2-tab" data-toggle="tab" href="#item2" role="tab" aria-controls="item2" aria-selected="false">
                             注文
-                            </a>
+                        </a>
                     </li>
                 </ul>
                 <div className="tab-content">
                     <div className="tab-pane fade show active" id="item1" role="tabpanel" aria-labelledby="item1-tab">
                         <div className="row">
-                            <div className=" col-sm-6 col-lg-2">
-                                写真付きのメニュー
-                            </div>
-                            <div className=" col-sm-6 col-lg-2">
-                                写真付きのメニュー
-                            </div>
-                            <div className=" col-sm-6 col-lg-2">
-                                写真付きのメニュー
-                            </div>
-                            <div className=" col-sm-6 col-lg-2">
-                                写真付きのメニュー
-                            </div>
-                            <div className=" col-sm-6 col-lg-2">
-                                写真付きのメニュー
-                            </div>
-                            <div className=" col-sm-6 col-lg-2">
-                                写真付きのメニュー
-                            </div>
-                            <div className=" col-sm-6 col-lg-2">
-                                写真付きのメニュー
-                            </div>
-                            <div className=" col-sm-6 col-lg-2">
-                                写真付きのメニュー
-                            </div>
+                            {itemModal("s")}{itemModal("sa")}{itemModal("sv")}
+                            {itemModal("ss")}{itemModal("ssa")}{itemModal("ssv")}
                         </div>
                     </div>
                     <div className="tab-pane fade" id="item2" role="tabpanel" aria-labelledby="item2-tab">

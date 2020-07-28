@@ -109,9 +109,7 @@ export const AppMain = () => {
             </div>
         )
     }
-    const appBody = () => {
-        return (
-            <div className="row">
+    /*
                 <div className="col-2">
                     <div className="d-flex justify-content-between p-1"
                         style={{ backgroundColor: "#f0f6da", border: "3px double silver" }}>
@@ -119,71 +117,75 @@ export const AppMain = () => {
                             ===VPSdeWP===
                         </div>
                     </div>
-                </div>
-                <div className="col-9">
-                    <div className="d-flex justify-content-between">
-                        <h3>{service}</h3>
-                        <div className="form-inline">
-                            <input className="form-control form-control-sm" type="text" value={tmpservice}
-                                onChange={(evt) => { setTmpservice(evt.target.value) }} />
-                            <button className="btn btn-success btn-sm mr-1"
-                                onClick={() => {
-                                    if (tmpservice == "") { setTmpservice(service) }
-                                    else { setservice(tmpservice) }
-                                }}>
-                                <i className="fas fa-search mr-1" style={{ pointerEvents: "none" }}></i>店を指定
+                </div>*/
+    const appBody = () => {
+        return (
+            <div>
+                <div className="d-flex justify-content-between">
+                    <h3>{service}</h3>
+                    <div className="form-inline">
+                        <input className="form-control form-control-sm" type="text" value={tmpservice}
+                            onChange={(evt) => { setTmpservice(evt.target.value) }} />
+                        <button className="btn btn-success btn-sm mr-1"
+                            onClick={() => {
+                                if (tmpservice == "") { setTmpservice(service) }
+                                else { setservice(tmpservice) }
+                            }}>
+                            <i className="fas fa-search mr-1" style={{ pointerEvents: "none" }}></i>店を指定
                                 </button>
-                            <button className="btn btn-link btn-sm ml-5" onClick={() => { }}>
-                                店主として操作
+                        <button className="btn btn-link btn-sm ml-5" onClick={() => { }}>
+                            店主として操作
                             </button>
+                    </div>
+                </div>
+                <ul className="nav nav-tabs" role="tablist">
+                    <li className="nav-item">
+                        <a className="nav-link active" id="item1-tab" data-toggle="tab" href="#item1" role="tab" aria-controls="item1" aria-selected="true">
+                            サービス
+                            </a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link" id="item2-tab" data-toggle="tab" href="#item2" role="tab" aria-controls="item2" aria-selected="false">
+                            注文
+                            </a>
+                    </li>
+                </ul>
+                <div className="tab-content">
+                    <div className="tab-pane fade show active" id="item1" role="tabpanel" aria-labelledby="item1-tab">
+                        <div className="row">
+                            <div className=" col-sm-6 col-lg-2">
+                                写真付きのメニュー
+                            </div>
+                            <div className=" col-sm-6 col-lg-2">
+                                写真付きのメニュー
+                            </div>
+                            <div className=" col-sm-6 col-lg-2">
+                                写真付きのメニュー
+                            </div>
+                            <div className=" col-sm-6 col-lg-2">
+                                写真付きのメニュー
+                            </div>
+                            <div className=" col-sm-6 col-lg-2">
+                                写真付きのメニュー
+                            </div>
+                            <div className=" col-sm-6 col-lg-2">
+                                写真付きのメニュー
+                            </div>
+                            <div className=" col-sm-6 col-lg-2">
+                                写真付きのメニュー
+                            </div>
+                            <div className=" col-sm-6 col-lg-2">
+                                写真付きのメニュー
+                            </div>
                         </div>
                     </div>
-                    <ul className="nav nav-tabs" role="tablist">
-                        <li className="nav-item">
-                            <a className="nav-link active" id="item1-tab" data-toggle="tab" href="#item1" role="tab" aria-controls="item1" aria-selected="true">
-                                サービス
-                            </a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" id="item2-tab" data-toggle="tab" href="#item2" role="tab" aria-controls="item2" aria-selected="false">
-                                注文
-                            </a>
-                        </li>
-                    </ul>
-                    <div className="tab-content">
-                        <div className="tab-pane fade show active" id="item1" role="tabpanel" aria-labelledby="item1-tab">
-                            <div className="row">
-                            <div className=" col-md-6 col-lg-2">
-                                asdf
-                            </div>
-                            <div className=" col-md-6 col-lg-2">
-                                asdf
-                            </div>
-                            <div className=" col-md-6 col-lg-2">
-                                asdf
-                            </div>
-                            <div className=" col-md-6 col-lg-2">
-                                asdf
-                            </div>
-                            <div className=" col-md-6 col-lg-2">
-                                asdf
-                            </div>
-                            <div className=" col-md-6 col-lg-2">
-                                asdf
-                            </div>
-                            <div className=" col-md-6 col-lg-2">
-                                asdf
-                            </div>
-                            </div>
+                    <div className="tab-pane fade" id="item2" role="tabpanel" aria-labelledby="item2-tab">
+                        <div className="row">
+                            {threadTable()}
+                            {inputConsole()}
                         </div>
-                        <div className="tab-pane fade" id="item2" role="tabpanel" aria-labelledby="item2-tab">
-                            <div className="row">
-                                {threadTable()}
-                                {inputConsole()}
-                            </div>
-                        </div>
-                        <div className="tab-pane fade" id="item3" role="tabpanel" aria-labelledby="item3-tab">This is a text of item#3.</div>
                     </div>
+                    <div className="tab-pane fade" id="item3" role="tabpanel" aria-labelledby="item3-tab">This is a text of item#3.</div>
                 </div>
             </div>
         )
@@ -198,6 +200,6 @@ export const AppMain = () => {
 //titleLogo
 export const titleLogo = () => {
     return (<h3 style={{ fontFamily: "Century", color: "black" }}>ウェイターくん</h3>)
-    {/*正式名称 */}
+    {/*正式名称 */ }
     //return (<h3 style={{ fontFamily: "Century", color: "black" }}>общая система заказа и вызова</h3>)
 }

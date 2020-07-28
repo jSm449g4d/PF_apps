@@ -48,8 +48,10 @@ export const AppMain = () => {
         return (
             <div className="col-sm-6 col-lg-2">
                 <a data-toggle="modal" data-target={"#" + num + "_modal"}>
+                    <img className="img-fluid" src="/static/img/publicdomainq-0014284zts.jpg" />
                     写真付きのメニュー{num}
                 </a>
+                {/*モーダルの内容*/}
                 <div className="modal fade" id={num + "_modal"} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
@@ -175,6 +177,7 @@ export const AppMain = () => {
                             }
                             {itemModal("s")}{itemModal("sa")}{itemModal("sv")}
                             {itemModal("ss")}{itemModal("ssa")}{itemModal("ssv")}
+                            {itemModal("sss")}{itemModal("sssa")}{itemModal("sssv")}
                         </div>
                     </div>
                     <div className="tab-pane fade" id="item2" role="tabpanel" aria-labelledby="item2-tab">

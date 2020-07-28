@@ -77,11 +77,10 @@ export const AppMain = () => {
             return (
                 <div style={topicBackStyle}>
                     <h5>
-                        общая система заказа и вызова
+                        ウェイターくん
                     </h5>
-                    <div>
-                        注文及び呼び出しの為の汎用システム
-                    </div>
+                    <div>正式名称: общая система заказа и вызова</div>
+                    <div>(注文及び呼び出しの為の汎用システム)</div>
                     <div>
                         【ネタ】病院アンケートが、ツッコミどころ満載で面白すぎるwwwwwwww<p />
                         https://www.youtube.com/watch?v=UfAAooxe_k0<p />

@@ -10,8 +10,10 @@ export const AppMain = () => {
     const [tmpFile, setTmpFile] = useState(null)
 
     const [dbOszv_s, dispatchOszv_s] = useDb()
+    const [dbOszv_c, dispatchOszv_c] = useDb()
     const [dbMypage, dispatchMypage] = useDb()
     useEffect(() => { dispatchOszv_s({ type: "setUri", uri: "oszv_s/" + service }); }, [service])
+    useEffect(() => { dispatchOszv_s({ type: "setUri", uri: "oszv_c/" + uid }); }, [uid])
     useEffect(() => { dispatchMypage({ type: "setUri", uri: "mypage/" + uid }) }, [uid])
 
     // jpclock (decoration)
@@ -41,101 +43,28 @@ export const AppMain = () => {
     }
 
     // renders
-    const threadTable = () => {
+    const orderColumn = () => {
         const tmpRecodes = [];
         const tsuids = Object.keys(dbOszv_s).sort();
-        for (var i = 0; i < tsuids.length; i++) {
-            const tmpData = [];
-            tmpData.push(<td key={1} style={{ textAlign: "center" }}>{dbOszv_s[tsuids[i]]["handlename"]}</td>)
-            tmpData.push(<td key={2}>{dbOszv_s[tsuids[i]]["content"]}</td>)
-            tmpData.push(<td key={3} style={{ fontSize: "12px", textAlign: "center" }}>
-                {tsuids[i].split("_")[0]}<br />{tsuids[i].split("_")[1]}</td>)
-            const tmpDatum = [];
-            //delete button
-            if (tsuids[i].split("_")[1] == uid)
-                tmpDatum.push(
-                    <button key={2} className="btn btn-outline-danger btn-sm rounded-pill m-1"
-                        onClick={(evt: any) => { deleteRemark(evt.target.name) }} name={tsuids[i]}>
-                        <i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Del</button>)
-            tmpData.push(<td key={4} style={{ textAlign: "center" }}>{tmpDatum}</td>)
-            tmpRecodes.push(<tr key={i}>{tmpData}</tr>)
+        for (var i = 0; i < 1 + tsuids.length; i++) {
+            tmpRecodes.push(<div className="col-sm-12 col-lg-6">画像</div>)
+            tmpRecodes.push(<div className="col-sm-6 col-lg-3">名称</div>)
+            tmpRecodes.push(<div className="col-sm-6 col-lg-3">コンソール</div>)
+            tmpRecodes.push(<div className="col-sm-12 col-lg-6">画像</div>)
+            tmpRecodes.push(<div className="col-sm-6 col-lg-3">名称</div>)
+            tmpRecodes.push(<div className="col-sm-6 col-lg-3">コンソール</div>)
         }
-        return (
-            <table className="table table-sm table-bordered bg-light">
-                <thead>
-                    <tr style={{ textAlign: "center" }}>
-                        <th style={{ width: "10%" }}>Handlename</th>
-                        <th>Content</th>
-                        <th style={{ width: "10%" }} >Timestamp/uid</th>
-                        <th style={{ width: "15%" }}>Ops</th>
-                    </tr>
-                </thead>
-                <tbody>{tmpRecodes}</tbody>
-            </table>
-        )
+        return (<div className="row">{tmpRecodes}</div>)
     }
-    const inputConsole = () => {
-        if (uid == "") { return (<h5> <i className="fas fa-wind mr-1"></i>Plz login</h5>); };
-        return (
-            <div className="mt-2 p-2" style={{ color: "#CCFFFF", border: "3px double silver", background: "#001111" }}>
-                <div className="d-flex justify-content-between">
-                    <h4>
-                        <i className="far fa-user mr-1"></i>
-                        {Object.values(dbMypage)[0] ? Object.values<any>(dbMypage)[0]["nickname"] : "None"}
-                    </h4>
-                    <h5><i className="far fa-clock mr-1"></i>{jpclockNow}</h5>
-                    <h5>入力フォーム</h5>
-                </div>
-                <textarea className="form-control my-1" id="tptef_content" rows={6} value={tmpContent}
-                    onChange={(evt) => { setTmpContent(evt.target.value) }}></textarea>
-                <div className="my-1 d-flex justify-content-between">
-                    <div className="ml-auto">
-                        <div className="form-inline">
-                            {/* select file */}
-                            <button type="button" className="btn btn-warning btn-sm mx-1"
-                                onClick={(evt) => { $(evt.currentTarget.children[0]).click(); }}>
-                                <input type="file" className="d-none" value=""
-                                    onChange={(evt) => { setTmpFile(evt.target.files[0]) }} />
-                                <i className="fas fa-paperclip mr-1" style={{ pointerEvents: "none" }}></i>
-                                {tmpFile == null ? "Non selected" : tmpFile.name}
-                            </button>
-                            <button className="btn btn-primary btn-sm mx-1"
-                                onClick={() => { remark(); setTmpContent(""); setTmpFile(null); }}>
-                                <i className="far fa-comment-dots mr-1" style={{ pointerEvents: "none" }}></i>Remark
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
-    }
-    /*
-                <div className="col-2">
-                    <div className="d-flex justify-content-between p-1"
-                        style={{ backgroundColor: "#f0f6da", border: "3px double silver" }}>
-                        <div className="m-2">
-                            ===VPSdeWP===
-                        </div>
-                    </div>
-                </div>*/
     const appBody = () => {
         return (
             <div>
                 <div className="d-flex justify-content-between">
                     <h3>{service}</h3>
                     <div className="form-inline">
-                        <input className="form-control form-control-sm" type="text" value={tmpservice}
-                            onChange={(evt) => { setTmpservice(evt.target.value) }} />
-                        <button className="btn btn-success btn-sm mr-1"
-                            onClick={() => {
-                                if (tmpservice == "") { setTmpservice(service) }
-                                else { setservice(tmpservice) }
-                            }}>
-                            <i className="fas fa-search mr-1" style={{ pointerEvents: "none" }}></i>店を指定
-                                </button>
                         <button className="btn btn-link btn-sm ml-5" onClick={() => { }}>
                             店主として操作
-                            </button>
+                        </button>
                     </div>
                 </div>
                 <ul className="nav nav-tabs" role="tablist">
@@ -180,10 +109,10 @@ export const AppMain = () => {
                         </div>
                     </div>
                     <div className="tab-pane fade" id="item2" role="tabpanel" aria-labelledby="item2-tab">
-                        <div className="row">
-                            {threadTable()}
-                            {inputConsole()}
+                        <div className="d-flex justify-content-center">
+                            <h5><i className="far fa-clock mr-1"></i>{jpclockNow}</h5>
                         </div>
+                        {orderColumn()}
                     </div>
                     <div className="tab-pane fade" id="item3" role="tabpanel" aria-labelledby="item3-tab">This is a text of item#3.</div>
                 </div>

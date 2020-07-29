@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { dbFieldDelete, useAuth, useDb } from "../component/firebaseWrapper";
 import { stopf5, jpclock } from "../component/util_tsx";
+import { rejects } from 'assert';
 
 export const AppMain = () => {
     const [uid] = useAuth()
@@ -24,25 +25,9 @@ export const AppMain = () => {
         return () => clearInterval(_intervalId);
     }, []);
 
-
-    // functions
-    const remark = () => {
-        if (tmpContent == "") { alert("Plz input content"); return; };
-        if (stopf5.check("dbC_AddRemark", 500, true) == false) return; // To prevent high freq access
-        dispatchOszv_s({
-            type: "create", recodes: {
-                [Date.now().toString() + "_" + uid]: {
-                    handlename: Object.values(dbMypage)[0] ? Object.values<any>(dbMypage)[0]["nickname"] : "None",
-                    content: tmpContent
-                }
-            }, merge: true
-        })
+    const changeToOwner= ()=>{
+        dbOszv_s
     }
-    const deleteRemark = (tsuid: string) => {
-        if (stopf5.check("2", 500, true) == false) return; // To prevent high freq 
-        dispatchOszv_s({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true })
-    }
-
 
     const itemModal = (num: string) => {
         return (
@@ -105,11 +90,11 @@ export const AppMain = () => {
                             <div className="modal-body">
                             </div>
                             <div className="modal-footer d-flex justify-content-between">
-                                <button className="btn btn-danger m-2" type="button" data-dismiss="modal">
-                                    <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
-                                </button>
                                 <button className="btn btn-warning m-2" type="button" data-dismiss="modal">
                                     <i className="fas fa-bell mr-1" style={{ pointerEvents: "none" }}></i>呼び出し
+                                </button>
+                                <button className="btn btn-danger m-2" type="button" data-dismiss="modal">
+                                    <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
                                 </button>
                             </div>
                         </div>

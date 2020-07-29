@@ -10,7 +10,7 @@ export const AppMain = () => {
     const [tmpFile, setTmpFile] = useState(null)
 
     const [dbTptef, dispatchTptef] = useDb()
-    const [dbMypage, dispatchMypage] = useDb()
+    const [dbMypage, dispatchMypage] = useDb() //notTsuidDb
     useEffect(() => { dispatchTptef({ type: "setUri", uri: "tptef/" + room }); }, [room])
     useEffect(() => { dispatchMypage({ type: "setUri", uri: "mypage/" + uid }) }, [uid])
 
@@ -28,7 +28,7 @@ export const AppMain = () => {
         dispatchTptef({
             type: "create", recodes: {
                 [Date.now().toString() + "_" + uid]: {
-                    handlename: Object.values(dbMypage)[0] ? Object.values<any>(dbMypage)[0]["nickname"] : "None",
+                    handlename: (dbMypage) ? dbMypage["nickname"] : "None",
                     content: tmpContent,
                     attachment: dispatchTptef({ type: "upload", file: tmpFile }),
                 }
@@ -96,7 +96,7 @@ export const AppMain = () => {
                 <div className="d-flex justify-content-between">
                     <h4>
                         <i className="far fa-user mr-1"></i>
-                        {Object.values(dbMypage)[0] ? Object.values<any>(dbMypage)[0]["nickname"] : "None"}
+                        {dbMypage ? dbMypage["nickname"] : "None"}
                     </h4>
                     <h5><i className="far fa-clock mr-1"></i>{jpclockNow}</h5>
                     <h5>入力フォーム</h5>

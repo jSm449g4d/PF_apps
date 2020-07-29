@@ -7,7 +7,7 @@ export const AppMain = () => {
     const [showUid, setShowUid] = useState("showuid" in Query2Dict() == false ? "" : Query2Dict()["showuid"])
     const [iconUrl, setIconUrl] = useState("")
 
-    const [dbMypage, dispatchMypage] = useDb()
+    const [dbMypage, dispatchMypage] = useDb() //notTsuidDb
     useEffect(() => { dispatchMypage({ type: "setUri", uri: "mypage/" + showUid }); }, [showUid])
     // readIcon
     useEffect(() => { dispatchMypage({ type: "download", fileName: "icon.img", func: (_url: any) => setIconUrl(_url) }) }, [dbMypage])
@@ -23,7 +23,7 @@ export const AppMain = () => {
                         if (stopf5.check("cleateMypage", 500, true) == false) return; // To prevent high freq access
                         dispatchMypage({
                             type: "create", recodes: {
-                                [Date.now().toString() + "_" + showUid]: { nickname: "窓の民は名無し", pr: "私はJhon_Doe。窓の蛇遣いです。" }
+                                 nickname: "窓の民は名無し", pr: "私はJhon_Doe。窓の蛇遣いです。" 
                             }, merge: true
                         })
                     }}>
@@ -83,12 +83,12 @@ export const AppMain = () => {
                             </div>
                             <div className="modal-body">
                                 <textarea className="form-control" value={
-                                    Object.values(dbMypage)[0] ? Object.values<any>(dbMypage)[0][state_element] : ""}
+                                    dbMypage ? dbMypage[state_element] : ""}
                                     rows={4} style={{ width: "100%" }}
                                     onChange={(evt) => {
-                                        let _mypage: any = Object.values(dbMypage)[0] ? Object.values(dbMypage)[0] : {}
+                                        let _mypage: any = dbMypage ? dbMypage : {}
                                         _mypage[state_element] = evt.target.value
-                                        dispatchMypage({ type: "commit", recodes: { [Date.now() + "_" + uid]: _mypage }, merge: true })
+                                        dispatchMypage({ type: "commit", recodes: _mypage, merge: true })
                                     }}>
                                 </textarea>
                             </div>
@@ -112,7 +112,7 @@ export const AppMain = () => {
     }
 
     const appBody = () => {
-        if (Object.keys(dbMypage).length < 1) { return (<div>{createMypage()}</div>) }
+        if (dbMypage.length < 1) { return (<div>{createMypage()}</div>) }
         return (
             <div className="m-2" style={{ background: "khaki" }}>
                 <div className="d-flex justify-content-start">
@@ -121,7 +121,7 @@ export const AppMain = () => {
                         <div className="d-flex justify-content-start">
                             <h3 className="flex-grow-1">
                                 <i className="far fa-user mr-1"></i>
-                                {Object.values(dbMypage)[0] ? Object.values<any>(dbMypage)[0]["nickname"] : ""}
+                                {dbMypage["nickname"] ? dbMypage["nickname"] : ""}
                             </h3>
                             <div className="form-inline">
                                 {changeProfile("Nickname", "nickname")}{uploadIcon()}
@@ -132,7 +132,7 @@ export const AppMain = () => {
                                 <h5>PR</h5>
                                 {changeProfile("PR", "pr")}
                             </div>
-                            {Object.values(dbMypage)[0] ? Object.values<any>(dbMypage)[0]["pr"] : ""}
+                            {dbMypage["pr"] ? dbMypage["pr"] : ""}
                         </div>
                     </div>
                 </div>

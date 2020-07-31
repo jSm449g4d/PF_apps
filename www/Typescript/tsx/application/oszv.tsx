@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { dbFieldDelete, useAuth, useDb, needLoginButton } from "../component/firebaseWrapper";
+import { dbFieldDelete, useAuth, useDb, needLoginForm } from "../component/firebaseWrapper";
 import { stopf5, jpclock, Query2Dict } from "../component/util_tsx";
 import { rejects } from 'assert';
 
@@ -197,7 +197,7 @@ export const AppMain = () => {
         return (<div className="row">{tmpRecodes}</div>)
     }
     const appBody = () => {
-        if (uid == "") return needLoginButton()
+        if (uid == "") return needLoginForm()
 
         return (
             <div>

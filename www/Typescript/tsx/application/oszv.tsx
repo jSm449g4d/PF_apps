@@ -140,16 +140,12 @@ export const AppMain = () => {
     }
     const dipsShopName = () => {
         if (uid == "") return (<h2>店がありません</h2>)
-        if (dbMypage["shopName"] && position == "client") {
-            <h2>
-                <i className="fas fa-pencil-alt mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage["shopName"]}
-            </h2>
-        }
+        if (dbMypage["shopName"] && position == "client") { <h2>{dbMypage["shopName"]}</h2> }
         if (dbMypage["shopName"] && position == "owner")
             return (
                 <h2>
                     {/*Title*/}
-                    {<div><i className="fas fa-pencil-alt mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage["shopName"]}</div>}
+                    {dbMypage["shopName"]}
                     <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2" style={{ color: "saddlebrown" }}
                         data-toggle="modal" data-target="#changeShopName_modal"></i>
                     {/*changeShopName_Modal */}

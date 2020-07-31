@@ -139,11 +139,17 @@ export const AppMain = () => {
             )
     }
     const dipsShopName = () => {
-        if (dbMypage["shopName"])
+        if (uid == "") return (<h2>店がありません</h2>)
+        if (dbMypage["shopName"] && position == "client") {
+            <h2>
+                <i className="fas fa-pencil-alt mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage["shopName"]}
+            </h2>
+        }
+        if (dbMypage["shopName"] && position == "owner")
             return (
                 <h2>
                     {/*Title*/}
-                    {dbMypage["shopName"]}
+                    {<div><i className="fas fa-pencil-alt mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage["shopName"]}</div>}
                     <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2" style={{ color: "saddlebrown" }}
                         data-toggle="modal" data-target="#changeShopName_modal"></i>
                     {/*changeShopName_Modal */}
@@ -176,14 +182,13 @@ export const AppMain = () => {
                     </div>
                 </h2>
             )
-        if (uid == "") return (<h2>店が建ってません</h2>)
-        if (showUid == uid && uid != "")
+        if (showUid == uid && position == "owner")
             return (
                 <button className="btn btn-link mx-2" onClick={() => { buildShop() }}>
                     <h3>店を立てる</h3>
                 </button>
             )
-        return (<h2>店が建ってません</h2>)
+        return (<h2>店が存在しません</h2>)
     }
     const orderColumn = () => {
         const tmpRecodes = [];

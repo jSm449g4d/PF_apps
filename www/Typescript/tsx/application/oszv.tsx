@@ -17,7 +17,7 @@ export const AppMain = () => {
     useEffect(() => { setShowUid(uid) }, [uid])
     useEffect(() => { dispatchOszv_s({ type: "setUri", uri: "oszv_s/" + uid }); }, [uid])
     useEffect(() => { dispatchOszv_s({ type: "setUri", uri: "oszv_c/" + uid }); }, [uid])
-    useEffect(() => { dispatchMypage({ type: "setUri", uri: "mypage/" + showUid }) }, [showUid])
+    useEffect(() => { dispatchMypage({ type: "setUri", uri: "mypage/" + showUid }); setPosition("client") }, [showUid])
 
     // jpclock (decoration)
     const [jpclockNow, setJpclockNow] = useState("")
@@ -140,12 +140,13 @@ export const AppMain = () => {
     }
     const dipsShopName = () => {
         if (uid == "") return (<h2>店がありません</h2>)
-        if (dbMypage["shopName"] && position == "client") { <h2>{dbMypage["shopName"]}</h2> }
+        if (dbMypage["shopName"] && position == "client")
+            return (<h2><i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage["shopName"]}</h2>)
         if (dbMypage["shopName"] && position == "owner")
             return (
                 <h2>
                     {/*Title*/}
-                    {dbMypage["shopName"]}
+                    <i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage["shopName"]}
                     <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2" style={{ color: "saddlebrown" }}
                         data-toggle="modal" data-target="#changeShopName_modal"></i>
                     {/*changeShopName_Modal */}
@@ -207,7 +208,7 @@ export const AppMain = () => {
                 <ul className="nav nav-tabs nav-fill mb-2" role="tablist">
                     <li className="nav-item">
                         <a className="nav-link active" id="item1-tab" data-toggle="tab" href="#item1" role="tab" aria-controls="item1" aria-selected="true">
-                            <b>サービス</b>
+                            <b>商品</b>
                         </a>
                     </li>
                     <li className="nav-item">
@@ -224,7 +225,7 @@ export const AppMain = () => {
                             <div className="row">
                                 <div className="col-1"></div>
                                 <button className="btn btn-outline-primary btn-lg rounded-pill col-10" onClick={() => { }}>
-                                    <b>+サービスを追加</b>
+                                    <b>+商品を追加</b>
                                 </button>
                                 <div className="col-1"></div>
                             </div>

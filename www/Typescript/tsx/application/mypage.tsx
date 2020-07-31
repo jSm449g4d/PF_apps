@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth, useDb } from "../component/firebaseWrapper";
+import { useAuth, useDb, needLoginButton } from "../component/firebaseWrapper";
 import { stopf5, Query2Dict } from "../component/util_tsx";
 
 export const AppMain = () => {
@@ -15,7 +15,6 @@ export const AppMain = () => {
     if (showUid != uid && showUid == "") setShowUid(uid);
     
     const createMypage = () => {
-        if (uid == "") return (<h5><i className="fas fa-wind mr-1"></i>Plz login</h5>)
         if (uid == showUid)
             return (
                 <button type="button" className="btn btn-outline-success btn-bg m-2"
@@ -112,6 +111,7 @@ export const AppMain = () => {
     }
 
     const appBody = () => {
+        if (uid == "") return needLoginButton()
         if (dbMypage.length < 1) { return (<div>{createMypage()}</div>) }
         return (
             <div className="m-2" style={{ background: "khaki" }}>

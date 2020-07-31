@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { dbFieldDelete, useAuth, useDb } from "../component/firebaseWrapper";
-import { stopf5, jpclock } from "../component/util_tsx";
+import { dbFieldDelete, useAuth, useDb, needLoginButton } from "../component/firebaseWrapper";
+import { stopf5, jpclock, Query2Dict } from "../component/util_tsx";
 import { rejects } from 'assert';
 
 export const AppMain = () => {
     const [uid] = useAuth()
-    const [shop, setservice] = useState("とある飲食店")
-    const [tmpShop, setTmpShop] = useState(shop)
+    const [showUid, setShowUid] = useState("showuid" in Query2Dict() == false ? uid : Query2Dict()["showuid"])
     const [tmpContent, setTmpContent] = useState("")
     const [tmpFile, setTmpFile] = useState(null)
     const [position, setPosition] = useState("client")//client,owner
+    const [tmpShopName, setTmpShopName] = useState("")
 
     const [dbOszv_s, dispatchOszv_s] = useDb()
     const [dbOszv_c, dispatchOszv_c] = useDb()
-    const [dbMypage, dispatchMypage] = useDb()
-    useEffect(() => { dispatchOszv_s({ type: "setUri", uri: "oszv_s/" + shop }); }, [shop])
+    const [dbMypage, dispatchMypage] = useDb() //notTsuidDb
+    useEffect(() => { setShowUid(uid) }, [uid])
+    useEffect(() => { dispatchOszv_s({ type: "setUri", uri: "oszv_s/" + uid }); }, [uid])
     useEffect(() => { dispatchOszv_s({ type: "setUri", uri: "oszv_c/" + uid }); }, [uid])
-    useEffect(() => { dispatchMypage({ type: "setUri", uri: "mypage/" + uid }) }, [uid])
+    useEffect(() => { dispatchMypage({ type: "setUri", uri: "mypage/" + showUid }) }, [showUid])
 
     // jpclock (decoration)
     const [jpclockNow, setJpclockNow] = useState("")
@@ -25,8 +26,14 @@ export const AppMain = () => {
         return () => clearInterval(_intervalId);
     }, []);
 
-    const changeToOwner= ()=>{
-        dbOszv_s
+    const buildShop = (newShopName: string = "とある飲食店") => {
+        if (showUid == uid) {
+            dispatchMypage({
+                type: "create", recodes: {
+                    shopName: newShopName
+                }, merge: true
+            })
+        }
     }
 
     const itemModal = (num: string) => {
@@ -104,6 +111,80 @@ export const AppMain = () => {
         )
     }
     // renders
+    const dispPosition = () => {
+        if (position == "owner")
+            return (
+                <div>現在: <b>店主</b>
+                    <button className="btn btn-link btn-sm ml-5" onClick={() => { setPosition("client") }}>
+                        客として操作
+                    </button>
+                </div>
+            )
+        if (position != "client") return (<div>Error Position!</div>)
+        if (showUid == uid)
+            return (
+                <div>現在: <b>客</b>
+                    <button className="btn btn-link btn-sm ml-5" onClick={() => { setPosition("owner") }}>
+                        店主として操作
+                    </button>
+                </div>
+            )
+        if (showUid != uid)
+            return (
+                <div>現在: <b>客</b>
+                    <button className="btn btn-link btn-sm ml-5" onClick={() => { setPosition("client"); setShowUid(uid) }}>
+                        自分の店に行く
+                    </button>
+                </div>
+            )
+    }
+    const dipsShopName = () => {
+        if (dbMypage["shopName"])
+            return (
+                <h2>
+                    {/*Title*/}
+                    {dbMypage["shopName"]}
+                    <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2" style={{ color: "saddlebrown" }}
+                        data-toggle="modal" data-target="#changeShopName_modal"></i>
+                    {/*changeShopName_Modal */}
+                    <div className="modal fade" id="changeShopName_modal" role="dialog" aria-hidden="true">
+                        <div className="modal-dialog modal-lg" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header justify-content-between">
+                                    <h5 className="modal-title">
+                                        <i className="fas fa-pencil-alt mr-1" style={{ pointerEvents: "none" }}></i>
+                                        店名の変更
+                                        </h5>
+                                    <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
+                                        <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
+                                    </button>
+                                </div>
+                                <div className="modal-body">
+                                    <h6><i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i> {dbMypage["shopName"]}</h6>
+                                    <div className="d-flex flex-column text-center">
+                                        <input className="form-control m-1" type="text" style={{ width: "100%" }} placeholder="新しい店名"
+                                            onChange={(evt: any) => { setTmpShopName(evt.target.value); }} />
+                                        <button className="btn btn-sm btn-warning m-2" type="button" data-dismiss="modal"
+                                            onClick={() => { buildShop(tmpShopName); }}>
+                                            <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>
+                                            新しい店名を送信
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h2>
+            )
+        if (uid == "") return (<h2>店が建ってません</h2>)
+        if (showUid == uid && uid != "")
+            return (
+                <button className="btn btn-link mx-2" onClick={() => { buildShop() }}>
+                    <h3>店を立てる</h3>
+                </button>
+            )
+        return (<h2>店が建ってません</h2>)
+    }
     const orderColumn = () => {
         const tmpRecodes = [];
         const tsuids = Object.keys(dbOszv_s).sort();
@@ -114,25 +195,13 @@ export const AppMain = () => {
         return (<div className="row">{tmpRecodes}</div>)
     }
     const appBody = () => {
+        if (uid == "") return needLoginButton()
+
         return (
             <div>
                 <div className="d-flex justify-content-between">
-                    <h3>{shop}</h3>
-                    <div className="form-inline">
-                        {position == "client" ?
-                            <div>現在: <b>客</b>
-                                <button className="btn btn-link btn-sm ml-5" onClick={() => { setPosition("owner") }}>
-                                    店主として操作
-                                </button>
-                            </div>
-                            :
-                            <div>現在: <b>店主</b>
-                                <button className="btn btn-link btn-sm ml-5" onClick={() => { setPosition("client") }}>
-                                    客として操作
-                                </button>
-                            </div>
-                        }
-                    </div>
+                    {dipsShopName()}
+                    <div className="form-inline">{dispPosition()}</div>
                 </div>
                 <ul className="nav nav-tabs nav-fill mb-2" role="tablist">
                     <li className="nav-item">

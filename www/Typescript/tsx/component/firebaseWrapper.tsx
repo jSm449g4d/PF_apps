@@ -110,33 +110,33 @@ export const useDb = (initialState: any = { uri: "", recodes: {} }) => {
     return [recodes, dispatch];
 }
 
+//loginFunction
+const signUp = (address: string, pass: string) => {
+    auth.createUserWithEmailAndPassword(address, pass).catch(err => fbErr(err))
+}
+const signIn = (address: string, pass: string) => {
+    auth.signInWithEmailAndPassword(address, pass).catch(err => fbErr(err))
+}
+const easyIn = (address: string = "test@mail.com", pass: string = "asdfgh") => {
+    auth.signInWithEmailAndPassword(address, pass).catch(() => { signUp(address, pass); })
+}
+const easyIn2 = (address: string = "test2@mail.com", pass: string = "asdfgh") => {
+    auth.signInWithEmailAndPassword(address, pass).catch(() => { signUp(address, pass); })
+}
+const resetPass = (address: string) => {
+    auth.sendPasswordResetEmail(address).then(() => { alert("SEND_EMAIL!") }).catch(err => fbErr(err));
+}
+const deleteUser = () => {
+    if (window.confirm('Are you really DELETE:USER?\n')) {
+        auth.currentUser.delete().then(() => { alert("ACCOUNT_DELETED!") }).catch(err => fbErr(err));
+    }
+}
+const googleIn = () => { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(err => fbErr(err)) }
 export const AppAuth = () => {
     const [uid,] = useAuth()
     const [tmpAddress, setTmpAddress] = useState("")
     const [tmpPass, setTmpPass] = useState("")
 
-    //functions
-    const signUp = (address: string = tmpAddress, pass: string = tmpPass) => {
-        auth.createUserWithEmailAndPassword(address, pass).catch(err => fbErr(err))
-    }
-    const signIn = (address: string = tmpAddress, pass: string = tmpPass) => {
-        auth.signInWithEmailAndPassword(address, pass).catch(err => fbErr(err))
-    }
-    const easyIn = (address: string = "test@mail.com", pass: string = "asdfgh") => {
-        auth.signInWithEmailAndPassword(address, pass).catch(() => { signUp(address, pass); })
-    }
-    const easyIn2 = (address: string = "test2@mail.com", pass: string = "asdfgh") => {
-        auth.signInWithEmailAndPassword(address, pass).catch(() => { signUp(address, pass); })
-    }
-    const resetPass = (address: string = tmpAddress) => {
-        auth.sendPasswordResetEmail(address).then(() => { alert("SEND_EMAIL!") }).catch(err => fbErr(err));
-    }
-    const deleteUser = () => {
-        if (window.confirm('Are you really DELETE:USER?\n')) {
-            auth.currentUser.delete().then(() => { alert("ACCOUNT_DELETED!") }).catch(err => fbErr(err));
-        }
-    }
-    const googleIn = () => { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(err => fbErr(err)) }
 
     //renders
     const LoginModal = () => {
@@ -166,7 +166,7 @@ export const AppAuth = () => {
                                     onChange={(evt: any) => { setTmpPass(evt.target.value); }} />
                                 <div className="d-flex flex-column">
                                     <button className="btn btn-primary m-2" type="button" data-dismiss="modal"
-                                        onClick={() => { signUp() }}>
+                                        onClick={() => { signUp(tmpAddress, tmpPass) }}>
                                         <i className="far fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>
                                         <b>作成する</b>
                                     </button>
@@ -198,7 +198,7 @@ export const AppAuth = () => {
                                     onChange={(evt: any) => { setTmpPass(evt.target.value); }} />
                                 <div className="d-flex flex-column">
                                     <button className="btn btn-primary btn m-1" type="button" data-dismiss="modal"
-                                        onClick={() => { signIn() }}>
+                                        onClick={() => { signIn(tmpAddress, tmpPass) }}>
                                         <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>
                                         <b>ログイン</b>
                                     </button>
@@ -260,7 +260,7 @@ export const AppAuth = () => {
                                     <h5>メールアドレスを変更する</h5>
                                     <input className="form-control" type="text" name="mail_addr" size={40} placeholder="mail address" />
                                     <button className="btn btn-sm btn-warning m-2" type="button" data-dismiss="modal"
-                                        onClick={() => { resetPass(); }}>
+                                        onClick={() => { resetPass(tmpAddress); }}>
                                         <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>
                                         確認メールを送信
                                     </button>
@@ -287,8 +287,7 @@ export const AppAuth = () => {
                 <div className="d-flex justify-content-between">
                     <div className="ml-auto">
                         <div className="form-inline">
-                            <button className="btn btn-warning btn m-1" type="button" data-dismiss="modal"
-                                onClick={() => { easyIn() }}>
+                            <button className="btn btn-warning m-1" type="button" onClick={() => { easyIn() }}>
                                 <b>
                                     <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>おためしログイン
                                 </b>
@@ -318,4 +317,24 @@ export const AppAuth = () => {
         </div>
     );
 
+}
+export const needLoginButton = () => {
+    return (
+        <div className="p-2" style={{ backgroundColor: "wheat", border: "3px double silver" }}>
+            <div className="row">
+                <h3 className="col-12 text-center"> <i className="fas fa-wind mr-1"></i>ログインが必要です</h3>
+                <div className="col-1"></div>
+                <button type="button" className="btn btn-primary btn-lg rounded-pill col-10" data-toggle="modal" data-target={"#signin_modal"}>
+                    <b><i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>ログイン</b>
+                </button>
+                <div className="col-1"></div>
+                <div className="col-12" style={{ color: "rgba(255,255,255,0)" }}>===みつけたね？===</div>
+                <div className="col-1"></div>
+                <button className="btn btn-warning btn-lg rounded-pill col-10" type="button" onClick={() => { easyIn() }}>
+                    <b><i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>おためしログイン</b>
+                </button>
+                <div className="col-1"></div>
+            </div>
+        </div>
+    )
 }

@@ -137,7 +137,6 @@ export const AppAuth = () => {
     const [tmpAddress, setTmpAddress] = useState("")
     const [tmpPass, setTmpPass] = useState("")
 
-
     //renders
     const LoginModal = () => {
         return (
@@ -280,7 +279,6 @@ export const AppAuth = () => {
             </div>
         )
     }
-
     return (
         <div>
             {uid == "" ?
@@ -316,60 +314,48 @@ export const AppAuth = () => {
             }
         </div>
     );
-
 }
 export const needLoginForm = () => {
     const [tmpAddress, setTmpAddress] = useState("")
     const [tmpPass, setTmpPass] = useState("")
     //renders
-    const LoginModal = () => {
-        return (
-            <div>
-                {/*signIn*/}
-                <div className="p-2" style={{ backgroundColor: "wheat", border: "3px double silver" }}>
-                    <div className="d-flex flex-column text-center">
-                        <h4><i className="fas fa-sign-in-alt mr-1"></i>ログイン</h4>
-                        <p />
-                        <h6><i className="far fa-envelope mr-1"></i>メールアドレス</h6>
-                        <input className="form-control m-1" type="text" name="mail_addr" placeholder="mailAddress"
-                            onChange={(evt: any) => { setTmpAddress(evt.target.value); }} />
-                        <h6><i className="fas fa-key mr-1"></i>パスワード</h6>
-                        <input className="form-control m-1" type="text" name="mail_pass" placeholder="password"
-                            onChange={(evt: any) => { setTmpPass(evt.target.value); }} />
-                        <p />
-                        <button className="btn btn-primary btn m-1" type="button" data-dismiss="modal"
-                            onClick={() => { signIn(tmpAddress, tmpPass) }}>
-                            <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>
-                            <b>ログインする</b>
-                        </button>
-                        <p />
-                        <button className="btn btn-light btn m-1" type="button" data-dismiss="modal"
-                            onClick={() => { googleIn() }}>
-                            <i className="fab fa-google mr-1" style={{ pointerEvents: "none" }}></i>
+    return (
+        <div className="p-2" style={{ backgroundColor: "wheat", border: "3px double silver" }}>
+            <div className="d-flex flex-column text-center">
+                <h4><i className="fas fa-sign-in-alt mr-1"></i>ログイン</h4>
+                <p />
+                <h6><i className="far fa-envelope mr-1"></i>メールアドレス</h6>
+                <input className="form-control m-1" type="text" name="mail_addr" placeholder="mailAddress"
+                    onChange={(evt: any) => { setTmpAddress(evt.target.value); }} />
+                <h6><i className="fas fa-key mr-1"></i>パスワード</h6>
+                <input className="form-control m-1" type="text" name="mail_pass" placeholder="password"
+                    onChange={(evt: any) => { setTmpPass(evt.target.value); }} />
+                <p />
+                <button className="btn btn-primary btn m-1" type="button" data-dismiss="modal"
+                    onClick={() => { signIn(tmpAddress, tmpPass) }}>
+                    <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>
+                    <b>ログインする</b>
+                </button>
+                <p />
+                <button className="btn btn-light btn m-1" type="button" data-dismiss="modal"
+                    onClick={() => { googleIn() }}>
+                    <i className="fab fa-google mr-1" style={{ pointerEvents: "none" }}></i>
                                         Googleアカウントででログインする
                         </button>
-                        <p />
-                        <button type="button" className="btn btn-link btn mx-1" data-dismiss="modal" data-target={"#signin_modal"}
-                            onClick={(evt) => { $(evt.currentTarget.children[0]).click(); }}>
-                            <button type="button" className="d-none" data-toggle="modal" data-target={"#signup_modal"} />
-                            <i className="fas fa-file-signature mr-1" style={{ pointerEvents: "none" }}></i>
-                            <b>アカウントを新規作成する</b>
-                        </button>
-                        <p />
-                        <button className="btn btn-warning btn m-1" type="button" data-dismiss="modal"
-                            onClick={() => { easyIn() }}>
-                            <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>
-                            <b>お試しログイン</b>
-                        </button>
-                    </div>
-                </div>
+                <p />
+                <button type="button" className="btn btn-link btn mx-1" data-dismiss="modal" data-target={"#signin_modal"}
+                    onClick={(evt) => { $(evt.currentTarget.children[0]).click(); }}>
+                    <button type="button" className="d-none" data-toggle="modal" data-target={"#signup_modal"} />
+                    <i className="fas fa-file-signature mr-1" style={{ pointerEvents: "none" }}></i>
+                    <b>アカウントを新規作成する</b>
+                </button>
+                <p />
+                <button className="btn btn-warning btn m-1" type="button" data-dismiss="modal"
+                    onClick={() => { easyIn() }}>
+                    <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>
+                    <b>お試しログイン</b>
+                </button>
             </div>
-        )
-    }
-    return (
-        <div>
-            {LoginModal()}
         </div>
     )
-
 }

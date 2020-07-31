@@ -111,7 +111,6 @@ export const AppMain = () => {
     }
 
     const appBody = () => {
-        if (uid == "") return needLoginForm()
         if (dbMypage.length < 1) { return (<div>{createMypage()}</div>) }
         return (
             <div className="m-2" style={{ background: "khaki" }}>

@@ -139,7 +139,7 @@ export const AppMain = () => {
             )
     }
     const dipsShopName = () => {
-        if (uid == "") return (<h2>店がありません</h2>)
+        if (showUid == "") return (<h2>店がありません</h2>)
         if (dbMypage["shopName"] && position == "client")
             return (<h2><i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage["shopName"]}</h2>)
         if (dbMypage["shopName"] && position == "owner")
@@ -197,8 +197,6 @@ export const AppMain = () => {
         return (<div className="row">{tmpRecodes}</div>)
     }
     const appBody = () => {
-        if (uid == "") return needLoginForm()
-
         return (
             <div>
                 <div className="d-flex justify-content-between">
@@ -247,6 +245,7 @@ export const AppMain = () => {
             </div>
         )
     }
+    //if (uid == "") return needLoginForm()
     return (
         <div className="p-2 bg-light">
             {appBody()}

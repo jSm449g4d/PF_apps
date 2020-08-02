@@ -166,13 +166,19 @@ export const AppMain = () => {
                                 <div className="modal-body">
                                     <h6><i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i> {dbMypage["shopName"]}</h6>
                                     <div className="d-flex flex-column text-center">
-                                        <input className="form-control m-1" type="text" style={{ width: "100%" }} placeholder="新しい店名"
+                                        <input className="form-control form-control-lg m-1" type="text" placeholder="新しい店名"
                                             onChange={(evt: any) => { setTmpShopName(evt.target.value); }} />
-                                        <button className="btn btn-sm btn-warning m-2" type="button" data-dismiss="modal"
-                                            onClick={() => { buildShop(tmpShopName); }}>
-                                            <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>
-                                            新しい店名を送信
-                                        </button>
+                                        {(tmpShopName == "") ?
+                                            <button className="btn btn-warning btn-lg m-1" type="button" data-dismiss="modal" disabled>
+                                                <b>×店名を入力してください</b>
+                                            </button>
+                                            :
+                                            <button className="btn btn-warning btn-lg m-1" type="button" data-dismiss="modal"
+                                                onClick={() => { buildShop(tmpShopName); }}>
+                                                <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>
+                                                新しい店名を送信
+                                            </button>
+                                        }
                                     </div>
                                 </div>
                             </div>

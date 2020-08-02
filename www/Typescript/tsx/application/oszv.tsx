@@ -28,13 +28,13 @@ export const AppMain = () => {
     }, []);
 
     const buildShop = (newShopName: string = "とある飲食店") => {
-        if (showUid == uid) {
-            dispatchMypage({
-                type: "create", recodes: {
-                    shopName: newShopName
-                }, merge: true
-            })
-        }
+        if (showUid != uid) return false;
+        dispatchMypage({
+            type: "create", recodes: {
+                shopName: newShopName
+            }, merge: true
+        })
+
     }
 
     const itemModal = (num: string) => {
@@ -110,6 +110,14 @@ export const AppMain = () => {
                 </div>
             </div>
         )
+    }
+    const addItem = () => {
+        if (showUid != uid) return false;
+        dispatchOszv_s({
+            [Date.now().toString() + "_" + uid]: {
+                "name": "新しい商品", "image": ""
+            }, merge: true
+        })
     }
     // renders
     const dispPosition = () => {

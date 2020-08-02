@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { checkMailAddress } from "./util_tsx";
 import ReactDOM from "react-dom";
 import firebase from 'firebase/app';
 import "firebase/analytics";
@@ -161,13 +162,13 @@ export const AppAuth = () => {
                                 </button>
                             </div>
                             <div className="modal-body d-flex flex-column text-center">
-                                <input className="form-control form-control-lg m-1" type="text" name="mail_addr" placeholder="mail_address"
+                                <input className="form-control form-control-lg m-1" type="text" name="mail_addr" placeholder="メールアドレス"
                                     onChange={(evt: any) => { setTmpAddress(evt.target.value); }} />
-                                <input className="form-control form-control-lg m-1" type="text" name="mail_pass" placeholder="password"
+                                <input className="form-control form-control-lg m-1" type="password" name="mail_pass" placeholder="password"
                                     onChange={(evt: any) => { setTmpPass(evt.target.value); }} />
-                                {(tmpAddress == "" || tmpPass == "") ?
+                                {(checkMailAddress(tmpAddress) == false || tmpPass == "") ?
                                     <button className="btn btn-primary btn-lg m-1" type="button" data-dismiss="modal" disabled>
-                                        <b>×空欄があります</b>
+                                        <b>×入力が無効です</b>
                                     </button>
                                     :
                                     <button className="btn btn-primary btn-lg m-1" type="button" data-dismiss="modal"
@@ -198,13 +199,13 @@ export const AppAuth = () => {
                             </div>
                             <div className="modal-body d-flex flex-column text-center">
                                 <div className="d-flex flex-column text-center">
-                                    <input className="form-control form-control-lg m-1" type="text" name="mail_addr" placeholder="mailAddress"
+                                    <input className="form-control form-control-lg m-1" type="text" name="mail_addr" placeholder="メールアドレス"
                                         onChange={(evt: any) => { setTmpAddress(evt.target.value); }} />
-                                    <input className="form-control form-control-lg m-1" type="text" name="mail_pass" placeholder="password"
+                                    <input className="form-control form-control-lg m-1" type="password" name="mail_pass" placeholder="password"
                                         onChange={(evt: any) => { setTmpPass(evt.target.value); }} />
-                                    {(tmpAddress == "" || tmpPass == "") ?
+                                    {(checkMailAddress(tmpAddress) == false || tmpPass == "") ?
                                         <button className="btn btn-primary btn-lg m-1" type="button" data-dismiss="modal" disabled>
-                                            <b>×空欄があります</b>
+                                            <b>×入力が無効です</b>
                                         </button>
                                         :
                                         <button className="btn btn-primary btn-lg m-1" type="button" data-dismiss="modal"
@@ -269,9 +270,9 @@ export const AppAuth = () => {
                                     <h5>メールアドレスを変更する</h5>
                                     <input className="form-control form-control-lg m-1" type="text" name="mail_addr" placeholder="mail address"
                                         onChange={(evt: any) => { setTmpAddress(evt.target.value); }} />
-                                    {(tmpAddress == "") ?
+                                    {(checkMailAddress(tmpAddress) == false) ?
                                         <button className="btn btn-warning btn-lg m-1" type="button" data-dismiss="modal" disabled>
-                                            <b>×空欄があります</b>
+                                            <b>×入力が無効です</b>
                                         </button>
                                         :
                                         <button className="btn btn-warning btn-lg m-1" type="button" data-dismiss="modal"

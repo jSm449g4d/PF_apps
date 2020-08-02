@@ -39,4 +39,8 @@ export const Dict2Query = (query_dict: { [key: string]: string }) => {
         ret_str += tmpkey_array[i] + "=" + tmpvalue_array[i] + "&"
     }; return ret_str
 }
-
+export const checkMailAddress = (mailAddress: string) => {
+    let reg = /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@{1}[A-Za-z0-9_.-]{1,}\.[A-Za-z0-9]{1,}$/;
+    if (reg.test(mailAddress)) return true;
+    return false;
+}

@@ -3,6 +3,7 @@ import { dbFieldDelete, useAuth, useDb, needLoginForm } from "../component/fireb
 import { stopf5, jpclock, Query2Dict } from "../component/util_tsx";
 import { rejects } from 'assert';
 import "../stylecheets/style.sass";
+import { string } from 'prop-types';
 
 export const AppMain = () => {
     const [uid] = useAuth()
@@ -17,7 +18,7 @@ export const AppMain = () => {
     const [dbMypage, dispatchMypage] = useDb() //notTsuidDb
     useEffect(() => { setShowUid(uid) }, [uid])
     useEffect(() => { dispatchOszv_s({ type: "setUri", uri: "oszv_s/" + uid }); }, [uid])
-    useEffect(() => { dispatchOszv_s({ type: "setUri", uri: "oszv_c/" + uid }); }, [uid])
+    useEffect(() => { dispatchOszv_c({ type: "setUri", uri: "oszv_c/" + uid }); }, [uid])
     useEffect(() => { dispatchMypage({ type: "setUri", uri: "mypage/" + showUid }); setPosition("client") }, [showUid])
 
     // jpclock (decoration)
@@ -30,48 +31,51 @@ export const AppMain = () => {
     const buildShop = (newShopName: string = "とある飲食店") => {
         if (showUid != uid) return false;
         dispatchMypage({
-            type: "create", recodes: {
+            type: "create",
+            recodes: {
                 shopName: newShopName
-            }, merge: true
+            },
+            merge: true
         })
 
     }
 
-    const itemModal = (num: string) => {
+    const itemModal = (key: number, itemName: string) => {
         return (
             <div className="col-sm-6 col-md-4 col-lg-2 oszv-column">
-                <a data-toggle="modal" data-target={"#" + num + "_modal"}>
+                <a data-toggle="modal" data-target={"#V" + String(key) + "_itemModal"}>
                     <img className="img-fluid" src="/static/img/publicdomainq-0014284zts.jpg" />
-                    写真付きのメニュー{num}
+                    {itemName}
                 </a>
                 {/*モーダルの内容*/}
-                <div className="modal fade" id={num + "_modal"} role="dialog" aria-hidden="true">
+                <div className="modal fade" id={"V" + String(key) + "_itemModal"} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
                             <div className="modal-header d-flex justify-content-between">
-                                <h5 className="modal-title">{num}</h5>
+                                <h5 className="modal-title">{itemName}</h5>
                                 <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
                                     <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
                                 </button>
                             </div>
                             <div className="modal-body">
-                            </div>
-                            <div className="modal-footer d-flex justify-content-between">
-                                {position == "client" ? <div></div>
-                                    :
-                                    <button className="btn btn-warning m-2" type="button" data-dismiss="modal">
-                                        <i className="fas fa-wrench mr-1" style={{ pointerEvents: "none" }}></i>編集
-                                    </button>
-                                }
                                 {position == "client" ?
-                                    <button className="btn btn-success m-2" type="button" data-dismiss="modal">
-                                        <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>注文
-                                    </button>
+                                    <div className="d-flex flex-column text-center">
+                                        <button className="btn btn-success btn-lg m-1" type="button" data-dismiss="modal">
+                                            <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>注文
+                                        </button>
+                                    </div>
                                     :
-                                    <button className="btn btn-danger m-2" type="button" data-dismiss="modal">
-                                        <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
-                                    </button>
+                                    <div className="d-flex flex-column text-center">
+                                        <button className="btn btn-warning btn-lg m-1" type="button" data-dismiss="modal">
+                                            <i className="fas fa-wrench mr-1" style={{ pointerEvents: "none" }}></i>編集
+                                        </button>
+                                        <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal">
+                                            <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
+                                        </button>
+                                    </div>
                                 }
+                            </div>
+                            <div className="modal-footer">
                             </div>
                         </div>
                     </div>
@@ -79,14 +83,14 @@ export const AppMain = () => {
             </div>
         )
     }
-    const orderModal = (num: string) => {
+    const orderModal = (key: number, num: string) => {
         return (
             <div className="col-12 oszv-column">
-                <a className="row" data-toggle="modal" data-target={"#" + num + "_modal"}>
+                <a className="row" data-toggle="modal" data-target={"#V" + String(key) + "_orderModal"}>
                     <div className="col-sm-12 col-lg-6">名称{num}</div>
                     <div className="col-sm-12 col-lg-6">コンソール{num}</div>
                 </a>
-                <div className="modal fade" id={num + "_modal"} role="dialog" aria-hidden="true">
+                <div className="modal fade" id={"V" + String(key) + "_orderModal"} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
                             <div className="modal-header justify-content-between">
@@ -117,9 +121,11 @@ export const AppMain = () => {
             type: "create",
             recodes: {
                 [Date.now().toString() + "_" + uid]: {
-                    "name": "新しい商品", "image": ""
-                }, merge: true
-            }
+                    "name": "新しい商品",
+                    "image": ""
+                }
+            },
+            merge: true
         })
     }
     // renders
@@ -205,13 +211,21 @@ export const AppMain = () => {
             )
         return (<h2>店が存在しません</h2>)
     }
+    const itemColumn = () => {
+        const tmpRecodes = [];
+        const tsuids = Object.keys(dbOszv_s).sort();
+        for (var i = 0; i < tsuids.length; i++) {
+            tmpRecodes.push(itemModal(i, dbOszv_s[tsuids[i]]["name"]))
+        }
+        return (<div className="row">{tmpRecodes}</div>)
+    }
     const orderColumn = () => {
         const tmpRecodes = [];
         const tsuids = Object.keys(dbOszv_s).sort();
         //for (var i = 0; i < 1 + tsuids.length; i++) {
         for (var i = 0; i < 1; i++) {
-            tmpRecodes.push(orderModal("Rv"))
-            tmpRecodes.push(orderModal("RF"))
+            tmpRecodes.push(orderModal(0, "Rv"))
+            tmpRecodes.push(orderModal(1, "RF"))
         }
         return (<div className="row">{tmpRecodes}</div>)
     }
@@ -248,17 +262,13 @@ export const AppMain = () => {
                                 <div className="col-1"></div>
                             </div>
                         }
-                        <div className="row mt-2">
-                            {itemModal("s")}{itemModal("sa")}{itemModal("sv")}
-                            {itemModal("ss")}{itemModal("ssa")}{itemModal("ssv")}
-                            {itemModal("sss")}{itemModal("sssa")}{itemModal("sssv")}
-                        </div>
+                        <div className="mt-2">{itemColumn()}</div>
                     </div>
                     <div className="tab-pane fade" id="item2" role="tabpanel" aria-labelledby="item2-tab">
                         <div className="d-flex justify-content-center">
                             <h5><i className="far fa-clock mr-1"></i>{jpclockNow}</h5>
                         </div>
-                        {orderColumn()}
+                        <div className="mt-2">{orderColumn()}</div>
                     </div>
                     <div className="tab-pane fade" id="item3" role="tabpanel" aria-labelledby="item3-tab">This is a text of item#3.</div>
                 </div>

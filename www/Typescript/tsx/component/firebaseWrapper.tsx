@@ -198,35 +198,33 @@ export const AppAuth = () => {
                                 </button>
                             </div>
                             <div className="modal-body d-flex flex-column text-center">
-                                <div className="d-flex flex-column text-center">
-                                    <input className="form-control form-control-lg m-1" type="text" name="mail_addr" placeholder="メールアドレス"
-                                        onChange={(evt: any) => { setTmpAddress(evt.target.value); }} />
-                                    <input className="form-control form-control-lg m-1" type="password" name="mail_pass" placeholder="password"
-                                        onChange={(evt: any) => { setTmpPass(evt.target.value); }} />
-                                    {(checkMailAddress(tmpAddress) == false || tmpPass == "") ?
-                                        <button className="btn btn-primary btn-lg m-1" type="button" data-dismiss="modal" disabled>
-                                            <b>×入力が無効です</b>
-                                        </button>
-                                        :
-                                        <button className="btn btn-primary btn-lg m-1" type="button" data-dismiss="modal"
-                                            onClick={() => { signIn(tmpAddress, tmpPass) }}>
-                                            <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>
-                                            <b>ログイン</b>
-                                        </button>
-                                    }
-                                    <p />
-                                    <button className="btn btn-light btn-lg m-1" type="button" data-dismiss="modal"
-                                        onClick={() => { googleIn() }}>
-                                        <i className="fab fa-google mr-1" style={{ pointerEvents: "none" }}></i>
+                                <input className="form-control form-control-lg m-1" type="text" name="mail_addr" placeholder="メールアドレス"
+                                    onChange={(evt: any) => { setTmpAddress(evt.target.value); }} />
+                                <input className="form-control form-control-lg m-1" type="password" name="mail_pass" placeholder="password"
+                                    onChange={(evt: any) => { setTmpPass(evt.target.value); }} />
+                                {(checkMailAddress(tmpAddress) == false || tmpPass == "") ?
+                                    <button className="btn btn-primary btn-lg m-1" type="button" data-dismiss="modal" disabled>
+                                        <b>×入力が無効です</b>
+                                    </button>
+                                    :
+                                    <button className="btn btn-primary btn-lg m-1" type="button" data-dismiss="modal"
+                                        onClick={() => { signIn(tmpAddress, tmpPass) }}>
+                                        <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>
+                                        <b>ログイン</b>
+                                    </button>
+                                }
+                                <p />
+                                <button className="btn btn-light btn-lg m-1" type="button" data-dismiss="modal"
+                                    onClick={() => { googleIn() }}>
+                                    <i className="fab fa-google mr-1" style={{ pointerEvents: "none" }}></i>
                                         Googleアカウントででログインする
                                     </button>
-                                    <button type="button" className="btn btn-link btn-lg mx-1" data-dismiss="modal" data-target={"#signin_modal"}
-                                        onClick={(evt) => { $(evt.currentTarget.children[0]).click(); }}>
-                                        <button type="button" className="d-none" data-toggle="modal" data-target={"#signup_modal"} />
-                                        <i className="fas fa-file-signature mr-1" style={{ pointerEvents: "none" }}></i>
-                                        <b>アカウントを新規作成する</b>
-                                    </button>
-                                </div>
+                                <button type="button" className="btn btn-link btn-lg mx-1" data-dismiss="modal" data-target={"#signin_modal"}
+                                    onClick={(evt) => { $(evt.currentTarget.children[0]).click(); }}>
+                                    <button type="button" className="d-none" data-toggle="modal" data-target={"#signup_modal"} />
+                                    <i className="fas fa-file-signature mr-1" style={{ pointerEvents: "none" }}></i>
+                                    <b>アカウントを新規作成する</b>
+                                </button>
                             </div>
                             <div className="modal-footer d-flex justify-content-end">
                                 <h5 className="modal-title">

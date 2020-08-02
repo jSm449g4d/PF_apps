@@ -12,6 +12,8 @@ export const AppMain = () => {
     const [tmpFile, setTmpFile] = useState(null)
     const [position, setPosition] = useState("client")//client,owner
     const [tmpShopName, setTmpShopName] = useState("")
+    const [tmpText, setTmpText] = useState("")
+    const [tmpSwitch, setTmpSwitch] = useState("")
 
     const [dbOszv_s, dispatchOszv_s] = useDb()
     const [dbOszv_c, dispatchOszv_c] = useDb()
@@ -39,22 +41,47 @@ export const AppMain = () => {
         })
 
     }
+    const updateItem = (tsuid: string, addDict: any) => {
+        if (showUid != uid) return false;
+        dispatchOszv_s({ type: "create", recodes: { [tsuid]: Object.assign(Object.assign({}, dbOszv_s[tsuid]), addDict) }, merge: true })
+    }
 
     const itemModal = (tsuid: string, itemName: string) => {
         return (
             <div className="col-sm-6 col-md-4 col-lg-2 oszv-column">
-                <a data-toggle="modal" data-target={"#V" + tsuid + "_itemModal"}>
+                <a data-toggle="modal" data-target={"#V" + tsuid + "_itemModal"} onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
                     <img className="img-fluid" src="/static/img/publicdomainq-0014284zts.jpg" />
-                    {itemName}
+                    <h5>{itemName}</h5>
                 </a>
-                {/*モーダルの内容*/}
+                {/*モーダル*/}
                 <div className="modal fade" id={"V" + tsuid + "_itemModal"} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
                             <div className="modal-header d-flex justify-content-between">
-                                <h5 className="modal-title">
-                                    <i className="fas fa-utensils" style={{ pointerEvents: "none" }}></i>{itemName}
-                                </h5>
+                                <h4 className="modal-title">
+                                    {position == "client" ?
+                                        <div><i className="fas fa-utensils mr-1" style={{ pointerEvents: "none" }}></i>{itemName}</div>
+                                        :
+                                        <div>
+                                            {tmpSwitch == "itemName" ?
+                                                <div className="form-inline">
+                                                    <input className="form-control form-control-lg m-1" type="text" placeholder="商品名" value={tmpText}
+                                                        onChange={(evt: any) => { setTmpText(evt.target.value) }} />
+                                                    <button className="btn btn-success btn-lg m-1" type="button"
+                                                        onClick={() => { updateItem(tsuid, { "name": tmpText }); setTmpSwitch(""); }}>
+                                                        <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>変更する
+                                                    </button>
+                                                </div>
+                                                :
+                                                <div>
+                                                    <i className="fas fa-utensils mr-1" style={{ pointerEvents: "none" }}></i>{itemName}
+                                                    <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2" style={{ color: "saddlebrown" }}
+                                                        onClick={() => { setTmpText(itemName); setTmpSwitch("itemName"); }}></i>
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+                                </h4>
                                 <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
                                     <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
                                 </button>
@@ -69,11 +96,8 @@ export const AppMain = () => {
                                     </div>
                                     :
                                     <div className="d-flex flex-column text-center">
-                                        <button className="btn btn-warning btn-lg m-1" type="button" data-dismiss="modal"
-                                            onClick={() => { }}>
-                                            <i className="fas fa-wrench mr-1" style={{ pointerEvents: "none" }}></i>編集
-                                        </button>
-                                        <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal">
+                                        <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
+                                            onClick={() => { dispatchOszv_s({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true }) }}>
                                             <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
                                         </button>
                                     </div>
@@ -91,8 +115,8 @@ export const AppMain = () => {
         return (
             <div className="col-12 oszv-column">
                 <a className="row" data-toggle="modal" data-target={"#V" + String(key) + "_orderModal"}>
-                    <div className="col-sm-12 col-lg-6">名称{num}</div>
-                    <div className="col-sm-12 col-lg-6">コンソール{num}</div>
+                    <h5 className="col-sm-12 col-lg-6">名称{num}</h5>
+                    <h5 className="col-sm-12 col-lg-6">コンソール{num}</h5>
                 </a>
                 <div className="modal fade" id={"V" + String(key) + "_orderModal"} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
@@ -128,18 +152,6 @@ export const AppMain = () => {
                     "name": "新しい商品",
                     "image": ""
                 }
-            },
-            merge: true
-        })
-    }
-    const confItem = (tsuid: string, addDict: any) => {
-        if (showUid != uid) return false;
-        let tmpRecord = Object.assign({}, dbOszv_s[tsuid])
-        tmpRecord = Object.assign(tmpRecord, addDict)
-        dispatchOszv_s({
-            type: "create",
-            recodes: {
-                tsuid: tmpRecord
             },
             merge: true
         })

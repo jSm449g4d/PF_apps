@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { dbFieldDelete, useAuth, useDb } from "../component/firebaseWrapper";
+import { dbFieldDelete, useAuth, useDb, needLoginForm } from "../component/firebaseWrapper";
 import { stopf5, jpclock } from "../component/util_tsx";
 
 export const AppMain = () => {
@@ -90,7 +90,7 @@ export const AppMain = () => {
         )
     }
     const inputConsole = () => {
-        if (uid == "") { return (<h5> <i className="fas fa-wind mr-1"></i>Plz login</h5>); };
+        if (uid == "") return (<div>{needLoginForm()}</div>)
         return (
             <div className="mt-2 p-2" style={{ color: "#CCFFFF", border: "3px double silver", background: "#001111" }}>
                 <div className="d-flex justify-content-between">

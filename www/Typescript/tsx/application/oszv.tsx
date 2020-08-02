@@ -11,7 +11,6 @@ export const AppMain = () => {
     const [tmpContent, setTmpContent] = useState("")
     const [tmpFile, setTmpFile] = useState(null)
     const [position, setPosition] = useState("client")//client,owner
-    const [tmpShopName, setTmpShopName] = useState("")
     const [tmpText, setTmpText] = useState("")
     const [tmpSwitch, setTmpSwitch] = useState("")
 
@@ -39,13 +38,40 @@ export const AppMain = () => {
             },
             merge: true
         })
-
     }
     const updateItem = (tsuid: string, addDict: any) => {
         if (showUid != uid) return false;
         dispatchOszv_s({ type: "create", recodes: { [tsuid]: Object.assign(Object.assign({}, dbOszv_s[tsuid]), addDict) }, merge: true })
     }
 
+    const addItem = () => {
+        if (showUid != uid) return false;
+        const tsuid: string = Date.now().toString() + "_" + uid
+        dispatchOszv_s({
+            type: "create",
+            recodes: {
+                [tsuid]: {
+                    "name": "新しい商品",
+                    "image": ""
+                }
+            },
+            merge: true
+        })
+    }
+    const addOrder = (itemTsuid: string = "nullPoi", name: string = "新しい注文") => {
+        if (showUid != uid) return false;
+        const tsuid: string = Date.now().toString() + "_" + uid
+        dispatchOszv_c({
+            type: "create",
+            recodes: {
+                [tsuid]: {
+                    "itemTsuid": itemTsuid,
+                    "name": name
+                }
+            },
+            merge: true
+        })
+    }
     const itemModal = (tsuid: string, itemName: string) => {
         return (
             <div className="col-sm-6 col-md-4 col-lg-2 oszv-column">
@@ -90,7 +116,8 @@ export const AppMain = () => {
                                 <img className="img-fluid" src="/static/img/publicdomainq-0014284zts.jpg" />
                                 {position == "client" ?
                                     <div className="d-flex flex-column text-center">
-                                        <button className="btn btn-success btn-lg m-1" type="button" data-dismiss="modal">
+                                        <button className="btn btn-success btn-lg m-1" type="button" data-dismiss="modal"
+                                            onClick={() => { addOrder(tsuid, itemName) }}>
                                             <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>注文
                                         </button>
                                     </div>
@@ -111,14 +138,14 @@ export const AppMain = () => {
             </div>
         )
     }
-    const orderModal = (key: number, num: string) => {
+    const orderModal = (tsuid: string, num: string) => {
         return (
-            <div className="col-12 oszv-column">
-                <a className="row" data-toggle="modal" data-target={"#V" + String(key) + "_orderModal"}>
+            <div className="col-12 oszv-column border">
+                <a className="row" data-toggle="modal" data-target={"#V" + tsuid + "_orderModal"}>
                     <h5 className="col-sm-12 col-lg-6">名称{num}</h5>
                     <h5 className="col-sm-12 col-lg-6">コンソール{num}</h5>
                 </a>
-                <div className="modal fade" id={"V" + String(key) + "_orderModal"} role="dialog" aria-hidden="true">
+                <div className="modal fade" id={"V" + tsuid + "_orderModal"} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
                             <div className="modal-header justify-content-between">
@@ -142,19 +169,6 @@ export const AppMain = () => {
                 </div>
             </div>
         )
-    }
-    const addItem = () => {
-        if (showUid != uid) return false;
-        dispatchOszv_s({
-            type: "create",
-            recodes: {
-                [Date.now().toString() + "_" + uid]: {
-                    "name": "新しい商品",
-                    "image": ""
-                }
-            },
-            merge: true
-        })
     }
     // renders
     const dispPosition = () => {
@@ -193,7 +207,7 @@ export const AppMain = () => {
                 <div>
                     {tmpSwitch == "shopName" ?
                         <h2 className="form-inline">
-                            <input className="form-control form-control-lg m-1" type="text" placeholder="店舗名" value={tmpText} size={30}
+                            <input className="form-control form-control-lg m-1" type="text" placeholder="店舗名" value={tmpText} size={32}
                                 onChange={(evt: any) => { setTmpText(evt.target.value) }} />
                             <button className="btn btn-success btn-lg m-1" type="button"
                                 onClick={() => { buildShop(tmpText); setTmpText(""); setTmpSwitch(""); }}>
@@ -231,11 +245,9 @@ export const AppMain = () => {
     }
     const orderColumn = () => {
         const tmpRecodes = [];
-        const tsuids = Object.keys(dbOszv_s).sort();
-        //for (var i = 0; i < 1 + tsuids.length; i++) {
-        for (var i = 0; i < 1; i++) {
-            tmpRecodes.push(orderModal(0, "Rv"))
-            tmpRecodes.push(orderModal(1, "RF"))
+        const tsuids = Object.keys(dbOszv_c).sort();
+        for (var i = 0; i < tsuids.length; i++) {
+            tmpRecodes.push(orderModal(tsuids[i], dbOszv_c[tsuids[i]]["name"]))
         }
         return (<div className="row">{tmpRecodes}</div>)
     }
@@ -286,8 +298,14 @@ export const AppMain = () => {
         )
     }
     return (
-        <div className="p-2 bg-light">
-            {appBody()}
+        <div>
+            {position == "client" ?
+                <div className="p-2" style={{ backgroundColor: "#efefff" }}>
+                    {appBody()}
+                </div> :
+                <div className="p-2" style={{ backgroundColor: "#ffdfef" }}>
+                    {appBody()}
+                </div>}
         </div>
     )
 };

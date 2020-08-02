@@ -139,13 +139,15 @@ export const AppMain = () => {
         )
     }
     const orderModal = (tsuid: string, orderName: string, orderMessage: string) => {
+        const now: Date = new Date(Number(tsuid.split("_")[0]));
+        const timestamp = now.getFullYear() + "年 " + now.getMonth() +
+            "月 " + now.getDate() + "日 " + now.getHours() + ": " + now.getMinutes() + ": " + now.getSeconds();
         return (
             <div className="col-12 oszv-column border">
                 <a className="row" data-toggle="modal" data-target={"#V" + tsuid + "_orderModal"}>
-                    <h5 className="col-sm-12 col-lg-6">名称: {orderName}</h5>
-                    <h5 className="col-sm-12 col-lg-6">コンソール: ==</h5>
-                    <h5 className="col-sm-12 col-lg-4">時間: {tsuid.split("_")[0]}</h5>
-                    <h5 className="col-sm-12 col-lg-8">メッセージ: {orderMessage}</h5>
+                    <h5 className="col-sm-12 col-lg-3">{timestamp}</h5>
+                    <h4 className="col-sm-12 col-lg-9">名称: {orderName}</h4>
+                    <h6 className="col-sm-12 col-lg-12">メッセージ: {orderMessage}</h6>
                 </a>
                 <div className="modal fade" id={"V" + tsuid + "_orderModal"} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">

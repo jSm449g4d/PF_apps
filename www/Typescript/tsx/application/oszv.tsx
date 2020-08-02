@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { dbFieldDelete, useAuth, useDb, needLoginForm } from "../component/firebaseWrapper";
 import { stopf5, jpclock, Query2Dict } from "../component/util_tsx";
 import { rejects } from 'assert';
+import "../stylecheets/style.sass";
 
 export const AppMain = () => {
     const [uid] = useAuth()
@@ -38,7 +39,7 @@ export const AppMain = () => {
 
     const itemModal = (num: string) => {
         return (
-            <div className="col-sm-6 col-md-4 col-lg-2">
+            <div className="col-sm-6 col-md-4 col-lg-2 oszv-column">
                 <a data-toggle="modal" data-target={"#" + num + "_modal"}>
                     <img className="img-fluid" src="/static/img/publicdomainq-0014284zts.jpg" />
                     写真付きのメニュー{num}
@@ -80,7 +81,7 @@ export const AppMain = () => {
     }
     const orderModal = (num: string) => {
         return (
-            <div className="col-12">
+            <div className="col-12 oszv-column">
                 <a className="row" data-toggle="modal" data-target={"#" + num + "_modal"}>
                     <div className="col-sm-12 col-lg-6">名称{num}</div>
                     <div className="col-sm-12 col-lg-6">コンソール{num}</div>

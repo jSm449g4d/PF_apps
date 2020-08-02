@@ -21,7 +21,7 @@ export const AppWidgetHead = () => {
             <div className="col-sm-12 col-md-6">
                 <div className="form-inline m-2">
                     <i className="fab fa-react fa-2x fa-spin mr-2" style={{ color: "mediumturquoise" }}></i>
-                    <div id="titlelogo_tsx">アプリケーションのタイトルが未設定です</div>
+                    <div id="titlelogo_tsx">タイトルが未設定です</div>
                 </div>
             </div>
             <div className="col-sm-12 col-md-6 d-flex justify-content-end">
@@ -30,7 +30,7 @@ export const AppWidgetHead = () => {
                     {Query2Dict()["portfolio"] ?
                         <div></div>
                         :
-                        <button className="btn btn-link dropdown-toggle m-2 mr-5" type="button" data-toggle="dropdown">
+                        <button className="btn btn-link dropdown-toggle m-2 mr-3" type="button" data-toggle="dropdown">
                             <b>アプリ一覧</b>
                         </button>
                     }

@@ -65,6 +65,7 @@ export const AppMain = () => {
                 [tsuid]: {
                     "itemTsuid": itemTsuid,
                     "name": name,
+                    "position": position,
                     "message": message
                 }
             },
@@ -254,7 +255,8 @@ export const AppMain = () => {
         const tmpRecodes = [];
         const tsuids = Object.keys(dbOszv_c).sort();
         for (var i = 0; i < tsuids.length; i++) {
-            tmpRecodes.push(orderModal(tsuids[i], dbOszv_c[tsuids[i]]["name"], dbOszv_c[tsuids[i]]["message"]))
+            if (dbOszv_c[tsuids[i]]["position"] == position)
+                tmpRecodes.push(orderModal(tsuids[i], dbOszv_c[tsuids[i]]["name"], dbOszv_c[tsuids[i]]["message"]))
         }
         return (<div className="row">{tmpRecodes}</div>)
     }

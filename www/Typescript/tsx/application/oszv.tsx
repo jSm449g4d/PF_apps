@@ -40,24 +40,27 @@ export const AppMain = () => {
 
     }
 
-    const itemModal = (key: number, itemName: string) => {
+    const itemModal = (tsuid: string, itemName: string) => {
         return (
             <div className="col-sm-6 col-md-4 col-lg-2 oszv-column">
-                <a data-toggle="modal" data-target={"#V" + String(key) + "_itemModal"}>
+                <a data-toggle="modal" data-target={"#V" + tsuid + "_itemModal"}>
                     <img className="img-fluid" src="/static/img/publicdomainq-0014284zts.jpg" />
                     {itemName}
                 </a>
                 {/*モーダルの内容*/}
-                <div className="modal fade" id={"V" + String(key) + "_itemModal"} role="dialog" aria-hidden="true">
+                <div className="modal fade" id={"V" + tsuid + "_itemModal"} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
                             <div className="modal-header d-flex justify-content-between">
-                                <h5 className="modal-title">{itemName}</h5>
+                                <h5 className="modal-title">
+                                    <i className="fas fa-utensils" style={{ pointerEvents: "none" }}></i>{itemName}
+                                </h5>
                                 <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
                                     <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
                                 </button>
                             </div>
                             <div className="modal-body">
+                                <img className="img-fluid" src="/static/img/publicdomainq-0014284zts.jpg" />
                                 {position == "client" ?
                                     <div className="d-flex flex-column text-center">
                                         <button className="btn btn-success btn-lg m-1" type="button" data-dismiss="modal">
@@ -66,7 +69,8 @@ export const AppMain = () => {
                                     </div>
                                     :
                                     <div className="d-flex flex-column text-center">
-                                        <button className="btn btn-warning btn-lg m-1" type="button" data-dismiss="modal">
+                                        <button className="btn btn-warning btn-lg m-1" type="button" data-dismiss="modal"
+                                            onClick={() => { }}>
                                             <i className="fas fa-wrench mr-1" style={{ pointerEvents: "none" }}></i>編集
                                         </button>
                                         <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal">
@@ -124,6 +128,18 @@ export const AppMain = () => {
                     "name": "新しい商品",
                     "image": ""
                 }
+            },
+            merge: true
+        })
+    }
+    const confItem = (tsuid: string, addDict: any) => {
+        if (showUid != uid) return false;
+        let tmpRecord = Object.assign({}, dbOszv_s[tsuid])
+        tmpRecord = Object.assign(tmpRecord, addDict)
+        dispatchOszv_s({
+            type: "create",
+            recodes: {
+                tsuid: tmpRecord
             },
             merge: true
         })
@@ -215,7 +231,7 @@ export const AppMain = () => {
         const tmpRecodes = [];
         const tsuids = Object.keys(dbOszv_s).sort();
         for (var i = 0; i < tsuids.length; i++) {
-            tmpRecodes.push(itemModal(i, dbOszv_s[tsuids[i]]["name"]))
+            tmpRecodes.push(itemModal(tsuids[i], dbOszv_s[tsuids[i]]["name"]))
         }
         return (<div className="row">{tmpRecodes}</div>)
     }

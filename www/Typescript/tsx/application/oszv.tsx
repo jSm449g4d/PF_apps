@@ -68,7 +68,7 @@ export const AppMain = () => {
                                                     <input className="form-control form-control-lg m-1" type="text" placeholder="商品名" value={tmpText}
                                                         onChange={(evt: any) => { setTmpText(evt.target.value) }} />
                                                     <button className="btn btn-success btn-lg m-1" type="button"
-                                                        onClick={() => { updateItem(tsuid, { "name": tmpText }); setTmpSwitch(""); }}>
+                                                        onClick={() => { updateItem(tsuid, { "name": tmpText }); setTmpText(""); setTmpSwitch(""); }}>
                                                         <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>変更する
                                                     </button>
                                                 </div>
@@ -190,46 +190,28 @@ export const AppMain = () => {
             return (<h2><i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage["shopName"]}</h2>)
         if (dbMypage["shopName"] && position == "owner")
             return (
-                <h2>
-                    {/*Title*/}
-                    <i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage["shopName"]}
-                    <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2" style={{ color: "saddlebrown" }}
-                        data-toggle="modal" data-target="#changeShopName_modal"></i>
-                    {/*changeShopName_Modal */}
-                    <div className="modal fade" id="changeShopName_modal" role="dialog" aria-hidden="true">
-                        <div className="modal-dialog modal-lg" role="document">
-                            <div className="modal-content">
-                                <div className="modal-header justify-content-between">
-                                    <h5 className="modal-title">
-                                        <i className="fas fa-pencil-alt mr-1" style={{ pointerEvents: "none" }}></i>
-                                        店名の変更
-                                        </h5>
-                                    <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
-                                        <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
-                                    </button>
-                                </div>
-                                <div className="modal-body">
-                                    <h6><i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i> {dbMypage["shopName"]}</h6>
-                                    <div className="d-flex flex-column text-center">
-                                        <input className="form-control form-control-lg m-1" type="text" placeholder="新しい店名"
-                                            onChange={(evt: any) => { setTmpShopName(evt.target.value); }} />
-                                        {(tmpShopName == "") ?
-                                            <button className="btn btn-warning btn-lg m-1" type="button" data-dismiss="modal" disabled>
-                                                <b>×店名を入力してください</b>
-                                            </button>
-                                            :
-                                            <button className="btn btn-warning btn-lg m-1" type="button" data-dismiss="modal"
-                                                onClick={() => { buildShop(tmpShopName); }}>
-                                                <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>
-                                                新しい店名を送信
-                                            </button>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </h2>
+                <div>
+                    {tmpSwitch == "shopName" ?
+                        <h2 className="form-inline">
+                            <input className="form-control form-control-lg m-1" type="text" placeholder="店舗名" value={tmpText} size={30}
+                                onChange={(evt: any) => { setTmpText(evt.target.value) }} />
+                            <button className="btn btn-success btn-lg m-1" type="button"
+                                onClick={() => { buildShop(tmpText); setTmpText(""); setTmpSwitch(""); }}>
+                                <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>変更する
+                                </button>
+                            <button className="btn btn-secondary btn-lg m-1" type="button"
+                                onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
+                                <i className="fas fa-times mr-1" style={{ pointerEvents: "none" }}></i>変更中止
+                                </button>
+                        </h2>
+                        :
+                        <h2>
+                            <i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage["shopName"]}
+                            <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2" style={{ color: "saddlebrown" }}
+                                onClick={() => { setTmpText(dbMypage["shopName"]); setTmpSwitch("shopName"); }}></i>
+                        </h2>
+                    }
+                </div>
             )
         if (showUid == uid && position == "owner")
             return (

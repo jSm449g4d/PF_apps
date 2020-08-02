@@ -44,3 +44,4 @@ else {
 // WidgetFoot
 document.body.insertAdjacentHTML('beforeend', '<div id="AppWidgetFoot">AppWidgetFoot loading...<\/div>');
 ReactDOM.render(<AppWidgetFoot />, document.getElementById("AppWidgetFoot"));
+

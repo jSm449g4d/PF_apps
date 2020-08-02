@@ -197,6 +197,7 @@ export const AppMain = () => {
         return (<div className="row">{tmpRecodes}</div>)
     }
     const appBody = () => {
+        if (uid == "") return (<div>{needLoginForm()}</div>)
         return (
             <div>
                 <div className="d-flex justify-content-between">
@@ -245,7 +246,6 @@ export const AppMain = () => {
             </div>
         )
     }
-    //if (uid == "") return needLoginForm()
     return (
         <div className="p-2 bg-light">
             {appBody()}

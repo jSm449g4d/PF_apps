@@ -13,7 +13,7 @@ export const AppMain = () => {
     useEffect(() => { dispatchMypage({ type: "download", fileName: "icon.img", func: (_url: any) => setIconUrl(_url) }) }, [dbMypage])
 
     if (showUid != uid && showUid == "") setShowUid(uid);
-    
+
     const createMypage = () => {
         if (uid == showUid)
             return (
@@ -22,7 +22,7 @@ export const AppMain = () => {
                         if (stopf5.check("cleateMypage", 500, true) == false) return; // To prevent high freq access
                         dispatchMypage({
                             type: "create", recodes: {
-                                 nickname: "窓の民は名無し", pr: "私はJhon_Doe。窓の蛇遣いです。" 
+                                nickname: "窓の民は名無し", pr: "私はJhon_Doe。窓の蛇遣いです。"
                             }, merge: true
                         })
                     }}>
@@ -111,6 +111,7 @@ export const AppMain = () => {
     }
 
     const appBody = () => {
+        if (uid == "") return (<div>{needLoginForm()}</div>)
         if (dbMypage.length < 1) { return (<div>{createMypage()}</div>) }
         return (
             <div className="m-2" style={{ background: "khaki" }}>

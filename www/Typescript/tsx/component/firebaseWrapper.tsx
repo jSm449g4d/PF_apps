@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import ReactDOM from "react-dom";
 import firebase from 'firebase/app';
 import "firebase/analytics";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
+import { string } from 'prop-types';
 
 
 firebase.initializeApp({
@@ -316,25 +318,15 @@ export const AppAuth = () => {
     );
 }
 export const needLoginForm = () => {
-    const [tmpAddress, setTmpAddress] = useState("")
-    const [tmpPass, setTmpPass] = useState("")
     //renders
     return (
         <div className="p-2" style={{ backgroundColor: "wheat", border: "3px double silver" }}>
             <div className="d-flex flex-column text-center">
-                <h4><i className="fas fa-sign-in-alt mr-1"></i>ログイン</h4>
+                <h4>ログインが必要です</h4>
                 <p />
-                <h6><i className="far fa-envelope mr-1"></i>メールアドレス</h6>
-                <input className="form-control m-1" type="text" name="mail_addr" placeholder="mailAddress"
-                    onChange={(evt: any) => { setTmpAddress(evt.target.value); }} />
-                <h6><i className="fas fa-key mr-1"></i>パスワード</h6>
-                <input className="form-control m-1" type="text" name="mail_pass" placeholder="password"
-                    onChange={(evt: any) => { setTmpPass(evt.target.value); }} />
-                <p />
-                <button className="btn btn-primary btn m-1" type="button" data-dismiss="modal"
-                    onClick={() => { signIn(tmpAddress, tmpPass) }}>
+                <button type="button" className="btn btn-primary m-2" data-toggle="modal" data-target={"#signin_modal"}>
                     <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>
-                    <b>ログインする</b>
+                    <b><i className="fas fa-sign-in-alt mr-1"></i>ログインする</b>
                 </button>
                 <p />
                 <button className="btn btn-light btn m-1" type="button" data-dismiss="modal"

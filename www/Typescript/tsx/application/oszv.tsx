@@ -8,8 +8,6 @@ import { string } from 'prop-types';
 export const AppMain = () => {
     const [uid] = useAuth()
     const [showUid, setShowUid] = useState("showuid" in Query2Dict() == false ? uid : Query2Dict()["showuid"])
-    const [tmpContent, setTmpContent] = useState("")
-    const [tmpFile, setTmpFile] = useState(null)
     const [position, setPosition] = useState("client")//client,owner
     const [tmpText, setTmpText] = useState("")
     const [tmpSwitch, setTmpSwitch] = useState("")
@@ -58,7 +56,7 @@ export const AppMain = () => {
             merge: true
         })
     }
-    const addOrder = (itemTsuid: string = "nullPoi", name: string = "新しい注文") => {
+    const addOrder = (itemTsuid: string = "nullPoi", name: string = "新しい注文", message: string = "新しいMSG") => {
         if (showUid != uid) return false;
         const tsuid: string = Date.now().toString() + "_" + uid
         dispatchOszv_c({
@@ -66,7 +64,8 @@ export const AppMain = () => {
             recodes: {
                 [tsuid]: {
                     "itemTsuid": itemTsuid,
-                    "name": name
+                    "name": name,
+                    "message": message
                 }
             },
             merge: true
@@ -114,6 +113,7 @@ export const AppMain = () => {
                             </div>
                             <div className="modal-body">
                                 <img className="img-fluid" src="/static/img/publicdomainq-0014284zts.jpg" />
+                                <p />
                                 {position == "client" ?
                                     <div className="d-flex flex-column text-center">
                                         <button className="btn btn-success btn-lg m-1" type="button" data-dismiss="modal"
@@ -138,31 +138,36 @@ export const AppMain = () => {
             </div>
         )
     }
-    const orderModal = (tsuid: string, num: string) => {
+    const orderModal = (tsuid: string, orderName: string, orderMessage: string) => {
         return (
             <div className="col-12 oszv-column border">
                 <a className="row" data-toggle="modal" data-target={"#V" + tsuid + "_orderModal"}>
-                    <h5 className="col-sm-12 col-lg-6">名称{num}</h5>
-                    <h5 className="col-sm-12 col-lg-6">コンソール{num}</h5>
+                    <h5 className="col-sm-12 col-lg-6">名称: {orderName}</h5>
+                    <h5 className="col-sm-12 col-lg-6">コンソール: ==</h5>
+                    <h5 className="col-sm-12 col-lg-4">時間: {tsuid.split("_")[0]}</h5>
+                    <h5 className="col-sm-12 col-lg-8">メッセージ: {orderMessage}</h5>
                 </a>
                 <div className="modal fade" id={"V" + tsuid + "_orderModal"} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
                             <div className="modal-header justify-content-between">
-                                <h5 className="modal-title">{num}</h5>
+                                <h5 className="modal-title">{orderName}</h5>
                                 <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
                                     <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
                                 </button>
                             </div>
                             <div className="modal-body">
-                            </div>
-                            <div className="modal-footer d-flex justify-content-between">
-                                <button className="btn btn-warning m-2" type="button" data-dismiss="modal">
-                                    <i className="fas fa-bell mr-1" style={{ pointerEvents: "none" }}></i>呼び出し
-                                </button>
-                                <button className="btn btn-danger m-2" type="button" data-dismiss="modal">
-                                    <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
-                                </button>
+                                <img className="img-fluid" src="/static/img/publicdomainq-0014284zts.jpg" />
+                                <p />
+                                <div className="d-flex flex-column text-center">
+                                    <button className="btn btn-warning btn-lg m-1" type="button" data-dismiss="modal">
+                                        <i className="fas fa-bell mr-1" style={{ pointerEvents: "none" }}></i>呼び出し
+                                    </button>
+                                    <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
+                                        onClick={() => { dispatchOszv_c({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true }) }}>
+                                        <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -247,7 +252,7 @@ export const AppMain = () => {
         const tmpRecodes = [];
         const tsuids = Object.keys(dbOszv_c).sort();
         for (var i = 0; i < tsuids.length; i++) {
-            tmpRecodes.push(orderModal(tsuids[i], dbOszv_c[tsuids[i]]["name"]))
+            tmpRecodes.push(orderModal(tsuids[i], dbOszv_c[tsuids[i]]["name"], dbOszv_c[tsuids[i]]["message"]))
         }
         return (<div className="row">{tmpRecodes}</div>)
     }

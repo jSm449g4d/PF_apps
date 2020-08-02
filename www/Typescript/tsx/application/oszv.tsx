@@ -114,9 +114,12 @@ export const AppMain = () => {
     const addItem = () => {
         if (showUid != uid) return false;
         dispatchOszv_s({
-            [Date.now().toString() + "_" + uid]: {
-                "name": "新しい商品", "image": ""
-            }, merge: true
+            type: "create",
+            recodes: {
+                [Date.now().toString() + "_" + uid]: {
+                    "name": "新しい商品", "image": ""
+                }, merge: true
+            }
         })
     }
     // renders
@@ -205,7 +208,8 @@ export const AppMain = () => {
     const orderColumn = () => {
         const tmpRecodes = [];
         const tsuids = Object.keys(dbOszv_s).sort();
-        for (var i = 0; i < 1 + tsuids.length; i++) {
+        //for (var i = 0; i < 1 + tsuids.length; i++) {
+        for (var i = 0; i < 1; i++) {
             tmpRecodes.push(orderModal("Rv"))
             tmpRecodes.push(orderModal("RF"))
         }
@@ -215,9 +219,9 @@ export const AppMain = () => {
         if (uid == "") return (<div>{needLoginForm()}</div>)
         return (
             <div>
-                <div className="d-flex justify-content-between">
-                    {dipsShopName()}
-                    <div className="form-inline">{dispPosition()}</div>
+                <div className="row">
+                    <div className="col-sm-12 col-lg-8">{dipsShopName()}</div>
+                    <div className="col-sm-12 col-lg-4 text-right">{dispPosition()}</div>
                 </div>
                 <ul className="nav nav-tabs nav-fill mb-2" role="tablist">
                     <li className="nav-item">
@@ -238,7 +242,7 @@ export const AppMain = () => {
                             :
                             <div className="row">
                                 <div className="col-1"></div>
-                                <button className="btn btn-outline-primary btn-lg rounded-pill col-10" onClick={() => { }}>
+                                <button className="btn btn-outline-primary btn-lg rounded-pill col-10" onClick={() => { addItem() }}>
                                     <b>+商品を追加</b>
                                 </button>
                                 <div className="col-1"></div>

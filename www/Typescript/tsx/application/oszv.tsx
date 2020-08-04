@@ -13,11 +13,13 @@ export const AppMain = () => {
     const [tmpSwitch, setTmpSwitch] = useState("")
 
     const [dbOszv_s, dispatchOszv_s] = useDb()
-    const [dbOszv_c, dispatchOszv_c] = useDb()
+    const [dbOszv_cc, dispatchOszv_cc] = useDb()
+    const [dbOszv_cs, dispatchOszv_cs] = useDb()// kari
     const [dbMypage, dispatchMypage] = useDb() //notTsuidDb
     useEffect(() => { setShowUid(uid) }, [uid])
     useEffect(() => { dispatchOszv_s({ type: "setUri", uri: "oszv_s/" + uid }); }, [uid])
-    useEffect(() => { dispatchOszv_c({ type: "setUri", uri: "oszv_c/" + uid }); }, [uid])
+    useEffect(() => { dispatchOszv_cc({ type: "setUri", uri: "oszv_cc/" + uid }); }, [uid])
+    useEffect(() => { dispatchOszv_cs({ type: "setUri", uri: "oszv_cs/" + showUid }); }, [showUid])
     useEffect(() => { dispatchMypage({ type: "setUri", uri: "mypage/" + showUid }); setPosition("client") }, [showUid])
 
     // jpclock (decoration)
@@ -43,7 +45,7 @@ export const AppMain = () => {
     }
 
     const addItem = () => {
-        if (showUid != uid) return false;
+        if (showUid != uid || position != "owner") return false;
         const tsuid: string = Date.now().toString() + "_" + uid
         dispatchOszv_s({
             type: "create",
@@ -57,20 +59,46 @@ export const AppMain = () => {
         })
     }
     const addOrder = (itemTsuid: string = "nullPoi", name: string = "新しい注文", message: string = "新しいMSG") => {
-        if (showUid != uid) return false;
+        if (showUid != uid || position != "client") return false;
         const tsuid: string = Date.now().toString() + "_" + uid
-        dispatchOszv_c({
+        dispatchOszv_cc({
             type: "create",
             recodes: {
                 [tsuid]: {
                     "itemTsuid": itemTsuid,
                     "name": name,
-                    "position": position,
                     "message": message
                 }
             },
             merge: true
         })
+        dispatchOszv_cs({
+            type: "create",
+            recodes: {
+                [tsuid]: {
+                    "itemTsuid": itemTsuid,
+                    "name": name,
+                    "message": message
+                }
+            },
+            merge: true
+        })
+    }
+    const deleteOrder = (tsuid: string) => {
+        // [tsuid(client)]: itemTsuid(Owner),
+        if (position == "client") {
+            const itemTsuid: string = dbOszv_cc[tsuid]["itemTsuid"]
+            dispatchOszv_cs({ type: "setUri", uri: "oszv_cs/" + itemTsuid.split("_")[1] });
+            dispatchOszv_cs({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true })
+            dispatchOszv_cs({ type: "setUri", uri: "oszv_cs/" + showUid });
+            dispatchOszv_cc({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true })
+        }
+        if (position == "owner") {
+            dispatchOszv_cc({ type: "setUri", uri: "oszv_cc/" + tsuid.split("_")[1] });
+            dispatchOszv_cc({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true })
+            dispatchOszv_cc({ type: "setUri", uri: "oszv_cc/" + showUid });
+            dispatchOszv_cs({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true })
+        }
     }
     const itemModal = (tsuid: string, itemName: string) => {
         return (
@@ -167,7 +195,7 @@ export const AppMain = () => {
                                         <i className="fas fa-bell mr-1" style={{ pointerEvents: "none" }}></i>呼び出し
                                     </button>
                                     <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
-                                        onClick={() => { dispatchOszv_c({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true }) }}>
+                                        onClick={() => { deleteOrder(tsuid) }}>
                                         <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
                                     </button>
                                 </div>
@@ -253,10 +281,17 @@ export const AppMain = () => {
     }
     const orderColumn = () => {
         const tmpRecodes = [];
-        const tsuids = Object.keys(dbOszv_c).sort();
-        for (var i = 0; i < tsuids.length; i++) {
-            if (dbOszv_c[tsuids[i]]["position"] == position)
-                tmpRecodes.push(orderModal(tsuids[i], dbOszv_c[tsuids[i]]["name"], dbOszv_c[tsuids[i]]["message"]))
+        if (position == "client") {
+            const tsuids = Object.keys(dbOszv_cc).sort();
+            for (var i = 0; i < tsuids.length; i++) {
+                tmpRecodes.push(orderModal(tsuids[i], dbOszv_cc[tsuids[i]]["name"], dbOszv_cc[tsuids[i]]["message"]))
+            }
+        }
+        if (position == "owner") {
+            const tsuids = Object.keys(dbOszv_cs).sort();
+            for (var i = 0; i < tsuids.length; i++) {
+                tmpRecodes.push(orderModal(tsuids[i], dbOszv_cs[tsuids[i]]["name"], dbOszv_cs[tsuids[i]]["message"]))
+            }
         }
         return (<div className="row">{tmpRecodes}</div>)
     }

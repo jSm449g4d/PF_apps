@@ -107,7 +107,7 @@ export const AppMain = () => {
                     <img className="img-fluid" src="/static/img/publicdomainq-0014284zts.jpg" />
                     <h5>{itemName}</h5>
                 </a>
-                {/*モーダル*/}
+                {/*注文モーダル(#V)*/}
                 <div className="modal fade" id={"V" + tsuid + "_itemModal"} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
@@ -146,20 +146,63 @@ export const AppMain = () => {
                                 {position == "client" ?
                                     <div className="d-flex flex-column text-center">
                                         <button className="btn btn-success btn-lg m-1" type="button" data-dismiss="modal"
-                                            onClick={() => { addOrder(tsuid, itemName) }}>
+                                            onClick={(evt) => { addOrder(tsuid, itemName); $(evt.currentTarget.children[0]).click(); }}>
+                                            <button type="button" className="d-none" data-toggle="modal" data-target={"#C" + tsuid + "_itemModal"} />
                                             <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>注文
                                         </button>
                                     </div>
                                     :
                                     <div className="d-flex flex-column text-center">
                                         <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
-                                            onClick={() => { dispatchOszv_s({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true }) }}>
+                                            onClick={(evt) => {
+                                                dispatchOszv_s({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true });
+                                                $(evt.currentTarget.children[0]).click();
+                                            }}>
+                                            <button type="button" className="d-none" data-toggle="modal" data-target={"#D" + tsuid + "_itemModal"} />
                                             <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
                                         </button>
                                     </div>
                                 }
                             </div>
-                            <div className="modal-footer">
+                        </div>
+                    </div>
+                </div>
+                {/*注文確認(#C)*/}
+                <div className="modal fade" id={"C" + tsuid + "_itemModal"} role="dialog" aria-hidden="true">
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header d-flex justify-content-between">
+                                <h4 className="modal-title">注文確認</h4>
+                                <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
+                                    <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
+                                </button>
+                            </div>
+                            <div className="modal-body d-flex flex-column text-center">
+                                <h5>注文を確定しました</h5>
+                                <p />
+                                <button className="btn btn-outline-secondary btn-lg" type="button" data-dismiss="modal">
+                                    戻る
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {/*削除確認(#D)*/}
+                <div className="modal fade" id={"D" + tsuid + "_itemModal"} role="dialog" aria-hidden="true">
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header d-flex justify-content-between">
+                                <h4 className="modal-title">削除確認</h4>
+                                <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
+                                    <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
+                                </button>
+                            </div>
+                            <div className="modal-body d-flex flex-column text-center">
+                                <h5>商品を削除しました</h5>
+                                <p />
+                                <button className="btn btn-outline-secondary btn-lg" type="button" data-dismiss="modal">
+                                    戻る
+                                </button>
                             </div>
                         </div>
                     </div>

@@ -54,16 +54,18 @@ export const AppMain = () => {
     const uploadIcon = () => {
         if (showUid != uid) return;
         return (
-            <button type="button" className="btn btn-outline-success btn-sm m-1"
-                onClick={(evt) => { $(evt.currentTarget.children[0]).click() }}>
-                <input type="file" className="d-none" accept="image/jpeg,image/png"
+            <div>
+                <button type="button" className="btn btn-outline-success btn-sm m-1"
+                    onClick={(evt) => { $(document.getElementById("mypage_uploadIcon")).click() }}>
+                    <i className="fas fa-upload mr-1" style={{ pointerEvents: "none" }}></i>Icon
+                </button>
+                <input type="file" className="d-none" accept="image/jpeg,image/png" id="mypage_uploadIcon"
                     onChange={(evt) => {
                         setIconUrl("")
                         dispatchMypage({ type: "upload", file: evt.target.files[0], fileName: "icon.img" })
                         dispatchMypage({ type: "download", fileName: "icon.img", func: (_url: any) => setIconUrl(_url) })
                     }} />
-                <i className="fas fa-upload mr-1" style={{ pointerEvents: "none" }}></i>Icon
-            </button>
+            </div>
         )
     }
     const changeProfile = (title: string, state_element: string) => {

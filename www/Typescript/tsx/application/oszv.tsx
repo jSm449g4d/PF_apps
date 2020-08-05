@@ -7,27 +7,30 @@ import { string } from 'prop-types';
 
 export const AppMain = () => {
     const [uid] = useAuth()
+
     const [showUid, setShowUid] = useState("showuid" in Query2Dict() == false ? uid : Query2Dict()["showuid"])
     const [position, setPosition] = useState("client")//client,owner
     const [tmpText, setTmpText] = useState("")
     const [tmpSwitch, setTmpSwitch] = useState("")
+    const [tmpFile, setTmpFile] = useState(null)
 
     const [dbOszv_s, dispatchOszv_s] = useDb()
     const [dbOszv_cc, dispatchOszv_cc] = useDb()
     const [dbOszv_cs, dispatchOszv_cs] = useDb()// kari
+    const [dbOszv_tmp, dispatchOszv_tmp] = useDb()// Temp for kari operaton
     const [dbMypage, dispatchMypage] = useDb() //notTsuidDb
     useEffect(() => { setShowUid(uid) }, [uid])
-    useEffect(() => { dispatchOszv_s({ type: "setUri", uri: "oszv_s/" + uid }); }, [uid])
-    useEffect(() => { dispatchOszv_cc({ type: "setUri", uri: "oszv_cc/" + uid }); }, [uid])
-    useEffect(() => { dispatchOszv_cs({ type: "setUri", uri: "oszv_cs/" + showUid }); }, [showUid])
     useEffect(() => { dispatchMypage({ type: "setUri", uri: "mypage/" + showUid }); setPosition("client") }, [showUid])
+    useEffect(() => { dispatchOszv_s({ type: "setUri", uri: "oszv_s/" + showUid }); }, [showUid])
+    useEffect(() => { dispatchOszv_cs({ type: "setUri", uri: "oszv_cs/" + showUid }); }, [showUid])
+    useEffect(() => { dispatchOszv_cc({ type: "setUri", uri: "oszv_cc/" + uid }); }, [uid])
 
     // jpclock (decoration)
     const [jpclockNow, setJpclockNow] = useState("")
-    useEffect(() => {
-        const _intervalId = setInterval(() => setJpclockNow(jpclock()), 500);
-        return () => clearInterval(_intervalId);
-    }, []);
+    //    useEffect(() => {
+    //        const _intervalId = setInterval(() => setJpclockNow(jpclock()), 500);
+    //        return () => clearInterval(_intervalId);
+    //    }, []);
 
     const updateShop = (addDict: any) => {
         if (showUid != uid || position != "owner") return false;
@@ -42,92 +45,65 @@ export const AppMain = () => {
         // [tsuid(client)]: itemTsuid(Owner),
         if (position == "client") {
             const itemTsuid: string = dbOszv_cc[tsuid]["itemTsuid"]
-            dispatchOszv_cs({ type: "setUri", uri: "oszv_cs/" + itemTsuid.split("_")[1] });
-            dispatchOszv_cs({ type: "create", recodes: { [tsuid]: Object.assign(Object.assign({}, dbOszv_cs[tsuid]), addDict) }, merge: true })
-            dispatchOszv_cs({ type: "setUri", uri: "oszv_cs/" + showUid });
+            dispatchOszv_tmp({ type: "setUri", uri: "oszv_cs/" + itemTsuid.split("_")[1] });
+            dispatchOszv_tmp({ type: "create", recodes: { [tsuid]: Object.assign(Object.assign({}, dbOszv_cs[tsuid]), addDict) }, merge: true })
             dispatchOszv_cc({ type: "create", recodes: { [tsuid]: Object.assign(Object.assign({}, dbOszv_cc[tsuid]), addDict) }, merge: true })
         }
         if (position == "owner") {
-            dispatchOszv_cc({ type: "setUri", uri: "oszv_cc/" + tsuid.split("_")[1] });
-            dispatchOszv_cc({ type: "create", recodes: { [tsuid]: Object.assign(Object.assign({}, dbOszv_cc[tsuid]), addDict) }, merge: true })
-            dispatchOszv_cc({ type: "setUri", uri: "oszv_cc/" + showUid });
+            dispatchOszv_tmp({ type: "setUri", uri: "oszv_cc/" + tsuid.split("_")[1] });
+            dispatchOszv_tmp({ type: "create", recodes: { [tsuid]: Object.assign(Object.assign({}, dbOszv_cc[tsuid]), addDict) }, merge: true })
             dispatchOszv_cs({ type: "create", recodes: { [tsuid]: Object.assign(Object.assign({}, dbOszv_cs[tsuid]), addDict) }, merge: true })
         }
     }
     const showImage = (imageUrl: string = "/static/img/publicdomainq-0014284zts.jpg") => {
-        if (imageUrl == "") return (<div><i className="fab fa-themeisle fa-2x m-2"></i>No Image</div>)
-        return (<div><img className="img-fluid" src={imageUrl} /></div>)
+        if (imageUrl == "") return (<div className="d-flex flex-column text-center"><i className="fab fa-themeisle fa-2x m-2"></i>No Image</div>)
+        return (<div className="d-flex flex-column text-center"><img className="img-fluid" src={imageUrl} /></div>)
+    }
+    const updateImage = () => {
+        if (showUid != uid || position != "owner") return;
+        const tsuids = Object.keys(dbOszv_s).sort();
+        for (let i = 0; i < tsuids.length; i++) {
+            dispatchOszv_s({
+                type: "download", fileName: tsuids[i] + ".img",
+                func: (_url: any) => { updateItem(tsuids[i], { "imageUrl": _url }) }
+            })
+        }
+    }
+    const uploadImage = (tsuid: string, buttonText = "画像をアップロード(開発中)") => {
+        if (showUid != uid || position != "owner") return;
+        return (
+            <div className="d-flex flex-column text-center">
+                <button className="btn btn-warning btn-lg m-1" type="button"
+                    onClick={(evt) => { $(document.getElementById("Vc" + tsuid + "_uploadImage")).click() }
+                    }>
+                    <i className="fas fa-upload mr-1" style={{ pointerEvents: "none" }}></i>{buttonText}
+                </button>
+
+                <input type="file" className="d-none" accept="image/jpeg,image/png" id={"Vc" + tsuid + "_uploadImage"} name={tsuid}
+                    onChange={(evt) => {
+                        setTmpFile(evt.target.files[0])
+                        dispatchOszv_s({ type: "upload", file: evt.target.files[0], fileName: evt.target.name + ".img" })
+                        setTimeout(() => { updateImage() }, 1000)
+                    }} />
+            </div>
+        )
     }
 
-    const addItemButton = () => {
+    const addItemButtonZwei = () => {
         if (showUid != uid || position != "owner") return (<div></div>);
         return (
             <div>
                 <div className="d-flex flex-column text-center">
                     <button className="btn btn-outline-primary btn-lg rounded-pill" data-toggle="modal" data-target={"#V" + "_addItemModal"}
-                        onClick={() => { setTmpText("新しい商品"); setTmpSwitch("itemName"); }}>
+                        onClick={() => {
+                            setTmpText("新しい商品"); setTmpSwitch("itemName");
+                            const _tsuid = Date.now().toString() + "_" + uid
+                            updateItem(_tsuid, { "name": "新しい商品", "imageUrl": "" })
+                            setTimeout(() => document.getElementById("A" + _tsuid + "_itemModal").click(), 1000)
+                        }}>
                         <b>+商品を追加</b>
                     </button>
                 </div>
-                {/*商品モーダル(#V)*/}
-                <div className="modal fade" id={"V" + "_addItemModal"} role="dialog" aria-hidden="true">
-                    <div className="modal-dialog modal-lg" role="document">
-                        <div className="modal-content">
-                            <div className="modal-header d-flex justify-content-between">
-                                <h4 className="modal-title">新しい商品の作成</h4>
-                                <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
-                                    <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
-                                </button>
-                            </div>
-                            <div className="modal-body">
-                                <div className="d-flex flex-column text-center">
-                                    <h5>商品名</h5>
-                                    <input className="form-control form-control-lg m-1" type="text" placeholder="商品名" value={tmpText}
-                                        onChange={(evt: any) => { setTmpText(evt.target.value) }} />
-                                    {showImage()}
-                                    <p />
-                                    <button className="btn btn-warning btn-lg m-1" type="button" data-dismiss="modal"
-                                        onClick={(evt) => {
-                                        }}>
-                                        <i className="fas fa-exchange-alt mr-1" style={{ pointerEvents: "none" }}></i>画像をアップロード(未実装)
-                                    </button>
-                                    <button className="btn btn-success btn-lg m-1" type="button" data-dismiss="modal"
-                                        onClick={(evt) => {
-                                            updateItem(Date.now().toString() + "_" + uid, {
-                                                "name": tmpText,
-                                                "imageUrl": ""
-                                            })
-                                            $(document.getElementById("Mc" + "_addItemModal")).click(); setTmpText(""); setTmpSwitch("");
-                                        }}>
-                                        <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>新規作成
-                                    </button>
-                                    <button type="button" id={"Mc" + "_addItemModal"} className="d-none" data-toggle="modal" data-target={"#M" + "_addItemModal"} />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {/*作成確認(#M)*/}
-                <div className="modal fade" id={"M" + "_addItemModal"} role="dialog" aria-hidden="true">
-                    <div className="modal-dialog modal-lg" role="document">
-                        <div className="modal-content">
-                            <div className="modal-header d-flex justify-content-between">
-                                <h4 className="modal-title">作成確認</h4>
-                                <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
-                                    <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
-                                </button>
-                            </div>
-                            <div className="modal-body d-flex flex-column text-center">
-                                <h5>商品を作成しました</h5>
-                                <p />
-                                <button className="btn btn-outline-secondary btn-lg" type="button" data-dismiss="modal">
-                                    戻る
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         )
     }
@@ -161,23 +137,23 @@ export const AppMain = () => {
         // [tsuid(client)]: itemTsuid(Owner),
         if (position == "client") {
             const itemTsuid: string = dbOszv_cc[tsuid]["itemTsuid"]
-            dispatchOszv_cs({ type: "setUri", uri: "oszv_cs/" + itemTsuid.split("_")[1] });
-            dispatchOszv_cs({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true })
-            dispatchOszv_cs({ type: "setUri", uri: "oszv_cs/" + showUid });
+            dispatchOszv_tmp({ type: "setUri", uri: "oszv_cs/" + itemTsuid.split("_")[1] });
+            dispatchOszv_tmp({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true })
             dispatchOszv_cc({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true })
         }
         if (position == "owner") {
-            dispatchOszv_cc({ type: "setUri", uri: "oszv_cc/" + tsuid.split("_")[1] });
-            dispatchOszv_cc({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true })
-            dispatchOszv_cc({ type: "setUri", uri: "oszv_cc/" + showUid });
+            dispatchOszv_tmp({ type: "setUri", uri: "oszv_cc/" + tsuid.split("_")[1] });
+            dispatchOszv_tmp({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true })
             dispatchOszv_cs({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true })
         }
     }
     const itemModal = (tsuid: string, itemName: string, imageUrl: string = "") => {
         return (
             <div className="col-sm-6 col-md-4 col-lg-2 oszv-column">
-                <a data-toggle="modal" data-target={"#V" + tsuid + "_itemModal"} onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
-                    {showImage()}
+                {/*将棋盤のボタン(#A)*/}
+                <a data-toggle="modal" id={"A" + tsuid + "_itemModal"} data-target={"#V" + tsuid + "_itemModal"}
+                    onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
+                    {showImage(imageUrl)}
                     <h5>{itemName}</h5>
                 </a>
                 {/*注文モーダル(#V)*/}
@@ -218,7 +194,7 @@ export const AppMain = () => {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                {showImage()}
+                                {showImage(imageUrl)}
                                 <p />
                                 {position == "client" ?
                                     <div className="d-flex flex-column text-center">
@@ -230,13 +206,11 @@ export const AppMain = () => {
                                     </div>
                                     :
                                     <div className="d-flex flex-column text-center">
-                                        <button className="btn btn-warning btn-lg m-1" type="button" data-dismiss="modal"
-                                            onClick={(evt) => {
-                                            }}>
-                                            <i className="fas fa-exchange-alt mr-1" style={{ pointerEvents: "none" }}></i>画像を変更(未実装)
+                                        {uploadImage(tsuid)}
+                                        <button className="btn btn-success btn-lg m-1" type="button" data-dismiss="modal" >
+                                            <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>OK
                                         </button>
-                                        <button className="d-none" type="button" id={"Dc" + tsuid + "_itemModal"} data-toggle="modal" data-target={"#D" + tsuid + "_itemModal"} />
-                                        <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
+                                        <button className="btn btn-danger btn-lg m-3" type="button" data-dismiss="modal"
                                             onClick={(evt) => {
                                                 dispatchOszv_s({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true });
                                                 $(document.getElementById("Dc" + tsuid + "_itemModal")).click();
@@ -293,7 +267,7 @@ export const AppMain = () => {
             </div>
         )
     }
-    const orderModal = (tsuid: string, orderName: string, orderMessage: string) => {
+    const orderModal = (tsuid: string, orderName: string, orderMessage: string, orderImage: string = "") => {
         const now: Date = new Date(Number(tsuid.split("_")[0]));
         const timestamp = now.getFullYear() + "年 " + now.getMonth() +
             "月 " + now.getDate() + "日 " + now.getHours() + ": " + now.getMinutes() + ": " + now.getSeconds();
@@ -314,7 +288,8 @@ export const AppMain = () => {
                                 </button>
                             </div>
                             <div className="modal-body d-flex flex-column text-center">
-                                {showImage()}
+                                {showImage(orderImage)}
+                                <p />
                                 <div className="p-1" style={{ backgroundColor: "beige", border: "3px double silver" }}>
                                     {tmpSwitch == "orderMessage" ?
                                         <div className="d-flex flex-column text-center">
@@ -430,7 +405,7 @@ export const AppMain = () => {
         const tsuids = Object.keys(dbOszv_s).sort();
         if (tsuids.length == 0) return (<h4 className="text-center">商品がありません</h4>)
         for (var i = 0; i < tsuids.length; i++) {
-            tmpRecodes.push(itemModal(tsuids[i], dbOszv_s[tsuids[i]]["name"]))
+            tmpRecodes.push(itemModal(tsuids[i], dbOszv_s[tsuids[i]]["name"], dbOszv_s[tsuids[i]]["imageUrl"]))
         }
         return (<div className="row">{tmpRecodes}</div>)
     }
@@ -440,18 +415,19 @@ export const AppMain = () => {
             const tsuids = Object.keys(dbOszv_cc).sort();
             if (tsuids.length == 0) return (<h4 className="text-center">注文ががありません</h4>)
             for (var i = 0; i < tsuids.length; i++) {
-                tmpRecodes.push(orderModal(tsuids[i], dbOszv_cc[tsuids[i]]["name"], dbOszv_cc[tsuids[i]]["message"]))
+                tmpRecodes.push(orderModal(tsuids[i], dbOszv_cc[tsuids[i]]["name"], dbOszv_cc[tsuids[i]]["message"], dbOszv_s[dbOszv_cc[tsuids[i]]["itemTsuid"]]["imageUrl"]))
             }
         }
         if (position == "owner") {
             const tsuids = Object.keys(dbOszv_cs).sort();
             if (tsuids.length == 0) return (<h4 className="text-center">注文ががありません</h4>)
             for (var i = 0; i < tsuids.length; i++) {
-                tmpRecodes.push(orderModal(tsuids[i], dbOszv_cs[tsuids[i]]["name"], dbOszv_cs[tsuids[i]]["message"]))
+                tmpRecodes.push(orderModal(tsuids[i], dbOszv_cs[tsuids[i]]["name"], dbOszv_cs[tsuids[i]]["message"], dbOszv_s[dbOszv_cc[tsuids[i]]["itemTsuid"]]["imageUrl"]))
             }
         }
         return (<div className="row">{tmpRecodes}</div>)
     }
+
     const appBody = () => {
         if (uid == "") return (<div>{needLoginForm()}</div>)
         return (
@@ -474,12 +450,12 @@ export const AppMain = () => {
                 </ul>
                 <div className="tab-content">
                     <div className="tab-pane fade show active" id="item1" role="tabpanel" aria-labelledby="item1-tab">
-                        {addItemButton()}
+                        {addItemButtonZwei()}
                         <div className="mt-2">{itemColumn()}</div>
                     </div>
                     <div className="tab-pane fade" id="item2" role="tabpanel" aria-labelledby="item2-tab">
                         <div className="d-flex justify-content-center">
-                            <h5><i className="far fa-clock mr-1"></i>{jpclockNow}</h5>
+                            <h5><i className="far fa-clock mr-1" key={1001}></i>{jpclockNow}</h5>
                         </div>
                         <div className="mt-2">{orderColumn()}</div>
                     </div>
@@ -488,6 +464,7 @@ export const AppMain = () => {
             </div>
         )
     }
+
     return (
         <div>
             {position == "client" ?

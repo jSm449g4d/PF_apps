@@ -12,7 +12,6 @@ export const AppMain = () => {
     const [position, setPosition] = useState("client")//client,owner
     const [tmpText, setTmpText] = useState("")
     const [tmpSwitch, setTmpSwitch] = useState("")
-    const [tmpFile, setTmpFile] = useState(null)
 
     const [dbOszv_s, dispatchOszv_s] = useDb()
     const [dbOszv_cc, dispatchOszv_cc] = useDb()
@@ -57,7 +56,7 @@ export const AppMain = () => {
     }
     const showImage = (imageUrl: string = "/static/img/publicdomainq-0014284zts.jpg") => {
         if (imageUrl == "") return (<div className="d-flex flex-column text-center"><i className="fab fa-themeisle fa-2x m-2"></i>No Image</div>)
-        return (<div className="d-flex flex-column text-center"><img className="img-fluid" src={imageUrl} /></div>)
+        return (<div className="d-flex flex-column text-center"><img className="img-fluid" src={imageUrl} alt={imageUrl} /></div>)
     }
     const updateImage = () => {
         if (showUid != uid || position != "owner") return;
@@ -81,7 +80,6 @@ export const AppMain = () => {
 
                 <input type="file" className="d-none" accept="image/jpeg,image/png" id={"Vc" + tsuid + "_uploadImage"} name={tsuid}
                     onChange={(evt) => {
-                        setTmpFile(evt.target.files[0])
                         dispatchOszv_s({ type: "upload", file: evt.target.files[0], fileName: evt.target.name + ".img" })
                         setTimeout(() => { updateImage() }, 1000)
                     }} />
@@ -153,8 +151,7 @@ export const AppMain = () => {
                 {/*将棋盤のボタン(#A)*/}
                 <a data-toggle="modal" id={"A" + tsuid + "_itemModal"} data-target={"#V" + tsuid + "_itemModal"}
                     onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
-                    {showImage(imageUrl)}
-                    <h5>{itemName}</h5>
+                    <h5 className="col-sm-6 col-md-4 col-lg-2 oszv-column">{itemName}</h5>
                 </a>
                 {/*注文モーダル(#V)*/}
                 <div className="modal fade" id={"V" + tsuid + "_itemModal"} role="dialog" aria-hidden="true">

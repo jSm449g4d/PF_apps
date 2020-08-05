@@ -6,6 +6,8 @@ export const AppMain = () => {
     const [uid] = useAuth()
     const [showUid, setShowUid] = useState("showuid" in Query2Dict() == false ? "" : Query2Dict()["showuid"])
     const [iconUrl, setIconUrl] = useState("")
+    const [tmpText, setTmpText] = useState("")
+    const [tmpSwitch, setTmpSwitch] = useState("")
 
     const [dbMypage, dispatchMypage] = useDb() //notTsuidDb
     useEffect(() => { dispatchMypage({ type: "setUri", uri: "mypage/" + showUid }); }, [showUid])
@@ -15,126 +17,119 @@ export const AppMain = () => {
     if (showUid != uid && showUid == "") setShowUid(uid);
 
     const createMypage = () => {
-        if (uid == showUid)
-            return (
-                <button type="button" className="btn btn-outline-success btn-bg m-2"
-                    onClick={() => {
-                        if (stopf5.check("cleateMypage", 500, true) == false) return; // To prevent high freq access
-                        dispatchMypage({
-                            type: "create", recodes: {
-                                nickname: "窓の民は名無し", pr: "私はJhon_Doe。窓の蛇遣いです。"
-                            }, merge: true
-                        })
-                    }}>
-                    <i className="fas fa-file-signature mr-1" style={{ pointerEvents: "none" }}></i>Create Mypage
-                </button>
-            )
-        return (
-            <div>
-                <h5>
-                    <i className="fas fa-wind mr-1"></i>This account's page is not Exist
-                </h5>
-                <button type="button" className="btn btn-outline-success btn-bg m-2"
-                    onClick={() => {
-                        setShowUid(uid)
-                    }}>
-                    <i className="fas fa-home mr-1" style={{ pointerEvents: "none" }}></i>Mypage
-                </button>
-            </div>
-        )
+        if (uid != showUid) return false
+        dispatchMypage({
+            type: "create", recodes: {
+                nickname: "ニックネームを入力してください", profile: "プロファイルを入力してください"
+            }, merge: true
+        })
+    }
+    const updateIcon = () => {
+        dispatchMypage({ type: "download", fileName: "icon.img", func: (_url: any) => setIconUrl(_url) })
     }
     const showIcon = () => {
-        if (iconUrl == "") { return (<i className="fab fa-themeisle fa-2x m-2"><br />No Icon</i>) }
-        return (
-            <div className="m-2">
-                <img src={iconUrl} alt={iconUrl} width="156" height="156" />
-            </div>
-        )
-    }
-    const uploadIcon = () => {
-        if (showUid != uid) return;
-        return (
+        if (showUid != uid) return (
             <div>
-                <button type="button" className="btn btn-outline-success btn-sm m-1"
+                {iconUrl == "" ?
+                    <i className="fab fa-themeisle fa-2x m-2"><br />No Icon</i>
+                    :
+                    <img className="img-fluid" src={iconUrl} alt={iconUrl} />
+                }
+            </div>);
+        return (
+            <div className="d-flex flex-column text-center">
+                <div>
+                    {iconUrl == "" ?
+                        <i className="fab fa-themeisle fa-2x m-2"><br />No Icon</i>
+                        :
+                        <img className="img-fluid" src={iconUrl} alt={iconUrl} />
+                    }
+                </div>
+                <button type="button" className="btn btn-outline-success btn-lg m-1"
                     onClick={(evt) => { $(document.getElementById("mypage_uploadIcon")).click() }}>
                     <i className="fas fa-upload mr-1" style={{ pointerEvents: "none" }}></i>Icon
                 </button>
                 <input type="file" className="d-none" accept="image/jpeg,image/png" id="mypage_uploadIcon"
                     onChange={(evt) => {
-                        setIconUrl("")
                         dispatchMypage({ type: "upload", file: evt.target.files[0], fileName: "icon.img" })
-                        dispatchMypage({ type: "download", fileName: "icon.img", func: (_url: any) => setIconUrl(_url) })
+                        setTimeout(() => { updateIcon() }, 1000)
                     }} />
             </div>
         )
     }
-    const changeProfile = (title: string, state_element: string) => {
-        if (showUid != uid) return (<div />);
-        const modal_id = "mygape_modal_" + title;
+    const dispNickname = () => {
+        if (showUid != uid) return (<div><i className="far fa-user mr-1"></i>{dbMypage["nickname"]}</div>);
+        if (tmpSwitch == "nickname") return (
+            <div className="form-inline">
+                <input className="form-control form-control-lg m-1" type="text" placeholder="nickname" value={tmpText} size={32}
+                    onChange={(evt: any) => { setTmpText(evt.target.value) }} />
+                <button className="btn btn-success btn-lg m-1" type="button"
+                    onClick={() => {
+                        dispatchMypage({ type: "create", recodes: { "nickname": tmpText }, merge: true })
+                        setTmpText(""); setTmpSwitch("");
+                    }}>
+                    <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>変更する
+                </button>
+                <button className="btn btn-secondary btn-lg m-1" type="button"
+                    onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
+                    <i className="fas fa-times mr-1" style={{ pointerEvents: "none" }}></i>変更中止
+                </button>
+            </div>
+        )
         return (
             <div>
-                <button type="button" className="btn btn-outline-success btn-sm m-1" data-toggle="modal" data-target={"#" + modal_id}>
-                    <i className="far fa-keyboard mr-1" style={{ pointerEvents: "none" }}></i>{title}
-                </button>
-                <div className="modal fade" id={modal_id} role="dialog" aria-hidden="true">
-                    <div className="modal-dialog modal-lg" role="document">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title">{title}</h5>
-                            </div>
-                            <div className="modal-body">
-                                <textarea className="form-control" value={
-                                    dbMypage ? dbMypage[state_element] : ""}
-                                    rows={4} style={{ width: "100%" }}
-                                    onChange={(evt) => {
-                                        let _mypage: any = dbMypage ? dbMypage : {}
-                                        _mypage[state_element] = evt.target.value
-                                        dispatchMypage({ type: "commit", recodes: _mypage, merge: true })
-                                    }}>
-                                </textarea>
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-sm btn-success" data-dismiss="modal"
-                                    onClick={() => {
-                                        if (stopf5.check("1", 500, true) == false) return; // To prevent high freq access
-                                        dispatchMypage({ type: "create" })
-                                    }}>
-                                    <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>Submit
-                                </button>
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal">
-                                    <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }}></i>Close
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div >
+                <i className="far fa-user mr-1"></i>{dbMypage["nickname"]}
+                <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2" style={{ color: "saddlebrown" }}
+                    onClick={() => { setTmpText(dbMypage["nickname"]); setTmpSwitch("nickname"); }}></i>
+            </div>
         )
-    }
 
+    }
+    const dispProfile = () => {
+        if (showUid != uid) return (<div><h3>Profile</h3>{dbMypage["profile"]}</div>);
+        if (tmpSwitch == "profile") return (
+            <div>
+                <h3 className="form-inline">Profile
+                    <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2" style={{ color: "saddlebrown" }}
+                        onClick={() => { setTmpText(dbMypage["profile"]); setTmpSwitch("profile"); }}></i>
+                    <button className="btn btn-success btn-lg m-1" type="button"
+                        onClick={() => {
+                            dispatchMypage({ type: "create", recodes: { "profile": tmpText }, merge: true })
+                            setTmpText(""); setTmpSwitch("");
+                        }}>
+                        <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>変更する
+                    </button>
+                    <button className="btn btn-secondary btn-lg m-1" type="button"
+                        onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
+                        <i className="fas fa-times mr-1" style={{ pointerEvents: "none" }}></i>変更中止
+                    </button>
+                </h3>
+                <textarea className="form-control" rows={4} value={tmpText}
+                    onChange={(evt: any) => { setTmpText(evt.target.value) }}></textarea>
+            </div>
+        )
+        return (
+            <div>
+                <h3>Profile
+                    <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2" style={{ color: "saddlebrown" }}
+                        onClick={() => { setTmpText(dbMypage["profile"]); setTmpSwitch("profile"); }}></i>
+                </h3>
+                <div>{dbMypage["profile"]}</div>
+            </div>
+        )
+
+    }
     const appBody = () => {
         if (uid == "") return (<div>{needLoginForm()}</div>)
-        if (dbMypage.length < 1) { return (<div>{createMypage()}</div>) }
+        if (dbMypage["nickname"]==null) createMypage()
         return (
-            <div className="m-2" style={{ background: "khaki" }}>
-                <div className="d-flex justify-content-start">
-                    {showIcon()}
-                    <div className="m-1 p-1 flex-grow-1" style={{ backgroundColor: "rgba(100,100,100,0.1)" }}>
-                        <div className="d-flex justify-content-start">
-                            <h3 className="flex-grow-1">
-                                <i className="far fa-user mr-1"></i>
-                                {dbMypage["nickname"] ? dbMypage["nickname"] : ""}
-                            </h3>
-                            <div className="form-inline">
-                                {changeProfile("Nickname", "nickname")}{uploadIcon()}
-                            </div>
-                        </div>
-                        <div className="m-1 p-1" style={{ backgroundColor: "rgba(255,255,255,0.5)" }}>
-                            <div className="d-flex justify-content-between">
-                                <h5>PR</h5>
-                                {changeProfile("PR", "pr")}
-                            </div>
-                            {dbMypage["pr"] ? dbMypage["pr"] : ""}
+            <div className="p-2" style={{ backgroundColor: "khaki", border: "3px double silver" }}>
+                <div className="row">
+                    <h2 className="col-12 text-center">{dispNickname()}</h2>
+                    <div className="col-sm-12 col-lg-4">{showIcon()}</div>
+                    <div className="col-sm-12 col-lg-8">
+                        <div className="p-1 text-center" style={{ backgroundColor: "rgba(255,255,255,0.5)" }}>
+                            {dispProfile()}
                         </div>
                     </div>
                 </div>

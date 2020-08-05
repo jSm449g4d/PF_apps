@@ -31,7 +31,7 @@ export const AppMain = () => {
 
     const updateShop = (addDict: any) => {
         if (showUid != uid || position != "owner") return false;
-        dispatchMypage({ type: "create", recodes: Object.assign({"shopName":"新しい店"}, addDict), merge: true })
+        dispatchMypage({ type: "create", recodes: Object.assign({ "shopName": "新しい店" }, addDict), merge: true })
     }
     const updateItem = (tsuid: string, addDict: any) => {
         if (showUid != uid || position != "owner") return false;
@@ -53,6 +53,10 @@ export const AppMain = () => {
             dispatchOszv_cc({ type: "setUri", uri: "oszv_cc/" + showUid });
             dispatchOszv_cs({ type: "create", recodes: { [tsuid]: Object.assign(Object.assign({}, dbOszv_cs[tsuid]), addDict) }, merge: true })
         }
+    }
+    const showImage = (imageUrl: string = "/static/img/publicdomainq-0014284zts.jpg") => {
+        if (imageUrl == "") return (<div><i className="fab fa-themeisle fa-2x m-2"></i>No Image</div>)
+        return (<div><img className="img-fluid" src={imageUrl} /></div>)
     }
 
     const addItemButton = () => {
@@ -80,13 +84,18 @@ export const AppMain = () => {
                                     <h5>商品名</h5>
                                     <input className="form-control form-control-lg m-1" type="text" placeholder="商品名" value={tmpText}
                                         onChange={(evt: any) => { setTmpText(evt.target.value) }} />
-                                    <img className="img-fluid" src="/static/img/publicdomainq-0014284zts.jpg" />
+                                    {showImage()}
                                     <p />
+                                    <button className="btn btn-warning btn-lg m-1" type="button" data-dismiss="modal"
+                                        onClick={(evt) => {
+                                        }}>
+                                        <i className="fas fa-exchange-alt mr-1" style={{ pointerEvents: "none" }}></i>画像をアップロード(未実装)
+                                    </button>
                                     <button className="btn btn-success btn-lg m-1" type="button" data-dismiss="modal"
                                         onClick={(evt) => {
                                             updateItem(Date.now().toString() + "_" + uid, {
                                                 "name": tmpText,
-                                                "image": ""
+                                                "imageUrl": ""
                                             })
                                             $(document.getElementById("Mc" + "_addItemModal")).click(); setTmpText(""); setTmpSwitch("");
                                         }}>
@@ -164,11 +173,11 @@ export const AppMain = () => {
             dispatchOszv_cs({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true })
         }
     }
-    const itemModal = (tsuid: string, itemName: string) => {
+    const itemModal = (tsuid: string, itemName: string, imageUrl: string = "") => {
         return (
             <div className="col-sm-6 col-md-4 col-lg-2 oszv-column">
                 <a data-toggle="modal" data-target={"#V" + tsuid + "_itemModal"} onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
-                    <img className="img-fluid" src="/static/img/publicdomainq-0014284zts.jpg" />
+                    {showImage()}
                     <h5>{itemName}</h5>
                 </a>
                 {/*注文モーダル(#V)*/}
@@ -209,7 +218,7 @@ export const AppMain = () => {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                <img className="img-fluid" src="/static/img/publicdomainq-0014284zts.jpg" />
+                                {showImage()}
                                 <p />
                                 {position == "client" ?
                                     <div className="d-flex flex-column text-center">
@@ -221,6 +230,12 @@ export const AppMain = () => {
                                     </div>
                                     :
                                     <div className="d-flex flex-column text-center">
+                                        <button className="btn btn-warning btn-lg m-1" type="button" data-dismiss="modal"
+                                            onClick={(evt) => {
+                                            }}>
+                                            <i className="fas fa-exchange-alt mr-1" style={{ pointerEvents: "none" }}></i>画像を変更(未実装)
+                                        </button>
+                                        <button className="d-none" type="button" id={"Dc" + tsuid + "_itemModal"} data-toggle="modal" data-target={"#D" + tsuid + "_itemModal"} />
                                         <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
                                             onClick={(evt) => {
                                                 dispatchOszv_s({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true });
@@ -299,7 +314,7 @@ export const AppMain = () => {
                                 </button>
                             </div>
                             <div className="modal-body d-flex flex-column text-center">
-                                <img className="img-fluid" src="/static/img/publicdomainq-0014284zts.jpg" />
+                                {showImage()}
                                 <div className="p-1" style={{ backgroundColor: "beige", border: "3px double silver" }}>
                                     {tmpSwitch == "orderMessage" ?
                                         <div className="d-flex flex-column text-center">
@@ -385,7 +400,7 @@ export const AppMain = () => {
                             <input className="form-control form-control-lg m-1" type="text" placeholder="店舗名" value={tmpText} size={32}
                                 onChange={(evt: any) => { setTmpText(evt.target.value) }} />
                             <button className="btn btn-success btn-lg m-1" type="button"
-                                onClick={() => { updateShop({"shopName":tmpText}); setTmpText(""); setTmpSwitch(""); }}>
+                                onClick={() => { updateShop({ "shopName": tmpText }); setTmpText(""); setTmpSwitch(""); }}>
                                 <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>変更する
                                 </button>
                             <button className="btn btn-secondary btn-lg m-1" type="button"

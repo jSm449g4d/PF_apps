@@ -29,15 +29,9 @@ export const AppMain = () => {
         return () => clearInterval(_intervalId);
     }, []);
 
-    const buildShop = (newShopName: string = "とある飲食店") => {
-        if (showUid != uid) return false;
-        dispatchMypage({
-            type: "create",
-            recodes: {
-                shopName: newShopName
-            },
-            merge: true
-        })
+    const updateShop = (addDict: any) => {
+        if (showUid != uid || position != "owner") return false;
+        dispatchMypage({ type: "create", recodes: Object.assign({"shopName":"新しい店"}, addDict), merge: true })
     }
     const updateItem = (tsuid: string, addDict: any) => {
         if (showUid != uid || position != "owner") return false;
@@ -391,7 +385,7 @@ export const AppMain = () => {
                             <input className="form-control form-control-lg m-1" type="text" placeholder="店舗名" value={tmpText} size={32}
                                 onChange={(evt: any) => { setTmpText(evt.target.value) }} />
                             <button className="btn btn-success btn-lg m-1" type="button"
-                                onClick={() => { buildShop(tmpText); setTmpText(""); setTmpSwitch(""); }}>
+                                onClick={() => { updateShop({"shopName":tmpText}); setTmpText(""); setTmpSwitch(""); }}>
                                 <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>変更する
                                 </button>
                             <button className="btn btn-secondary btn-lg m-1" type="button"
@@ -410,7 +404,7 @@ export const AppMain = () => {
             )
         if (showUid == uid && position == "owner")
             return (
-                <button className="btn btn-link mx-2" onClick={() => { buildShop() }}>
+                <button className="btn btn-link mx-2" onClick={() => { updateShop({}) }}>
                     <h3>店を立てる</h3>
                 </button>
             )

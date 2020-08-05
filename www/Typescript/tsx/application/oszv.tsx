@@ -356,25 +356,24 @@ export const AppMain = () => {
     const dispPosition = () => {
         if (position == "owner")
             return (
-                <div className="oszv-position">現在: <b>店主</b>
-                    <button className="btn btn-link btn-sm ml-5" onClick={() => { setPosition("client") }}>
+                <div className="d-flex justify-content-end form-inline oszv-position"><h4>店主</h4>
+                    <button className="btn btn-link btn-lg ml-3" onClick={() => { setPosition("client") }}>
                         客として操作
                     </button>
                 </div>
             )
-        if (position != "client") return (<div>Error Position!</div>)
-        if (showUid == uid)
+        if (showUid == uid && position == "client")
             return (
-                <div className="oszv-position">現在: <b>客</b>
-                    <button className="btn btn-link btn-sm ml-5" onClick={() => { setPosition("owner") }}>
+                <div className="d-flex justify-content-end form-inline oszv-position"><h4>客</h4>
+                    <button className="btn btn-link btn-lg ml-3" onClick={() => { setPosition("owner") }}>
                         店主として操作
                     </button>
                 </div>
             )
-        if (showUid != uid)
+        if (showUid != uid && position == "client")
             return (
-                <div className="oszv-position">現在: <b>客</b>
-                    <button className="btn btn-link btn-sm ml-5" onClick={() => { setPosition("client"); setShowUid(uid) }}>
+                <div className="d-flex justify-content-end form-inline oszv-position"><h4>客</h4>
+                    <button className="btn btn-link btn-lg ml-3" onClick={() => { setPosition("client"); setShowUid(uid) }}>
                         自分の店に行く
                     </button>
                 </div>
@@ -420,6 +419,7 @@ export const AppMain = () => {
     const itemColumn = () => {
         const tmpRecodes = [];
         const tsuids = Object.keys(dbOszv_s).sort();
+        if (tsuids.length == 0) return (<h4 className="text-center">商品がありません</h4>)
         for (var i = 0; i < tsuids.length; i++) {
             tmpRecodes.push(itemModal(tsuids[i], dbOszv_s[tsuids[i]]["name"]))
         }
@@ -429,12 +429,14 @@ export const AppMain = () => {
         const tmpRecodes = [];
         if (position == "client") {
             const tsuids = Object.keys(dbOszv_cc).sort();
+            if (tsuids.length == 0) return (<h4 className="text-center">注文ががありません</h4>)
             for (var i = 0; i < tsuids.length; i++) {
                 tmpRecodes.push(orderModal(tsuids[i], dbOszv_cc[tsuids[i]]["name"], dbOszv_cc[tsuids[i]]["message"]))
             }
         }
         if (position == "owner") {
             const tsuids = Object.keys(dbOszv_cs).sort();
+            if (tsuids.length == 0) return (<h4 className="text-center">注文ががありません</h4>)
             for (var i = 0; i < tsuids.length; i++) {
                 tmpRecodes.push(orderModal(tsuids[i], dbOszv_cs[tsuids[i]]["name"], dbOszv_cs[tsuids[i]]["message"]))
             }
@@ -446,10 +448,10 @@ export const AppMain = () => {
         return (
             <div>
                 <div className="row">
-                    <div className="col-sm-12 col-lg-8">{dipsShopName()}</div>
-                    <div className="col-sm-12 col-lg-4 text-right">{dispPosition()}</div>
+                    <div className="col-sm-12 col-lg-9">{dipsShopName()}</div>
+                    <div className="col-sm-12 col-lg-3 text-right">{dispPosition()}</div>
                 </div>
-                <ul className="nav nav-tabs nav-fill mb-2" role="tablist">
+                <ul className="nav nav-tabs nav-fill mb-2 mt-2" role="tablist">
                     <li className="nav-item">
                         <a className="nav-link active" id="item1-tab" data-toggle="tab" href="#item1" role="tab" aria-controls="item1" aria-selected="true">
                             <b>商品</b>

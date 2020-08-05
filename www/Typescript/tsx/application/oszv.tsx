@@ -151,7 +151,8 @@ export const AppMain = () => {
                 {/*将棋盤のボタン(#A)*/}
                 <a data-toggle="modal" id={"A" + tsuid + "_itemModal"} data-target={"#V" + tsuid + "_itemModal"}
                     onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
-                    <h5 className="col-sm-6 col-md-4 col-lg-2 oszv-column">{itemName}</h5>
+                    {showImage(imageUrl)}
+                    <h5>{itemName}</h5>
                 </a>
                 {/*注文モーダル(#V)*/}
                 <div className="modal fade" id={"V" + tsuid + "_itemModal"} role="dialog" aria-hidden="true">
@@ -337,25 +338,25 @@ export const AppMain = () => {
     const dispPosition = () => {
         if (position == "owner")
             return (
-                <div className="d-flex justify-content-end form-inline oszv-position"><h4>店主</h4>
+                <div className="d-flex justify-content-end form-inline oszv-position"><h4>提供者</h4>
                     <button className="btn btn-link btn-lg ml-3" onClick={() => { setPosition("client") }}>
-                        客として操作
+                        提供者として操作
                     </button>
                 </div>
             )
         if (showUid == uid && position == "client")
             return (
-                <div className="d-flex justify-content-end form-inline oszv-position"><h4>客</h4>
+                <div className="d-flex justify-content-end form-inline oszv-position"><h4>購買者</h4>
                     <button className="btn btn-link btn-lg ml-3" onClick={() => { setPosition("owner") }}>
-                        店主として操作
+                        提供者として操作
                     </button>
                 </div>
             )
         if (showUid != uid && position == "client")
             return (
-                <div className="d-flex justify-content-end form-inline oszv-position"><h4>客</h4>
+                <div className="d-flex justify-content-end form-inline oszv-position"><h4>購買者</h4>
                     <button className="btn btn-link btn-lg ml-3" onClick={() => { setPosition("client"); setShowUid(uid) }}>
-                        自分の店に行く
+                        自分の店舗に行く
                     </button>
                 </div>
             )
@@ -430,8 +431,8 @@ export const AppMain = () => {
         return (
             <div>
                 <div className="row">
-                    <div className="col-sm-12 col-lg-9">{dipsShopName()}</div>
-                    <div className="col-sm-12 col-lg-3 text-right">{dispPosition()}</div>
+                    <div className="col-sm-12 col-lg-8">{dipsShopName()}</div>
+                    <div className="col-sm-12 col-lg-4 text-right">{dispPosition()}</div>
                 </div>
                 <ul className="nav nav-tabs nav-fill mb-2 mt-2" role="tablist">
                     <li className="nav-item">

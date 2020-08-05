@@ -40,23 +40,93 @@ export const AppMain = () => {
         })
     }
     const updateItem = (tsuid: string, addDict: any) => {
-        if (showUid != uid) return false;
+        if (showUid != uid || position != "owner") return false;
         dispatchOszv_s({ type: "create", recodes: { [tsuid]: Object.assign(Object.assign({}, dbOszv_s[tsuid]), addDict) }, merge: true })
     }
+    const updateOrder = (tsuid: string, addDict: any) => {
+        if (showUid != uid) return false;
+        // [tsuid(client)]: itemTsuid(Owner),
+        if (position == "client") {
+            const itemTsuid: string = dbOszv_cc[tsuid]["itemTsuid"]
+            dispatchOszv_cs({ type: "setUri", uri: "oszv_cs/" + itemTsuid.split("_")[1] });
+            dispatchOszv_cs({ type: "create", recodes: { [tsuid]: Object.assign(Object.assign({}, dbOszv_cs[tsuid]), addDict) }, merge: true })
+            dispatchOszv_cs({ type: "setUri", uri: "oszv_cs/" + showUid });
+            dispatchOszv_cc({ type: "create", recodes: { [tsuid]: Object.assign(Object.assign({}, dbOszv_cc[tsuid]), addDict) }, merge: true })
+        }
+        if (position == "owner") {
+            dispatchOszv_cc({ type: "setUri", uri: "oszv_cc/" + tsuid.split("_")[1] });
+            dispatchOszv_cc({ type: "create", recodes: { [tsuid]: Object.assign(Object.assign({}, dbOszv_cc[tsuid]), addDict) }, merge: true })
+            dispatchOszv_cc({ type: "setUri", uri: "oszv_cc/" + showUid });
+            dispatchOszv_cs({ type: "create", recodes: { [tsuid]: Object.assign(Object.assign({}, dbOszv_cs[tsuid]), addDict) }, merge: true })
+        }
+    }
 
-    const addItem = () => {
-        if (showUid != uid || position != "owner") return false;
-        const tsuid: string = Date.now().toString() + "_" + uid
-        dispatchOszv_s({
-            type: "create",
-            recodes: {
-                [tsuid]: {
-                    "name": "新しい商品",
-                    "image": ""
-                }
-            },
-            merge: true
-        })
+    const addItemButton = () => {
+        if (showUid != uid || position != "owner") return (<div></div>);
+        return (
+            <div>
+                <div className="d-flex flex-column text-center">
+                    <button className="btn btn-outline-primary btn-lg rounded-pill" data-toggle="modal" data-target={"#V" + "_addItemModal"}
+                        onClick={() => { setTmpText("新しい商品"); setTmpSwitch("itemName"); }}>
+                        <b>+商品を追加</b>
+                    </button>
+                </div>
+                {/*商品モーダル(#V)*/}
+                <div className="modal fade" id={"V" + "_addItemModal"} role="dialog" aria-hidden="true">
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header d-flex justify-content-between">
+                                <h4 className="modal-title">新しい商品の作成</h4>
+                                <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
+                                    <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <div className="d-flex flex-column text-center">
+                                    <h5>商品名</h5>
+                                    <input className="form-control form-control-lg m-1" type="text" placeholder="商品名" value={tmpText}
+                                        onChange={(evt: any) => { setTmpText(evt.target.value) }} />
+                                    <img className="img-fluid" src="/static/img/publicdomainq-0014284zts.jpg" />
+                                    <p />
+                                    <button className="btn btn-success btn-lg m-1" type="button" data-dismiss="modal"
+                                        onClick={(evt) => {
+                                            updateItem(Date.now().toString() + "_" + uid, {
+                                                "name": tmpText,
+                                                "image": ""
+                                            })
+                                            $(document.getElementById("Mc" + "_addItemModal")).click(); setTmpText(""); setTmpSwitch("");
+                                        }}>
+                                        <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>新規作成
+                                    </button>
+                                    <button type="button" id={"Mc" + "_addItemModal"} className="d-none" data-toggle="modal" data-target={"#M" + "_addItemModal"} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {/*作成確認(#M)*/}
+                <div className="modal fade" id={"M" + "_addItemModal"} role="dialog" aria-hidden="true">
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header d-flex justify-content-between">
+                                <h4 className="modal-title">作成確認</h4>
+                                <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
+                                    <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
+                                </button>
+                            </div>
+                            <div className="modal-body d-flex flex-column text-center">
+                                <h5>商品を作成しました</h5>
+                                <p />
+                                <button className="btn btn-outline-secondary btn-lg" type="button" data-dismiss="modal">
+                                    戻る
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        )
     }
     const addOrder = (itemTsuid: string = "nullPoi", name: string = "新しい注文", message: string = "新しいMSG") => {
         if (showUid != uid || position != "client") return false;
@@ -125,6 +195,10 @@ export const AppMain = () => {
                                                         onClick={() => { updateItem(tsuid, { "name": tmpText }); setTmpText(""); setTmpSwitch(""); }}>
                                                         <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>変更する
                                                     </button>
+                                                    <button className="btn btn-secondary btn-lg m-1" type="button"
+                                                        onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
+                                                        <i className="fas fa-times mr-1" style={{ pointerEvents: "none" }}></i>変更中止
+                                                    </button>
                                                 </div>
                                                 :
                                                 <div>
@@ -146,21 +220,21 @@ export const AppMain = () => {
                                 {position == "client" ?
                                     <div className="d-flex flex-column text-center">
                                         <button className="btn btn-success btn-lg m-1" type="button" data-dismiss="modal"
-                                            onClick={(evt) => { addOrder(tsuid, itemName); $(evt.currentTarget.children[0]).click(); }}>
-                                            <button type="button" className="d-none" data-toggle="modal" data-target={"#C" + tsuid + "_itemModal"} />
+                                            onClick={(evt) => { addOrder(tsuid, itemName); $(document.getElementById("Cc" + tsuid + "_itemModal")).click(); }}>
                                             <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>注文
                                         </button>
+                                        <button type="button" id={"Cc" + tsuid + "_itemModal"} className="d-none" data-toggle="modal" data-target={"#C" + tsuid + "_itemModal"} />
                                     </div>
                                     :
                                     <div className="d-flex flex-column text-center">
                                         <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
                                             onClick={(evt) => {
                                                 dispatchOszv_s({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true });
-                                                $(evt.currentTarget.children[0]).click();
+                                                $(document.getElementById("Dc" + tsuid + "_itemModal")).click();
                                             }}>
-                                            <button type="button" className="d-none" data-toggle="modal" data-target={"#D" + tsuid + "_itemModal"} />
                                             <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
                                         </button>
+                                        <button className="d-none" type="button" id={"Dc" + tsuid + "_itemModal"} data-toggle="modal" data-target={"#D" + tsuid + "_itemModal"} />
                                     </div>
                                 }
                             </div>
@@ -225,13 +299,42 @@ export const AppMain = () => {
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
                             <div className="modal-header justify-content-between">
-                                <h5 className="modal-title">{orderName}</h5>
+                                <h4 className="modal-title">{orderName}</h4>
                                 <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
                                     <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
                                 </button>
                             </div>
-                            <div className="modal-body">
+                            <div className="modal-body d-flex flex-column text-center">
                                 <img className="img-fluid" src="/static/img/publicdomainq-0014284zts.jpg" />
+                                <div className="p-1" style={{ backgroundColor: "beige", border: "3px double silver" }}>
+                                    {tmpSwitch == "orderMessage" ?
+                                        <div className="d-flex flex-column text-center">
+                                            <h5>Message</h5>
+                                            <textarea className="form-control" rows={4} value={tmpText}
+                                                onChange={(evt: any) => { setTmpText(evt.target.value) }}></textarea>
+                                            <button className="btn btn-success btn-lg m-1" type="button"
+                                                onClick={() => {
+                                                    updateOrder(tsuid, { "message": tmpText });
+                                                    setTmpText(""); setTmpSwitch("");
+                                                }}>
+                                                <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>変更する
+                                            </button>
+                                            <button className="btn btn-secondary btn-lg m-1" type="button"
+                                                onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
+                                                <i className="fas fa-times mr-1" style={{ pointerEvents: "none" }}></i>変更中止
+                                            </button>
+                                        </div>
+                                        :
+                                        <div>
+                                            <h5>Message
+                                                <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2" style={{ color: "saddlebrown" }}
+                                                    onClick={() => { setTmpText(orderMessage); setTmpSwitch("orderMessage"); }}></i>
+                                            </h5>
+                                            <i className="fas fa-comment-dots mr-1" style={{ pointerEvents: "none" }}></i>{orderMessage}
+                                        </div>
+                                    }
+
+                                </div>
                                 <p />
                                 <div className="d-flex flex-column text-center">
                                     <button className="btn btn-warning btn-lg m-1" type="button" data-dismiss="modal">
@@ -253,7 +356,7 @@ export const AppMain = () => {
     const dispPosition = () => {
         if (position == "owner")
             return (
-                <div>現在: <b>店主</b>
+                <div className="oszv-position">現在: <b>店主</b>
                     <button className="btn btn-link btn-sm ml-5" onClick={() => { setPosition("client") }}>
                         客として操作
                     </button>
@@ -262,7 +365,7 @@ export const AppMain = () => {
         if (position != "client") return (<div>Error Position!</div>)
         if (showUid == uid)
             return (
-                <div>現在: <b>客</b>
+                <div className="oszv-position">現在: <b>客</b>
                     <button className="btn btn-link btn-sm ml-5" onClick={() => { setPosition("owner") }}>
                         店主として操作
                     </button>
@@ -270,7 +373,7 @@ export const AppMain = () => {
             )
         if (showUid != uid)
             return (
-                <div>現在: <b>客</b>
+                <div className="oszv-position">現在: <b>客</b>
                     <button className="btn btn-link btn-sm ml-5" onClick={() => { setPosition("client"); setShowUid(uid) }}>
                         自分の店に行く
                     </button>
@@ -360,17 +463,7 @@ export const AppMain = () => {
                 </ul>
                 <div className="tab-content">
                     <div className="tab-pane fade show active" id="item1" role="tabpanel" aria-labelledby="item1-tab">
-                        {position == "client" ?
-                            <div></div>
-                            :
-                            <div className="row">
-                                <div className="col-1"></div>
-                                <button className="btn btn-outline-primary btn-lg rounded-pill col-10" onClick={() => { addItem() }}>
-                                    <b>+商品を追加</b>
-                                </button>
-                                <div className="col-1"></div>
-                            </div>
-                        }
+                        {addItemButton()}
                         <div className="mt-2">{itemColumn()}</div>
                     </div>
                     <div className="tab-pane fade" id="item2" role="tabpanel" aria-labelledby="item2-tab">

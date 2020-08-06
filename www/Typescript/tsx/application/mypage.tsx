@@ -119,9 +119,19 @@ export const AppMain = () => {
         )
 
     }
+    const dispShop = () => {
+        if (("shopName" in dbMypage) == false) return (<div></div>)
+        return (
+            <div className="m-1 text-center" style={{ backgroundColor: "#ffdfef" }}>
+                <h5>出店情報</h5>
+                <div>店名: {dbMypage["shopName"]}</div>
+            </div>
+        )
+
+    }
     const appBody = () => {
         if (uid == "") return (<div>{needLoginForm()}</div>)
-        if (dbMypage["nickname"]==null) createMypage()
+        if (dbMypage["nickname"] == null) createMypage()
         return (
             <div className="p-2" style={{ backgroundColor: "khaki", border: "3px double silver" }}>
                 <div className="row">
@@ -132,6 +142,7 @@ export const AppMain = () => {
                             {dispProfile()}
                         </div>
                     </div>
+                    <div className="col-sm-12 col-lg-12">{dispShop()}</div>
                 </div>
                 {showUid == uid ?
                     <div />

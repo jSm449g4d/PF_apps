@@ -73,7 +73,7 @@ export const AppMain = () => {
                         }}
                         name={dbTptef[tsuids[i]]["attachment"]}>
                         <i className="fas fa-paperclip mr-1" style={{ pointerEvents: "none" }}></i>
-                        {dbTptef[tsuids[i]]["attachment"].split("/").pop().slice(0, 32)}</button>)
+                        {dbTptef[tsuids[i]]["attachment"].split("/").pop().slice(0, 16)}</button>)
             //delete button
             if (tsuids[i].split("_")[1] == uid)
                 tmpDatum.push(

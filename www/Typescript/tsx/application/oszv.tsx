@@ -70,7 +70,7 @@ export const AppMain = () => {
             })
         }
     }
-    const uploadImage = (tsuid: string) => {
+    const uploadImage = (tsuid: string, imageUrl = "") => {
         if (showUid != uid || position != "owner") return (<div></div>);
         return (
             <div className="row m-1">
@@ -87,13 +87,19 @@ export const AppMain = () => {
                     }} />
                 <div className="col-1"></div>
                 {/*削除*/}
-                <button className="col-5 btn btn-outline-danger btn-lg" type="button"
-                    onClick={(evt) => {
-                        dispatchOszv_s({ type: "strageDelete", fileName: tsuid + ".img" })
-                        setTimeout(() => { updateImage() }, 2000)
-                    }}>
-                    <i className="fas fa-eraser mr-1" style={{ pointerEvents: "none" }}></i>画像を削除
-                </button>
+                {imageUrl == "" ?
+                    <button className="col-5 btn btn-outline-danger btn-lg" type="button" disabled>
+                        <i className="fas fa-eraser mr-1" style={{ pointerEvents: "none" }}></i>画像を削除
+                    </button>
+                    :
+                    <button className="col-5 btn btn-outline-danger btn-lg" type="button"
+                        onClick={(evt) => {
+                            dispatchOszv_s({ type: "strageDelete", fileName: tsuid + ".img" })
+                            setTimeout(() => { updateImage() }, 2000)
+                        }}>
+                        <i className="fas fa-eraser mr-1" style={{ pointerEvents: "none" }}></i>画像を削除
+                    </button>
+                }
             </div>
         )
     }
@@ -225,7 +231,7 @@ export const AppMain = () => {
                                     </div>
                                     :
                                     <div className="d-flex flex-column text-center">
-                                        {uploadImage(tsuid)}
+                                        {uploadImage(tsuid, imageUrl)}
                                         <button className="btn btn-success btn-lg m-2" type="button" data-dismiss="modal" >
                                             <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>編集完了
                                         </button>

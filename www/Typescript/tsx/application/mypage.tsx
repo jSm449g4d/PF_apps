@@ -18,11 +18,19 @@ export const AppMain = () => {
 
     const createMypage = () => {
         if (uid != showUid) return false
-        dispatchMypage({
-            type: "create", recodes: {
-                nickname: "ニックネームを入力してください", profile: "プロファイルを入力してください"
-            }, merge: true
-        })
+        return (
+            <div className="d-flex flex-column text-center">
+                <button type="button" className="btn btn-success btn-lg m-1"
+                    onClick={(evt) => {
+                        dispatchMypage({
+                            type: "create", recodes: {
+                                nickname: "ニックネームを入力してください", profile: "プロファイルを入力してください"
+                            }, merge: true
+                        })
+                    }}>
+                    マイページを作成する
+                </button>
+            </div>)
     }
     const updateIcon = () => {
         dispatchMypage({ type: "download", fileName: "icon.img", func: (_url: any) => setIconUrl(_url) })
@@ -131,7 +139,7 @@ export const AppMain = () => {
     }
     const appBody = () => {
         if (uid == "") return (<div>{needLoginForm()}</div>)
-        if (dbMypage["nickname"] == null) createMypage()
+        if (dbMypage["nickname"] == null) return (<div>{createMypage()}</div>)
         return (
             <div className="p-2" style={{ backgroundColor: "khaki", border: "3px double silver" }}>
                 <div className="row">

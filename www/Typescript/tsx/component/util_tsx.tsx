@@ -44,3 +44,9 @@ export const checkMailAddress = (mailAddress: string) => {
     if (reg.test(mailAddress)) return true;
     return false;
 }
+export const Unixtime2String=(unixtime:number=0)=>{
+    const now: Date = new Date(unixtime);
+    const timestamp = now.getFullYear() + "年 " + now.getMonth() +
+        "月 " + now.getDate() + "日 " + now.getHours() + ": " + now.getMinutes() + ": " + now.getSeconds();
+    return timestamp
+}

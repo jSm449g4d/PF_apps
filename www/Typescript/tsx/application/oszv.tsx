@@ -166,7 +166,7 @@ export const AppMain = () => {
     }
     const itemModal = (tsuid: string, itemName: string, imageUrl: string = "") => {
         return (
-            <div className="col-sm-6 col-md-4 col-lg-2 oszv-column">
+            <div className="col-sm-6 col-md-4 col-lg-2 oszv-column border">
                 {/*将棋盤のボタン(#A)*/}
                 <a data-toggle="modal" id={"A" + tsuid + "_itemModal"} data-target={"#V" + tsuid + "_itemModal"}
                     onClick={() => { setTmpText(""); setTmpSwitch(""); }}>

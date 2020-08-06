@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { dbFieldDelete, useAuth, useDb, needLoginForm } from "../component/firebaseWrapper";
-import { stopf5, jpclock } from "../component/util_tsx";
+import { stopf5, jpclock, Unixtime2String } from "../component/util_tsx";
 
 export const AppMain = () => {
     const [uid] = useAuth()
     const [room, setRoom] = useState("main")
-    const [tmpRoom, setTmpRoom] = useState(room)
     const [tmpContent, setTmpContent] = useState("")
     const [tmpFile, setTmpFile] = useState(null)
+    const [tmpText, setTmpText] = useState("")
+    const [tmpSwitch, setTmpSwitch] = useState("")
 
     const [dbTptef, dispatchTptef] = useDb()
     const [dbMypage, dispatchMypage] = useDb() //notTsuidDb
@@ -43,19 +44,26 @@ export const AppMain = () => {
 
     // renders
     const threadTable = () => {
-        const tmpRecodes = [];
+        const tmpData = [];
         const tsuids = Object.keys(dbTptef).sort();
         for (var i = 0; i < tsuids.length; i++) {
-            const tmpData = [];
-            tmpData.push(<td key={1} style={{ textAlign: "center" }}>{dbTptef[tsuids[i]]["handlename"]}</td>)
-            tmpData.push(<td key={2}>{dbTptef[tsuids[i]]["content"]}</td>)
-            tmpData.push(<td key={3} style={{ fontSize: "12px", textAlign: "center" }}>
-                {tsuids[i].split("_")[0]}<br />{tsuids[i].split("_")[1]}</td>)
+            tmpData.push(
+                <h5 className="col-12 text-center" style={{ borderTop: "3px double silver" }}>
+                    <i className="far fa-user mr-1"></i>{dbTptef[tsuids[i]]["handlename"]}{"   uid: "}{tsuids[i].split("_")[1]}
+                </h5>)
+            tmpData.push(
+                <div className="col-sm-12 col-lg-2 text-center border-top" style={{ backgroundColor: "whitesmoke" }}>
+                    {Unixtime2String(Number(tsuids[i].split("_")[0]))}
+                </div>)
+            tmpData.push(
+                <div className="col-sm-12 col-lg-8 border">
+                    {dbTptef[tsuids[i]]["content"]}
+                </div>)
             const tmpDatum = [];
             //attachment download button
             if (dbTptef[tsuids[i]]["attachment"] != "")
                 tmpDatum.push(
-                    <button key={1} className="btn btn-primary btn-sm m-1"
+                    <button key={1} className="btn btn-primary m-1"
                         onClick={(evt: any) => {
                             dispatchTptef({
                                 type: "download",
@@ -65,61 +73,45 @@ export const AppMain = () => {
                         }}
                         name={dbTptef[tsuids[i]]["attachment"]}>
                         <i className="fas fa-paperclip mr-1" style={{ pointerEvents: "none" }}></i>
-                        {dbTptef[tsuids[i]]["attachment"].split("/").pop().slice(0, 10)}</button>)
+                        {dbTptef[tsuids[i]]["attachment"].split("/").pop().slice(0, 32)}</button>)
             //delete button
             if (tsuids[i].split("_")[1] == uid)
                 tmpDatum.push(
-                    <button key={2} className="btn btn-outline-danger btn-sm rounded-pill m-1"
+                    <button key={2} className="btn btn-outline-danger rounded-pill m-1"
                         onClick={(evt: any) => { deleteRemark(evt.target.name) }} name={tsuids[i]}>
                         <i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Del</button>)
-            tmpData.push(<td key={4} style={{ textAlign: "center" }}>{tmpDatum}</td>)
-            tmpRecodes.push(<tr key={i}>{tmpData}</tr>)
+            tmpData.push(<div className="col-sm-12 col-lg-2 text-center border-top">{tmpDatum}</div>)
         }
         return (
-            <table className="table table-sm table-bordered bg-light">
-                <thead>
-                    <tr style={{ textAlign: "center" }}>
-                        <th style={{ width: "10%" }}>Handlename</th>
-                        <th>Content</th>
-                        <th style={{ width: "10%" }} >Timestamp/uid</th>
-                        <th style={{ width: "15%" }}>Ops</th>
-                    </tr>
-                </thead>
-                <tbody>{tmpRecodes}</tbody>
-            </table>
+            <div className="row mx-1">{tmpData}</div>
         )
     }
     const inputConsole = () => {
-        if (uid == "") return (<div>{needLoginForm()}</div>)
+        if (uid == "") return (<div className="m-1">{needLoginForm()}</div>)
         return (
-            <div className="mt-2 p-2" style={{ color: "#CCFFFF", border: "3px double silver", background: "#001111" }}>
-                <div className="d-flex justify-content-between">
+            <div className="m-1 p-2" style={{ color: "#CCFFFF", border: "3px double silver", background: "#001111" }}>
+                <div className="my-1 d-flex flex-column text-center">
                     <h4>
                         <i className="far fa-user mr-1"></i>
-                        {dbMypage ? dbMypage["nickname"] : "None"}
+                        {dbMypage["nickname"] ? dbMypage["nickname"] : "窓の民は名無し"}
                     </h4>
                     <h5><i className="far fa-clock mr-1"></i>{jpclockNow}</h5>
-                    <h5>入力フォーム</h5>
                 </div>
                 <textarea className="form-control my-1" id="tptef_content" rows={6} value={tmpContent}
                     onChange={(evt) => { setTmpContent(evt.target.value) }}></textarea>
-                <div className="my-1 d-flex justify-content-between">
-                    <div className="ml-auto">
-                        <div className="form-inline">
-                            {/* select file */}
-                            <button type="button" className="btn btn-warning btn-sm mx-1"
-                                onClick={(evt) => { $(evt.currentTarget.children[0]).click(); }}>
-                                <input type="file" className="d-none" value=""
-                                    onChange={(evt) => { setTmpFile(evt.target.files[0]) }} />
-                                <i className="fas fa-paperclip mr-1" style={{ pointerEvents: "none" }}></i>
-                                {tmpFile == null ? "Non selected" : tmpFile.name}
-                            </button>
-                            <button className="btn btn-primary btn-sm mx-1"
-                                onClick={() => { remark(); setTmpContent(""); setTmpFile(null); }}>
-                                <i className="far fa-comment-dots mr-1" style={{ pointerEvents: "none" }}></i>Remark
-                            </button>
-                        </div>
-                    </div>
+                {/* 提出ボタン */}
+                <div className="my-1 d-flex flex-column text-center">
+                    <button type="button" className="btn btn-warning btn-lg m-1"
+                        onClick={(evt) => { $(evt.currentTarget.children[0]).click(); }}>
+                        <input type="file" className="d-none" value=""
+                            onChange={(evt) => { setTmpFile(evt.target.files[0]) }} />
+                        <i className="fas fa-paperclip mr-1" style={{ pointerEvents: "none" }}></i>
+                        {tmpFile == null ? "添付ファイル無し" : tmpFile.name}
+                    </button>
+                    <button className="btn btn-primary btn-lg m-1"
+                        onClick={() => { remark(); setTmpContent(""); setTmpFile(null); }}>
+                        <i className="far fa-comment-dots mr-1" style={{ pointerEvents: "none" }}></i>発言する
+                    </button>
                 </div>
             </div>
         )
@@ -127,20 +119,31 @@ export const AppMain = () => {
     const appBody = () => {
         return (
             <div>
-                <div className="d-flex justify-content-between">
-                    <h3 style={{ fontFamily: "Century", color: "mediumturquoise" }}>TPTEF: Chatroom</h3>
-                    <h3 style={{ color: "black" }}>{room}</h3>
-                    <div className="form-inline">
-                        <input className="form-control form-control-sm" type="text" value={tmpRoom}
-                            onChange={(evt) => { setTmpRoom(evt.target.value) }} />
-                        <button className="btn btn-success btn-sm"
-                            onClick={() => {
-                                if (tmpRoom == "") { setTmpRoom(room) }
-                                else { setRoom(tmpRoom) }
-                            }}>
-                            <i className="fas fa-search mr-1" style={{ pointerEvents: "none" }}></i>Room
-                        </button>
-                    </div>
+                <div>
+                    {tmpSwitch == "room" ?
+                        <div className="text-center m-1">
+                            <input className="form-control form-control-lg m-1" type="text" placeholder="商品名" value={tmpText}
+                                onChange={(evt: any) => { setTmpText(evt.target.value) }} />
+                            <button className="btn btn-success btn-lg m-1" type="button"
+                                onClick={() => {
+                                    if (tmpText != "") { setRoom(tmpText); }; setTmpText(""); setTmpSwitch("");
+                                }}>
+                                <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>別の部屋に移動
+                                </button>
+                            <button className="btn btn-secondary btn-lg m-1" type="button"
+                                onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
+                                <i className="fas fa-times mr-1" style={{ pointerEvents: "none" }}></i>部屋にとどまる
+                                </button>
+                        </div>
+                        :
+                        <h2 className="text-center m-1 tptef-room" style={{ color: "black" }}>
+                            <i className="fab fa-houzz mr-1" style={{ pointerEvents: "none" }}></i>{room}
+                            <button className="btn btn-link btn-lg m-1" type="button"
+                                onClick={() => { setTmpText(room); setTmpSwitch("room"); }}>
+                                <i className="fas fa-exchange-alt mr-1" style={{ pointerEvents: "none" }}></i>部屋を変更
+                            </button>
+                        </h2>
+                    }
                 </div>
                 {threadTable()}
                 {inputConsole()}

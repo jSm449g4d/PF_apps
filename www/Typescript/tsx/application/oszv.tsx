@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { dbFieldDelete, useAuth, useDb, needLoginForm } from "../component/firebaseWrapper";
-import { stopf5, jpclock, Query2Dict } from "../component/util_tsx";
+import { stopf5, jpclock, Query2Dict, Unixtime2String } from "../component/util_tsx";
 import "../stylecheets/style.sass";
 
 export const AppMain = () => {
@@ -264,13 +264,10 @@ export const AppMain = () => {
         )
     }
     const orderModal = (tsuid: string, orderName: string, orderMessage: string, orderImage: string = "") => {
-        const now: Date = new Date(Number(tsuid.split("_")[0]));
-        const timestamp = now.getFullYear() + "年 " + now.getMonth() +
-            "月 " + now.getDate() + "日 " + now.getHours() + ": " + now.getMinutes() + ": " + now.getSeconds();
         return (
             <div className="col-12 oszv-column border">
                 <a className="row" data-toggle="modal" data-target={"#V" + tsuid + "_orderModal"}>
-                    <h5 className="col-sm-12 col-lg-3">{timestamp}</h5>
+                    <h5 className="col-sm-12 col-lg-3">{Unixtime2String(Number(tsuid.split("_")[0]))}</h5>
                     <h4 className="col-sm-12 col-lg-9">名称: {orderName}</h4>
                     <h6 className="col-sm-12 col-lg-12">メッセージ: {orderMessage}</h6>
                 </a>

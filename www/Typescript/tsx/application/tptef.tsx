@@ -52,11 +52,11 @@ export const AppMain = () => {
                     <i className="far fa-user mr-1"></i>{dbTptef[tsuids[i]]["handlename"]}{"   uid: "}{tsuids[i].split("_")[1]}
                 </h5>)
             tmpData.push(
-                <div className="col-sm-12 col-lg-2 text-center border-top" style={{ backgroundColor: "whitesmoke" }}>
+                <div className="col-sm-12 col-lg-2 text-center border-top">
                     {Unixtime2String(Number(tsuids[i].split("_")[0]))}
                 </div>)
             tmpData.push(
-                <div className="col-sm-12 col-lg-8 border">
+                <div className="col-sm-12 col-lg-8 border" style={{ backgroundColor: "whitesmoke" }}>
                     {dbTptef[tsuids[i]]["content"]}
                 </div>)
             const tmpDatum = [];

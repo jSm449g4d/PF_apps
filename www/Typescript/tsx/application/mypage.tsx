@@ -53,9 +53,13 @@ export const AppMain = () => {
                         <img className="img-fluid" src={iconUrl} alt={iconUrl} />
                     }
                 </div>
-                <button type="button" className="btn btn-outline-success btn-lg m-1"
+                <button type="button" className="btn btn-success btn-lg m-1"
                     onClick={(evt) => { $(document.getElementById("mypage_uploadIcon")).click() }}>
-                    <i className="fas fa-upload mr-1" style={{ pointerEvents: "none" }}></i>Icon
+                    <i className="fas fa-upload mr-1" style={{ pointerEvents: "none" }}></i>Icon Upload
+                </button>
+                <button className="btn btn-outline-secondary btn-lg rounded-pill m-1" type="button"
+                        onClick={() => { updateIcon(); }}>
+                        <i className="fas fa-redo mr-1" style={{ pointerEvents: "none" }}></i>Icon Reload
                 </button>
                 <input type="file" className="d-none" accept="image/jpeg,image/png" id="mypage_uploadIcon"
                     onChange={(evt) => {
@@ -144,8 +148,8 @@ export const AppMain = () => {
             <div className="p-2" style={{ backgroundColor: "khaki", border: "3px double silver" }}>
                 <div className="row">
                     <h2 className="col-12 text-center">{dispNickname()}</h2>
-                    <div className="col-sm-12 col-lg-4">{showIcon()}</div>
-                    <div className="col-sm-12 col-lg-8">
+                    <div className="col-sm-12 col-lg-2">{showIcon()}</div>
+                    <div className="col-sm-12 col-lg-10">
                         <div className="p-1 text-center" style={{ backgroundColor: "rgba(255,255,255,0.5)" }}>
                             {dispProfile()}
                         </div>

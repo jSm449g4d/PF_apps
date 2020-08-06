@@ -136,13 +136,34 @@ export const AppMain = () => {
                                 </button>
                         </div>
                         :
-                        <h2 className="text-center m-1 tptef-room" style={{ color: "black" }}>
-                            <i className="fab fa-houzz mr-1" style={{ pointerEvents: "none" }}></i>{room}
-                            <button className="btn btn-link btn-lg m-1" type="button"
-                                onClick={() => { setTmpText(room); setTmpSwitch("room"); }}>
-                                <i className="fas fa-exchange-alt mr-1" style={{ pointerEvents: "none" }}></i>部屋を変更
+                        <div className="d-flex justify-content-center text-center m-1 tptef-room" style={{ color: "black" }}>
+                            <div className="form-inline">
+                                <h2><i className="fab fa-houzz mr-1" style={{ pointerEvents: "none" }}></i>{room}</h2>
+                                <button className="btn btn-link btn-lg m-1" type="button"
+                                    onClick={() => { setTmpText(room); setTmpSwitch("room"); }}>
+                                    <i className="fas fa-exchange-alt mr-1" style={{ pointerEvents: "none" }}></i>部屋を移動
                             </button>
-                        </h2>
+                                <i className="fas fa-question-circle fa-2x faa-wrench animated-hover mx-1" style={{ color: "darkorange" }}
+                                    data-toggle="modal" data-target={"#tptef_roomHelpModal"}>
+                                </i>
+                                {/*roomのヘルプモーダル*/}
+                                <div className="modal fade" id={"tptef_roomHelpModal"} role="dialog" aria-hidden="true">
+                                    <div className="modal-dialog modal-lg" role="document">
+                                        <div className="modal-content">
+                                            <div className="modal-header d-flex justify-content-between">
+                                                <h4 className="modal-title">部屋(Room)とは</h4>
+                                                <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
+                                                    <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
+                                                </button>
+                                            </div>
+                                            <div className="modal-body d-flex flex-column text-center">
+                                                チャットルームの部屋です。<br />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     }
                 </div>
                 {threadTable()}

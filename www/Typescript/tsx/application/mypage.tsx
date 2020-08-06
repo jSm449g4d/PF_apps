@@ -60,7 +60,7 @@ export const AppMain = () => {
     const dispNickname = () => {
         if (showUid != uid) return (<div><i className="far fa-user mr-1"></i>{dbMypage["nickname"]}</div>);
         if (tmpSwitch == "nickname") return (
-            <div className="form-inline">
+            <div className="text-center">
                 <input className="form-control form-control-lg m-1" type="text" placeholder="nickname" value={tmpText} size={32}
                     onChange={(evt: any) => { setTmpText(evt.target.value) }} />
                 <button className="btn btn-success btn-lg m-1" type="button"

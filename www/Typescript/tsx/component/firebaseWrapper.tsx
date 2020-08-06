@@ -97,7 +97,7 @@ export const useDb = (initialState: any = { uri: "", recodes: {} }) => {
             case 'download': //{type:xxx fileName:yyy func:zzz}
                 if (uriCheck(uri) == false) break;
                 storage.ref(uri + "/" + action.fileName).getDownloadURL()
-                    .then(url => action.func(url)).catch(err => fbErr(err));
+                    .then(url => action.func(url)).catch(err => {action.func("");fbErr(err)});
                 break;
             // HACK: DB and Storage must be common in 隙間
             case 'strageDelete': //{type:xxx fileName:yyy}

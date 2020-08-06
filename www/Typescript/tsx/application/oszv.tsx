@@ -64,25 +64,35 @@ export const AppMain = () => {
         for (let i = 0; i < tsuids.length; i++) {
             dispatchOszv_s({
                 type: "download", fileName: tsuids[i] + ".img",
-                func: (_url: any) => { updateItem(tsuids[i], { "imageUrl": _url }) }
+                func: (_url: any) => {
+                    if (_url != dbOszv_s["imageUrl"]) updateItem(tsuids[i], { "imageUrl": _url })
+                }
             })
         }
     }
-    const uploadImage = (tsuid: string, buttonText = "画像をアップロード(開発中)") => {
-        if (showUid != uid || position != "owner") return;
+    const uploadImage = (tsuid: string) => {
+        if (showUid != uid || position != "owner") return (<div></div>);
         return (
             <div className="d-flex flex-column text-center">
+                {/*アップロード*/}
                 <button className="btn btn-warning btn-lg m-1" type="button"
-                    onClick={(evt) => { $(document.getElementById("Vc" + tsuid + "_uploadImage")).click() }
+                    onClick={(evt) => { $(document.getElementById("Uc" + tsuid + "_uploadImage")).click() }
                     }>
-                    <i className="fas fa-upload mr-1" style={{ pointerEvents: "none" }}></i>{buttonText}
+                    <i className="fas fa-upload mr-1" style={{ pointerEvents: "none" }}></i>画像をアップロード
                 </button>
-
-                <input type="file" className="d-none" accept="image/jpeg,image/png" id={"Vc" + tsuid + "_uploadImage"} name={tsuid}
+                <input type="file" className="d-none" accept="image/jpeg,image/png" id={"Uc" + tsuid + "_uploadImage"} name={tsuid}
                     onChange={(evt) => {
                         dispatchOszv_s({ type: "upload", file: evt.target.files[0], fileName: evt.target.name + ".img" })
                         setTimeout(() => { updateImage() }, 1000)
                     }} />
+                {/*削除*/}
+                <button className="btn btn-outline-danger btn-lg m-1" type="button"
+                    onClick={(evt) => {
+                        dispatchOszv_s({ type: "strageDelete", fileName: tsuid + ".img" })
+                        setTimeout(() => { updateImage() }, 1000)
+                    }}>
+                    <i className="fas fa-eraser mr-1" style={{ pointerEvents: "none" }}></i>画像を削除
+                </button>
             </div>
         )
     }
@@ -152,7 +162,7 @@ export const AppMain = () => {
                 <a data-toggle="modal" id={"A" + tsuid + "_itemModal"} data-target={"#V" + tsuid + "_itemModal"}
                     onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
                     {showImage(imageUrl)}
-                    <h5>{itemName}</h5>
+                    <h5 className="d-flex flex-column text-center mt-1">{itemName}</h5>
                 </a>
                 {/*注文モーダル(#V)*/}
                 <div className="modal fade" id={"V" + tsuid + "_itemModal"} role="dialog" aria-hidden="true">
@@ -205,8 +215,8 @@ export const AppMain = () => {
                                     :
                                     <div className="d-flex flex-column text-center">
                                         {uploadImage(tsuid)}
-                                        <button className="btn btn-success btn-lg m-1" type="button" data-dismiss="modal" >
-                                            <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>OK
+                                        <button className="btn btn-success btn-lg m-2" type="button" data-dismiss="modal" >
+                                            <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>編集完了
                                         </button>
                                         <button className="btn btn-danger btn-lg m-3" type="button" data-dismiss="modal"
                                             onClick={(evt) => {

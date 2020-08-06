@@ -52,7 +52,7 @@ export const AppMain = () => {
                 <input type="file" className="d-none" accept="image/jpeg,image/png" id="mypage_uploadIcon"
                     onChange={(evt) => {
                         dispatchMypage({ type: "upload", file: evt.target.files[0], fileName: "icon.img" })
-                        setTimeout(() => { updateIcon() }, 1000)
+                        setTimeout(() => { updateIcon() }, 2000)
                     }} />
             </div>
         )

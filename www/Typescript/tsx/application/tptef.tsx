@@ -79,7 +79,7 @@ export const AppMain = () => {
                 tmpDatum.push(
                     <button key={2} className="btn btn-outline-danger rounded-pill m-1"
                         onClick={(evt: any) => { deleteRemark(evt.target.name) }} name={tsuids[i]}>
-                        <i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Del</button>)
+                        <i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Delete</button>)
             tmpData.push(<div className="col-sm-12 col-lg-2 text-center border-top">{tmpDatum}</div>)
         }
         return (

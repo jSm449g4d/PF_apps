@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { dbFieldDelete, useAuth, useDb, needLoginForm } from "../component/firebaseWrapper";
-import { stopf5, jpclock, Query2Dict, Unixtime2String } from "../component/util_tsx";
+import { stopf5, Query2Dict, Unixtime2String } from "../component/util_tsx";
 import "../stylecheets/style.sass";
 
 export const AppMain = () => {
@@ -21,13 +21,6 @@ export const AppMain = () => {
         if (position == "client") dispatchOszv_c({ type: "setUri", uri: "oszv_cc/" + uid });
         if (position == "owner") dispatchOszv_c({ type: "setUri", uri: "oszv_cs/" + uid });
     }, [uid, position])
-
-    // jpclock (decoration)
-    const [jpclockNow, setJpclockNow] = useState("")
-    //    useEffect(() => {
-    //        const _intervalId = setInterval(() => setJpclockNow(jpclock()), 500);
-    //        return () => clearInterval(_intervalId);
-    //    }, []);
 
     const updateShop = (addDict: any) => {
         if (showUid != uid || position != "owner") return false;
@@ -80,20 +73,21 @@ export const AppMain = () => {
     const uploadImage = (tsuid: string) => {
         if (showUid != uid || position != "owner") return (<div></div>);
         return (
-            <div className="d-flex flex-column text-center">
+            <div className="row m-1">
                 {/*アップロード*/}
-                <button className="btn btn-warning btn-lg m-1" type="button"
+                <button className="col-6 btn btn-warning btn-lg" type="button"
                     onClick={(evt) => { $(document.getElementById("Uc" + tsuid + "_uploadImage")).click() }
                     }>
-                    <i className="fas fa-upload mr-1" style={{ pointerEvents: "none" }}></i>画像をアップロード
+                    <i className="fas fa-upload mr-1" style={{ pointerEvents: "none" }}></i>画像を投稿
                 </button>
                 <input type="file" className="d-none" accept="image/jpeg,image/png" id={"Uc" + tsuid + "_uploadImage"} name={tsuid}
                     onChange={(evt) => {
                         dispatchOszv_s({ type: "upload", file: evt.target.files[0], fileName: evt.target.name + ".img" })
                         setTimeout(() => { updateImage() }, 2000)
                     }} />
+                <div className="col-1"></div>
                 {/*削除*/}
-                <button className="btn btn-outline-danger btn-lg m-1" type="button"
+                <button className="col-5 btn btn-outline-danger btn-lg" type="button"
                     onClick={(evt) => {
                         dispatchOszv_s({ type: "strageDelete", fileName: tsuid + ".img" })
                         setTimeout(() => { updateImage() }, 2000)
@@ -103,13 +97,12 @@ export const AppMain = () => {
             </div>
         )
     }
-
     const addItemButtonZwei = () => {
         if (showUid != uid || position != "owner") return (<div></div>);
         return (
             <div>
                 <div className="d-flex flex-column text-center">
-                    <button className="btn btn-outline-primary btn-lg rounded-pill" data-toggle="modal" data-target={"#V" + "_addItemModal"}
+                    <button className="btn btn-outline-primary btn-lg rounded-pill m-1" data-toggle="modal" data-target={"#V" + "_addItemModal"}
                         onClick={() => {
                             setTmpText("新しい商品"); setTmpSwitch("itemName");
                             const _tsuid = Date.now().toString() + "_" + uid
@@ -117,6 +110,10 @@ export const AppMain = () => {
                             setTimeout(() => document.getElementById("A" + _tsuid + "_itemModal").click(), 800)
                         }}>
                         <b>+商品を追加</b>
+                    </button>
+                    <button className="btn btn-outline-secondary btn-lg rounded-pill m-1" type="button"
+                        onClick={() => { updateImage(); }}>
+                        <i className="fas fa-redo mr-1" style={{ pointerEvents: "none" }}></i>画像を更新する
                     </button>
                 </div>
             </div>
@@ -133,7 +130,8 @@ export const AppMain = () => {
                     "itemTsuid": itemTsuid,
                     "name": name,
                     "message": message,
-                    "imageUrl": imageUrl
+                    "imageUrl": imageUrl,
+                    "status": "ordering"
                 }
             }
         })
@@ -145,7 +143,8 @@ export const AppMain = () => {
                     "itemTsuid": itemTsuid,
                     "name": name,
                     "message": message,
-                    "imageUrl": imageUrl
+                    "imageUrl": imageUrl,
+                    "status": "ordering"
                 }
             }
         })
@@ -178,13 +177,13 @@ export const AppMain = () => {
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
                             <div className="modal-header d-flex justify-content-between">
-                                <h4 className="modal-title">
+                                <h3 className="modal-title">
                                     {position == "client" ?
                                         <div><i className="fas fa-utensils mr-1" style={{ pointerEvents: "none" }}></i>{itemName}</div>
                                         :
                                         <div>
                                             {tmpSwitch == "itemName" ?
-                                                <div className="form-inline">
+                                                <div className="text-center m-1">
                                                     <input className="form-control form-control-lg m-1" type="text" placeholder="商品名" value={tmpText}
                                                         onChange={(evt: any) => { setTmpText(evt.target.value) }} />
                                                     <button className="btn btn-success btn-lg m-1" type="button"
@@ -205,7 +204,7 @@ export const AppMain = () => {
                                             }
                                         </div>
                                     }
-                                </h4>
+                                </h3>
                                 <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
                                     <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
                                 </button>
@@ -263,12 +262,52 @@ export const AppMain = () => {
             </div>
         )
     }
-    const orderModal = (tsuid: string, orderName: string, orderMessage: string, orderImage: string = "") => {
+    const orderModal = (tsuid: string, orderName: string, orderMessage: string, orderImage: string = "", orderStatus: string = "") => {
+        const tailConsoleButtons = []
+        if (orderStatus == "ordering" && position == "client") tailConsoleButtons.push(
+            <div className="d-flex flex-column text-center">
+                <button className="btn btn-warning btn-lg m-2" type="button" data-dismiss="modal"
+                    onClick={() => { updateOrder(tsuid, { "status": "canceling" }); }}>
+                    <i className="fas fa-exclamation-triangle mr-1" style={{ pointerEvents: "none" }}></i>キャンセル申請
+                </button>
+            </div>)
+        if (orderStatus == "canceling" && position == "client") tailConsoleButtons.push(
+            <div className="d-flex flex-column text-center">
+                <button className="btn btn-warning btn-lg m-2" type="button" data-dismiss="modal"
+                    onClick={() => { updateOrder(tsuid, { "status": "ordering" }); }}>
+                    <i className="fas fa-recycle mr-1" style={{ pointerEvents: "none" }}></i>キャンセル中止
+                </button>
+            </div>)
+        if (orderStatus == "accepted" && position == "client") tailConsoleButtons.push(
+            <div className="d-flex flex-column text-center">
+                <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
+                    onClick={() => { deleteOrder(tsuid) }}>
+                    <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
+                </button>
+            </div>)
+        if (position == "owner") tailConsoleButtons.push(
+            <div className="d-flex flex-column text-center m-2">
+                <button className="btn btn-primary btn-lg m-1" type="button" data-dismiss="modal"
+                    onClick={() => { updateOrder(tsuid, { "status": "accepted" }); }}>
+                    <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>取引を承認
+                </button>
+                <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
+                    onClick={() => { deleteOrder(tsuid) }}>
+                    <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
+                </button>
+            </div>)
+
         return (
             <div className="col-12 oszv-column border">
                 <a className="row" data-toggle="modal" data-target={"#V" + tsuid + "_orderModal"}>
-                    <h5 className="col-sm-12 col-lg-3">{Unixtime2String(Number(tsuid.split("_")[0]))}</h5>
-                    <h4 className="col-sm-12 col-lg-9">名称: {orderName}</h4>
+                    <div className="col-sm-4 col-lg-2">
+                        {orderStatus == "ordering" ? <h5 style={{ color: "black" }}>取引中</h5> : <div></div>}
+                        {orderStatus == "canceling" ? <h5 style={{ color: "chocolate" }}>キャンセル申請中</h5> : <div></div>}
+                        {orderStatus == "canceled" ? <h5 style={{ color: "darkred" }}>キャンセル済</h5> : <div></div>}
+                        {orderStatus == "accepted" ? <h5 style={{ color: "darkblue" }}>取引済</h5> : <div></div>}
+                    </div>
+                    <h5 className="col-sm-8 col-lg-3">{Unixtime2String(Number(tsuid.split("_")[0]))}</h5>
+                    <h3 className="col-sm-12 col-lg-7">名称: {orderName}</h3>
                     <h6 className="col-sm-12 col-lg-12">メッセージ: {orderMessage}</h6>
                 </a>
                 <div className="modal fade" id={"V" + tsuid + "_orderModal"} role="dialog" aria-hidden="true">
@@ -303,25 +342,16 @@ export const AppMain = () => {
                                         </div>
                                         :
                                         <div>
-                                            <h5>Message
+                                            <h5><i className="fas fa-comment-dots mr-1" style={{ pointerEvents: "none" }}></i>Message
                                                 <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2" style={{ color: "saddlebrown" }}
                                                     onClick={() => { setTmpText(orderMessage); setTmpSwitch("orderMessage"); }}></i>
                                             </h5>
-                                            <i className="fas fa-comment-dots mr-1" style={{ pointerEvents: "none" }}></i>{orderMessage}
+                                            <div>{orderMessage}</div>
                                         </div>
                                     }
 
                                 </div>
-                                <p />
-                                <div className="d-flex flex-column text-center">
-                                    <button className="btn btn-warning btn-lg m-1" type="button" data-dismiss="modal">
-                                        <i className="fas fa-bell mr-1" style={{ pointerEvents: "none" }}></i>呼び出し
-                                    </button>
-                                    <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
-                                        onClick={() => { deleteOrder(tsuid) }}>
-                                        <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
-                                    </button>
-                                </div>
+                                {tailConsoleButtons}
                             </div>
                         </div>
                     </div>
@@ -408,19 +438,20 @@ export const AppMain = () => {
             const tsuids = Object.keys(dbOszv_c).sort();
             if (tsuids.length == 0) return (<h4 className="text-center">注文ががありません</h4>)
             for (var i = 0; i < tsuids.length; i++) {
-                tmpRecodes.push(orderModal(tsuids[i], dbOszv_c[tsuids[i]]["name"], dbOszv_c[tsuids[i]]["message"], dbOszv_c[tsuids[i]]["imageUrl"]))
+                tmpRecodes.push(orderModal(tsuids[i], dbOszv_c[tsuids[i]]["name"], dbOszv_c[tsuids[i]]["message"],
+                    dbOszv_c[tsuids[i]]["imageUrl"], dbOszv_c[tsuids[i]]["status"]))
             }
         }
         if (position == "owner") {
             const tsuids = Object.keys(dbOszv_c).sort();
             if (tsuids.length == 0) return (<h4 className="text-center">注文ががありません</h4>)
             for (var i = 0; i < tsuids.length; i++) {
-                tmpRecodes.push(orderModal(tsuids[i], dbOszv_c[tsuids[i]]["name"], dbOszv_c[tsuids[i]]["message"], dbOszv_c[tsuids[i]]["imageUrl"]))
+                tmpRecodes.push(orderModal(tsuids[i], dbOszv_c[tsuids[i]]["name"], dbOszv_c[tsuids[i]]["message"],
+                    dbOszv_c[tsuids[i]]["imageUrl"], dbOszv_c[tsuids[i]]["status"]))
             }
         }
         return (<div className="row">{tmpRecodes}</div>)
     }
-
     const appBody = () => {
         if (uid == "") return (<div>{needLoginForm()}</div>)
         return (
@@ -447,9 +478,6 @@ export const AppMain = () => {
                         <div className="mt-2">{itemColumn()}</div>
                     </div>
                     <div className="tab-pane fade" id="item2" role="tabpanel" aria-labelledby="item2-tab">
-                        <div className="d-flex justify-content-center">
-                            <h5><i className="far fa-clock mr-1" key={1001}></i>{jpclockNow}</h5>
-                        </div>
                         <div className="mt-2">{orderColumn()}</div>
                     </div>
                     <div className="tab-pane fade" id="item3" role="tabpanel" aria-labelledby="item3-tab">This is a text of item#3.</div>

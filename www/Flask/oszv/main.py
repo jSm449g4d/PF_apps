@@ -39,6 +39,7 @@ def postFunc(request):
         # Confirm permission
         if(_dataDict["uri"].startswith("oszv_c") == False):
             return json.dumps("invalid url", ensure_ascii=False), 200
+        # Operation
         if(_dataDict["type"] == "create"):
             _docRef.set(_dataDict["recodes"], merge=True)
         if(_dataDict["type"] == "delete"):

@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { dbFieldDelete, useAuth, useDb, needLoginForm } from "../component/firebaseWrapper";
 import { stopf5, jpclock, Query2Dict } from "../component/util_tsx";
-import { rejects } from 'assert';
 import "../stylecheets/style.sass";
-import { string } from 'prop-types';
 
 export const AppMain = () => {
     const [uid] = useAuth()
@@ -124,7 +122,7 @@ export const AppMain = () => {
             </div>
         )
     }
-    const addOrder = (itemTsuid: string = "nullPoi", name: string = "新しい注文", message: string = "新しいMSG") => {
+    const addOrder = (itemTsuid: string = "nullPoi", name: string = "新しい注文", message: string = "無し", imageUrl: string = "") => {
         if (showUid != uid || position != "client") return false;
         const tsuid: string = Date.now().toString() + "_" + uid
         dbOperate({
@@ -134,7 +132,8 @@ export const AppMain = () => {
                 [tsuid]: {
                     "itemTsuid": itemTsuid,
                     "name": name,
-                    "message": message
+                    "message": message,
+                    "imageUrl": imageUrl
                 }
             }
         })
@@ -145,7 +144,8 @@ export const AppMain = () => {
                 [tsuid]: {
                     "itemTsuid": itemTsuid,
                     "name": name,
-                    "message": message
+                    "message": message,
+                    "imageUrl": imageUrl
                 }
             }
         })
@@ -216,7 +216,10 @@ export const AppMain = () => {
                                 {position == "client" ?
                                     <div className="d-flex flex-column text-center">
                                         <button className="btn btn-success btn-lg m-1" type="button" data-dismiss="modal"
-                                            onClick={(evt) => { addOrder(tsuid, itemName); $(document.getElementById("Cc" + tsuid + "_itemModal")).click(); }}>
+                                            onClick={(evt) => {
+                                                addOrder(tsuid, itemName, "無し", imageUrl);
+                                                $(document.getElementById("Cc" + tsuid + "_itemModal")).click();
+                                            }}>
                                             <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>注文
                                         </button>
                                         <button type="button" id={"Cc" + tsuid + "_itemModal"} className="d-none" data-toggle="modal" data-target={"#C" + tsuid + "_itemModal"} />
@@ -228,7 +231,7 @@ export const AppMain = () => {
                                             <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>編集完了
                                         </button>
                                         <button className="btn btn-danger btn-lg m-3" type="button" data-dismiss="modal"
-                                            onClick={(evt) => {dispatchOszv_s({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true });}}>
+                                            onClick={(evt) => { dispatchOszv_s({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true }); }}>
                                             <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
                                         </button>
                                     </div>
@@ -335,7 +338,7 @@ export const AppMain = () => {
             return (
                 <div className="d-flex justify-content-end form-inline oszv-position"><h4>提供者</h4>
                     <button className="btn btn-link btn-lg ml-3" onClick={() => { setPosition("client") }}>
-                        提供者として操作
+                        購買者として操作
                     </button>
                 </div>
             )
@@ -408,14 +411,14 @@ export const AppMain = () => {
             const tsuids = Object.keys(dbOszv_c).sort();
             if (tsuids.length == 0) return (<h4 className="text-center">注文ががありません</h4>)
             for (var i = 0; i < tsuids.length; i++) {
-                tmpRecodes.push(orderModal(tsuids[i], dbOszv_c[tsuids[i]]["name"], dbOszv_c[tsuids[i]]["message"], dbOszv_s[dbOszv_c[tsuids[i]]["itemTsuid"]]["imageUrl"]))
+                tmpRecodes.push(orderModal(tsuids[i], dbOszv_c[tsuids[i]]["name"], dbOszv_c[tsuids[i]]["message"], dbOszv_c[tsuids[i]]["imageUrl"]))
             }
         }
         if (position == "owner") {
             const tsuids = Object.keys(dbOszv_c).sort();
             if (tsuids.length == 0) return (<h4 className="text-center">注文ががありません</h4>)
             for (var i = 0; i < tsuids.length; i++) {
-                tmpRecodes.push(orderModal(tsuids[i], dbOszv_c[tsuids[i]]["name"], dbOszv_c[tsuids[i]]["message"], dbOszv_s[dbOszv_c[tsuids[i]]["itemTsuid"]]["imageUrl"]))
+                tmpRecodes.push(orderModal(tsuids[i], dbOszv_c[tsuids[i]]["name"], dbOszv_c[tsuids[i]]["message"], dbOszv_c[tsuids[i]]["imageUrl"]))
             }
         }
         return (<div className="row">{tmpRecodes}</div>)

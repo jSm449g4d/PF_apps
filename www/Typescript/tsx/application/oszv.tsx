@@ -305,6 +305,13 @@ export const AppMain = () => {
                     <i className="fas fa-recycle mr-1" style={{ pointerEvents: "none" }}></i>キャンセル中止
                 </button>
             </div>)
+        if (orderStatus == "canceled" && position == "client") tailConsoleButtons.push(
+            <div className="d-flex flex-column text-center">
+                <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
+                    onClick={() => { deleteOrder(tsuid) }}>
+                    <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
+                </button>
+            </div>)
         if (orderStatus == "accepted" && position == "client") tailConsoleButtons.push(
             <div className="d-flex flex-column text-center">
                 <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
@@ -318,6 +325,10 @@ export const AppMain = () => {
                     onClick={() => { updateOrder(tsuid, { "status": "accepted" }); }}>
                     <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>取引を承認
                 </button>
+                <button className="btn btn-warning btn-lg m-1" type="button" data-dismiss="modal"
+                    onClick={() => { updateOrder(tsuid, { "status": "canceled" }); }}>
+                    <i className="fas fa-exclamation-triangle mr-1" style={{ pointerEvents: "none" }}></i>取引キャンセル
+                </button>
                 <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
                     onClick={() => { deleteOrder(tsuid) }}>
                     <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
@@ -330,6 +341,13 @@ export const AppMain = () => {
                     <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>取引を承認
                 </button>
                 <button className="btn btn-warning btn-lg m-1" type="button" data-dismiss="modal"
+                    onClick={() => { updateOrder(tsuid, { "status": "canceled" }); }}>
+                    <i className="fas fa-exclamation-triangle mr-1" style={{ pointerEvents: "none" }}></i>取引キャンセル
+                </button>
+            </div>)
+        if (orderStatus == "canceled" && position == "owner") tailConsoleButtons.push(
+            <div className="d-flex flex-column text-center m-2">
+                <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
                     onClick={() => { deleteOrder(tsuid) }}>
                     <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
                 </button>

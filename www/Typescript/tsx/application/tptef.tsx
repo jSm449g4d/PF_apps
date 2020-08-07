@@ -122,7 +122,7 @@ export const AppMain = () => {
                 <div>
                     {tmpSwitch == "room" ?
                         <div className="text-center m-1">
-                            <input className="form-control form-control-lg m-1" type="text" placeholder="商品名" value={tmpText}
+                            <input className="form-control form-control-lg m-1" type="text" placeholder="部屋を指定してください" value={tmpText}
                                 onChange={(evt: any) => { setTmpText(evt.target.value) }} />
                             <button className="btn btn-success btn-lg m-1" type="button"
                                 onClick={() => {

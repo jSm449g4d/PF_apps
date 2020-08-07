@@ -97,7 +97,7 @@ export const useDb = (initialState: any = { uri: "", recodes: {} }) => {
             case 'download': //{type:xxx fileName:yyy func:zzz}
                 if (uriCheck(uri) == false) break;
                 storage.ref(uri + "/" + action.fileName).getDownloadURL()
-                    .then(url => action.func(url)).catch(err => {action.func("");fbErr(err)});
+                    .then(url => action.func(url)).catch(err => { action.func(""); fbErr(err) });
                 break;
             // HACK: DB and Storage must be common in 隙間
             case 'strageDelete': //{type:xxx fileName:yyy}
@@ -250,7 +250,7 @@ export const AppAuth = () => {
     const config = () => {
         return (
             <div className="p-2">
-                <i className="fas fa-cog fa-2x faa-wrench animated-hover" data-toggle="modal" data-target="#config_modal" style={{color: "saddlebrown"}}></i>
+                <i className="fas fa-cog fa-2x faa-wrench animated-hover" data-toggle="modal" data-target="#config_modal" style={{ color: "saddlebrown" }}></i>
                 <div className="modal fade" id="config_modal" role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">

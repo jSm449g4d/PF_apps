@@ -73,32 +73,44 @@ export const AppMain = () => {
     const uploadImage = (tsuid: string, imageUrl = "") => {
         if (showUid != uid || position != "owner") return (<div></div>);
         return (
-            <div className="row m-1">
-                {/*アップロード*/}
-                <button className="col-6 btn btn-warning btn-lg" type="button"
-                    onClick={(evt) => { $(document.getElementById("Uc" + tsuid + "_uploadImage")).click() }
-                    }>
-                    <i className="fas fa-upload mr-1" style={{ pointerEvents: "none" }}></i>画像を投稿
-                </button>
-                <input type="file" className="d-none" accept="image/jpeg,image/png" id={"Uc" + tsuid + "_uploadImage"} name={tsuid}
-                    onChange={(evt) => {
-                        dispatchOszv_s({ type: "upload", file: evt.target.files[0], fileName: evt.target.name + ".img" })
-                        setTimeout(() => { updateImage() }, 2000)
-                    }} />
-                <div className="col-1"></div>
+            <div className="m-1">
                 {/*削除*/}
                 {imageUrl == "" ?
-                    <button className="col-5 btn btn-outline-danger btn-lg" type="button" disabled>
-                        <i className="fas fa-eraser mr-1" style={{ pointerEvents: "none" }}></i>画像を削除
-                    </button>
+                    <div className="d-flex flex-column text-center">
+                        {/*アップロード*/}
+                        <button className="btn btn-warning btn-lg" type="button"
+                            onClick={(evt) => { $(document.getElementById("Uc" + tsuid + "_uploadImage")).click() }
+                            }>
+                            <i className="fas fa-upload mr-1" style={{ pointerEvents: "none" }}></i>画像を投稿
+                        </button>
+                        <input type="file" className="d-none" accept="image/jpeg,image/png" id={"Uc" + tsuid + "_uploadImage"} name={tsuid}
+                            onChange={(evt) => {
+                                dispatchOszv_s({ type: "upload", file: evt.target.files[0], fileName: evt.target.name + ".img" })
+                                setTimeout(() => { updateImage() }, 2000)
+                            }} />
+                    </div>
                     :
-                    <button className="col-5 btn btn-outline-danger btn-lg" type="button"
-                        onClick={(evt) => {
-                            dispatchOszv_s({ type: "strageDelete", fileName: tsuid + ".img" })
-                            setTimeout(() => { updateImage() }, 2000)
-                        }}>
-                        <i className="fas fa-eraser mr-1" style={{ pointerEvents: "none" }}></i>画像を削除
+                    <div className="row">
+                        {/*アップロード*/}
+                        <button className="col-6 btn btn-warning btn-lg" type="button"
+                            onClick={(evt) => { $(document.getElementById("Uc" + tsuid + "_uploadImage")).click() }
+                            }>
+                            <i className="fas fa-upload mr-1" style={{ pointerEvents: "none" }}></i>画像を投稿
+                        </button>
+                        <input type="file" className="d-none" accept="image/jpeg,image/png" id={"Uc" + tsuid + "_uploadImage"} name={tsuid}
+                            onChange={(evt) => {
+                                dispatchOszv_s({ type: "upload", file: evt.target.files[0], fileName: evt.target.name + ".img" })
+                                setTimeout(() => { updateImage() }, 2000)
+                            }} />
+                        <div className="col-1"></div>
+                        <button className="col-5 btn btn-outline-danger btn-lg" type="button"
+                            onClick={(evt) => {
+                                dispatchOszv_s({ type: "strageDelete", fileName: tsuid + ".img" })
+                                setTimeout(() => { updateImage() }, 2000)
+                            }}>
+                            <i className="fas fa-eraser mr-1" style={{ pointerEvents: "none" }}></i>画像を削除
                     </button>
+                    </div>
                 }
             </div>
         )
@@ -107,20 +119,24 @@ export const AppMain = () => {
         if (showUid != uid || position != "owner") return (<div></div>);
         return (
             <div>
-                <div className="d-flex flex-column text-center">
-                    <button className="btn btn-outline-primary btn-lg rounded-pill m-1" data-toggle="modal" data-target={"#V" + "_addItemModal"}
-                        onClick={() => {
-                            setTmpText("新しい商品"); setTmpSwitch("itemName");
-                            const _tsuid = Date.now().toString() + "_" + uid
-                            updateItem(_tsuid, { "name": "新しい商品", "imageUrl": "" })
-                            setTimeout(() => document.getElementById("A" + _tsuid + "_itemModal").click(), 800)
-                        }}>
-                        <b>+商品を追加</b>
+                <div className="row">
+                    <div className="col-sm-12 col-lg-8 d-flex flex-column">
+                        <button className="btn btn-primary btn-lg rounded-pill m-1" data-toggle="modal" data-target={"#V" + "_addItemModal"}
+                            onClick={() => {
+                                setTmpText("新しい商品"); setTmpSwitch("itemName");
+                                const _tsuid = Date.now().toString() + "_" + uid
+                                updateItem(_tsuid, { "name": "新しい商品", "imageUrl": "" })
+                                setTimeout(() => document.getElementById("A" + _tsuid + "_itemModal").click(), 800)
+                            }}>
+                            <b>+商品を追加</b>
+                        </button>
+                    </div>
+                    <div className="col-sm-12 col-lg-4 d-flex flex-column">
+                        <button className="btn btn-secondary btn-lg rounded-pill m-1" type="button"
+                            onClick={() => { updateImage(); }}>
+                            <i className="fas fa-redo mr-1" style={{ pointerEvents: "none" }}></i>画像を更新する
                     </button>
-                    <button className="btn btn-outline-secondary btn-lg rounded-pill m-1" type="button"
-                        onClick={() => { updateImage(); }}>
-                        <i className="fas fa-redo mr-1" style={{ pointerEvents: "none" }}></i>画像を更新する
-                    </button>
+                    </div>
                 </div>
             </div>
         )
@@ -291,12 +307,30 @@ export const AppMain = () => {
                     <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
                 </button>
             </div>)
-        if (position == "owner") tailConsoleButtons.push(
+        if (orderStatus == "ordering" && position == "owner") tailConsoleButtons.push(
             <div className="d-flex flex-column text-center m-2">
                 <button className="btn btn-primary btn-lg m-1" type="button" data-dismiss="modal"
                     onClick={() => { updateOrder(tsuid, { "status": "accepted" }); }}>
                     <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>取引を承認
                 </button>
+                <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
+                    onClick={() => { deleteOrder(tsuid) }}>
+                    <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
+                </button>
+            </div>)
+        if (orderStatus == "canceling" && position == "owner") tailConsoleButtons.push(
+            <div className="d-flex flex-column text-center m-2">
+                <button className="btn btn-primary btn-lg m-1" type="button" data-dismiss="modal"
+                    onClick={() => { updateOrder(tsuid, { "status": "accepted" }); }}>
+                    <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>取引を承認
+                </button>
+                <button className="btn btn-warning btn-lg m-1" type="button" data-dismiss="modal"
+                    onClick={() => { deleteOrder(tsuid) }}>
+                    <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
+                </button>
+            </div>)
+        if (orderStatus == "accepted" && position == "owner") tailConsoleButtons.push(
+            <div className="d-flex flex-column text-center m-2">
                 <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
                     onClick={() => { deleteOrder(tsuid) }}>
                     <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
@@ -495,10 +529,10 @@ export const AppMain = () => {
     return (
         <div>
             {position == "client" ?
-                <div className="p-1" style={{ backgroundColor: "#efefff" }}>
+                <div className="p-1">
                     {appBody()}
                 </div> :
-                <div className="p-1" style={{ backgroundColor: "#ffdfef" }}>
+                <div className="p-1" style={{ backgroundColor: "#f1f1ff" }}>
                     {appBody()}
                 </div>}
         </div>

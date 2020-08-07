@@ -130,7 +130,7 @@ export const AppMain = () => {
                             onClick={() => {
                                 setTmpText("新しい商品"); setTmpSwitch("itemName");
                                 const _tsuid = Date.now().toString() + "_" + uid
-                                updateItem(_tsuid, { "name": "新しい商品", "imageUrl": "" })
+                                updateItem(_tsuid, { "name": "新しい商品", "imageUrl": "", "description": "" })
                                 setTimeout(() => document.getElementById("A" + _tsuid + "_itemModal").click(), 800)
                             }}>
                             <b>+商品を追加</b>
@@ -190,7 +190,37 @@ export const AppMain = () => {
             recodes: { [tsuid]: "dbFieldDelete" }
         })
     }
-    const itemModal = (tsuid: string, itemName: string, imageUrl: string = "") => {
+    const itemModal = (tsuid: string, itemName: string, imageUrl: string = "", itemDescription: string = "") => {
+        const showDescription = (_itemDescription: string = "") => {
+            if (position == "client") return (
+                <div className="m-1 d-flex flex-column text-center" style={{ backgroundColor: "beige", border: "3px double silver" }}>
+                    <h5>商品詳細</h5>
+                    {_itemDescription}
+                </div>)
+            if (position == "owner" && tmpSwitch == "itemDescription") return (
+                <div className="m-1 d-flex flex-column text-center" style={{ backgroundColor: "beige", border: "3px double silver" }}>
+                    <h5>商品詳細</h5>
+                    <textarea className="form-control m-1" rows={5} value={tmpText}
+                        onChange={(evt: any) => { setTmpText(evt.target.value) }}></textarea>
+                    <button className="btn btn-success btn-lg m-1" type="button"
+                        onClick={() => { updateItem(tsuid, { "description": tmpText }); setTmpText(""); setTmpSwitch(""); }}>
+                        <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>変更する
+                    </button>
+                    <button className="btn btn-secondary btn-lg m-1" type="button"
+                        onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
+                        <i className="fas fa-times mr-1" style={{ pointerEvents: "none" }}></i>変更中止
+                    </button>
+                </div>)
+            if (position == "owner") return (
+                <div className="m-1 d-flex flex-column text-center" style={{ backgroundColor: "beige", border: "3px double silver" }}>
+                    <h5>商品詳細
+                        <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2" style={{ color: "saddlebrown" }}
+                            onClick={() => { setTmpText(_itemDescription); setTmpSwitch("itemDescription"); }}></i>
+                    </h5>
+                    {_itemDescription}
+                </div>)
+            return (<div></div>)
+        }
         return (
             <div className="col-sm-6 col-md-4 col-lg-2 oszv-column">
                 {/*将棋盤のボタン(#A)*/}
@@ -238,7 +268,7 @@ export const AppMain = () => {
                             </div>
                             <div className="modal-body">
                                 {showImage(imageUrl, "300px")}
-                                <p />
+                                {showDescription(itemDescription)}
                                 {position == "client" ?
                                     <div className="d-flex flex-column text-center">
                                         <button className="btn btn-success btn-lg m-1" type="button" data-dismiss="modal"
@@ -491,7 +521,7 @@ export const AppMain = () => {
         const tsuids = Object.keys(dbOszv_s).sort();
         if (tsuids.length == 0) return (<h4 className="text-center">商品がありません</h4>)
         for (var i = 0; i < tsuids.length; i++) {
-            tmpRecodes.push(itemModal(tsuids[i], dbOszv_s[tsuids[i]]["name"], dbOszv_s[tsuids[i]]["imageUrl"]))
+            tmpRecodes.push(itemModal(tsuids[i], dbOszv_s[tsuids[i]]["name"], dbOszv_s[tsuids[i]]["imageUrl"], dbOszv_s[tsuids[i]]["description"]))
         }
         return (<div className="row">{tmpRecodes}</div>)
     }
@@ -526,12 +556,12 @@ export const AppMain = () => {
                 <ul className="nav nav-tabs nav-fill mb-2 mt-2" role="tablist">
                     <li className="nav-item">
                         <a className="nav-link active" id="item1-tab" data-toggle="tab" href="#item1" role="tab" aria-controls="item1" aria-selected="true">
-                            <b>商品一覧</b>
+                            <h3>商品一覧</h3>
                         </a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" id="item2-tab" data-toggle="tab" href="#item2" role="tab" aria-controls="item2" aria-selected="false">
-                            <b>注文履歴</b>
+                            <h3>注文履歴</h3>
                         </a>
                     </li>
                 </ul>

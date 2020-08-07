@@ -14,17 +14,24 @@ export const AppMain = () => {
     const [dbOszv_s, dispatchOszv_s] = useDb()
     const [dbOszv_c, dispatchOszv_c] = useDb()
     const [dbMypage, dispatchMypage] = useDb() //notTsuidDb
+    const [dbAppindex, dispatchAppindex] = useDb() //notTsuidDb
     useEffect(() => { setShowUid(uid) }, [uid])
-    useEffect(() => { dispatchMypage({ type: "setUri", uri: "mypage/" + showUid }); setPosition("client") }, [showUid])
+    useEffect(() => {
+        dispatchMypage({ type: "setUri", uri: "mypage/" + showUid }); setPosition("client");
+    }, [showUid])
     useEffect(() => { dispatchOszv_s({ type: "setUri", uri: "oszv_s/" + showUid }); }, [showUid])
     useEffect(() => {
         if (position == "client") dispatchOszv_c({ type: "setUri", uri: "oszv_cc/" + uid });
         if (position == "owner") dispatchOszv_c({ type: "setUri", uri: "oszv_cs/" + uid });
     }, [uid, position])
+    useEffect(() => {
+        dispatchAppindex({ type: "setUri", uri: "appindex/oszv"});
+    }, [uid])
 
     const updateShop = (addDict: any) => {
         if (showUid != uid || position != "owner") return false;
         dispatchMypage({ type: "create", recodes: Object.assign({ "shopName": "新しい店" }, addDict), merge: true })
+        dispatchAppindex({ type: "create", recodes: { [uid]: "test" }, merge: true })
     }
     const updateItem = (tsuid: string, addDict: any) => {
         if (showUid != uid || position != "owner") return false;
@@ -78,7 +85,7 @@ export const AppMain = () => {
     const uploadImage = (tsuid: string, imageUrl = "") => {
         if (showUid != uid || position != "owner") return (<div></div>);
         return (
-            <div className="m-1">
+            <div className="m-2">
                 {/*削除*/}
                 {imageUrl == "" ?
                     <div className="d-flex flex-column text-center">
@@ -130,7 +137,7 @@ export const AppMain = () => {
                             onClick={() => {
                                 setTmpText("新しい商品"); setTmpSwitch("itemName");
                                 const _tsuid = Date.now().toString() + "_" + uid
-                                updateItem(_tsuid, { "name": "新しい商品", "imageUrl": "", "description": "" })
+                                updateItem(_tsuid, { "name": "新しい商品", "imageUrl": "", "description": "詳細はありません" })
                                 setTimeout(() => document.getElementById("A" + _tsuid + "_itemModal").click(), 800)
                             }}>
                             <b>+商品を追加</b>
@@ -146,7 +153,7 @@ export const AppMain = () => {
             </div>
         )
     }
-    const addOrder = (itemTsuid: string = "nullPoi", name: string = "新しい注文", message: string = "無し", imageUrl: string = "") => {
+    const addOrder = (itemTsuid: string = "nullPoi", name: string = "新しい注文", message: string = "無し", imageUrl: string = "", description: string = "") => {
         if (showUid != uid || position != "client") return false;
         const tsuid: string = Date.now().toString() + "_" + uid
         dbOperate({
@@ -158,7 +165,8 @@ export const AppMain = () => {
                     "name": name,
                     "message": message,
                     "imageUrl": imageUrl,
-                    "status": "ordering"
+                    "status": "ordering",
+                    "description": description
                 }
             }
         })
@@ -171,7 +179,8 @@ export const AppMain = () => {
                     "name": name,
                     "message": message,
                     "imageUrl": imageUrl,
-                    "status": "ordering"
+                    "status": "ordering",
+                    "description": description
                 }
             }
         })
@@ -227,7 +236,7 @@ export const AppMain = () => {
                 <a data-toggle="modal" id={"A" + tsuid + "_itemModal"} data-target={"#V" + tsuid + "_itemModal"}
                     onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
                     {showImage(imageUrl)}
-                    <h5 className="d-flex flex-column text-center mt-1">{itemName}</h5>
+                    <h5 className="d-flex flex-column text-center mt-1" style={{ backgroundColor: "rgba(255,255,255,0.3)" }}>{itemName}</h5>
                 </a>
                 {/*注文モーダル(#V)*/}
                 <div className="modal fade" id={"V" + tsuid + "_itemModal"} role="dialog" aria-hidden="true">
@@ -273,7 +282,7 @@ export const AppMain = () => {
                                     <div className="d-flex flex-column text-center">
                                         <button className="btn btn-success btn-lg m-1" type="button" data-dismiss="modal"
                                             onClick={(evt) => {
-                                                addOrder(tsuid, itemName, "無し", imageUrl);
+                                                addOrder(tsuid, itemName, "メッセージはありません", imageUrl, itemDescription);
                                                 $(document.getElementById("Cc" + tsuid + "_itemModal")).click();
                                             }}>
                                             <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>注文
@@ -319,7 +328,7 @@ export const AppMain = () => {
             </div>
         )
     }
-    const orderModal = (tsuid: string, orderName: string, orderMessage: string, orderImage: string = "", orderStatus: string = "") => {
+    const orderModal = (tsuid: string, orderName: string, orderMessage: string, orderImage: string = "", orderStatus: string = "", orderDescription: string = "") => {
         const tailConsoleButtons = []
         if (orderStatus == "ordering" && position == "client") tailConsoleButtons.push(
             <div className="d-flex flex-column text-center">
@@ -401,7 +410,8 @@ export const AppMain = () => {
                     </div>
                     <h5 className="col-sm-8 col-lg-3">{Unixtime2String(Number(tsuid.split("_")[0]))}</h5>
                     <h3 className="col-sm-12 col-lg-7">名称: {orderName}</h3>
-                    <h6 className="col-sm-12 col-lg-12">メッセージ: {orderMessage}</h6>
+                    <h6 className="col-sm-12 col-lg-8">メッセージ: {orderMessage}</h6>
+                    <div className="d-none d-lg-block col-4">ボタンは工事中</div>
                 </a>
                 <div className="modal fade" id={"V" + tsuid + "_orderModal"} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
@@ -415,7 +425,11 @@ export const AppMain = () => {
                             <div className="modal-body d-flex flex-column text-center">
                                 {showImage(orderImage, "300px")}
                                 <p />
-                                <div className="p-1" style={{ backgroundColor: "beige", border: "3px double silver" }}>
+                                <div className="p-1 m-1" style={{ backgroundColor: "beige", border: "3px double silver" }}>
+                                    <h5>商品詳細</h5>
+                                    <div>{orderDescription}</div>
+                                </div>
+                                <div className="p-1 m-1" style={{ backgroundColor: "snow", border: "3px double silver" }}>
                                     {tmpSwitch == "orderMessage" ?
                                         <div className="d-flex flex-column text-center">
                                             <h5>Message</h5>
@@ -442,7 +456,6 @@ export const AppMain = () => {
                                             <div>{orderMessage}</div>
                                         </div>
                                     }
-
                                 </div>
                                 {tailConsoleButtons}
                             </div>
@@ -483,7 +496,7 @@ export const AppMain = () => {
         if (showUid == "") return (<h2>店がありません</h2>)
         if (dbMypage["shopName"] && position == "client")
             return (<h2><i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage["shopName"]}</h2>)
-        if (dbMypage["shopName"] && position == "owner")
+        if (dbMypage["shopName"] && position == "owner" && uid == showUid)
             return (
                 <div>
                     {tmpSwitch == "shopName" ?
@@ -500,7 +513,7 @@ export const AppMain = () => {
                                 </button>
                         </h2>
                         :
-                        <h2>
+                        <h2 className="form-inline">
                             <i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage["shopName"]}
                             <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2" style={{ color: "saddlebrown" }}
                                 onClick={() => { setTmpText(dbMypage["shopName"]); setTmpSwitch("shopName"); }}></i>
@@ -527,21 +540,11 @@ export const AppMain = () => {
     }
     const orderColumn = () => {
         const tmpRecodes = [];
-        if (position == "client") {
-            const tsuids = Object.keys(dbOszv_c).sort();
-            if (tsuids.length == 0) return (<h4 className="text-center">注文ががありません</h4>)
-            for (var i = 0; i < tsuids.length; i++) {
-                tmpRecodes.push(orderModal(tsuids[i], dbOszv_c[tsuids[i]]["name"], dbOszv_c[tsuids[i]]["message"],
-                    dbOszv_c[tsuids[i]]["imageUrl"], dbOszv_c[tsuids[i]]["status"]))
-            }
-        }
-        if (position == "owner") {
-            const tsuids = Object.keys(dbOszv_c).sort();
-            if (tsuids.length == 0) return (<h4 className="text-center">注文ががありません</h4>)
-            for (var i = 0; i < tsuids.length; i++) {
-                tmpRecodes.push(orderModal(tsuids[i], dbOszv_c[tsuids[i]]["name"], dbOszv_c[tsuids[i]]["message"],
-                    dbOszv_c[tsuids[i]]["imageUrl"], dbOszv_c[tsuids[i]]["status"]))
-            }
+        const tsuids = Object.keys(dbOszv_c).sort();
+        if (tsuids.length == 0) return (<h4 className="text-center">注文ががありません</h4>)
+        for (var i = 0; i < tsuids.length; i++) {
+            tmpRecodes.push(orderModal(tsuids[i], dbOszv_c[tsuids[i]]["name"], dbOszv_c[tsuids[i]]["message"],
+                dbOszv_c[tsuids[i]]["imageUrl"], dbOszv_c[tsuids[i]]["status"], dbOszv_c[tsuids[i]]["description"]))
         }
         return (<div className="row">{tmpRecodes}</div>)
     }
@@ -578,14 +581,13 @@ export const AppMain = () => {
             </div>
         )
     }
-
     return (
-        <div>
+        <div className="p-1">
             {position == "client" ?
-                <div className="p-1">
+                <div>
                     {appBody()}
                 </div> :
-                <div className="p-1" style={{ backgroundColor: "#f1f1ff" }}>
+                <div style={{ backgroundColor: "rgba(240,230,255,0.3)" }}>
                     {appBody()}
                 </div>}
         </div>

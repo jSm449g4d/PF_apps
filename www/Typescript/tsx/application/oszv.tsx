@@ -54,9 +54,14 @@ export const AppMain = () => {
             recodes: { [tsuid]: Object.assign(Object.assign({}, dbOszv_c[tsuid]), addDict) }
         })
     }
-    const showImage = (imageUrl: string = "/static/img/publicdomainq-0014284zts.jpg") => {
-        if (imageUrl == "") return (<div className="d-flex flex-column text-center"><i className="fab fa-themeisle fa-2x m-2"></i>No Image</div>)
-        return (<div className="d-flex flex-column text-center"><img className="img-fluid" src={imageUrl} alt={imageUrl} /></div>)
+    const showImage = (imageUrl: string = "/static/img/publicdomainq-0014284zts.jpg", _height: string = "200px") => {
+        if (imageUrl == "")
+            return (
+                <h4 className="d-flex flex-column text-center img-thumbnail" style={{ backgroundColor: "snow", height: _height, objectFit: "contain" }} >
+                    <i className="fab fa-themeisle fa-2x m-2"></i>No Image
+                </h4>)
+        return (<div className="d-flex flex-column text-center img-thumbnail"><img className="img-fluid" src={imageUrl} alt={imageUrl}
+            style={{ backgroundColor: "snow", height: _height, objectFit: "contain" }} /></div>)
     }
     const updateImage = () => {
         if (showUid != uid || position != "owner") return;
@@ -187,7 +192,7 @@ export const AppMain = () => {
     }
     const itemModal = (tsuid: string, itemName: string, imageUrl: string = "") => {
         return (
-            <div className="col-sm-6 col-md-4 col-lg-2 oszv-column border">
+            <div className="col-sm-6 col-md-4 col-lg-2 oszv-column">
                 {/*将棋盤のボタン(#A)*/}
                 <a data-toggle="modal" id={"A" + tsuid + "_itemModal"} data-target={"#V" + tsuid + "_itemModal"}
                     onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
@@ -232,7 +237,7 @@ export const AppMain = () => {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                {showImage(imageUrl)}
+                                {showImage(imageUrl, "300px")}
                                 <p />
                                 {position == "client" ?
                                     <div className="d-flex flex-column text-center">
@@ -360,7 +365,7 @@ export const AppMain = () => {
                                 </button>
                             </div>
                             <div className="modal-body d-flex flex-column text-center">
-                                {showImage(orderImage)}
+                                {showImage(orderImage, "300px")}
                                 <p />
                                 <div className="p-1" style={{ backgroundColor: "beige", border: "3px double silver" }}>
                                     {tmpSwitch == "orderMessage" ?
@@ -503,12 +508,12 @@ export const AppMain = () => {
                 <ul className="nav nav-tabs nav-fill mb-2 mt-2" role="tablist">
                     <li className="nav-item">
                         <a className="nav-link active" id="item1-tab" data-toggle="tab" href="#item1" role="tab" aria-controls="item1" aria-selected="true">
-                            <b>商品</b>
+                            <b>商品一覧</b>
                         </a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" id="item2-tab" data-toggle="tab" href="#item2" role="tab" aria-controls="item2" aria-selected="false">
-                            <b>注文</b>
+                            <b>注文履歴</b>
                         </a>
                     </li>
                 </ul>

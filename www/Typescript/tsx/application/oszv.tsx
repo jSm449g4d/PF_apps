@@ -38,7 +38,6 @@ export const AppMain = () => {
         xhr.send(JSON.stringify(sendCreate));
     }
     const updateOrder = (tsuid: string, addDict: any) => {
-        if (showUid != uid) return false;
         // [tsuid(client)]: itemTsuid(Owner),
         const itemTsuid: string = dbOszv_c[tsuid]["itemTsuid"]
         dbOperate({
@@ -350,7 +349,7 @@ export const AppMain = () => {
                 </button>
             </div>)
         if (orderStatus == "ordering" && uid == showUid) tailConsoleButtons.push(
-            <div className="d-flex flex-column text-center m-2">
+            <div className="d-flex flex-column text-center">
                 <button className="btn btn-primary btn-lg m-1" type="button" data-dismiss="modal"
                     onClick={() => { updateOrder(tsuid, { "status": "accepted" }); }}>
                     <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>取引を承認
@@ -365,7 +364,7 @@ export const AppMain = () => {
                 </button>
             </div>)
         if (orderStatus == "canceling" && uid == showUid) tailConsoleButtons.push(
-            <div className="d-flex flex-column text-center m-2">
+            <div className="d-flex flex-column text-center">
                 <button className="btn btn-primary btn-lg m-1" type="button" data-dismiss="modal"
                     onClick={() => { updateOrder(tsuid, { "status": "accepted" }); }}>
                     <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>取引を承認
@@ -376,14 +375,14 @@ export const AppMain = () => {
                 </button>
             </div>)
         if (orderStatus == "canceled" && uid == showUid) tailConsoleButtons.push(
-            <div className="d-flex flex-column text-center m-2">
+            <div className="d-flex flex-column text-center">
                 <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
                     onClick={() => { deleteOrder(tsuid) }}>
                     <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
                 </button>
             </div>)
         if (orderStatus == "accepted" && uid == showUid) tailConsoleButtons.push(
-            <div className="d-flex flex-column text-center m-2">
+            <div className="d-flex flex-column text-center">
                 <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
                     onClick={() => { deleteOrder(tsuid) }}>
                     <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
@@ -393,13 +392,13 @@ export const AppMain = () => {
         return (
             <div className="col-12 oszv-column border">
                 <a className="row" data-toggle="modal" data-target={"#V" + tsuid + "_orderModal"}>
-                    <div className="col-sm-4 col-lg-2">
+                    <div className="col-sm-5 col-lg-3">
                         {orderStatus == "ordering" ? <h3 style={{ color: "darkcyan" }}>取引中</h3> : <div></div>}
                         {orderStatus == "canceling" ? <h3 style={{ color: "chocolate" }}>キャンセル申請中</h3> : <div></div>}
                         {orderStatus == "canceled" ? <h3 style={{ color: "darkred" }}>キャンセル済</h3> : <div></div>}
                         {orderStatus == "accepted" ? <h3 style={{ color: "darkblue" }}>取引済</h3> : <div></div>}
                     </div>
-                    <h4 className="col-sm-8 col-lg-7">{orderName}</h4>
+                    <h4 className="col-sm-7 col-lg-6">{orderName}</h4>
                     <h5 className="col-sm-12 col-lg-3">{Unixtime2String(Number(tsuid.split("_")[0]))}</h5>
                     <h6 className="col-sm-12 col-lg-8">メッセージ: {orderMessage}</h6>
                     <div className="d-none d-lg-block col-4">ボタンは工事中</div>
@@ -463,7 +462,7 @@ export const AppMain = () => {
                 return (
                     <div className="m-1 p-2" style={{ border: "3px double silver", background: "darkblue", color: "white" }}>
                         <div className="d-flex flex-column text-center">
-                            <h3 style={{ color: "red" }}><i className="fas fa-hard-hat mr-1"></i>«PortfolioShopUid» не ставится</h3>
+                            <h3 style={{ color: "red" }}><i className="fas fa-hard-hat mr-1"></i>«portfolioShopUid» не ставится</h3>
                             <h4>процедура</h4>
                             <div>1. Нажмите «出品者1»</div>
                             <button className="btn btn-warning btn-lg m-1"
@@ -477,7 +476,7 @@ export const AppMain = () => {
             return (
                 <div className="m-1 p-2" style={{ border: "3px double silver", background: "darkblue", color: "white" }}>
                     <div className="d-flex flex-column text-center">
-                        <h3 style={{ color: "red" }}><i className="fas fa-hard-hat mr-1"></i>Test</h3>
+                        <h3 style={{ color: "red" }}><i className="fas fa-hard-hat mr-1"></i>Сбросить «portfolioShopUid»</h3>
                         <button className="btn btn-warning btn-lg m-1"
                             onClick={() => { dispatchAppindex_oszv_tag({ type: "create", recodes: { "portfolioShopUid": "" }, merge: true }) }}>
                             регистр «PortfolioShopUid == ""»

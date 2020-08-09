@@ -50,7 +50,7 @@ export const AppMain = () => {
                     </div>
                     <div>
                         <button className="btn btn-sm btn-secondary m-2" data-toggle="collapse" data-target="#VPSdeWPnoCollapse">
-                            <i className="fas fa-caret-up fa-btn" ></i>Close
+                            <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }} ></i>Close
                         </button>
                     </div>
                 </div>
@@ -71,21 +71,20 @@ export const AppMain = () => {
         const topicBackStyle: any = {
             backgroundColor: "rgba(250,250,250,0.8)",
             height: 300,
-            padding: 2,
         }
         const carousOSZV = () => {
             return (
-                <div style={topicBackStyle}>
+                <div className="text-center p-2" style={topicBackStyle}>
                     <h5>
                         ウェイターくん
                     </h5>
                     <div>正式名称: общая система заказа и вызова</div>
                     <div>(注文及び呼び出しの為の汎用システム)</div>
                     <div>
-                        【ネタ】病院アンケートが、ツッコミどころ満載で面白すぎるwwwwwwww<p />
-                        https://www.youtube.com/watch?v=UfAAooxe_k0<p />
-                        の4:08の発言「医者のアナウンスが早すぎて聞き取れなくて飛ばされた」<p />
-                        がきっかけです(忘れないようにね)
+                        【ネタ】病院アンケートが、ツッコミどころ満載で面白すぎるwwwwwwww<br />
+                        の4:08の発言「医者のアナウンスが早すぎて聞き取れなくて飛ばされた」<br />
+                        https://www.youtube.com/watch?v=UfAAooxe_k0<br />
+                        が開発の契機になっています<br />
                     </div>
                     <b>
                         開発状況: α版
@@ -95,7 +94,7 @@ export const AppMain = () => {
         }
         const carousNicoapi = () => {
             return (
-                <div style={topicBackStyle}>
+                <div className="text-center p-2" style={topicBackStyle}>
                     <h5>
                         Nicoapi
                     </h5>
@@ -113,7 +112,7 @@ export const AppMain = () => {
         }
         const carousMypage = () => {
             return (
-                <div style={topicBackStyle}>
+                <div className="text-center p-2" style={topicBackStyle}>
                     <h5>
                         Mypage
                     </h5>
@@ -128,7 +127,7 @@ export const AppMain = () => {
         }
         const carousTptef = () => {
             return (
-                <div style={topicBackStyle}>
+                <div className="text-center p-2" style={topicBackStyle}>
                     <h5>
                         Tptef
                     </h5>

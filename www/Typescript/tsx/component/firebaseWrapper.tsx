@@ -226,20 +226,18 @@ export const AppAuth = () => {
                                     <b>アカウントを新規作成する</b>
                                 </button>
                             </div>
-                            <div className="modal-footer d-flex justify-content-end">
+                            <div className="modal-footer d-flex">
                                 <h5 className="modal-title">
                                     ※おためしログイン:
                                 </h5>
-                                <div>
-                                    <button className="btn btn-warning m-1" type="button" data-dismiss="modal"
-                                        onClick={() => { easyIn() }}>
-                                        <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>EzLogin
+                                <button className="flex-fill btn btn-warning m-1" type="button" data-dismiss="modal"
+                                    onClick={() => { easyIn() }}>
+                                    <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>EzLogin
                                     </button>
-                                    <button className="btn btn-warning m-1" type="button" data-dismiss="modal"
-                                        onClick={() => { easyIn2() }}>
-                                        <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>別垢版
-                                    </button>
-                                </div>
+                                <button className="flex-fill btn btn-warning m-1" type="button" data-dismiss="modal"
+                                    onClick={() => { easyIn2() }}>
+                                    <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>別垢版
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -250,7 +248,7 @@ export const AppAuth = () => {
     const config = () => {
         return (
             <div className="p-2">
-                <i className="fas fa-cog fa-2x faa-wrench animated-hover" data-toggle="modal" data-target="#config_modal" style={{ color: "saddlebrown" }}></i>
+                <i className="fas fa-cog fa-2x faa-wrench animated-hover fa-btn" data-toggle="modal" data-target="#config_modal"></i>
                 <div className="modal fade" id="config_modal" role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">

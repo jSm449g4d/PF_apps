@@ -60,16 +60,18 @@ export const AppMain = () => {
         return (<div className="d-flex flex-column text-center img-thumbnail"><img className="img-fluid" src={imageUrl} alt={imageUrl}
             style={{ backgroundColor: "snow", height: _height, objectFit: "contain" }} /></div>)
     }
-    const updateImage = () => {
+    const updateImage = (tsuid: string) => {
+        dispatchOszv_s({
+            type: "download", fileName: tsuid + ".img",
+            func: (_url: any) => { if (_url != dbOszv_s["imageUrl"]) updateItem(tsuid, { "imageUrl": _url }) }
+        })
+
+    }
+    const updateImageAll = () => {
         if (showUid != uid) return;
         const tsuids = Object.keys(dbOszv_s).sort();
         for (let i = 0; i < tsuids.length; i++) {
-            dispatchOszv_s({
-                type: "download", fileName: tsuids[i] + ".img",
-                func: (_url: any) => {
-                    if (_url != dbOszv_s["imageUrl"]) updateItem(tsuids[i], { "imageUrl": _url })
-                }
-            })
+            updateImage(tsuids[i])
         }
     }
     const uploadImage = (tsuid: string, imageUrl = "") => {
@@ -94,7 +96,7 @@ export const AppMain = () => {
                     :
                     <div className="d-flex justify-content-between text-center">
                         {/*アップロード*/}
-                        <button className="btn btn-warning btn-lg" type="button"
+                        <button className="flex-fill btn btn-warning btn-lg mx-1" type="button"
                             onClick={(evt) => { $(document.getElementById("Uc" + tsuid + "_uploadImage")).click() }
                             }>
                             <i className="fas fa-upload mr-1" style={{ pointerEvents: "none" }}></i>画像を投稿
@@ -103,11 +105,12 @@ export const AppMain = () => {
                             onChange={(evt) => {
                                 dispatchOszv_s({ type: "upload", file: evt.target.files[0], fileName: evt.target.name + ".img" })
                                 updateItem(tsuid, { "imageUrl": evt.target.files[0].name })
+                                setTimeout(() => updateImage(tsuid), 2000)
                             }} />
-                        <button className="btn btn-outline-danger btn-lg" type="button"
+                        <button className="flex-fill btn btn-outline-danger btn-lg mx-1" type="button"
                             onClick={(evt) => {
                                 dispatchOszv_s({ type: "strageDelete", fileName: tsuid + ".img" })
-                                updateItem(tsuid, { "imageUrl": "" })
+                                setTimeout(() => updateImage(tsuid), 2000)
                             }}>
                             <i className="fas fa-eraser mr-1" style={{ pointerEvents: "none" }}></i>画像を削除
                             </button>
@@ -134,8 +137,8 @@ export const AppMain = () => {
                     </div>
                     <div className="col-sm-12 col-lg-4 d-flex flex-column">
                         <button className="btn btn-secondary btn-lg rounded-pill m-1" type="button"
-                            onClick={() => { updateImage(); }}>
-                            <i className="fas fa-redo mr-1" style={{ pointerEvents: "none" }}></i>画像を更新する
+                            onClick={() => { updateImageAll(); }}>
+                            <i className="fas fa-redo mr-1" style={{ pointerEvents: "none" }}></i>画像を更新
                     </button>
                     </div>
                 </div>
@@ -212,7 +215,7 @@ export const AppMain = () => {
             if (uid == showUid) return (
                 <div className="m-1 d-flex flex-column text-center" style={{ backgroundColor: "beige", border: "3px double silver" }}>
                     <h5>商品詳細
-                        <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2" style={{ color: "saddlebrown" }}
+                        <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2 fa-btn"
                             onClick={() => { setTmpText(_itemDescription); setTmpSwitch("itemDescription"); }}></i>
                     </h5>
                     {_itemDescription}
@@ -231,29 +234,29 @@ export const AppMain = () => {
                 <div className="modal fade" id={"V" + tsuid + "_itemModal"} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
-                            <div className="modal-header d-flex justify-content-between">
-                                <h3 className="modal-title">
+                            <div className="modal-header d-flex">
+                                <h3 className="modal-title flex-grow-1">
                                     {uid != showUid ?
                                         <div><i className="fas fa-utensils mr-1" style={{ pointerEvents: "none" }}></i>{itemName}</div>
                                         :
-                                        <div>
+                                        <div className="">
                                             {tmpSwitch == "itemName" ?
-                                                <div className="text-center m-1">
+                                                <div className="form-inline">
                                                     <input className="form-control form-control-lg m-1" type="text" placeholder="商品名" value={tmpText}
                                                         onChange={(evt: any) => { setTmpText(evt.target.value) }} />
                                                     <button className="btn btn-success btn-lg m-1" type="button"
                                                         onClick={() => { updateItem(tsuid, { "name": tmpText }); setTmpText(""); setTmpSwitch(""); }}>
-                                                        <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>変更する
+                                                        変更
                                                     </button>
                                                     <button className="btn btn-secondary btn-lg m-1" type="button"
                                                         onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
-                                                        <i className="fas fa-times mr-1" style={{ pointerEvents: "none" }}></i>変更中止
+                                                        変更中止
                                                     </button>
                                                 </div>
                                                 :
                                                 <div>
                                                     <i className="fas fa-utensils mr-1" style={{ pointerEvents: "none" }}></i>{itemName}
-                                                    <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2" style={{ color: "saddlebrown" }}
+                                                    <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2 fa-btn"
                                                         onClick={() => { setTmpText(itemName); setTmpSwitch("itemName"); }}></i>
                                                 </div>
                                             }
@@ -282,7 +285,7 @@ export const AppMain = () => {
                                     <div className="d-flex flex-column text-center">
                                         {uploadImage(tsuid, imageUrl)}
                                         <button className="btn btn-success btn-lg m-2" type="button" data-dismiss="modal"
-                                            onClick={(evt) => { updateImage() }}>
+                                            onClick={(evt) => { updateImage(tsuid) }}>
                                             <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>編集完了
                                         </button>
                                         <button className="btn btn-danger btn-lg m-3" type="button" data-dismiss="modal"
@@ -443,7 +446,7 @@ export const AppMain = () => {
                                         :
                                         <div>
                                             <h5><i className="fas fa-comment-dots mr-1" style={{ pointerEvents: "none" }}></i>Message
-                                                <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2" style={{ color: "saddlebrown" }}
+                                                <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2 fa-btn"
                                                     onClick={() => { setTmpText(orderMessage); setTmpSwitch("orderMessage"); }}></i>
                                             </h5>
                                             <div>{orderMessage}</div>
@@ -500,7 +503,7 @@ export const AppMain = () => {
             <div className="m-1 p-2" style={{ border: "3px double silver", background: "#001111" }}>
                 <div className="d-flex justify-content-center">
                     <h4 style={{ color: "#CCFFFF" }}>かんたんアカウント変更</h4>
-                    <i className="fas fa-question-circle fa-2x faa-wrench animated-hover mx-1" style={{ color: "darkorange" }}
+                    <i className="fas fa-question-circle fa-2x faa-wrench animated-hover mx-1 fa-btn-help"
                         data-toggle="modal" data-target={"#oszv_switchAuthHelpModal"}></i>
                     {/*roomのヘルプモーダル*/}
                     <div className="modal fade" id={"oszv_switchAuthHelpModal"} role="dialog" aria-hidden="true">
@@ -515,6 +518,13 @@ export const AppMain = () => {
                                 <div className="modal-body d-flex flex-column text-center">
                                     ポートフォリオ評価を簡単にするため作った機能です<br />
                                     ボタン一つでユーザーを変更できます<br />
+                                    <h5>「<b>本来の仕様</b>」と「<b>ポートフォリオ評価用</b>」の違い</h5>
+                                    <h6>クエリの「<b>portfolio</b>」を削除すると「本来の仕様」に変更出来ます<br /></h6>
+                                    <div className="text-left">
+                                        1. 「本来の仕様」では全てのユーザーが出店できますが、「ポートフォリオ評価用」では出店出来ません<br />
+                                        2. 「本来の仕様」では様々な店に訪れられますが、「ポートフォリオ評価用」では一つの店に固定されます<br />
+                                        3. 「ポートフォリオ評価用」では、「アプリ一覧ボタン」や「Footウィジェット」等のUIをオミットしております<br />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -523,31 +533,31 @@ export const AppMain = () => {
                 {checkPortfolioShopUid()}
                 <div className="d-flex justify-content-between">
                     {dbAppindex_oszv_tag["PortfolioClientOdinUid"] == uid ?
-                        <button className="btn btn-primary btn-lg m-1" disabled>
+                        <button className="flex-fill btn btn-primary btn-lg m-1" disabled>
                             <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購入者1(選択中)
                         </button>
                         :
-                        <button className="btn btn-primary btn-lg m-1"
+                        <button className="flex-fill btn btn-primary btn-lg m-1"
                             onClick={() => { easyIn(); }}>
                             <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購入者1
                         </button>
                     }
                     {dbAppindex_oszv_tag["PortfolioClientDvaUid"] == uid ?
-                        <button className="btn btn-primary btn-lg m-1" disabled>
+                        <button className="flex-fill btn btn-primary btn-lg m-1" disabled>
                             <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購入者2(選択中)
                         </button>
                         :
-                        <button className="btn btn-primary btn-lg m-1"
+                        <button className="flex-fill btn btn-primary btn-lg m-1"
                             onClick={() => { easyIn("client@mail.com", "abcdef"); }}>
                             <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購入者2
                         </button>
                     }
                     {dbAppindex_oszv_tag["portfolioShopUid"] == uid ?
-                        <button className="btn btn-danger btn-lg m-1" disabled>
+                        <button className="flex-fill btn btn-danger btn-lg m-1" disabled>
                             <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>出品者1(選択中)
                         </button>
                         :
-                        <button className="btn btn-danger btn-lg m-1"
+                        <button className="flex-fill btn btn-danger btn-lg m-1"
                             onClick={() => { easyIn("owner@mail.com", "abcdef"); }}>
                             <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>出品者1
                         </button>
@@ -560,16 +570,15 @@ export const AppMain = () => {
         if (showUid != uid)
             return (
                 <div className="text-center oszv-position">
-                    <h4>購買者</h4>
-                    <div className="d-flex justify-content-end form-inline">
+                    <h4>購買者
                         {"portfolio" in Query2Dict() == false ?
                             <button className="btn btn-link btn-lg ml-3" onClick={() => { setShowUid(uid) }}>
                                 自分の店舗に行く
-                        </button>
+                            </button>
                             :
                             <div></div>
                         }
-                    </div>
+                    </h4>
                 </div>
             )
     }
@@ -596,7 +605,7 @@ export const AppMain = () => {
                         :
                         <h2 className="form-inline">
                             <i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage["shopName"]}
-                            <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2" style={{ color: "saddlebrown" }}
+                            <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2 fa-btn"
                                 onClick={() => { setTmpText(dbMypage["shopName"]); setTmpSwitch("shopName"); }}></i>
                         </h2>
                     }

@@ -18,13 +18,13 @@ export const AppWidgetHead = () => {
     }
     return (
         <div className="row">
-            <div className="col-sm-12 col-md-6">
+            <div className="col-sm-12 col-lg-6">
                 <div className="form-inline m-2">
                     <i className="fab fa-react fa-2x fa-spin mr-2" style={{ color: "mediumturquoise" }}></i>
                     <div id="titlelogo_tsx">タイトルが未設定です</div>
                 </div>
             </div>
-            <div className="col-sm-12 col-md-6 d-flex justify-content-end">
+            <div className="col-sm-12 col-lg-6 d-flex justify-content-end">
                 <div className="form-inline">
                     {/*ポートフォリオの場合、アプリ一覧を操作不能にします */}
                     {Query2Dict()["portfolio"] ?

@@ -88,30 +88,29 @@ export const AppMain = () => {
                         <input type="file" className="d-none" accept="image/jpeg,image/png" id={"Uc" + tsuid + "_uploadImage"} name={tsuid}
                             onChange={(evt) => {
                                 dispatchOszv_s({ type: "upload", file: evt.target.files[0], fileName: evt.target.name + ".img" })
-                                setTimeout(() => { updateImage() }, 2000)
+                                updateItem(tsuid, { "imageUrl": evt.target.files[0].name })
                             }} />
                     </div>
                     :
-                    <div className="row">
+                    <div className="d-flex justify-content-between text-center">
                         {/*アップロード*/}
-                        <button className="col-6 btn btn-warning btn-lg" type="button"
+                        <button className="btn btn-warning btn-lg" type="button"
                             onClick={(evt) => { $(document.getElementById("Uc" + tsuid + "_uploadImage")).click() }
                             }>
                             <i className="fas fa-upload mr-1" style={{ pointerEvents: "none" }}></i>画像を投稿
-                        </button>
+                            </button>
                         <input type="file" className="d-none" accept="image/jpeg,image/png" id={"Uc" + tsuid + "_uploadImage"} name={tsuid}
                             onChange={(evt) => {
                                 dispatchOszv_s({ type: "upload", file: evt.target.files[0], fileName: evt.target.name + ".img" })
-                                setTimeout(() => { updateImage() }, 2000)
+                                updateItem(tsuid, { "imageUrl": evt.target.files[0].name })
                             }} />
-                        <div className="col-1"></div>
-                        <button className="col-5 btn btn-outline-danger btn-lg" type="button"
+                        <button className="btn btn-outline-danger btn-lg" type="button"
                             onClick={(evt) => {
                                 dispatchOszv_s({ type: "strageDelete", fileName: tsuid + ".img" })
-                                setTimeout(() => { updateImage() }, 2000)
+                                updateItem(tsuid, { "imageUrl": "" })
                             }}>
                             <i className="fas fa-eraser mr-1" style={{ pointerEvents: "none" }}></i>画像を削除
-                    </button>
+                            </button>
                     </div>
                 }
             </div>
@@ -282,11 +281,15 @@ export const AppMain = () => {
                                     :
                                     <div className="d-flex flex-column text-center">
                                         {uploadImage(tsuid, imageUrl)}
-                                        <button className="btn btn-success btn-lg m-2" type="button" data-dismiss="modal" >
+                                        <button className="btn btn-success btn-lg m-2" type="button" data-dismiss="modal"
+                                            onClick={(evt) => { updateImage() }}>
                                             <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>編集完了
                                         </button>
                                         <button className="btn btn-danger btn-lg m-3" type="button" data-dismiss="modal"
-                                            onClick={(evt) => { dispatchOszv_s({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true }); }}>
+                                            onClick={(evt) => {
+                                                dispatchOszv_s({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true });
+                                                dispatchOszv_s({ type: "strageDelete", fileName: tsuid + ".img" })
+                                            }}>
                                             <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
                                         </button>
                                     </div>

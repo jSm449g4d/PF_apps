@@ -224,10 +224,10 @@ export const AppMain = () => {
         return (
             <div className="col-sm-6 col-md-4 col-lg-3 oszv-column">
                 {/*将棋盤のボタン(#A)*/}
-                <a data-toggle="modal" id={"A" + tsuid + "_itemModal"} data-target={"#V" + tsuid + "_itemModal"}
+                <a className="" data-toggle="modal" id={"A" + tsuid + "_itemModal"} data-target={"#V" + tsuid + "_itemModal"}
                     onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
                     {showImage(imageUrl)}
-                    <h5 className="d-flex flex-column text-center mt-1" style={{ backgroundColor: "rgba(255,255,255,0.3)" }}>{itemName}</h5>
+                    <h5 className="d-flex flex-column text-center mt-1" style={{ backgroundColor: "rgba(255,255,255,0.4)" }}>{itemName}</h5>
                 </a>
                 {/*注文モーダル(#V)*/}
                 <div className="modal fade" id={"V" + tsuid + "_itemModal"} role="dialog" aria-hidden="true">
@@ -394,13 +394,13 @@ export const AppMain = () => {
             <div className="col-12 oszv-column border">
                 <a className="row" data-toggle="modal" data-target={"#V" + tsuid + "_orderModal"}>
                     <div className="col-sm-4 col-lg-2">
-                        {orderStatus == "ordering" ? <h5 style={{ color: "black" }}>取引中</h5> : <div></div>}
-                        {orderStatus == "canceling" ? <h5 style={{ color: "chocolate" }}>キャンセル申請中</h5> : <div></div>}
-                        {orderStatus == "canceled" ? <h5 style={{ color: "darkred" }}>キャンセル済</h5> : <div></div>}
-                        {orderStatus == "accepted" ? <h5 style={{ color: "darkblue" }}>取引済</h5> : <div></div>}
+                        {orderStatus == "ordering" ? <h3 style={{ color: "darkcyan" }}>取引中</h3> : <div></div>}
+                        {orderStatus == "canceling" ? <h3 style={{ color: "chocolate" }}>キャンセル申請中</h3> : <div></div>}
+                        {orderStatus == "canceled" ? <h3 style={{ color: "darkred" }}>キャンセル済</h3> : <div></div>}
+                        {orderStatus == "accepted" ? <h3 style={{ color: "darkblue" }}>取引済</h3> : <div></div>}
                     </div>
-                    <h5 className="col-sm-8 col-lg-3">{Unixtime2String(Number(tsuid.split("_")[0]))}</h5>
-                    <h3 className="col-sm-12 col-lg-7">名称: {orderName}</h3>
+                    <h4 className="col-sm-8 col-lg-7">{orderName}</h4>
+                    <h5 className="col-sm-12 col-lg-3">{Unixtime2String(Number(tsuid.split("_")[0]))}</h5>
                     <h6 className="col-sm-12 col-lg-8">メッセージ: {orderMessage}</h6>
                     <div className="d-none d-lg-block col-4">ボタンは工事中</div>
                 </a>
@@ -473,6 +473,7 @@ export const AppMain = () => {
                         </div>
                     </div>)
             if (dbAppindex_oszv_tag["portfolioShopUid"] != showUid) { setShowUid(dbAppindex_oszv_tag["portfolioShopUid"]) }
+            if (("debug" in Query2Dict()) == false) return (<div></div>)
             return (
                 <div className="m-1 p-2" style={{ border: "3px double silver", background: "darkblue", color: "white" }}>
                     <div className="d-flex flex-column text-center">

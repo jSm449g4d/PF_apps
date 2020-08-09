@@ -43,12 +43,12 @@ export const AppMain = () => {
         const itemTsuid: string = dbOszv_c[tsuid]["itemTsuid"]
         dbOperate({
             type: "create",
-            uri: "oszv_c/" + itemTsuid.split("_")[1],
+            uri: "oszv_c/" + tsuid.split("_")[1],
             recodes: { [tsuid]: Object.assign(Object.assign({}, dbOszv_c[tsuid]), addDict) }
         })
         dbOperate({
             type: "create",
-            uri: "oszv_c/" + uid,
+            uri: "oszv_c/" + itemTsuid.split("_")[1],
             recodes: { [tsuid]: Object.assign(Object.assign({}, dbOszv_c[tsuid]), addDict) }
         })
     }
@@ -149,7 +149,7 @@ export const AppMain = () => {
         const tsuid: string = Date.now().toString() + "_" + uid
         dbOperate({
             type: "create",
-            uri: "oszv_c/" + itemTsuid.split("_")[1],
+            uri: "oszv_c/" + tsuid.split("_")[1],
             recodes: {
                 [tsuid]: {
                     "itemTsuid": itemTsuid,
@@ -163,7 +163,7 @@ export const AppMain = () => {
         })
         dbOperate({
             type: "create",
-            uri: "oszv_c/" + uid,
+            uri: "oszv_c/" + itemTsuid.split("_")[1],
             recodes: {
                 [tsuid]: {
                     "itemTsuid": itemTsuid,
@@ -181,12 +181,12 @@ export const AppMain = () => {
         const itemTsuid: string = dbOszv_c[tsuid]["itemTsuid"]
         dbOperate({
             type: "delete",
-            uri: "oszv_c/" + itemTsuid.split("_")[1],
+            uri: "oszv_c/" + tsuid.split("_")[1],
             recodes: { [tsuid]: "dbFieldDelete" }
         })
         dbOperate({
             type: "delete",
-            uri: "oszv_c/" + uid,
+            uri: "oszv_c/" + itemTsuid.split("_")[1],
             recodes: { [tsuid]: "dbFieldDelete" }
         })
     }

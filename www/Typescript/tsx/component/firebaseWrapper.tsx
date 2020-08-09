@@ -145,7 +145,7 @@ export const AppAuth = () => {
         return (
             <div>
                 {/*Button*/}
-                <button type="button" className="btn btn-link m-2" data-toggle="modal" data-target={"#signin_modal"}>
+                <button type="button" className="btn btn-link btn-push m-2" data-toggle="modal" data-target={"#signin_modal"}>
                     <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>
                     <b>ログイン</b>
                 </button>
@@ -259,11 +259,11 @@ export const AppAuth = () => {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                <h6><i className="fas fa-user mr-1"></i>{auth.currentUser.displayName}</h6>
-                                <h6><i className="far fa-envelope mr-1"></i>{auth.currentUser.email}</h6>
+                                <h5><i className="fas fa-user mr-1"></i>{auth.currentUser.displayName}</h5>
+                                <h5><i className="far fa-envelope mr-1"></i>{auth.currentUser.email}</h5>
                                 <p />
                                 <div className="d-flex flex-column text-center">
-                                    <h5>メールアドレスを変更する</h5>
+                                    <h4>メールアドレスを変更する</h4>
                                     <input className="form-control form-control-lg m-1" type="text" name="mail_addr" placeholder="mail address"
                                         onChange={(evt: any) => { setTmpAddress(evt.target.value); }} />
                                     {(checkMailAddress(tmpAddress) == false) ?
@@ -297,7 +297,7 @@ export const AppAuth = () => {
                 <div className="d-flex justify-content-between">
                     <div className="ml-auto">
                         <div className="form-inline">
-                            <button className="btn btn-warning m-1" type="button" onClick={() => { easyIn() }}>
+                            <button className="btn btn-warning btn-push m-1" type="button" onClick={() => { easyIn() }}>
                                 <b>
                                     <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>おためしログイン
                                 </b>
@@ -316,7 +316,7 @@ export const AppAuth = () => {
                                 :
                                 <div><i className="far fa-envelope mr-1"></i>{auth.currentUser.email}</div>}
                         </h6>
-                        <button className="btn btn-secondary mx-1" type="button" onClick={() => { auth.signOut(); }}>
+                        <button className="btn btn-secondary btn-push mx-1" type="button" onClick={() => { auth.signOut(); }}>
                             <i className="fas fa-sign-out-alt mr-1" style={{ pointerEvents: "none" }}></i>
                             <b>ログアウト</b>
                         </button>
@@ -334,24 +334,24 @@ export const needLoginForm = () => {
             <div className="d-flex flex-column text-center">
                 <h4>ログインが必要です</h4>
                 <p />
-                <button type="button" className="btn btn-primary btn-lg m-2" data-toggle="modal" data-target={"#signin_modal"}>
+                <button type="button" className="btn btn-primary btn-lg btn-push m-2" data-toggle="modal" data-target={"#signin_modal"}>
                     <b><i className="fas fa-sign-in-alt mr-1"></i>ログインする</b>
                 </button>
                 <p />
-                <button className="btn btn-light btn-lg m-1" type="button" data-dismiss="modal"
+                <button className="btn btn-light btn-lg m-1 btn-push" type="button" data-dismiss="modal"
                     onClick={() => { googleIn() }}>
                     <i className="fab fa-google mr-1" style={{ pointerEvents: "none" }}></i>
                                         Googleアカウントででログインする
                         </button>
                 <p />
-                <button type="button" className="btn btn-link btn-lg mx-1" data-dismiss="modal" data-target={"#signin_modal"}
+                <button type="button" className="btn btn-link btn-lg btn-push mx-1" data-dismiss="modal" data-target={"#signin_modal"}
                     onClick={(evt) => { $(evt.currentTarget.children[0]).click(); }}>
                     <button type="button" className="d-none" data-toggle="modal" data-target={"#signup_modal"} />
                     <i className="fas fa-file-signature mr-1" style={{ pointerEvents: "none" }}></i>
                     <b>アカウントを新規作成する</b>
                 </button>
                 <p />
-                <button className="btn btn-warning btn-lg m-1" type="button" data-dismiss="modal"
+                <button className="btn btn-warning btn-lg btn-push m-1" type="button" data-dismiss="modal"
                     onClick={() => { easyIn() }}>
                     <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>
                     <b>おためしログイン</b>

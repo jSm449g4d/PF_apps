@@ -204,13 +204,13 @@ export const AppMain = () => {
                     <textarea className="form-control m-1" rows={5} value={tmpText}
                         onChange={(evt: any) => { setTmpText(evt.target.value) }}></textarea>
                     <div className="d-flex">
-                    <button className="flex-fill btn btn-success btn-lg m-1" type="button"
-                        onClick={() => { updateItem(tsuid, { "description": tmpText }); setTmpText(""); setTmpSwitch(""); }}>
-                        <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>変更する
+                        <button className="flex-fill btn btn-success btn-lg m-1" type="button"
+                            onClick={() => { updateItem(tsuid, { "description": tmpText }); setTmpText(""); setTmpSwitch(""); }}>
+                            <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>変更する
                     </button>
-                    <button className="flex-fill btn btn-secondary btn-lg m-1" type="button"
-                        onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
-                        <i className="fas fa-times mr-1" style={{ pointerEvents: "none" }}></i>変更中止
+                        <button className="flex-fill btn btn-secondary btn-lg m-1" type="button"
+                            onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
+                            <i className="fas fa-times mr-1" style={{ pointerEvents: "none" }}></i>変更中止
                     </button>
                     </div>
                 </div>)
@@ -227,11 +227,13 @@ export const AppMain = () => {
         return (
             <div className="col-sm-6 col-md-4 col-lg-3 oszv-column">
                 {/*将棋盤のボタン(#A)*/}
-                <a className="" data-toggle="modal" id={"A" + tsuid + "_itemModal"} data-target={"#V" + tsuid + "_itemModal"}
-                    onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
-                    {showImage(imageUrl)}
-                    <h5 className="d-flex flex-column text-center mt-1" style={{ backgroundColor: "rgba(255,255,255,0.4)" }}>{itemName}</h5>
-                </a>
+                <div className="btn-push">
+                    <a className="" data-toggle="modal" id={"A" + tsuid + "_itemModal"} data-target={"#V" + tsuid + "_itemModal"}
+                        onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
+                        {showImage(imageUrl)}
+                        <h5 className="d-flex flex-column text-center mt-1" style={{ backgroundColor: "rgba(255,255,255,0.4)" }}>{itemName}</h5>
+                    </a>
+                </div>
                 {/*注文モーダル(#V)*/}
                 <div className="modal fade" id={"V" + tsuid + "_itemModal"} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
@@ -399,18 +401,20 @@ export const AppMain = () => {
 
         return (
             <div className="col-12 oszv-column border">
-                <a className="row" data-toggle="modal" data-target={"#V" + tsuid + "_orderModal"}>
-                    <div className="col-sm-5 col-lg-3">
-                        {orderStatus == "ordering" ? <h3 style={{ color: "darkcyan" }}>取引中</h3> : <div></div>}
-                        {orderStatus == "canceling" ? <h3 style={{ color: "chocolate" }}>キャンセル申請中</h3> : <div></div>}
-                        {orderStatus == "canceled" ? <h3 style={{ color: "darkred" }}>キャンセル済</h3> : <div></div>}
-                        {orderStatus == "accepted" ? <h3 style={{ color: "darkblue" }}>取引済</h3> : <div></div>}
-                    </div>
-                    <h4 className="col-sm-7 col-lg-6">{orderName}</h4>
-                    <h5 className="col-sm-12 col-lg-3">{Unixtime2String(Number(tsuid.split("_")[0]))}</h5>
-                    <h6 className="col-sm-12 col-lg-8">メッセージ: {orderMessage}</h6>
-                    <div className="d-none d-lg-block col-4">ボタンは工事中</div>
-                </a>
+                <div className="btn-push">
+                    <a className="row" data-toggle="modal" data-target={"#V" + tsuid + "_orderModal"}>
+                        <div className="col-sm-5 col-lg-3">
+                            {orderStatus == "ordering" ? <h3 style={{ color: "darkcyan" }}>取引中</h3> : <div></div>}
+                            {orderStatus == "canceling" ? <h3 style={{ color: "chocolate" }}>キャンセル申請中</h3> : <div></div>}
+                            {orderStatus == "canceled" ? <h3 style={{ color: "darkred" }}>キャンセル済</h3> : <div></div>}
+                            {orderStatus == "accepted" ? <h3 style={{ color: "darkblue" }}>取引済</h3> : <div></div>}
+                        </div>
+                        <h4 className="col-sm-7 col-lg-6">{orderName}</h4>
+                        <h5 className="col-sm-12 col-lg-3">{Unixtime2String(Number(tsuid.split("_")[0]))}</h5>
+                        <h6 className="col-sm-12 col-lg-8">メッセージ: {orderMessage}</h6>
+                        <div className="d-none d-lg-block col-4">ボタンは工事中</div>
+                    </a>
+                </div>
                 <div className="modal fade" id={"V" + tsuid + "_orderModal"} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
@@ -450,10 +454,8 @@ export const AppMain = () => {
                                         :
                                         <div>
                                             <h4><i className="fas fa-comment-dots mr-1" style={{ pointerEvents: "none" }}></i>Message
-                                                <button className="flex-fill btn btn-success m-1" type="button"
-                                                    onClick={() => { setTmpText(orderMessage); setTmpSwitch("orderMessage"); }}>
-                                                    <i className="fas fa-pencil-alt mr-1" style={{ pointerEvents: "none" }}></i>執筆する
-                                                </button>
+                                                <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2 fa-btn"
+                                                    onClick={() => { setTmpText(orderMessage); setTmpSwitch("orderMessage"); }}></i>
                                             </h4>
                                             <div>{orderMessage}</div>
                                         </div>
@@ -544,7 +546,7 @@ export const AppMain = () => {
                             <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購入者1(選択中)
                         </button>
                         :
-                        <button className="flex-fill btn btn-primary btn-lg m-1"
+                        <button className="flex-fill btn btn-primary btn-lg btn-push m-1"
                             onClick={() => { easyIn(); }}>
                             <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購入者1
                         </button>
@@ -554,7 +556,7 @@ export const AppMain = () => {
                             <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購入者2(選択中)
                         </button>
                         :
-                        <button className="flex-fill btn btn-primary btn-lg m-1"
+                        <button className="flex-fill btn btn-primary btn-lg btn-push m-1"
                             onClick={() => { easyIn("client@mail.com", "abcdef"); }}>
                             <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購入者2
                         </button>
@@ -564,7 +566,7 @@ export const AppMain = () => {
                             <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>出品者1(選択中)
                         </button>
                         :
-                        <button className="flex-fill btn btn-danger btn-lg m-1"
+                        <button className="flex-fill btn btn-danger btn-lg btn-push m-1"
                             onClick={() => { easyIn("owner@mail.com", "abcdef"); }}>
                             <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>出品者1
                         </button>
@@ -658,12 +660,12 @@ export const AppMain = () => {
                     <div className="col-sm-12 col-lg-4 text-right">{dispPosition()}</div>
                 </div>
                 <ul className="nav nav-tabs nav-fill mb-2 mt-2" role="tablist">
-                    <li className="nav-item">
+                    <li className="nav-item btn-push">
                         <a className="nav-link active" id="item1-tab" data-toggle="tab" href="#item1" role="tab" aria-controls="item1" aria-selected="true">
                             <h3>商品一覧</h3>
                         </a>
                     </li>
-                    <li className="nav-item">
+                    <li className="nav-item btn-push">
                         <a className="nav-link" id="item2-tab" data-toggle="tab" href="#item2" role="tab" aria-controls="item2" aria-selected="false">
                             <h3>注文履歴</h3>
                         </a>

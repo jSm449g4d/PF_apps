@@ -124,7 +124,7 @@ export const AppMain = () => {
         return (
             <div>
                 <div className="row">
-                    <div className="col-sm-12 col-lg-8 d-flex flex-column">
+                    <div className="col-sm-12 col-md-7 col-lg-9 d-flex flex-column">
                         <button className="btn btn-primary btn-lg rounded-pill m-1" data-toggle="modal" data-target={"#V" + "_addItemModal"}
                             onClick={() => {
                                 setTmpText("新しい商品"); setTmpSwitch("itemName");
@@ -135,7 +135,7 @@ export const AppMain = () => {
                             <b>+商品を追加</b>
                         </button>
                     </div>
-                    <div className="col-sm-12 col-lg-4 d-flex flex-column">
+                    <div className="col-sm-12 col-md-5 col-lg-3 d-flex flex-column">
                         <button className="btn btn-secondary btn-lg rounded-pill m-1" type="button"
                             onClick={() => { updateImageAll(); }}>
                             <i className="fas fa-redo mr-1" style={{ pointerEvents: "none" }}></i>画像を更新
@@ -195,29 +195,31 @@ export const AppMain = () => {
         const showDescription = (_itemDescription: string = "") => {
             if (uid != showUid) return (
                 <div className="m-1 d-flex flex-column text-center" style={{ backgroundColor: "beige", border: "3px double silver" }}>
-                    <h5>商品詳細</h5>
+                    <h4>商品詳細</h4>
                     {_itemDescription}
                 </div>)
             if (uid == showUid && tmpSwitch == "itemDescription") return (
                 <div className="m-1 d-flex flex-column text-center" style={{ backgroundColor: "beige", border: "3px double silver" }}>
-                    <h5>商品詳細</h5>
+                    <h4>商品詳細</h4>
                     <textarea className="form-control m-1" rows={5} value={tmpText}
                         onChange={(evt: any) => { setTmpText(evt.target.value) }}></textarea>
-                    <button className="btn btn-success btn-lg m-1" type="button"
+                    <div className="d-flex">
+                    <button className="flex-fill btn btn-success btn-lg m-1" type="button"
                         onClick={() => { updateItem(tsuid, { "description": tmpText }); setTmpText(""); setTmpSwitch(""); }}>
                         <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>変更する
                     </button>
-                    <button className="btn btn-secondary btn-lg m-1" type="button"
+                    <button className="flex-fill btn btn-secondary btn-lg m-1" type="button"
                         onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
                         <i className="fas fa-times mr-1" style={{ pointerEvents: "none" }}></i>変更中止
                     </button>
+                    </div>
                 </div>)
             if (uid == showUid) return (
                 <div className="m-1 d-flex flex-column text-center" style={{ backgroundColor: "beige", border: "3px double silver" }}>
-                    <h5>商品詳細
+                    <h4>商品詳細
                         <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2 fa-btn"
                             onClick={() => { setTmpText(_itemDescription); setTmpSwitch("itemDescription"); }}></i>
-                    </h5>
+                    </h4>
                     {_itemDescription}
                 </div>)
             return (<div></div>)
@@ -422,33 +424,37 @@ export const AppMain = () => {
                                 {showImage(orderImage, "300px")}
                                 <p />
                                 <div className="p-1 m-1" style={{ backgroundColor: "beige", border: "3px double silver" }}>
-                                    <h5>商品詳細</h5>
+                                    <h4>商品詳細</h4>
                                     <div>{orderDescription}</div>
                                 </div>
                                 <div className="p-1 m-1" style={{ backgroundColor: "snow", border: "3px double silver" }}>
                                     {tmpSwitch == "orderMessage" ?
                                         <div className="d-flex flex-column text-center">
-                                            <h5>Message</h5>
+                                            <h4>Message</h4>
                                             <textarea className="form-control" rows={4} value={tmpText}
                                                 onChange={(evt: any) => { setTmpText(evt.target.value) }}></textarea>
-                                            <button className="btn btn-success btn-lg m-1" type="button"
-                                                onClick={() => {
-                                                    updateOrder(tsuid, { "message": tmpText });
-                                                    setTmpText(""); setTmpSwitch("");
-                                                }}>
-                                                <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>変更する
-                                            </button>
-                                            <button className="btn btn-secondary btn-lg m-1" type="button"
-                                                onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
-                                                <i className="fas fa-times mr-1" style={{ pointerEvents: "none" }}></i>変更中止
-                                            </button>
+                                            <div className="d-flex">
+                                                <button className=" flex-fill btn btn-success btn-lg m-1" type="button"
+                                                    onClick={() => {
+                                                        updateOrder(tsuid, { "message": tmpText });
+                                                        setTmpText(""); setTmpSwitch("");
+                                                    }}>
+                                                    <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>変更する
+                                                </button>
+                                                <button className="flex-fill btn btn-secondary btn-lg m-1" type="button"
+                                                    onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
+                                                    <i className="fas fa-times mr-1" style={{ pointerEvents: "none" }}></i>変更中止
+                                                </button>
+                                            </div>
                                         </div>
                                         :
                                         <div>
-                                            <h5><i className="fas fa-comment-dots mr-1" style={{ pointerEvents: "none" }}></i>Message
-                                                <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2 fa-btn"
-                                                    onClick={() => { setTmpText(orderMessage); setTmpSwitch("orderMessage"); }}></i>
-                                            </h5>
+                                            <h4><i className="fas fa-comment-dots mr-1" style={{ pointerEvents: "none" }}></i>Message
+                                                <button className="flex-fill btn btn-success m-1" type="button"
+                                                    onClick={() => { setTmpText(orderMessage); setTmpSwitch("orderMessage"); }}>
+                                                    <i className="fas fa-pencil-alt mr-1" style={{ pointerEvents: "none" }}></i>執筆する
+                                                </button>
+                                            </h4>
                                             <div>{orderMessage}</div>
                                         </div>
                                     }
@@ -518,12 +524,13 @@ export const AppMain = () => {
                                 <div className="modal-body d-flex flex-column text-center">
                                     ポートフォリオ評価を簡単にするため作った機能です<br />
                                     ボタン一つでユーザーを変更できます<br />
+                                    <p />
                                     <h5>「<b>本来の仕様</b>」と「<b>ポートフォリオ評価用</b>」の違い</h5>
                                     <h6>クエリの「<b>portfolio</b>」を削除すると「本来の仕様」に変更出来ます<br /></h6>
                                     <div className="text-left">
                                         1. 「本来の仕様」では全てのユーザーが出店できますが、「ポートフォリオ評価用」では出店出来ません<br />
                                         2. 「本来の仕様」では様々な店に訪れられますが、「ポートフォリオ評価用」では一つの店に固定されます<br />
-                                        3. 「ポートフォリオ評価用」では、「アプリ一覧ボタン」や「Footウィジェット」等のUIをオミットしております<br />
+                                        3. 「ポートフォリオ評価用」では、簡単のために多数のUIをオミットしております<br />
                                     </div>
                                 </div>
                             </div>

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import ReactDOM from "react-dom";
-import { AppAuth } from "./firebaseWrapper";
+import { AppAuth} from "./firebaseWrapper";
 import { stopf5, Query2Dict } from "./util_tsx";
 require.context('../application/', true, /\.ts(x?)$/)
 

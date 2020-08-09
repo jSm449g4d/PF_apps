@@ -43,8 +43,7 @@ def postFunc(request):
         if(_dataDict["type"] == "create"):
             _docRef.set(_dataDict["recodes"], merge=True)
         if(_dataDict["type"] == "delete"):
-            _docRef.set(
-                {list(_dataDict["recodes"])[0]: DELETE_FIELD}, merge=True)
+            _docRef.set({list(_dataDict["recodes"])[0]: DELETE_FIELD}, merge=True)
         return json.dumps("OK", ensure_ascii=False), 200
     except:
         return json.dumps("error on postFunc", ensure_ascii=False), 200

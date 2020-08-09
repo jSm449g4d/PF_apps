@@ -120,7 +120,7 @@ const signUp = (address: string, pass: string) => {
 const signIn = (address: string, pass: string) => {
     auth.signInWithEmailAndPassword(address, pass).catch(err => fbErr(err))
 }
-const easyIn = (address: string = "test@mail.com", pass: string = "asdfgh") => {
+export const easyIn = (address: string = "test@mail.com", pass: string = "asdfgh") => {
     auth.signInWithEmailAndPassword(address, pass).catch(() => { signUp(address, pass); })
 }
 const easyIn2 = (address: string = "test2@mail.com", pass: string = "asdfgh") => {

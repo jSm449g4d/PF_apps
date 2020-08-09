@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { dbFieldDelete, useAuth, useDb, needLoginForm } from "../component/firebaseWrapper";
+import { dbFieldDelete, useAuth, useDb, needLoginForm, easyIn } from "../component/firebaseWrapper";
 import { stopf5, Query2Dict, Unixtime2String } from "../component/util_tsx";
 import "../stylecheets/style.sass";
 
@@ -7,34 +7,25 @@ export const AppMain = () => {
     const [uid] = useAuth()
 
     const [showUid, setShowUid] = useState("showuid" in Query2Dict() == false ? uid : Query2Dict()["showuid"])
-    const [position, setPosition] = useState("client")//client,owner
     const [tmpText, setTmpText] = useState("")
     const [tmpSwitch, setTmpSwitch] = useState("")
 
     const [dbOszv_s, dispatchOszv_s] = useDb()
     const [dbOszv_c, dispatchOszv_c] = useDb()
     const [dbMypage, dispatchMypage] = useDb() //notTsuidDb
-    const [dbAppindex, dispatchAppindex] = useDb() //notTsuidDb
-    useEffect(() => { setShowUid(uid) }, [uid])
-    useEffect(() => {
-        dispatchMypage({ type: "setUri", uri: "mypage/" + showUid }); setPosition("client");
-    }, [showUid])
+    const [dbAppindex_oszv_tag, dispatchAppindex_oszv_tag] = useDb() //notTsuidDb
+    useEffect(() => { dispatchMypage({ type: "setUri", uri: "mypage/" + showUid }); }, [showUid])
     useEffect(() => { dispatchOszv_s({ type: "setUri", uri: "oszv_s/" + showUid }); }, [showUid])
-    useEffect(() => {
-        if (position == "client") dispatchOszv_c({ type: "setUri", uri: "oszv_cc/" + uid });
-        if (position == "owner") dispatchOszv_c({ type: "setUri", uri: "oszv_cs/" + uid });
-    }, [uid, position])
-    useEffect(() => {
-        dispatchAppindex({ type: "setUri", uri: "appindex/oszv"});
-    }, [uid])
+    useEffect(() => { dispatchOszv_c({ type: "setUri", uri: "oszv_c/" + uid }); }, [uid])
+    useEffect(() => { dispatchAppindex_oszv_tag({ type: "setUri", uri: "appindex/oszv_tag" }); }, [uid])
+
 
     const updateShop = (addDict: any) => {
-        if (showUid != uid || position != "owner") return false;
+        if (showUid != uid) return false;
         dispatchMypage({ type: "create", recodes: Object.assign({ "shopName": "新しい店" }, addDict), merge: true })
-        dispatchAppindex({ type: "create", recodes: { [uid]: "test" }, merge: true })
     }
     const updateItem = (tsuid: string, addDict: any) => {
-        if (showUid != uid || position != "owner") return false;
+        if (showUid != uid) return false;
         dispatchOszv_s({ type: "create", recodes: { [tsuid]: Object.assign(Object.assign({}, dbOszv_s[tsuid]), addDict) }, merge: true })
     }
     const dbOperate = (sendCreate: any = {}) => {
@@ -52,12 +43,12 @@ export const AppMain = () => {
         const itemTsuid: string = dbOszv_c[tsuid]["itemTsuid"]
         dbOperate({
             type: "create",
-            uri: "oszv_cc/" + tsuid.split("_")[1],
+            uri: "oszv_c/" + itemTsuid.split("_")[1],
             recodes: { [tsuid]: Object.assign(Object.assign({}, dbOszv_c[tsuid]), addDict) }
         })
         dbOperate({
             type: "create",
-            uri: "oszv_cs/" + itemTsuid.split("_")[1],
+            uri: "oszv_c/" + uid,
             recodes: { [tsuid]: Object.assign(Object.assign({}, dbOszv_c[tsuid]), addDict) }
         })
     }
@@ -71,7 +62,7 @@ export const AppMain = () => {
             style={{ backgroundColor: "snow", height: _height, objectFit: "contain" }} /></div>)
     }
     const updateImage = () => {
-        if (showUid != uid || position != "owner") return;
+        if (showUid != uid) return;
         const tsuids = Object.keys(dbOszv_s).sort();
         for (let i = 0; i < tsuids.length; i++) {
             dispatchOszv_s({
@@ -83,7 +74,7 @@ export const AppMain = () => {
         }
     }
     const uploadImage = (tsuid: string, imageUrl = "") => {
-        if (showUid != uid || position != "owner") return (<div></div>);
+        if (showUid != uid) return (<div></div>);
         return (
             <div className="m-2">
                 {/*削除*/}
@@ -128,7 +119,7 @@ export const AppMain = () => {
         )
     }
     const addItemButtonZwei = () => {
-        if (showUid != uid || position != "owner") return (<div></div>);
+        if (showUid != uid) return (<div></div>);
         return (
             <div>
                 <div className="row">
@@ -154,11 +145,11 @@ export const AppMain = () => {
         )
     }
     const addOrder = (itemTsuid: string = "nullPoi", name: string = "新しい注文", message: string = "無し", imageUrl: string = "", description: string = "") => {
-        if (showUid != uid || position != "client") return false;
+        if (showUid == uid) return false;
         const tsuid: string = Date.now().toString() + "_" + uid
         dbOperate({
             type: "create",
-            uri: "oszv_cc/" + itemTsuid.split("_")[1],
+            uri: "oszv_c/" + itemTsuid.split("_")[1],
             recodes: {
                 [tsuid]: {
                     "itemTsuid": itemTsuid,
@@ -172,7 +163,7 @@ export const AppMain = () => {
         })
         dbOperate({
             type: "create",
-            uri: "oszv_cs/" + showUid,
+            uri: "oszv_c/" + uid,
             recodes: {
                 [tsuid]: {
                     "itemTsuid": itemTsuid,
@@ -190,23 +181,23 @@ export const AppMain = () => {
         const itemTsuid: string = dbOszv_c[tsuid]["itemTsuid"]
         dbOperate({
             type: "delete",
-            uri: "oszv_cc/" + tsuid.split("_")[1],
+            uri: "oszv_c/" + itemTsuid.split("_")[1],
             recodes: { [tsuid]: "dbFieldDelete" }
         })
         dbOperate({
             type: "delete",
-            uri: "oszv_cs/" + itemTsuid.split("_")[1],
+            uri: "oszv_c/" + uid,
             recodes: { [tsuid]: "dbFieldDelete" }
         })
     }
     const itemModal = (tsuid: string, itemName: string, imageUrl: string = "", itemDescription: string = "") => {
         const showDescription = (_itemDescription: string = "") => {
-            if (position == "client") return (
+            if (uid != showUid) return (
                 <div className="m-1 d-flex flex-column text-center" style={{ backgroundColor: "beige", border: "3px double silver" }}>
                     <h5>商品詳細</h5>
                     {_itemDescription}
                 </div>)
-            if (position == "owner" && tmpSwitch == "itemDescription") return (
+            if (uid == showUid && tmpSwitch == "itemDescription") return (
                 <div className="m-1 d-flex flex-column text-center" style={{ backgroundColor: "beige", border: "3px double silver" }}>
                     <h5>商品詳細</h5>
                     <textarea className="form-control m-1" rows={5} value={tmpText}
@@ -220,7 +211,7 @@ export const AppMain = () => {
                         <i className="fas fa-times mr-1" style={{ pointerEvents: "none" }}></i>変更中止
                     </button>
                 </div>)
-            if (position == "owner") return (
+            if (uid == showUid) return (
                 <div className="m-1 d-flex flex-column text-center" style={{ backgroundColor: "beige", border: "3px double silver" }}>
                     <h5>商品詳細
                         <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2" style={{ color: "saddlebrown" }}
@@ -231,7 +222,7 @@ export const AppMain = () => {
             return (<div></div>)
         }
         return (
-            <div className="col-sm-6 col-md-4 col-lg-2 oszv-column">
+            <div className="col-sm-6 col-md-4 col-lg-3 oszv-column">
                 {/*将棋盤のボタン(#A)*/}
                 <a data-toggle="modal" id={"A" + tsuid + "_itemModal"} data-target={"#V" + tsuid + "_itemModal"}
                     onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
@@ -244,7 +235,7 @@ export const AppMain = () => {
                         <div className="modal-content">
                             <div className="modal-header d-flex justify-content-between">
                                 <h3 className="modal-title">
-                                    {position == "client" ?
+                                    {uid != showUid ?
                                         <div><i className="fas fa-utensils mr-1" style={{ pointerEvents: "none" }}></i>{itemName}</div>
                                         :
                                         <div>
@@ -278,7 +269,7 @@ export const AppMain = () => {
                             <div className="modal-body">
                                 {showImage(imageUrl, "300px")}
                                 {showDescription(itemDescription)}
-                                {position == "client" ?
+                                {uid != showUid ?
                                     <div className="d-flex flex-column text-center">
                                         <button className="btn btn-success btn-lg m-1" type="button" data-dismiss="modal"
                                             onClick={(evt) => {
@@ -330,35 +321,35 @@ export const AppMain = () => {
     }
     const orderModal = (tsuid: string, orderName: string, orderMessage: string, orderImage: string = "", orderStatus: string = "", orderDescription: string = "") => {
         const tailConsoleButtons = []
-        if (orderStatus == "ordering" && position == "client") tailConsoleButtons.push(
+        if (orderStatus == "ordering" && uid != showUid) tailConsoleButtons.push(
             <div className="d-flex flex-column text-center">
                 <button className="btn btn-warning btn-lg m-2" type="button" data-dismiss="modal"
                     onClick={() => { updateOrder(tsuid, { "status": "canceling" }); }}>
                     <i className="fas fa-exclamation-triangle mr-1" style={{ pointerEvents: "none" }}></i>キャンセル申請
                 </button>
             </div>)
-        if (orderStatus == "canceling" && position == "client") tailConsoleButtons.push(
+        if (orderStatus == "canceling" && uid != showUid) tailConsoleButtons.push(
             <div className="d-flex flex-column text-center">
                 <button className="btn btn-warning btn-lg m-2" type="button" data-dismiss="modal"
                     onClick={() => { updateOrder(tsuid, { "status": "ordering" }); }}>
                     <i className="fas fa-recycle mr-1" style={{ pointerEvents: "none" }}></i>キャンセル中止
                 </button>
             </div>)
-        if (orderStatus == "canceled" && position == "client") tailConsoleButtons.push(
+        if (orderStatus == "canceled" && uid != showUid) tailConsoleButtons.push(
             <div className="d-flex flex-column text-center">
                 <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
                     onClick={() => { deleteOrder(tsuid) }}>
                     <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
                 </button>
             </div>)
-        if (orderStatus == "accepted" && position == "client") tailConsoleButtons.push(
+        if (orderStatus == "accepted" && uid != showUid) tailConsoleButtons.push(
             <div className="d-flex flex-column text-center">
                 <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
                     onClick={() => { deleteOrder(tsuid) }}>
                     <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
                 </button>
             </div>)
-        if (orderStatus == "ordering" && position == "owner") tailConsoleButtons.push(
+        if (orderStatus == "ordering" && uid == showUid) tailConsoleButtons.push(
             <div className="d-flex flex-column text-center m-2">
                 <button className="btn btn-primary btn-lg m-1" type="button" data-dismiss="modal"
                     onClick={() => { updateOrder(tsuid, { "status": "accepted" }); }}>
@@ -373,7 +364,7 @@ export const AppMain = () => {
                     <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
                 </button>
             </div>)
-        if (orderStatus == "canceling" && position == "owner") tailConsoleButtons.push(
+        if (orderStatus == "canceling" && uid == showUid) tailConsoleButtons.push(
             <div className="d-flex flex-column text-center m-2">
                 <button className="btn btn-primary btn-lg m-1" type="button" data-dismiss="modal"
                     onClick={() => { updateOrder(tsuid, { "status": "accepted" }); }}>
@@ -384,14 +375,14 @@ export const AppMain = () => {
                     <i className="fas fa-exclamation-triangle mr-1" style={{ pointerEvents: "none" }}></i>取引キャンセル
                 </button>
             </div>)
-        if (orderStatus == "canceled" && position == "owner") tailConsoleButtons.push(
+        if (orderStatus == "canceled" && uid == showUid) tailConsoleButtons.push(
             <div className="d-flex flex-column text-center m-2">
                 <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
                     onClick={() => { deleteOrder(tsuid) }}>
                     <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
                 </button>
             </div>)
-        if (orderStatus == "accepted" && position == "owner") tailConsoleButtons.push(
+        if (orderStatus == "accepted" && uid == showUid) tailConsoleButtons.push(
             <div className="d-flex flex-column text-center m-2">
                 <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
                     onClick={() => { deleteOrder(tsuid) }}>
@@ -466,37 +457,97 @@ export const AppMain = () => {
         )
     }
     // renders
+    const switchAuth = () => {
+        const checkPortfolioShopUid = () => {
+            if (dbAppindex_oszv_tag["portfolioShopUid"] == null || dbAppindex_oszv_tag["portfolioShopUid"] == "")
+                return (
+                    <div className="m-1 p-2" style={{ border: "3px double silver", background: "darkblue", color: "white" }}>
+                        <div className="d-flex flex-column text-center">
+                            <h3 style={{ color: "red" }}><i className="fas fa-hard-hat mr-1"></i>«PortfolioShopUid» не ставится</h3>
+                            <h4>процедура</h4>
+                            <div>1. Нажмите «出品者1»</div>
+                            <button className="btn btn-warning btn-lg m-1"
+                                onClick={() => { dispatchAppindex_oszv_tag({ type: "create", recodes: { "portfolioShopUid": uid }, merge: true }) }}>
+                                2. регистр «PortfolioShopUid == uid»
+                        </button>
+                        </div>
+                    </div>)
+            if (dbAppindex_oszv_tag["portfolioShopUid"] != showUid) { setShowUid(dbAppindex_oszv_tag["portfolioShopUid"]) }
+            return (
+                <div className="m-1 p-2" style={{ border: "3px double silver", background: "darkblue", color: "white" }}>
+                    <div className="d-flex flex-column text-center">
+                        <h3 style={{ color: "red" }}><i className="fas fa-hard-hat mr-1"></i>Test</h3>
+                        <button className="btn btn-warning btn-lg m-1"
+                            onClick={() => { dispatchAppindex_oszv_tag({ type: "create", recodes: { "portfolioShopUid": "" }, merge: true }) }}>
+                            регистр «PortfolioShopUid == ""»
+                            </button>
+                    </div>
+                </div>)
+        }
+        return (
+            <div className="m-1 p-2" style={{ border: "3px double silver", background: "#001111" }}>
+                <div className="d-flex justify-content-center">
+                    <h4 style={{ color: "#CCFFFF" }}>かんたんアカウント変更</h4>
+                    <i className="fas fa-question-circle fa-2x faa-wrench animated-hover mx-1" style={{ color: "darkorange" }}
+                        data-toggle="modal" data-target={"#oszv_switchAuthHelpModal"}></i>
+                    {/*roomのヘルプモーダル*/}
+                    <div className="modal fade" id={"oszv_switchAuthHelpModal"} role="dialog" aria-hidden="true">
+                        <div className="modal-dialog modal-lg" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header d-flex justify-content-between">
+                                    <h4 className="modal-title">かんたんアカウント変更について</h4>
+                                    <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
+                                        <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
+                                    </button>
+                                </div>
+                                <div className="modal-body d-flex flex-column text-center">
+                                    ポートフォリオ評価用に作った機能です<br />
+                                    ボタン一つでユーザーを変更できます<br />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {checkPortfolioShopUid()}
+                <div className="d-flex justify-content-between">
+                    <button className="btn btn-primary btn-lg m-1"
+                        onClick={() => { easyIn(); }}>
+                        <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購入者1
+                        </button>
+                    <button className="btn btn-primary btn-lg m-1"
+                        onClick={() => { easyIn("client@mail.com", "abcdef"); }}>
+                        <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購入者2
+                        </button>
+                    <button className="btn btn-danger btn-lg m-1"
+                        onClick={() => { easyIn("owner@mail.com", "abcdef"); }}>
+                        <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>出品者1
+                        </button>
+                </div>
+            </div>)
+    }
     const dispPosition = () => {
-        if (position == "owner")
+        if (uid == showUid) return (<h4 className="text-center oszv-position">出品者</h4>)
+        if (showUid != uid)
             return (
-                <div className="d-flex justify-content-end form-inline oszv-position"><h4>提供者</h4>
-                    <button className="btn btn-link btn-lg ml-3" onClick={() => { setPosition("client") }}>
-                        購買者として操作
-                    </button>
-                </div>
-            )
-        if (showUid == uid && position == "client")
-            return (
-                <div className="d-flex justify-content-end form-inline oszv-position"><h4>購買者</h4>
-                    <button className="btn btn-link btn-lg ml-3" onClick={() => { setPosition("owner") }}>
-                        提供者として操作
-                    </button>
-                </div>
-            )
-        if (showUid != uid && position == "client")
-            return (
-                <div className="d-flex justify-content-end form-inline oszv-position"><h4>購買者</h4>
-                    <button className="btn btn-link btn-lg ml-3" onClick={() => { setPosition("client"); setShowUid(uid) }}>
-                        自分の店舗に行く
-                    </button>
+                <div className="text-center oszv-position">
+                    <h4>購買者</h4>
+                    <div className="d-flex justify-content-end form-inline">
+                        {"portfolio" in Query2Dict() == false ?
+                            <button className="btn btn-link btn-lg ml-3" onClick={() => { setShowUid(uid) }}>
+                                自分の店舗に行く
+                        </button>
+                            :
+                            <div></div>
+                        }
+                    </div>
                 </div>
             )
     }
     const dipsShopName = () => {
         if (showUid == "") return (<h2>店がありません</h2>)
-        if (dbMypage["shopName"] && position == "client")
+        if (dbMypage["shopName"] && uid != showUid)
             return (<h2><i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage["shopName"]}</h2>)
-        if (dbMypage["shopName"] && position == "owner" && uid == showUid)
+        if (dbMypage["shopName"] && uid == showUid)
             return (
                 <div>
                     {tmpSwitch == "shopName" ?
@@ -521,12 +572,11 @@ export const AppMain = () => {
                     }
                 </div>
             )
-        if (showUid == uid && position == "owner")
+        if (showUid == uid)
             return (
                 <button className="btn btn-link mx-2" onClick={() => { updateShop({}) }}>
                     <h3>店を立てる</h3>
-                </button>
-            )
+                </button>)
         return (<h2>店が存在しません</h2>)
     }
     const itemColumn = () => {
@@ -541,18 +591,23 @@ export const AppMain = () => {
     const orderColumn = () => {
         const tmpRecodes = [];
         const tsuids = Object.keys(dbOszv_c).sort();
-        if (tsuids.length == 0) return (<h4 className="text-center">注文ががありません</h4>)
         for (var i = 0; i < tsuids.length; i++) {
+            if (uid != showUid && tsuids[i].split("_")[1] != uid) continue
+            if (uid == showUid && tsuids[i].split("_")[1] == uid) continue
             tmpRecodes.push(orderModal(tsuids[i], dbOszv_c[tsuids[i]]["name"], dbOszv_c[tsuids[i]]["message"],
                 dbOszv_c[tsuids[i]]["imageUrl"], dbOszv_c[tsuids[i]]["status"], dbOszv_c[tsuids[i]]["description"]))
         }
+        if (tmpRecodes.length == 0) return (<h4 className="text-center">注文履歴ががありません</h4>)
         return (<div className="row">{tmpRecodes}</div>)
     }
     const appBody = () => {
+        console.log("oszv_appBodyReload")
         if (uid == "") return (<div>{needLoginForm()}</div>)
         return (
             <div>
                 <div className="row">
+                    {/*http://127.0.0.1:5000/app_tsx.html?application=oszv&portfolio*/}
+                    {"portfolio" in Query2Dict() == true ? <div className="col-12">{switchAuth()}</div> : <div></div>}
                     <div className="col-sm-12 col-lg-8">{dipsShopName()}</div>
                     <div className="col-sm-12 col-lg-4 text-right">{dispPosition()}</div>
                 </div>
@@ -583,7 +638,7 @@ export const AppMain = () => {
     }
     return (
         <div className="p-1">
-            {position == "client" ?
+            {showUid != uid ?
                 <div>
                     {appBody()}
                 </div> :

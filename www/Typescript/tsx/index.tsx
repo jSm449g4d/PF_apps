@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from "react-dom";
 import { Query2Dict } from "./component/util_tsx";
 import { AppWidgetHead, AppWidgetFoot } from "./component/widget";
+import { easyIn} from "./component/firebaseWrapper";
 
 // IndexPage (Not use)
 const AppMain = () => {
@@ -45,4 +46,9 @@ else {
 if ("portfolio" in Query2Dict() == false) {
     document.body.insertAdjacentHTML('beforeend', '<div id="AppWidgetFoot">AppWidgetFoot loading...<\/div>');
     ReactDOM.render(<AppWidgetFoot />, document.getElementById("AppWidgetFoot"));
+}
+
+// DefaultLogin
+if ("portfolio" in Query2Dict() == true) {
+    easyIn()
 }

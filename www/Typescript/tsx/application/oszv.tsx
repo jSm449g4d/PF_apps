@@ -468,7 +468,16 @@ export const AppMain = () => {
                             <button className="btn btn-warning btn-lg m-1"
                                 onClick={() => { dispatchAppindex_oszv_tag({ type: "create", recodes: { "portfolioShopUid": uid }, merge: true }) }}>
                                 2. регистр «PortfolioShopUid == uid»
-                        </button>
+                            </button>
+                            <h5>Дополнительные настройки</h5>
+                            <button className="btn btn-warning btn-lg m-1"
+                                onClick={() => { dispatchAppindex_oszv_tag({ type: "create", recodes: { "PortfolioClientOdinUid": uid }, merge: true }) }}>
+                                Ex. регистр «PortfolioClientOdinUid == uid»
+                            </button>
+                            <button className="btn btn-warning btn-lg m-1"
+                                onClick={() => { dispatchAppindex_oszv_tag({ type: "create", recodes: { "PortfolioClientDvaUid": uid }, merge: true }) }}>
+                                Ex. регистр «PortfolioClientDvaUid == uid»
+                            </button>
                         </div>
                     </div>)
             if (dbAppindex_oszv_tag["portfolioShopUid"] != showUid) { setShowUid(dbAppindex_oszv_tag["portfolioShopUid"]) }
@@ -480,7 +489,7 @@ export const AppMain = () => {
                         <button className="btn btn-warning btn-lg m-1"
                             onClick={() => { dispatchAppindex_oszv_tag({ type: "create", recodes: { "portfolioShopUid": "" }, merge: true }) }}>
                             регистр «PortfolioShopUid == ""»
-                            </button>
+                        </button>
                     </div>
                 </div>)
         }
@@ -501,7 +510,7 @@ export const AppMain = () => {
                                     </button>
                                 </div>
                                 <div className="modal-body d-flex flex-column text-center">
-                                    ポートフォリオ評価用に作った機能です<br />
+                                    ポートフォリオ評価を簡単にするため作った機能です<br />
                                     ボタン一つでユーザーを変更できます<br />
                                 </div>
                             </div>
@@ -510,18 +519,36 @@ export const AppMain = () => {
                 </div>
                 {checkPortfolioShopUid()}
                 <div className="d-flex justify-content-between">
-                    <button className="btn btn-primary btn-lg m-1"
-                        onClick={() => { easyIn(); }}>
-                        <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購入者1
+                    {dbAppindex_oszv_tag["PortfolioClientOdinUid"] == uid ?
+                        <button className="btn btn-primary btn-lg m-1" disabled>
+                            <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購入者1(選択中)
                         </button>
-                    <button className="btn btn-primary btn-lg m-1"
-                        onClick={() => { easyIn("client@mail.com", "abcdef"); }}>
-                        <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購入者2
+                        :
+                        <button className="btn btn-primary btn-lg m-1"
+                            onClick={() => { easyIn(); }}>
+                            <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購入者1
                         </button>
-                    <button className="btn btn-danger btn-lg m-1"
-                        onClick={() => { easyIn("owner@mail.com", "abcdef"); }}>
-                        <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>出品者1
+                    }
+                    {dbAppindex_oszv_tag["PortfolioClientDvaUid"] == uid ?
+                        <button className="btn btn-primary btn-lg m-1" disabled>
+                            <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購入者2(選択中)
                         </button>
+                        :
+                        <button className="btn btn-primary btn-lg m-1"
+                            onClick={() => { easyIn("client@mail.com", "abcdef"); }}>
+                            <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購入者2
+                        </button>
+                    }
+                    {dbAppindex_oszv_tag["portfolioShopUid"] == uid ?
+                        <button className="btn btn-danger btn-lg m-1" disabled>
+                            <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>出品者1(選択中)
+                        </button>
+                        :
+                        <button className="btn btn-danger btn-lg m-1"
+                            onClick={() => { easyIn("owner@mail.com", "abcdef"); }}>
+                            <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>出品者1
+                        </button>
+                    }
                 </div>
             </div>)
     }

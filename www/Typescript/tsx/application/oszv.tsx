@@ -400,7 +400,7 @@ export const AppMain = () => {
             </div>)
 
         return (
-            <div className="col-12 oszv-column border">
+            <div className="col-12 oszv-column" style={{marginBottom:"1px", borderBottom: "2px inset gray",borderTop: "2px inset gray" }}>
                 <div className="btn-push">
                     <a className="row" data-toggle="modal" data-target={"#V" + tsuid + "_orderModal"}>
                         <div className="col-sm-5 col-lg-3">
@@ -411,8 +411,7 @@ export const AppMain = () => {
                         </div>
                         <h4 className="col-sm-7 col-lg-6">{orderName}</h4>
                         <h5 className="col-sm-12 col-lg-3">{Unixtime2String(Number(tsuid.split("_")[0]))}</h5>
-                        <h6 className="col-sm-12 col-lg-8">メッセージ: {orderMessage}</h6>
-                        <div className="d-none d-lg-block col-4">ボタンは工事中</div>
+                        <h6 className="col-sm-12 col-lg-12">メッセージ: {orderMessage}</h6>
                     </a>
                 </div>
                 <div className="modal fade" id={"V" + tsuid + "_orderModal"} role="dialog" aria-hidden="true">

@@ -43,9 +43,9 @@ export const AppMain = () => {
                         <i className="fas fa-broadcast-tower mr-1"></i>技術発信
                     </h3>
                     <div className="m-2" style={{ color: "gold" }}>
-                        <i className="fab fa-wordpress fa-2x faa-wrench animated-hover mr-1"
+                        <i className="fab fa-wordpress fa-2x fa-btn-goldbadge mr-1"
                             onClick={() => window.location.href = "https://huxiin.ga/wordpress"}></i>
-                        <i className="fab fa-github fa-2x faa-wrench animated-hover mr-1"
+                        <i className="fab fa-github fa-2x fa-btn-goldbadge mr-1"
                             onClick={() => window.location.href = "https://github.com/jSm449g4d/"}></i>
                     </div>
                     <div>

@@ -143,7 +143,7 @@ export const AppMain = () => {
                                     onClick={() => { setTmpText(room); setTmpSwitch("room"); }}>
                                     <i className="fas fa-exchange-alt mr-1" style={{ pointerEvents: "none" }}></i>部屋を移動
                             </button>
-                                <i className="fas fa-question-circle fa-2x faa-wrench animated-hover mx-1 fa-btn-help"
+                                <i className="fas fa-question-circle fa-2x mx-1 fa-btn-help"
                                     data-toggle="modal" data-target={"#tptef_roomHelpModal"}>
                                 </i>
                                 {/*roomのヘルプモーダル*/}

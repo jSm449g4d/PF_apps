@@ -248,7 +248,7 @@ export const AppAuth = () => {
     const config = () => {
         return (
             <div className="p-2">
-                <i className="fas fa-cog fa-2x faa-wrench animated-hover fa-btn" data-toggle="modal" data-target="#config_modal"></i>
+                <i className="fas fa-cog fa-2x fa-btn" data-toggle="modal" data-target="#config_modal"></i>
                 <div className="modal fade" id="config_modal" role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">

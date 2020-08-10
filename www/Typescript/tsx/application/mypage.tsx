@@ -98,7 +98,7 @@ export const AppMain = () => {
         return (
             <div>
                 <i className="far fa-user mr-1"></i>{dbMypage["nickname"]}
-                <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2 fa-btn"
+                <i className="fas fa-pencil-alt ml-2 fa-btn"
                     onClick={() => { setTmpText(dbMypage["nickname"]); setTmpSwitch("nickname"); }}></i>
             </div>
         )
@@ -108,20 +108,20 @@ export const AppMain = () => {
         if (showUid != uid) return (<div><h3>Profile</h3>{dbMypage["profile"]}</div>);
         if (tmpSwitch == "profile") return (
             <div>
-                <h3 className="form-inline">Profile
-                    <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2 fa-btn"
-                        onClick={() => { setTmpText(dbMypage["profile"]); setTmpSwitch("profile"); }}></i>
-                    <button className="btn btn-success btn-lg m-1" type="button"
-                        onClick={() => {
-                            dispatchMypage({ type: "create", recodes: { "profile": tmpText }, merge: true })
-                            setTmpText(""); setTmpSwitch("");
-                        }}>
-                        <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>変更する
-                    </button>
-                    <button className="btn btn-secondary btn-lg m-1" type="button"
-                        onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
-                        <i className="fas fa-times mr-1" style={{ pointerEvents: "none" }}></i>変更中止
-                    </button>
+                <h3>Profile
+                    <div className="d-flex">
+                        <button className="flex-fill btn btn-success btn-lg m-1" type="button"
+                            onClick={() => {
+                                dispatchMypage({ type: "create", recodes: { "profile": tmpText }, merge: true })
+                                setTmpText(""); setTmpSwitch("");
+                            }}>
+                            <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>変更する
+                        </button>
+                        <button className="flex-fill btn btn-secondary btn-lg m-1" type="button"
+                            onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
+                            <i className="fas fa-times mr-1" style={{ pointerEvents: "none" }}></i>変更中止
+                        </button>
+                    </div>
                 </h3>
                 <textarea className="form-control" rows={4} value={tmpText}
                     onChange={(evt: any) => { setTmpText(evt.target.value) }}></textarea>
@@ -130,7 +130,7 @@ export const AppMain = () => {
         return (
             <div>
                 <h3>Profile
-                    <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2 fa-btn"
+                    <i className="fas fa-pencil-alt ml-2 fa-btn"
                         onClick={() => { setTmpText(dbMypage["profile"]); setTmpSwitch("profile"); }}></i>
                 </h3>
                 <div>{dbMypage["profile"]}</div>

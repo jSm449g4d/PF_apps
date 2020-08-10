@@ -218,7 +218,7 @@ export const AppMain = () => {
             return (
                 <nav className="navbar" style={{ backgroundColor: "paleturquoise" }}>
                     <div className="form-inline">
-                        <i className="fas fa-question-circle fa-2x faa-wrench animated-hover mx-1" style={{ color: "darkorange" }}
+                        <i className="fas fa-question-circle fa-2x fa-btn-help mx-1"
                             data-toggle="collapse" data-target="#helpAppCollapse">
                         </i>
                         <button className="btn btn-primary mx-1" data-toggle="collapse" data-target="#apiEndpointCollapse">
@@ -286,7 +286,7 @@ export const AppMain = () => {
                             <th style={{ width: "10%" }}>Field</th>
                             <th>Value</th>
                             <th style={{ width: "10%" }}>
-                                <i className="fas fa-question-circle fa-lg faa-wrench animated-hover mx-1" style={{ color: "darkorange" }}
+                                <i className="fas fa-question-circle fa-lg fa-btn-help mx-1"
                                     data-toggle="collapse" data-target="#helpCmdCollapse"></i>
                             Command
                         </th>

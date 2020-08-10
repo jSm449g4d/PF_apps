@@ -120,12 +120,18 @@ export const AppMain = () => {
         )
     }
     const addItemButtonZwei = () => {
-        if (showUid != uid) return (<div></div>);
+        if (showUid != uid) return (
+            <div className="d-flex">
+                <button className="flex-fill btn btn-secondary btn-lg rounded-pill btn-push m-1" type="button"
+                    onClick={() => { updateImageAll(); }}>
+                    <i className="fas fa-redo mr-1" style={{ pointerEvents: "none" }}></i>画像を更新
+                </button>
+            </div>);
         return (
             <div>
                 <div className="row">
                     <div className="col-sm-12 col-md-7 col-lg-9 d-flex flex-column">
-                        <button className="btn btn-primary btn-lg rounded-pill m-1" data-toggle="modal" data-target={"#V" + "_addItemModal"}
+                        <button className="btn btn-primary btn-lg rounded-pill btn-push m-1" data-toggle="modal" data-target={"#V" + "_addItemModal"}
                             onClick={() => {
                                 setTmpText("新しい商品"); setTmpSwitch("itemName");
                                 const _tsuid = Date.now().toString() + "_" + uid
@@ -136,10 +142,10 @@ export const AppMain = () => {
                         </button>
                     </div>
                     <div className="col-sm-12 col-md-5 col-lg-3 d-flex flex-column">
-                        <button className="btn btn-secondary btn-lg rounded-pill m-1" type="button"
+                        <button className="btn btn-secondary btn-lg rounded-pill btn-push m-1" type="button"
                             onClick={() => { updateImageAll(); }}>
                             <i className="fas fa-redo mr-1" style={{ pointerEvents: "none" }}></i>画像を更新
-                    </button>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -225,14 +231,16 @@ export const AppMain = () => {
             return (<div></div>)
         }
         return (
-            <div className="col-sm-6 col-md-4 col-lg-3 oszv-column">
+            <div className="col-sm-6 col-md-4 col-lg-3">
                 {/*将棋盤のボタン(#A)*/}
-                <div className="btn-push">
-                    <a className="" data-toggle="modal" id={"A" + tsuid + "_itemModal"} data-target={"#V" + tsuid + "_itemModal"}
-                        onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
-                        {showImage(imageUrl)}
-                        <h5 className="d-flex flex-column text-center mt-1" style={{ backgroundColor: "rgba(255,255,255,0.4)" }}>{itemName}</h5>
-                    </a>
+                <div className="oszv-column">
+                    <div className="btn-push">
+                        <a className="" data-toggle="modal" id={"A" + tsuid + "_itemModal"} data-target={"#V" + tsuid + "_itemModal"}
+                            onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
+                            {showImage(imageUrl)}
+                            <h5 className="d-flex flex-column text-center mt-1" style={{ backgroundColor: "rgba(255,255,255,0.4)" }}>{itemName}</h5>
+                        </a>
+                    </div>
                 </div>
                 {/*注文モーダル(#V)*/}
                 <div className="modal fade" id={"V" + tsuid + "_itemModal"} role="dialog" aria-hidden="true">
@@ -346,14 +354,14 @@ export const AppMain = () => {
             </div>)
         if (orderStatus == "canceled" && uid != showUid) tailConsoleButtons.push(
             <div className="d-flex flex-column text-center">
-                <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
+                <button className="btn btn-danger btn-lg m-2" type="button" data-dismiss="modal"
                     onClick={() => { deleteOrder(tsuid) }}>
                     <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
                 </button>
             </div>)
         if (orderStatus == "accepted" && uid != showUid) tailConsoleButtons.push(
             <div className="d-flex flex-column text-center">
-                <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
+                <button className="btn btn-danger btn-lg m-2" type="button" data-dismiss="modal"
                     onClick={() => { deleteOrder(tsuid) }}>
                     <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
                 </button>
@@ -368,7 +376,7 @@ export const AppMain = () => {
                     onClick={() => { updateOrder(tsuid, { "status": "canceled" }); }}>
                     <i className="fas fa-exclamation-triangle mr-1" style={{ pointerEvents: "none" }}></i>取引キャンセル
                 </button>
-                <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
+                <button className="btn btn-danger btn-lg m-2" type="button" data-dismiss="modal"
                     onClick={() => { deleteOrder(tsuid) }}>
                     <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
                 </button>
@@ -386,33 +394,35 @@ export const AppMain = () => {
             </div>)
         if (orderStatus == "canceled" && uid == showUid) tailConsoleButtons.push(
             <div className="d-flex flex-column text-center">
-                <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
+                <button className="btn btn-danger btn-lg m-2" type="button" data-dismiss="modal"
                     onClick={() => { deleteOrder(tsuid) }}>
                     <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
                 </button>
             </div>)
         if (orderStatus == "accepted" && uid == showUid) tailConsoleButtons.push(
             <div className="d-flex flex-column text-center">
-                <button className="btn btn-danger btn-lg m-1" type="button" data-dismiss="modal"
+                <button className="btn btn-danger btn-lg m-2" type="button" data-dismiss="modal"
                     onClick={() => { deleteOrder(tsuid) }}>
                     <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
                 </button>
             </div>)
 
         return (
-            <div className="col-12 oszv-column" style={{ marginBottom: "1px", borderBottom: "2px inset gray", borderTop: "2px inset gray" }}>
-                <div className="btn-push">
-                    <a className="row" data-toggle="modal" data-target={"#V" + tsuid + "_orderModal"}>
-                        <div className="col-sm-5 col-lg-3">
-                            {orderStatus == "ordering" ? <h3 style={{ color: "darkcyan" }}>取引中</h3> : <div></div>}
-                            {orderStatus == "canceling" ? <h3 style={{ color: "chocolate" }}>キャンセル申請中</h3> : <div></div>}
-                            {orderStatus == "canceled" ? <h3 style={{ color: "darkred" }}>キャンセル済</h3> : <div></div>}
-                            {orderStatus == "accepted" ? <h3 style={{ color: "darkblue" }}>取引済</h3> : <div></div>}
-                        </div>
-                        <h4 className="col-sm-7 col-lg-6">{orderName}</h4>
-                        <h5 className="col-sm-12 col-lg-3">{Unixtime2String(Number(tsuid.split("_")[0]))}</h5>
-                        <h6 className="col-sm-12 col-lg-12">メッセージ: {orderMessage}</h6>
-                    </a>
+            <div className="col-12">
+                <div className="oszv-column">
+                    <div className="btn-push">
+                        <a className="row" data-toggle="modal" data-target={"#V" + tsuid + "_orderModal"}>
+                            <div className="col-sm-5 col-lg-3">
+                                {orderStatus == "ordering" ? <h3 style={{ color: "darkcyan" }}>取引中</h3> : <div></div>}
+                                {orderStatus == "canceling" ? <h3 style={{ color: "chocolate" }}>キャンセル申請中</h3> : <div></div>}
+                                {orderStatus == "canceled" ? <h3 style={{ color: "darkred" }}>キャンセル済</h3> : <div></div>}
+                                {orderStatus == "accepted" ? <h3 style={{ color: "darkblue" }}>取引済</h3> : <div></div>}
+                            </div>
+                            <h4 className="col-sm-7 col-lg-6">{orderName}</h4>
+                            <h5 className="col-sm-12 col-lg-3">{Unixtime2String(Number(tsuid.split("_")[0]))}</h5>
+                            <h6 className="col-sm-12 col-lg-12">メッセージ: {orderMessage}</h6>
+                        </a>
+                    </div>
                 </div>
                 <div className="modal fade" id={"V" + tsuid + "_orderModal"} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
@@ -529,9 +539,19 @@ export const AppMain = () => {
                                     <h5>「<b>本来の仕様</b>」と「<b>ポートフォリオ評価用</b>」の違い</h5>
                                     <h6>クエリの「<b>portfolio</b>」を削除すると「本来の仕様」に変更出来ます<br /></h6>
                                     <div className="text-left">
-                                        1. 「本来の仕様」では全てのユーザーが出店できますが、「ポートフォリオ評価用」では出店出来ません<br />
-                                        2. 「本来の仕様」では様々な店に訪れられますが、「ポートフォリオ評価用」では一つの店に固定されます<br />
-                                        3. 「ポートフォリオ評価用」では、簡単のために多数のUIをオミットしております<br />
+                                    </div>
+                                    <button className="btn btn-link btn-lg btn-push"
+                                        data-toggle="collapse"
+                                        data-target="#oszv_switchAuthHelpCollapse"
+                                        aria-expand="false">
+                                        詳細
+                                    </button>
+                                    <div className="collapse" id="oszv_switchAuthHelpCollapse">
+                                        <div className="card card-body text-left">
+                                            1. 「本来の仕様」では全てのユーザーが出店できますが、「ポートフォリオ評価用」では出店出来ません<br />
+                                            2. 「本来の仕様」では様々な店に訪れられますが、「ポートフォリオ評価用」では一つの店に固定されます<br />
+                                            3. 「ポートフォリオ評価用」では、簡単のため多数のUIを省略しております<br />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -692,7 +712,7 @@ export const AppMain = () => {
                 <div>
                     {appBody()}
                 </div> :
-                <div style={{ backgroundColor: "rgba(240,230,255,0.3)" }}>
+                <div style={{ backgroundColor: "rgba(250,220,240,0.3)" }}>
                     {appBody()}
                 </div>}
         </div>

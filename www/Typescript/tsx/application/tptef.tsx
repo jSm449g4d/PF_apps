@@ -44,22 +44,25 @@ export const AppMain = () => {
 
     // renders
     const threadTable = () => {
-        const tmpData = [];
+        const tmpRecord = [];
         const tsuids = Object.keys(dbTptef).sort();
         for (var i = 0; i < tsuids.length; i++) {
+            const tmpData = [];
             tmpData.push(
-                <h5 className="col-12 text-center"
-                    style={{ borderTop: "3px double gray", background: "linear-gradient(rgba(60,60,60,0), rgba(60,60,60,0.05))" }}>
-                    <i className="far fa-user mr-1"></i>{dbTptef[tsuids[i]]["handlename"]}{"   uid: "}{tsuids[i].split("_")[1]}
-                </h5>)
+                <div className="col-12">
+                    <h5 className="text-center"
+                        style={{ background: "linear-gradient(rgba(60,60,60,0), rgba(60,60,60,0.15))" }}>
+                        <i className="far fa-user mr-1"></i>{dbTptef[tsuids[i]]["handlename"]}{"   uid: "}{tsuids[i].split("_")[1]}
+                    </h5>
+                </div>)
             tmpData.push(
-                <div className="col-sm-12 col-lg-2 text-center border-top">
+                <div className="col-sm-12 col-lg-2"><div className="text-center">
                     {Unixtime2String(Number(tsuids[i].split("_")[0]))}
-                </div>)
+                </div></div>)
             tmpData.push(
-                <div className="col-sm-12 col-lg-8 border">
+                <div className="col-sm-12 col-lg-8"><div className="text-center">
                     {dbTptef[tsuids[i]]["content"]}
-                </div>)
+                </div></div>)
             const tmpDatum = [];
             //attachment download button
             if (dbTptef[tsuids[i]]["attachment"] != "")
@@ -81,11 +84,13 @@ export const AppMain = () => {
                     <button key={2} className="btn btn-outline-danger rounded-pill btn-push m-1"
                         onClick={(evt: any) => { deleteRemark(evt.target.name) }} name={tsuids[i]}>
                         <i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Delete</button>)
-            tmpData.push(<div className="col-sm-12 col-lg-2 text-center border-top">{tmpDatum}</div>)
+            tmpData.push(<div className="col-sm-12 col-lg-2 text-center">{tmpDatum}</div>)
+            tmpRecord.push(
+                <div style={{
+                    border: "1px inset silver", borderRadius: "5px", marginBottom: "3px", boxShadow: "2px 2px 1px rgba(60,60,60,0.2)"
+                }}><div className="row">{tmpData}</div></div>)
         }
-        return (
-                <div className="row">{tmpData}</div>
-        )
+        return (<div>{tmpRecord}</div>)
     }
     const inputConsole = () => {
         if (uid == "") return (<div className="m-1">{needLoginForm()}</div>)

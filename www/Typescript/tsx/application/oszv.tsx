@@ -400,7 +400,7 @@ export const AppMain = () => {
             </div>)
 
         return (
-            <div className="col-12 oszv-column" style={{marginBottom:"1px", borderBottom: "2px inset gray",borderTop: "2px inset gray" }}>
+            <div className="col-12 oszv-column" style={{ marginBottom: "1px", borderBottom: "2px inset gray", borderTop: "2px inset gray" }}>
                 <div className="btn-push">
                     <a className="row" data-toggle="modal" data-target={"#V" + tsuid + "_orderModal"}>
                         <div className="col-sm-5 col-lg-3">
@@ -542,43 +542,44 @@ export const AppMain = () => {
                 <div className="d-flex justify-content-between">
                     {dbAppindex_oszv_tag["PortfolioClientOdinUid"] == uid ?
                         <button className="flex-fill btn btn-primary btn-lg m-1" disabled>
-                            <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購入者1(選択中)
+                            <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購買客1(選択中)
                         </button>
                         :
                         <button className="flex-fill btn btn-primary btn-lg btn-push m-1"
                             onClick={() => { easyIn(); }}>
-                            <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購入者1
+                            <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購買客1
                         </button>
                     }
                     {dbAppindex_oszv_tag["PortfolioClientDvaUid"] == uid ?
                         <button className="flex-fill btn btn-primary btn-lg m-1" disabled>
-                            <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購入者2(選択中)
+                            <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購買客2(選択中)
                         </button>
                         :
                         <button className="flex-fill btn btn-primary btn-lg btn-push m-1"
                             onClick={() => { easyIn("client@mail.com", "abcdef"); }}>
-                            <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購入者2
+                            <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購買客2
                         </button>
                     }
                     {dbAppindex_oszv_tag["portfolioShopUid"] == uid ?
                         <button className="flex-fill btn btn-danger btn-lg m-1" disabled>
-                            <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>出品者1(選択中)
+                            <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>出品店1(選択中)
                         </button>
                         :
                         <button className="flex-fill btn btn-danger btn-lg btn-push m-1"
                             onClick={() => { easyIn("owner@mail.com", "abcdef"); }}>
-                            <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>出品者1
+                            <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>出品店1
                         </button>
                     }
                 </div>
             </div>)
     }
     const dispPosition = () => {
-        if (uid == showUid) return (<h4 className="text-center oszv-position">出品者</h4>)
+        if (uid == showUid) return (
+            <h4 className="text-center" style={{ borderTop: "solid 1px firebrick", borderBottom: "solid 1px firebrick" }}>出品店</h4>)
         if (showUid != uid)
             return (
-                <div className="text-center oszv-position">
-                    <h4>購買者
+                <div className="text-center" style={{ borderTop: "solid 1px darkblue", borderBottom: "solid 1px darkblue" }}>
+                    <h4>購買客
                         {"portfolio" in Query2Dict() == false ?
                             <button className="btn btn-link btn-lg ml-3" onClick={() => { setShowUid(uid) }}>
                                 自分の店舗に行く
@@ -637,7 +638,9 @@ export const AppMain = () => {
     }
     const orderColumn = () => {
         const tmpRecodes = [];
-        const tsuids = Object.keys(dbOszv_c).sort();
+        const tsuids = Object.keys(dbOszv_c).sort((a: string, b: string) => {
+            return Number(b.split("_")[0]) - Number(a.split("_")[0])
+        });
         for (var i = 0; i < tsuids.length; i++) {
             if (uid != showUid && tsuids[i].split("_")[1] != uid) continue
             if (uid == showUid && tsuids[i].split("_")[1] == uid) continue

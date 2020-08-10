@@ -171,7 +171,7 @@ export const AppAuth = () => {
                                         <b>×入力が無効です</b>
                                     </button>
                                     :
-                                    <button className="btn btn-primary btn-lg m-1" type="button" data-dismiss="modal"
+                                    <button className="btn btn-primary btn-lg btn-push m-1" type="button" data-dismiss="modal"
                                         onClick={() => { signUp(tmpAddress, tmpPass) }}>
                                         <i className="far fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>
                                         <b>新規作成する</b>
@@ -207,19 +207,19 @@ export const AppAuth = () => {
                                         <b>×入力が無効です</b>
                                     </button>
                                     :
-                                    <button className="btn btn-primary btn-lg m-1" type="button" data-dismiss="modal"
+                                    <button className="btn btn-primary btn-lg btn-push m-1" type="button" data-dismiss="modal"
                                         onClick={() => { signIn(tmpAddress, tmpPass) }}>
                                         <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>
                                         <b>ログイン</b>
                                     </button>
                                 }
                                 <p />
-                                <button className="btn btn-light btn-lg m-1" type="button" data-dismiss="modal"
+                                <button className="btn btn-light btn-lg btn-push m-1" type="button" data-dismiss="modal"
                                     onClick={() => { googleIn() }}>
                                     <i className="fab fa-google mr-1" style={{ pointerEvents: "none" }}></i>
                                         Googleアカウントででログインする
                                     </button>
-                                <button type="button" className="btn btn-link btn-lg mx-1" data-dismiss="modal" data-target={"#signin_modal"}
+                                <button type="button" className="btn btn-link btn-lg btn-push mx-1" data-dismiss="modal" data-target={"#signin_modal"}
                                     onClick={(evt) => { $(evt.currentTarget.children[0]).click(); }}>
                                     <button type="button" className="d-none" data-toggle="modal" data-target={"#signup_modal"} />
                                     <i className="fas fa-file-signature mr-1" style={{ pointerEvents: "none" }}></i>
@@ -230,11 +230,11 @@ export const AppAuth = () => {
                                 <h5 className="modal-title">
                                     ※おためしログイン:
                                 </h5>
-                                <button className="flex-fill btn btn-warning m-1" type="button" data-dismiss="modal"
+                                <button className="flex-fill btn btn-warning btn-push m-1" type="button" data-dismiss="modal"
                                     onClick={() => { easyIn() }}>
                                     <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>EzLogin
                                     </button>
-                                <button className="flex-fill btn btn-warning m-1" type="button" data-dismiss="modal"
+                                <button className="flex-fill btn btn-warning btn-push m-1" type="button" data-dismiss="modal"
                                     onClick={() => { easyIn2() }}>
                                     <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>別垢版
                                 </button>
@@ -271,7 +271,7 @@ export const AppAuth = () => {
                                             <b>×入力が無効です</b>
                                         </button>
                                         :
-                                        <button className="btn btn-warning btn-lg m-1" type="button" data-dismiss="modal"
+                                        <button className="btn btn-warning btn-lg btn-push m-1" type="button" data-dismiss="modal"
                                             onClick={() => { resetPass(tmpAddress); }}>
                                             <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>
                                             確認メールを送信
@@ -280,7 +280,7 @@ export const AppAuth = () => {
                                 </div>
                             </div>
                             <div className="modal-footer d-flex justify-content-end">
-                                <button type="button" className="btn btn-danger" data-dismiss="modal"
+                                <button type="button" className="btn btn-danger btn-push" data-dismiss="modal"
                                     onClick={() => { deleteUser(); }}>
                                     <i className="fas fa-user-slash mr-1" style={{ pointerEvents: "none" }}></i>USER_DELETE
                                 </button>

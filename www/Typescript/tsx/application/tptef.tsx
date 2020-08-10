@@ -48,7 +48,8 @@ export const AppMain = () => {
         const tsuids = Object.keys(dbTptef).sort();
         for (var i = 0; i < tsuids.length; i++) {
             tmpData.push(
-                <h5 className="col-12 text-center" style={{ borderTop: "3px double silver" }}>
+                <h5 className="col-12 text-center"
+                    style={{ borderTop: "3px double gray", background: "linear-gradient(rgba(60,60,60,0), rgba(60,60,60,0.05))" }}>
                     <i className="far fa-user mr-1"></i>{dbTptef[tsuids[i]]["handlename"]}{"   uid: "}{tsuids[i].split("_")[1]}
                 </h5>)
             tmpData.push(
@@ -56,14 +57,14 @@ export const AppMain = () => {
                     {Unixtime2String(Number(tsuids[i].split("_")[0]))}
                 </div>)
             tmpData.push(
-                <div className="col-sm-12 col-lg-8 border" style={{ backgroundColor: "whitesmoke" }}>
+                <div className="col-sm-12 col-lg-8 border">
                     {dbTptef[tsuids[i]]["content"]}
                 </div>)
             const tmpDatum = [];
             //attachment download button
             if (dbTptef[tsuids[i]]["attachment"] != "")
                 tmpDatum.push(
-                    <button key={1} className="btn btn-primary m-1"
+                    <button key={1} className="btn btn-primary btn-push m-1"
                         onClick={(evt: any) => {
                             dispatchTptef({
                                 type: "download",
@@ -77,13 +78,13 @@ export const AppMain = () => {
             //delete button
             if (tsuids[i].split("_")[1] == uid)
                 tmpDatum.push(
-                    <button key={2} className="btn btn-outline-danger rounded-pill m-1"
+                    <button key={2} className="btn btn-outline-danger rounded-pill btn-push m-1"
                         onClick={(evt: any) => { deleteRemark(evt.target.name) }} name={tsuids[i]}>
                         <i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Delete</button>)
             tmpData.push(<div className="col-sm-12 col-lg-2 text-center border-top">{tmpDatum}</div>)
         }
         return (
-            <div className="row mx-1">{tmpData}</div>
+                <div className="row">{tmpData}</div>
         )
     }
     const inputConsole = () => {
@@ -101,14 +102,14 @@ export const AppMain = () => {
                     onChange={(evt) => { setTmpContent(evt.target.value) }}></textarea>
                 {/* 提出ボタン */}
                 <div className="my-1 d-flex flex-column text-center">
-                    <button type="button" className="btn btn-warning btn-lg m-1"
-                        onClick={(evt) => { $(evt.currentTarget.children[0]).click(); }}>
-                        <input type="file" className="d-none" value=""
-                            onChange={(evt) => { setTmpFile(evt.target.files[0]) }} />
+                    <button type="button" className="btn btn-warning btn-lg btn-push m-1"
+                        onClick={(evt) => { $(document.getElementById("tptef_remarkAttachment")).click() }}>
                         <i className="fas fa-paperclip mr-1" style={{ pointerEvents: "none" }}></i>
                         {tmpFile == null ? "添付ファイル無し" : tmpFile.name}
                     </button>
-                    <button className="btn btn-primary btn-lg m-1"
+                    <input type="file" className="d-none" id={"tptef_remarkAttachment"}
+                        onChange={(evt) => { setTmpFile(evt.target.files[0]) }} />
+                    <button className="btn btn-primary btn-lg btn-push m-1"
                         onClick={() => { remark(); setTmpContent(""); setTmpFile(null); }}>
                         <i className="far fa-comment-dots mr-1" style={{ pointerEvents: "none" }}></i>発言する
                     </button>

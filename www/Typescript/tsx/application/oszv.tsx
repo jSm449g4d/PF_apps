@@ -223,7 +223,7 @@ export const AppMain = () => {
             if (uid == showUid) return (
                 <div className="m-1 d-flex flex-column text-center" style={{ backgroundColor: "beige", border: "3px double silver" }}>
                     <h4>商品詳細
-                        <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2 fa-btn"
+                        <i className="fas fa-pencil-alt ml-2 fa-btn"
                             onClick={() => { setTmpText(_itemDescription); setTmpSwitch("itemDescription"); }}></i>
                     </h4>
                     {_itemDescription}
@@ -268,7 +268,7 @@ export const AppMain = () => {
                                                 :
                                                 <div>
                                                     <i className="fas fa-utensils mr-1" style={{ pointerEvents: "none" }}></i>{itemName}
-                                                    <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2 fa-btn"
+                                                    <i className="fas fa-pencil-alt ml-2 fa-btn"
                                                         onClick={() => { setTmpText(itemName); setTmpSwitch("itemName"); }}></i>
                                                 </div>
                                             }
@@ -463,7 +463,7 @@ export const AppMain = () => {
                                         :
                                         <div>
                                             <h4><i className="fas fa-comment-dots mr-1" style={{ pointerEvents: "none" }}></i>Message
-                                                <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2 fa-btn"
+                                                <i className="fas fa-pencil-alt ml-2 fa-btn"
                                                     onClick={() => { setTmpText(orderMessage); setTmpSwitch("orderMessage"); }}></i>
                                             </h4>
                                             <div>{orderMessage}</div>
@@ -520,7 +520,7 @@ export const AppMain = () => {
             <div className="m-1 p-2" style={{ border: "3px double silver", background: "#001111" }}>
                 <div className="d-flex justify-content-center">
                     <h4 style={{ color: "#CCFFFF" }}>かんたんアカウント変更</h4>
-                    <i className="fas fa-question-circle fa-2x faa-wrench animated-hover mx-1 fa-btn-help"
+                    <i className="fas fa-question-circle fa-2x mx-1 fa-btn-help"
                         data-toggle="modal" data-target={"#oszv_switchAuthHelpModal"}></i>
                     {/*roomのヘルプモーダル*/}
                     <div className="modal fade" id={"oszv_switchAuthHelpModal"} role="dialog" aria-hidden="true">
@@ -634,7 +634,7 @@ export const AppMain = () => {
                         :
                         <h2 className="form-inline">
                             <i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage["shopName"]}
-                            <i className="fas fa-pencil-alt faa-wrench animated-hover ml-2 fa-btn"
+                            <i className="fas fa-pencil-alt ml-2 fa-btn"
                                 onClick={() => { setTmpText(dbMypage["shopName"]); setTmpSwitch("shopName"); }}></i>
                         </h2>
                     }
@@ -712,7 +712,7 @@ export const AppMain = () => {
                 <div>
                     {appBody()}
                 </div> :
-                <div style={{ backgroundColor: "rgba(250,220,240,0.3)" }}>
+                <div style={{ backgroundColor: "rgba(240,220,240,0.3)" }}>
                     {appBody()}
                 </div>}
         </div>

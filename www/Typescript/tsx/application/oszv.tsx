@@ -54,11 +54,11 @@ export const AppMain = () => {
     const showImage = (imageUrl: string = "/static/img/publicdomainq-0014284zts.jpg", _height: string = "200px") => {
         if (imageUrl == "")
             return (
-                <h4 className="d-flex flex-column text-center img-thumbnail" style={{ backgroundColor: "snow", height: _height, objectFit: "contain" }} >
+                <h4 className="d-flex flex-column text-center img-thumbnail" style={{ height: _height, objectFit: "contain" }} >
                     <i className="fab fa-themeisle fa-2x m-2"></i>No Image
                 </h4>)
         return (<div className="d-flex flex-column text-center img-thumbnail"><img className="img-fluid" src={imageUrl} alt={imageUrl}
-            style={{ backgroundColor: "snow", height: _height, objectFit: "contain" }} /></div>)
+            style={{ height: _height, objectFit: "contain" }} /></div>)
     }
     const updateImage = (tsuid: string) => {
         dispatchOszv_s({
@@ -233,12 +233,12 @@ export const AppMain = () => {
         return (
             <div className="col-sm-6 col-md-4 col-lg-3">
                 {/*将棋盤のボタン(#A)*/}
-                <div className="oszv-column">
+                <div className="oszv-column" style={{ background: "rgba(255,255,255,0.9)" }}>
                     <div className="btn-push">
                         <a className="" data-toggle="modal" id={"A" + tsuid + "_itemModal"} data-target={"#V" + tsuid + "_itemModal"}
                             onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
                             {showImage(imageUrl)}
-                            <h5 className="d-flex flex-column text-center mt-1" style={{ backgroundColor: "rgba(255,255,255,0.4)" }}>{itemName}</h5>
+                            <h5 className="d-flex flex-column text-center mt-1">{itemName}</h5>
                         </a>
                     </div>
                 </div>

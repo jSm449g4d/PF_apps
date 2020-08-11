@@ -1,4 +1,8 @@
-# firebase_python
+# PF_apps
+**使用技術**
+GCP: Firebase, CloudBuild, CloudRun
+
+
 **Flask + React + Firebase**
 Learn how to use firebase  
 https://sfb-tlnesjcoqq-an.a.run.app/

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from "react-dom";
 import { Query2Dict } from "./component/util_tsx";
 import { AppWidgetHead, AppWidgetFoot } from "./component/widget";
-import { easyIn} from "./component/firebaseWrapper";
+import { easyIn } from "./component/firebaseWrapper";
 
 // IndexPage (Not use)
 const AppMain = () => {

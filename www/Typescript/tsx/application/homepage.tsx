@@ -15,7 +15,7 @@ export const AppMain = () => {
         const VPSdeWP_no_zikoshoukaiButton = () => {
             return (
                 <div>
-                    <button className="btn btn-info m-2" data-toggle="collapse" data-target="#VPSdeWPnoCollapse">
+                    <button className="btn btn-info btn-lg btn-push m-2" data-toggle="collapse" data-target="#VPSdeWPnoCollapse">
                         <i className="fas fa-person-booth mr-1"></i>About me
                     </button>
                 </div>

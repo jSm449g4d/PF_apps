@@ -1,12 +1,15 @@
 # PF_apps
+
+https://sfb-tlnesjcoqq-an.a.run.app/app_tsx.html
+
 **使用技術**
-GCP: Firebase, CloudBuild, CloudRun
-
-
-**Flask + React + Firebase**
-Learn how to use firebase  
-https://sfb-tlnesjcoqq-an.a.run.app/
-
-### Setup
-Plz read **Dokerfie**  
-Directory structure (/firebase_python/www/) is Compatible with Apache2.4 (/var/www/)
+クラウド
+ GCP: Firebase, CloudBuild, CloudRun
+フロントエンド
+ React(Typescript)
+バックエンド
+ Flask(Python)
+その他
+ Sass
+ Docker
+ bootstrap4

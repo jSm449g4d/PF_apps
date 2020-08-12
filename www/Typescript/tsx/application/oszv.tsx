@@ -518,10 +518,12 @@ export const AppMain = () => {
         }
         return (
             <div className="m-1 p-2" style={{ border: "3px double silver", background: "#001111" }}>
-                <div className="d-flex justify-content-center">
-                    <h4 style={{ color: "#CCFFFF" }}>かんたんアカウント変更</h4>
-                    <i className="fas fa-question-circle fa-2x mx-1 fa-btn-help"
-                        data-toggle="modal" data-target={"#oszv_switchAuthHelpModal"}></i>
+                <div className="d-flex flex-column text-center">
+                    <h3 style={{ color: "#FF8888" }}>ポートフォリオ用のでデバック機能</h3>
+                    <h4 style={{ color: "#CCFFFF" }}>かんたんアカウント変更
+                        <i className="fas fa-question-circle ml-1 fa-btn-help"
+                            data-toggle="modal" data-target={"#oszv_switchAuthHelpModal"}></i>
+                    </h4>
                     {/*roomのヘルプモーダル*/}
                     <div className="modal fade" id={"oszv_switchAuthHelpModal"} role="dialog" aria-hidden="true">
                         <div className="modal-dialog modal-lg" role="document">
@@ -676,8 +678,6 @@ export const AppMain = () => {
         return (
             <div>
                 <div className="row">
-                    {/*http://127.0.0.1:5000/app_tsx.html?application=oszv&portfolio*/}
-                    {"portfolio" in Query2Dict() == true ? <div className="col-12">{switchAuth()}</div> : <div></div>}
                     <div className="col-sm-12 col-lg-8">{dipsShopName()}</div>
                     <div className="col-sm-12 col-lg-4 text-right">{dispPosition()}</div>
                 </div>
@@ -703,6 +703,8 @@ export const AppMain = () => {
                     </div>
                     <div className="tab-pane fade" id="item3" role="tabpanel" aria-labelledby="item3-tab">This is a text of item#3.</div>
                 </div>
+                {/*http://127.0.0.1:5000/app_tsx.html?application=oszv&portfolio*/}
+                {"portfolio" in Query2Dict() == true ? <div className="col-12">{switchAuth()}</div> : <div></div>}
             </div>
         )
     }

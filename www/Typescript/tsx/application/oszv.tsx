@@ -133,7 +133,6 @@ export const AppMain = () => {
                     <div className="col-sm-12 col-md-7 col-lg-9 d-flex flex-column">
                         <button className="btn btn-primary btn-lg rounded-pill btn-push m-1" data-toggle="modal" data-target={"#V" + "_addItemModal"}
                             onClick={() => {
-                                setTmpText("新しい商品"); setTmpSwitch("itemName");
                                 const _tsuid = Date.now().toString() + "_" + uid
                                 updateItem(_tsuid, { "name": "新しい商品", "imageUrl": "", "description": "詳細はありません" })
                                 setTimeout(() => document.getElementById("A" + _tsuid + "_itemModal").click(), 800)
@@ -295,12 +294,20 @@ export const AppMain = () => {
                                     </div>
                                     :
                                     <div className="d-flex flex-column text-center">
-                                        {uploadImage(tsuid, imageUrl)}
-                                        <button className="btn btn-success btn-lg m-2" type="button" data-dismiss="modal"
-                                            onClick={(evt) => { updateImage(tsuid) }}>
-                                            <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>編集完了
-                                        </button>
-                                        <button className="btn btn-danger btn-lg m-3" type="button" data-dismiss="modal"
+                                        {itemName == "新しい商品" ?
+                                            <button className="btn btn-success btn-lg m-2" type="button" disabled>
+                                                ×商品名を入力してください
+                                            </button>
+                                            :
+                                            <div className="d-flex flex-column text-center">
+                                                {uploadImage(tsuid, imageUrl)}
+                                                <button className="btn btn-success btn-lg m-2" type="button" data-dismiss="modal"
+                                                    onClick={(evt) => { updateImage(tsuid) }}>
+                                                    <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>編集完了
+                                                </button>
+                                            </div>
+                                        }
+                                        <button className="btn btn-danger btn-lg m-2" type="button" data-dismiss="modal"
                                             onClick={(evt) => {
                                                 dispatchOszv_s({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true });
                                                 dispatchOszv_s({ type: "strageDelete", fileName: tsuid + ".img" })

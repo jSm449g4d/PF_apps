@@ -12,57 +12,49 @@ export const AppMain = () => {
     // functions
     // renders
     const titleLogo = () => {
-        const VPSdeWP_no_zikoshoukaiButton = () => {
-            return (
-                <div>
-                    <button className="btn btn-info btn-lg btn-push m-2" data-toggle="collapse" data-target="#VPSdeWPnoCollapse">
-                        <i className="fas fa-person-booth mr-1"></i>About me
-                    </button>
-                </div>
-            )
-        }
-        const VPSdeWPnozikoshoukaiCollapse = () => {
-            return (
-                <div className="blackboard-transparent">
-                    <h3>
-                        主な技術
-                    </h3>
-                    <div>
-                        <i className="fab fa-ubuntu fa-2x mr-1"></i>
-                        <i className="fab fa-react fa-2x mr-1"></i>
-                        <i className="fab fa-python fa-2x mr-1"></i>
-                        <i className="fab fa-bootstrap fa-2x mr-1"></i>
-                        <i className="fab fa-docker fa-2x mr-1"></i>
-                        <i className="fab fa-sass fa-2x mr-1"></i>
-                    </div>
-                    <div>
-                        <h5>GCP: Firebase, CloudBuild, CloudRun, CloudFunction</h5>
-                        <h5>ML: Tensorflow2.x, Word2Vec</h5>
-                    </div>
-                    <h3 className="mt-3">
-                        <i className="fas fa-broadcast-tower mr-1"></i>技術発信
-                    </h3>
-                    <div className="m-2" style={{ color: "gold" }}>
-                        <i className="fab fa-wordpress fa-2x fa-btn-goldbadge mr-1"
-                            onClick={() => window.location.href = "https://huxiin.ga/wordpress"}></i>
-                        <i className="fab fa-github fa-2x fa-btn-goldbadge mr-1"
-                            onClick={() => window.location.href = "https://github.com/jSm449g4d/"}></i>
-                    </div>
-                    <div>
-                        <button className="btn btn-sm btn-secondary m-2" data-toggle="collapse" data-target="#VPSdeWPnoCollapse">
-                            <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }} ></i>Close
-                        </button>
-                    </div>
-                </div>
-            )
-        }
         return (
             <div className="row" style={{ textAlign: "center", }}>
-                <div className="col-md-2" />
-                <div className="col-md-8"><h1 className="titlelogo">VPSdeWP の ぽ～とふぉりお</h1></div>
-                <div className="col-md-2" >{VPSdeWP_no_zikoshoukaiButton()}</div>{/* VPSdeWPnoCollapse*/}
-                <div className="collapse col-md-12" id="VPSdeWPnoCollapse">
-                    {VPSdeWPnozikoshoukaiCollapse()}{/* VPSdeWPnoCollapse*/}
+                <div className="col-lg-2" />
+                <h1 className="d-none d-md-block col-lg-8 titlelogo">VPSdeWP の ぽ～とふぉりお</h1>
+                <h1 className="d-block d-md-none col-12 text-center titlelogo "><div>VPSdeWP</div><div>の</div><div>ぽ～とふぉりお</div>
+                </h1>
+                <div className="col-lg-2" >
+                    <button className="btn btn-info btn-lg btn-push" data-toggle="collapse" data-target="#homepage_ziko">
+                        <i className="fas fa-person-booth mr-1" style={{ pointerEvents: "none" }}></i>自己紹介
+                    </button>
+                </div>
+                <div className="collapse col-md-12" id="homepage_ziko">
+                    <div className="blackboard-transparent">
+                        <h3>
+                            主な技術
+                        </h3>
+                        <div>
+                            <i className="fab fa-ubuntu fa-2x mr-1"></i>
+                            <i className="fab fa-react fa-2x mr-1"></i>
+                            <i className="fab fa-python fa-2x mr-1"></i>
+                            <i className="fab fa-bootstrap fa-2x mr-1"></i>
+                            <i className="fab fa-docker fa-2x mr-1"></i>
+                            <i className="fab fa-sass fa-2x mr-1"></i>
+                        </div>
+                        <div>
+                            <h5>GCP: Firebase, CloudBuild, CloudRun, CloudFunction</h5>
+                            <h5>ML: Tensorflow2.x, Word2Vec</h5>
+                        </div>
+                        <h3 className="mt-3">
+                            <i className="fas fa-broadcast-tower mr-1"></i>技術発信
+                        </h3>
+                        <div className="m-2" style={{ color: "gold" }}>
+                            <i className="fab fa-wordpress fa-2x fa-btn-goldbadge mr-1"
+                                onClick={() => window.location.href = "https://huxiin.ga/wordpress"}></i>
+                            <i className="fab fa-github fa-2x fa-btn-goldbadge mr-1"
+                                onClick={() => window.location.href = "https://github.com/jSm449g4d/"}></i>
+                        </div>
+                        <div>
+                            <button className="btn btn-sm btn-secondary m-2" data-toggle="collapse" data-target="#homepage_ziko">
+                                <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }} ></i>Close
+                        </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         )

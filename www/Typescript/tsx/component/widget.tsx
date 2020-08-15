@@ -62,18 +62,15 @@ export const AppWidgetFoot = () => {
     return (
         <div className="d-flex justify-content-between p-2"
             style={{ color: "gold", backgroundColor: "royalblue", border: "3px double silver" }}>
-            <div className="m-2">
+            <div>
+                <b style={{fontSize: "1.5em"}}>Links: </b>
                 <i className="fab fa-wordpress fa-2x fa-btn-goldbadge mr-1"
                     onClick={() => window.location.href = "https://huxiin.ga/wordpress"}></i>
                 <i className="fab fa-github fa-2x fa-btn-goldbadge mr-1"
                     onClick={() => window.location.href = "https://github.com/jSm449g4d/"}></i>
             </div>
-            <div className="m-2">
-                ===VPSdeWP===
-            </div>
-            <div className="m-2">
-                ご自由にお使いください
-            </div>
+            <h5>===VPSdeWP===</h5>
+            <div>ご自由にお使いください</div>
         </div>
     );
 }

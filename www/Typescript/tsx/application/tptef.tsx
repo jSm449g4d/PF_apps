@@ -24,7 +24,6 @@ export const AppMain = () => {
 
     // functions
     const remark = () => {
-        if (tmpContent == "") { alert("Plz input content"); return; };
         if (stopf5.check("dbC_AddRemark", 500, true) == false) return; // To prevent high freq access
         dispatchTptef({
             type: "create", recodes: {
@@ -114,10 +113,16 @@ export const AppMain = () => {
                     </button>
                     <input type="file" className="d-none" id={"tptef_remarkAttachment"}
                         onChange={(evt) => { setTmpFile(evt.target.files[0]) }} />
-                    <button className="btn btn-primary btn-lg btn-push m-1"
-                        onClick={() => { remark(); setTmpContent(""); setTmpFile(null); }}>
-                        <i className="far fa-comment-dots mr-1" style={{ pointerEvents: "none" }}></i>発言する
-                    </button>
+                    {tmpContent == "" ?
+                        <button className="btn btn-success btn-lg m-1" disabled>
+                            <i className="far fa-comment-dots mr-1" style={{ pointerEvents: "none" }}></i>×発言を入力してください
+                        </button>
+                        :
+                        <button className="btn btn-success btn-lg btn-push m-1"
+                            onClick={() => { remark(); setTmpContent(""); setTmpFile(null); }}>
+                            <i className="far fa-comment-dots mr-1" style={{ pointerEvents: "none" }}></i>発言する
+                        </button>
+                    }
                 </div>
             </div>
         )
@@ -148,7 +153,7 @@ export const AppMain = () => {
                                 <button className="btn btn-link btn-lg m-1" type="button"
                                     onClick={() => { setTmpText(room); setTmpSwitch("room"); }}>
                                     <i className="fas fa-exchange-alt mr-1" style={{ pointerEvents: "none" }}></i>部屋を移動
-                            </button>
+                                </button>
                                 <i className="fas fa-question-circle fa-2x mx-1 fa-btn-help"
                                     data-toggle="modal" data-target={"#tptef_roomHelpModal"}>
                                 </i>

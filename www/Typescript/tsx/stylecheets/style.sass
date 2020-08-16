@@ -11,6 +11,15 @@ $nine: 9
   100%
     opacity: 100%
 
+@for $i from $zero through $nine
+  .slidein-#{$i}
+    animation: slidein #{$i}s ease 0s 1 normal
+@keyframes slidein
+  0%
+    transform: translateX(400px)
+  100%
+    transform: translateX(0px) translateY(0px) rotate(0deg)
+
 .titlelogo
   font-family: Century
   color: darkcyan
@@ -50,32 +59,16 @@ $nine: 9
     transform: rotate(0deg)
   100%
     transform: rotate(-30deg)
-
 .fa-btn-help
+  @extend .fa-btn
   color: darkorange
 .fa-btn-help:hover
-  transition: 0.3s
   color: orangered
-  cursor: pointer
-  animation: fa-btn-help-rotanime 0.5s linear infinite alternate
-@keyframes fa-btn-help-rotanime
-  0%
-    transform: rotate(30deg)
-  100%
-    transform: rotate(-30deg)
-
 .fa-btn-goldbadge
+  @extend .fa-btn
   color: gold
 .fa-btn-goldbadge:hover
-  transition: 0.3s
-  color: gold
-  cursor: pointer
-  animation: fa-btn-help-rotanime 0.5s linear infinite alternate
-@keyframes fa-btn-help-rotanime
-  0%
-    transform: rotate(30deg)
-  100%
-    transform: rotate(-30deg)
+  color: goldenrod
 
 .a-nolink
   color: black
@@ -88,12 +81,8 @@ $nine: 9
   transition: 0.3s
   transform: translate(2px,2px)
   cursor: pointer
-
-.tptef-room
-  border-top: solid 1px darkred
-  border-bottom: solid 1px darkred
-
-.oszv-column
+  
+.btn-col
   color: black
   text-decoration: none
   border: 1px inset silver
@@ -101,8 +90,14 @@ $nine: 9
   background: linear-gradient(rgba(60,60,60,0), rgba(60,60,60,0.05))
   margin-bottom: 3px
   box-shadow: 2px 2px 1px rgba(60,60,60,0.2)
-.oszv-column:hover
+.btn-col:hover
   background-color: rgba(30,30,30,0.2)
   box-shadow: 2px 2px 1px rgba(60,60,60,0)5px
   padding: 1px
   margin: 1px
+  @extend .btn-push;
+
+.tptef-room
+  @extend .slidein-1
+  border-top: solid 1px darkred
+  border-bottom: solid 1px darkred

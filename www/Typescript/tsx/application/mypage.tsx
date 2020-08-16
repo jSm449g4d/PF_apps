@@ -41,13 +41,9 @@ export const AppMain = () => {
         const uploadIconButton = () => {
             return (
                 <div className="d-flex text-center">
-                    <button className="flex-fill btn btn-success btn-lg m-1" type="button"
+                    <button className="flex-fill btn btn-success btn-lg btn-push m-1" type="button"
                         onClick={(evt) => { $(document.getElementById("mypage_uploadIcon")).click() }}>
-                        <i className="fas fa-upload mr-1" style={{ pointerEvents: "none" }}></i>Icon Upload
-                    </button>
-                    <button className="btn btn-secondary rounded-pill m-1" type="button"
-                        onClick={() => { updateIcon(); }}>
-                        <i className="fas fa-redo mr-1" style={{ pointerEvents: "none" }}></i>
+                        <i className="fas fa-upload mr-1" style={{ pointerEvents: "none" }}></i>画像をアップロード
                     </button>
                     <input type="file" className="d-none" accept="image/jpeg,image/png" id="mypage_uploadIcon"
                         onChange={(evt) => {
@@ -152,7 +148,7 @@ export const AppMain = () => {
         if (uid == "") return (<div>{needLoginForm()}</div>)
         if (dbMypage["nickname"] == null) return (<div>{createMypage()}</div>)
         return (
-            <div className="p-2" style={{ backgroundColor: "khaki", border: "3px double silver" }}>
+            <div className="p-2" style={{ backgroundColor: "lavender", border: "3px double silver" }}>
                 <div className="row">
                     <h2 className="col-12 text-center">{dispNickname()}</h2>
                     <div className="col-sm-12 col-lg-3">{showIcon()}</div>
@@ -185,5 +181,5 @@ export const AppMain = () => {
 
 //titleLogo
 export const titleLogo = () => {
-    return (<h3 style={{ fontFamily: "Century", color: "black" }}>マイページ</h3>)
+    return (<h3 style={{ fontFamily: "Impact", color: "black" }}>マイページ</h3>)
 }

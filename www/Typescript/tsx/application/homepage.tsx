@@ -163,5 +163,5 @@ export const AppMain = () => {
 
 //titleLogo
 export const titleLogo = () => {
-    return (<h3 style={{ fontFamily: "Century", color: "black" }}>ホームページ</h3>)
+    return (<h3 style={{ fontFamily: "Impact", color: "black" }}>ホームページ</h3>)
 }

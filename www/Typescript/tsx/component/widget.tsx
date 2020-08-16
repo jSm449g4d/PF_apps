@@ -17,7 +17,7 @@ export const AppWidgetHead = () => {
         })
     }
     return (
-        <div className="row">
+        <div className="row" style={{ borderBottom: "3px double gray" }}>
             <div className="col-sm-12 col-lg-6">
                 <div className="form-inline m-2">
                     <i className="fab fa-react fa-2x fa-spin mr-2" style={{ color: "mediumturquoise" }}></i>

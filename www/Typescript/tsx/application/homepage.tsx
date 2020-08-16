@@ -1,5 +1,4 @@
 import React from 'react';
-import { bsCarousel } from "../component/reactbs_util";
 import "../stylecheets/style.sass";
 
 const bgImage: any = {
@@ -13,13 +12,13 @@ export const AppMain = () => {
     // renders
     const titleLogo = () => {
         return (
-            <div className="row" style={{ textAlign: "center", }}>
+            <div className="row text-center mt-2">
                 <div className="col-lg-2" />
                 <h1 className="d-none d-md-block col-lg-8 titlelogo">VPSdeWP の ぽ～とふぉりお</h1>
                 <h1 className="d-block d-md-none col-12 text-center titlelogo "><div>VPSdeWP</div><div>の</div><div>ぽ～とふぉりお</div>
                 </h1>
                 <div className="col-lg-2" >
-                    <button className="btn btn-info btn-lg btn-push" data-toggle="collapse" data-target="#homepage_ziko">
+                    <button className="flex-fill btn btn-info btn-lg btn-push" data-toggle="collapse" data-target="#homepage_ziko">
                         <i className="fas fa-person-booth mr-1" style={{ pointerEvents: "none" }}></i>自己紹介
                     </button>
                 </div>
@@ -41,16 +40,14 @@ export const AppMain = () => {
                             <h5>ML: Tensorflow2.x, Word2Vec</h5>
                         </div>
                         <h3 className="mt-3">
-                            <i className="fas fa-broadcast-tower mr-1"></i>技術発信
-                        </h3>
-                        <div className="m-2" style={{ color: "gold" }}>
-                            <i className="fab fa-wordpress fa-2x fa-btn-goldbadge mr-1"
+                            <i className="fas fa-broadcast-tower mr-1"></i>技術発信:
+                            <i className="fab fa-wordpress fa-btn-goldbadge fa-lg mr-1 ml-2"
                                 onClick={() => window.location.href = "https://huxiin.ga/wordpress"}></i>
-                            <i className="fab fa-github fa-2x fa-btn-goldbadge mr-1"
+                            <i className="fab fa-github fa-btn-goldbadge fa-lg mr-1"
                                 onClick={() => window.location.href = "https://github.com/jSm449g4d/"}></i>
-                        </div>
+                        </h3>
                         <div>
-                            <button className="btn btn-sm btn-secondary m-2" data-toggle="collapse" data-target="#homepage_ziko">
+                            <button className="btn btn-secondary btn-lg btn-push m-2" data-toggle="collapse" data-target="#homepage_ziko">
                                 <i className="fas fa-caret-up mr-1" style={{ pointerEvents: "none" }} ></i>Close
                         </button>
                         </div>
@@ -59,104 +56,111 @@ export const AppMain = () => {
             </div>
         )
     }
-    const topicsSlide = () => {
-        const topicBackStyle: any = {
-            backgroundColor: "rgba(250,250,250,0.8)",
-            height: 300,
-        }
-        const carousOSZV = () => {
-            return (
-                <div className="text-center p-2" style={topicBackStyle}>
-                    <a className="btn-push" onClick={(evt) => { window.location.href = '/app_tsx.html?application=oszv' }}><h5>
-                        注文受付システム
-                    </h5></a>
-                    <div>正式名称: общая система заказа и вызова</div>
-                    <div>(注文及び呼び出しの為の汎用システム)</div>
-                    <div>
-                        https://www.youtube.com/watch?v=UfAAooxe_k0<br />
-                        の4:08の発言「医者のアナウンスが早すぎて聞き取れなくて飛ばされた」<br />
-                        が開発の契機になっています<br />
-                    </div>
-                    <b>
-                        開発状況: β版
-                    </b>
-                </div>
-            ) 
-        }
-        const carousNicoapi = () => {
-            return (
-                <div className="text-center p-2" style={topicBackStyle}>
-                    <a className="btn-push" onClick={(evt) => { window.location.href = '/app_tsx.html?application=nicoapi' }}><h5>
-                        Nicoapi
-                    </h5></a>
-                    <div>
-                        ニコニコAPIやなろうAPI等をフォームで叩けるWEBクローラです
-                    </div>
-                    <div>
-                        データ収集や**禁則事項**な用途等にお使いいただけます
-                    </div>
-                    <b>
-                        開発状況: α版
-                    </b>
-                </div>
-            )
-        }
-        const carousMypage = () => {
-            return (
-                <div className="text-center p-2" style={topicBackStyle}>
-                    <a className="btn-push" onClick={(evt) => { window.location.href = '/app_tsx.html?application=mypage' }}><h5>
-                        Mypage
-                    </h5></a>
-                    <div>
-                        各ユーザー用のページです
-                    </div>
-                    <b>
-                        開発状況: α版
-                    </b>
-                </div>
-            )
-        }
-        const carousTptef = () => {
-            return (
-                <div className="text-center p-2" style={topicBackStyle}>
-                    <a className="btn-push" onClick={(evt) => { window.location.href = '/app_tsx.html?application=tptef' }}><h5>
-                        チャットアプリ
-                    </h5></a>
-                    <div>
-                        チャットアプリです。ファイルもアップロード出来ます。
-                    </div>
-                    <div>
-                        ユーザー名はMypageから参照されます。
-                    </div>
-                    <b>
-                        開発状況: α版
-                    </b>
-                </div>
-            )
-        }
-        const carouselApplication = [
-            carousOSZV(),
-            carousNicoapi(),
-            carousMypage(),
-            carousTptef(),
-        ]
-
+    const appIndexColumns = () => {
         return (
-            <div className="row" style={{ textAlign: "center" }}>
-                <div className="col-lg-12 col-md-12  fadein-1">
-                    <h4 style={{ color: "cadetblue", backgroundColor: "rgba(250,250,250,0.8)", }}>
-                        制作物一覧
-                    </h4>
-                    {bsCarousel("carouselApplication", carouselApplication)}
+            <div className="p-3">
+                <div className="row text-center">
+                    <div className="col-12 slidein-1">
+                        <h4 style={{ backgroundColor: "rgba(250,250,250,0.8)", }}>アプリ一覧</h4>
+                    </div>
+                    <div className="col-sm-6 col-md-4 col-lg-3 p-1 fadein-1">
+                        <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
+                            <a className="a-nolink" onClick={(evt) => { window.location.href = '/app_tsx.html?application=tptef' }}>
+                                <h5>チャットアプリ</h5>
+                                <div>
+                                    チャットアプリです。ファイルもアップロード出来ます。
+                            </div>
+                                <div>
+                                    ユーザー名はMypageから参照されます。
+                            </div>
+                                <b>開発状況: α版</b>
+                            </a>
+                        </div>
+                    </div>
+                    <div className="col-sm-6 col-md-4 col-lg-3 p-1 fadein-2">
+                        <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
+                            <a className="a-nolink" onClick={(evt) => { window.location.href = '/app_tsx.html?application=mypage' }}>
+                                <h5>Mypage</h5>
+                                <div>
+                                    各ユーザー用のページです
+                                </div>
+                                <b>開発状況: α版</b>
+                            </a>
+                        </div>
+                    </div>
+                    <div className="col-sm-6 col-md-4 col-lg-3 p-1 fadein-3">
+                        <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
+                            <a className="a-nolink" onClick={(evt) => { window.location.href = '/app_tsx.html?application=nicoapi' }}>
+                                <h5>Nicoapi</h5>
+                                <div>
+                                    ニコニコAPIやなろうAPI等をフォームで叩けるWEBクローラです
+                                </div>
+                                <div>
+                                    データ収集や**禁則事項**な用途等にお使いいただけます
+                                </div>
+                                <b>開発状況: 凍結中</b>
+                            </a>
+                        </div>
+                    </div>
+                    {/*ボタンinボタンは、setTimeoutで遅延させることで順序を付けられる*/}
+                    <div className="col-sm-6 col-md-4 col-lg-3 p-1 fadein-4">
+                        <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
+                            <a className="a-nolink" onClick={(evt) => { setTimeout(() => window.location.href = '/app_tsx.html?application=oszv', 500) }}>
+                                <h5>注文受付システム</h5>
+                                <button className="btn btn-success btn-lg btn-push m-1"
+                                    onClick={(evt) => window.location.href = "/app_tsx.html?application=oszv&portfolio"}>
+                                    ポートフォリオ評価の為にアクセス
+                                </button>
+                                <div>
+                                    「個人~小規模の飲食店等の注文受付Webサービス」を題材に制作しました。
+                                </div>
+                                <b>開発状況: β版</b>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+    const githubIndexColumns = () => {
+        return (
+            <div className="p-3">
+                <div className="row text-center">
+                    <div className="col-12 slidein-1">
+                        <h4 style={{ backgroundColor: "rgba(225,160,225,0.8)", }}>Github一覧</h4>
+                    </div>
+                    <div className="col-sm-6 col-md-4 col-lg-3 p-1 fadein-1">
+                        <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
+                            <a className="a-nolink" onClick={(evt) => { window.location.href = 'https://github.com/jSm449g4d/PF_apps' }}>
+                                <h5>PF_apps</h5>
+                                <div>
+                                    このサイトのリポジトリです
+                                </div>
+                                <b>開発状況: β版</b>
+                            </a>
+                        </div>
+                    </div>
+                    <div className="col-sm-6 col-md-4 col-lg-3 p-1 fadein-2">
+                        <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
+                            <a className="a-nolink" onClick={(evt) => { window.location.href = 'https://github.com/jSm449g4d/hleb' }}>
+                                <h5>хлеб (半完全栄養食)</h5>
+                                <div>
+                                    完璧な食事
+                                </div>
+                                <b>開発状況: 第四世代</b>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         )
     }
 
     return (
-        <div className="p-2 bg-light" style={bgImage}>
-            <div className="m-1">{titleLogo()}</div>
-            <div className="m-1">{topicsSlide()}</div>
+        <div style={bgImage}>
+            <div>{titleLogo()}</div>
+            <div>{appIndexColumns()}</div>
+            <div>{githubIndexColumns()}</div>
         </div>
     );
 };

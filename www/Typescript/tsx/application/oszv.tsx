@@ -235,14 +235,12 @@ export const AppMain = () => {
         return (
             <div className="col-sm-6 col-md-4 col-lg-3">
                 {/*将棋盤のボタン(#A)*/}
-                <div className="oszv-column" style={{ background: "rgba(255,255,255,0.9)" }}>
-                    <div className="btn-push">
-                        <a className="a-nolink" data-toggle="modal" id={"A" + tsuid + "_itemModal"} data-target={"#V" + tsuid + "_itemModal"}
-                            onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
-                            {showImage(imageUrl)}
-                            <h5 className="d-flex flex-column text-center mt-1">{itemName}</h5>
-                        </a>
-                    </div>
+                <div className="btn-col" style={{ background: "rgba(255,255,255,0.9)" }}>
+                    <a className="a-nolink" data-toggle="modal" id={"A" + tsuid + "_itemModal"} data-target={"#V" + tsuid + "_itemModal"}
+                        onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
+                        {showImage(imageUrl)}
+                        <h5 className="d-flex flex-column text-center mt-1">{itemName}</h5>
+                    </a>
                 </div>
                 {/*注文モーダル(#V)*/}
                 <div className="modal fade" id={"V" + tsuid + "_itemModal"} role="dialog" aria-hidden="true">
@@ -350,14 +348,12 @@ export const AppMain = () => {
         return (
             <div className="col-sm-6 col-md-4 col-lg-3">
                 {/*将棋盤のボタン(#A)*/}
-                <div className="oszv-column" style={{ background: "rgba(255,255,255,0.9)" }}>
-                    <div className="btn-push">
-                        <a className="a-nolink"
-                            onClick={() => { setShowUid(_uid) }}>
-                            {showImage(imageUrl)}
-                            <h5 className="d-flex flex-column text-center mt-1">{shopName}</h5>
-                        </a>
-                    </div>
+                <div className="btn-col" style={{ background: "rgba(255,255,255,0.9)" }}>
+                    <a className="a-nolink"
+                        onClick={() => { setShowUid(_uid) }}>
+                        {showImage(imageUrl)}
+                        <h5 className="d-flex flex-column text-center mt-1">{shopName}</h5>
+                    </a>
                 </div>
             </div>)
     }
@@ -434,20 +430,18 @@ export const AppMain = () => {
 
         return (
             <div className="col-12">
-                <div className="oszv-column">
-                    <div className="btn-push">
-                        <a className="row a-nolink" data-toggle="modal" data-target={"#V" + tsuid + "_orderModal"}>
-                            <div className="col-sm-5 col-lg-3">
-                                {orderStatus == "ordering" ? <h3 style={{ color: "darkcyan" }}>取引中</h3> : <div></div>}
-                                {orderStatus == "canceling" ? <h3 style={{ color: "chocolate" }}>キャンセル申請中</h3> : <div></div>}
-                                {orderStatus == "canceled" ? <h3 style={{ color: "darkred" }}>キャンセル済</h3> : <div></div>}
-                                {orderStatus == "accepted" ? <h3 style={{ color: "darkblue" }}>取引済</h3> : <div></div>}
-                            </div>
-                            <h4 className="col-sm-7 col-lg-6">{orderName}</h4>
-                            <h5 className="col-sm-12 col-lg-3">{Unixtime2String(Number(tsuid.split("_")[0]))}</h5>
-                            <h6 className="col-sm-12 col-lg-12">メッセージ: {orderMessage}</h6>
-                        </a>
-                    </div>
+                <div className="btn-col">
+                    <a className="row a-nolink" data-toggle="modal" data-target={"#V" + tsuid + "_orderModal"}>
+                        <div className="col-sm-5 col-lg-3">
+                            {orderStatus == "ordering" ? <h3 style={{ color: "darkcyan" }}>取引中</h3> : <div></div>}
+                            {orderStatus == "canceling" ? <h3 style={{ color: "chocolate" }}>キャンセル申請中</h3> : <div></div>}
+                            {orderStatus == "canceled" ? <h3 style={{ color: "darkred" }}>キャンセル済</h3> : <div></div>}
+                            {orderStatus == "accepted" ? <h3 style={{ color: "darkblue" }}>取引済</h3> : <div></div>}
+                        </div>
+                        <h4 className="col-sm-7 col-lg-6">{orderName}</h4>
+                        <h5 className="col-sm-12 col-lg-3">{Unixtime2String(Number(tsuid.split("_")[0]))}</h5>
+                        <h6 className="col-sm-12 col-lg-12">メッセージ: {orderMessage}</h6>
+                    </a>
                 </div>
                 <div className="modal fade" id={"V" + tsuid + "_orderModal"} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
@@ -631,12 +625,12 @@ export const AppMain = () => {
     }
     const dispPosition = () => {
         if (uid == showUid) return (
-            <h4 className="text-center" style={{ borderTop: "solid 1px darkred", borderBottom: "solid 1px darkred" }}>
+            <h4 className="text-center slidein-1" style={{ borderTop: "solid 1px darkred", borderBottom: "solid 1px darkred" }}>
                 ようこそ <i className="far fa-user mr-1"></i>{dbMypage_c["nickname"] ? dbMypage_c["nickname"] : "名無しの店主さん"} <b>(店主)</b>
             </h4>)
         if (showUid != uid)
             return (
-                <h4 className="text-center" style={{ borderTop: "solid 1px darkblue", borderBottom: "solid 1px darkblue" }}>
+                <h4 className="text-center slidein-1" style={{ borderTop: "solid 1px darkblue", borderBottom: "solid 1px darkblue" }}>
                     ようこそ <i className="far fa-user mr-1"></i>{dbMypage_c["nickname"] ? dbMypage_c["nickname"] : "名無しのお客さん"} <b>(購買客)</b>
                 </h4>
             )

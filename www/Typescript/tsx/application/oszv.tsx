@@ -12,17 +12,26 @@ export const AppMain = () => {
 
     const [dbOszv_s, dispatchOszv_s] = useDb()
     const [dbOszv_c, dispatchOszv_c] = useDb()
-    const [dbMypage, dispatchMypage] = useDb() //notTsuidDb
+    const [dbMypage_s, dispatchMypage_s] = useDb() //notTsuidDb
+    const [dbMypage_c, dispatchMypage_c] = useDb() //notTsuidDb
     const [dbAppindex_oszv_tag, dispatchAppindex_oszv_tag] = useDb() //notTsuidDb
-    useEffect(() => { dispatchMypage({ type: "setUri", uri: "mypage/" + showUid }); }, [showUid])
+    const [dbAppindex_oszv_shop, dispatchAppindex_oszv_shop] = useDb() //notTsuidDb
     useEffect(() => { dispatchOszv_s({ type: "setUri", uri: "oszv_s/" + showUid }); }, [showUid])
     useEffect(() => { dispatchOszv_c({ type: "setUri", uri: "oszv_c/" + uid }); }, [uid])
+    useEffect(() => { dispatchMypage_s({ type: "setUri", uri: "mypage/" + showUid }); }, [showUid])
+    useEffect(() => { dispatchMypage_c({ type: "setUri", uri: "mypage/" + uid }); }, [uid])
     useEffect(() => { dispatchAppindex_oszv_tag({ type: "setUri", uri: "appindex/oszv_tag" }); }, [uid])
+    useEffect(() => { dispatchAppindex_oszv_shop({ type: "setUri", uri: "appindex/oszv_shop" }); }, [uid])
 
 
     const updateShop = (addDict: any) => {
         if (showUid != uid) return false;
-        dispatchMypage({ type: "create", recodes: Object.assign({ "shopName": "新しい店" }, addDict), merge: true })
+        dispatchMypage_s({ type: "create", recodes: Object.assign({ "shopName": "新しい店" }, addDict), merge: true })
+        dispatchAppindex_oszv_shop({
+            type: "create", recodes: {
+                [uid]: Object.assign({ "shopName": "新しい店", "imageUrl": "" }, addDict),
+            }, merge: true
+        });
     }
     const updateItem = (tsuid: string, addDict: any) => {
         if (showUid != uid) return false;
@@ -343,6 +352,21 @@ export const AppMain = () => {
             </div>
         )
     }
+    const shopModal = (_uid: string, shopName: string, imageUrl: string = "",) => {
+        return (
+            <div className="col-sm-6 col-md-4 col-lg-3">
+                {/*将棋盤のボタン(#A)*/}
+                <div className="oszv-column" style={{ background: "rgba(255,255,255,0.9)" }}>
+                    <div className="btn-push">
+                        <a className="a-nolink"
+                            onClick={() => { setShowUid(_uid) }}>
+                            {showImage(imageUrl)}
+                            <h5 className="d-flex flex-column text-center mt-1">{shopName}</h5>
+                        </a>
+                    </div>
+                </div>
+            </div>)
+    }
     const orderModal = (tsuid: string, orderName: string, orderMessage: string, orderImage: string = "", orderStatus: string = "", orderDescription: string = "") => {
         const tailConsoleButtons = []
         if (orderStatus == "ordering" && uid != showUid) tailConsoleButtons.push(
@@ -613,36 +637,33 @@ export const AppMain = () => {
     }
     const dispPosition = () => {
         if (uid == showUid) return (
-            <h4 className="text-center" style={{ borderTop: "solid 1px darkblue", borderBottom: "solid 1px darkblue" }}>
-                <i className="far fa-user mr-1"></i>ようこそ {dbMypage["nickname"] ? dbMypage["nickname"] : "名無しの店主さん"} <b>(店主)</b>
+            <h4 className="text-center" style={{ borderTop: "solid 1px darkred", borderBottom: "solid 1px darkred" }}>
+                ようこそ <i className="far fa-user mr-1"></i>{dbMypage_c["nickname"] ? dbMypage_c["nickname"] : "名無しの店主さん"} <b>(店主)</b>
             </h4>)
         if (showUid != uid)
             return (
                 <h4 className="text-center" style={{ borderTop: "solid 1px darkblue", borderBottom: "solid 1px darkblue" }}>
-                    <i className="far fa-user mr-1"></i>ようこそ {dbMypage["nickname"] ? dbMypage["nickname"] : "名無しのお客さん"} <b>(購買客)</b>
+                    ようこそ <i className="far fa-user mr-1"></i>{dbMypage_c["nickname"] ? dbMypage_c["nickname"] : "名無しのお客さん"} <b>(購買客)</b>
                 </h4>
             )
     }
     const dipsShopName = () => {
         if (showUid == "") return (
-            <div>
-                <button className="btn btn-success btn-lg btn-push" type="button"
-                    onClick={() => { updateShop({ "shopName": tmpText }); setTmpText(""); setTmpSwitch(""); }}>
-                    <i className="fas fas fa-running mr-1" style={{ pointerEvents: "none" }}></i>店を探す
-                </button>
-                <button className="btn btn-link btn-lg btn-push ml-3" onClick={() => { setShowUid(uid) }}>
-                    自分の店舗に行く
-                </button>
-            </div>
+            <button className="btn btn-link btn-lg btn-push ml-3" onClick={() => { setShowUid(uid) }}>
+                自分の店舗に行く
+            </button>
         )
-        if (dbMypage["shopName"] && uid != showUid)
+        if (dbMypage_s["shopName"] && uid != showUid)
             return (
-                <div><h2><i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage["shopName"]}</h2>
-                    <button className="btn btn-link btn-lg btn-push ml-3" onClick={() => { setShowUid(uid) }}>
-                        自分の店舗に行く
-                    </button>
+                <div className="form-inline">
+                    <h2><i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage_s["shopName"]}</h2>
+                    {"portfolio" in Query2Dict() == false ?
+                        <button className="btn btn-link btn-lg btn-push ml-3" onClick={() => { setShowUid("") }}>
+                            店を出る
+                        </button> : <div></div>
+                    }
                 </div>)
-        if (dbMypage["shopName"] && uid == showUid)
+        if (dbMypage_s["shopName"] && uid == showUid)
             return (
                 <div>
                     {tmpSwitch == "shopName" ?
@@ -650,19 +671,27 @@ export const AppMain = () => {
                             <input className="form-control form-control-lg m-1" type="text" placeholder="店舗名" value={tmpText} size={32}
                                 onChange={(evt: any) => { setTmpText(evt.target.value) }} />
                             <button className="btn btn-success btn-lg btn-push m-1" type="button"
-                                onClick={() => { updateShop({ "shopName": tmpText }); setTmpText(""); setTmpSwitch(""); }}>
+                                onClick={() => {
+                                    updateShop({ "shopName": tmpText });
+                                    setTmpText(""); setTmpSwitch("");
+                                }}>
                                 <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>変更する
                             </button>
-                            <button className="btn btn-secondary btn-lg btn-push m-1" type="button"
+                            <button className="btn btn-link btn-lg btn-push m-1" type="button"
                                 onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
                                 <i className="fas fa-times mr-1" style={{ pointerEvents: "none" }}></i>変更中止
                                 </button>
                         </h2>
                         :
                         <h2 className="form-inline">
-                            <i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage["shopName"]}
+                            <i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage_s["shopName"]}
                             <i className="fas fa-pencil-alt ml-2 fa-btn"
-                                onClick={() => { setTmpText(dbMypage["shopName"]); setTmpSwitch("shopName"); }}></i>
+                                onClick={() => { setTmpText(dbMypage_s["shopName"]); setTmpSwitch("shopName"); }}></i>
+                            {"portfolio" in Query2Dict() == false ?
+                                <button className="btn btn-link btn-lg btn-push ml-3" onClick={() => { setShowUid("") }}>
+                                    店を出る
+                                </button> : <div></div>
+                            }
                         </h2>
                     }
                 </div>
@@ -672,18 +701,17 @@ export const AppMain = () => {
                 <button className="btn btn-link mx-2" onClick={() => { updateShop({}) }}>
                     <h3>店を立てる</h3>
                 </button>)
-        setShowUid("")
+        if ("portfolio" in Query2Dict() == false) { setShowUid("") }
         return (<h2>店が存在しません</h2>)
     }
     const itemColumn = () => {
-        if (showUid == "") { return dispGuidance() }
         const tmpRecodes = [];
         const tsuids = Object.keys(dbOszv_s).sort();
         if (tsuids.length == 0) return (<h4 className="text-center">商品がありません</h4>)
         for (var i = 0; i < tsuids.length; i++) {
             tmpRecodes.push(itemModal(tsuids[i], dbOszv_s[tsuids[i]]["name"], dbOszv_s[tsuids[i]]["imageUrl"], dbOszv_s[tsuids[i]]["description"]))
         }
-        return (<div>{addItemButtonZwei()}<div className="row">{tmpRecodes}</div></div>)
+        return (<div className="row">{tmpRecodes}</div>)
     }
     const orderColumn = () => {
         const tmpRecodes = [];
@@ -699,6 +727,15 @@ export const AppMain = () => {
         if (tmpRecodes.length == 0) return (<h4 className="text-center">注文履歴ががありません</h4>)
         return (<div className="row">{tmpRecodes}</div>)
     }
+    const shopColumn = () => {
+        const tmpRecodes = [];
+        const _uids = Object.keys(dbAppindex_oszv_shop).sort();
+        if (_uids.length == 0) return (<h4 className="text-center">誰も出店していません</h4>)
+        for (var i = 0; i < _uids.length; i++) {
+            tmpRecodes.push(shopModal(_uids[i], dbAppindex_oszv_shop[_uids[i]]["shopName"], dbAppindex_oszv_shop[_uids[i]]["imageUrl"]))
+        }
+        return (<div className="row">{tmpRecodes}</div>)
+    }
     const appBody = () => {
         console.log("oszv_appBodyReload")
         if (uid == "") return (<div>{needLoginForm()}</div>)
@@ -711,7 +748,7 @@ export const AppMain = () => {
                 <ul className="nav nav-tabs nav-fill mb-2 mt-2" role="tablist">
                     <li className="nav-item btn-push">
                         <a className="nav-link active" id="item1-tab" data-toggle="tab" href="#item1" role="tab" aria-controls="item1" aria-selected="true">
-                            <h3>商品一覧</h3>
+                            {showUid == "" ? <h3>店舗一覧</h3> : <h3>商品一覧</h3>}
                         </a>
                     </li>
                     <li className="nav-item btn-push">
@@ -722,7 +759,7 @@ export const AppMain = () => {
                 </ul>
                 <div className="tab-content">
                     <div className="tab-pane fade show active" id="item1" role="tabpanel" aria-labelledby="item1-tab">
-                        <div className="mt-2">{itemColumn()}</div>
+                        {showUid == "" ? <div className="mt-2">{shopColumn()}</div> : <div className="mt-2">{addItemButtonZwei()}{itemColumn()}</div>}
                     </div>
                     <div className="tab-pane fade" id="item2" role="tabpanel" aria-labelledby="item2-tab">
                         <div className="mt-2">{orderColumn()}</div>
@@ -749,7 +786,7 @@ export const AppMain = () => {
 
 //titleLogo
 export const titleLogo = () => {
-    return (<h3 style={{ fontFamily: "Century", color: "black" }}>ウェイターくん</h3>)
+    return (<h3 style={{ fontFamily: "Century", color: "black" }}>受付注文システム</h3>)
     {/*正式名称 */ }
     //return (<h3 style={{ fontFamily: "Century", color: "black" }}>общая система заказа и вызова</h3>)
 }

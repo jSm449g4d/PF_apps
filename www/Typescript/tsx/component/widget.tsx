@@ -35,21 +35,21 @@ export const AppWidgetHead = () => {
                         </button>
                     }
                     <div className="dropdown-menu">
-                        <a className="dropdown-item" href="#" onClick={() => { _switchApp("homepage") }}>
+                        <a className="dropdown-item btn-push" href="#" onClick={() => { _switchApp("homepage") }}>
                             <i className="fas fa-home mr-1"></i>ホームページ
-                    </a>
-                        <a className="dropdown-item" href="#" onClick={() => { _switchApp("mypage") }}>
+                        </a>
+                        <a className="dropdown-item btn-push" href="#" onClick={() => { _switchApp("mypage") }}>
                             <i className="far fa-address-card mr-1"></i>マイページ
-                    </a>
-                        <a className="dropdown-item" href="#" onClick={() => { _switchApp("tptef") }}>
+                        </a>
+                        <a className="dropdown-item btn-push" href="#" onClick={() => { _switchApp("tptef") }}>
                             <i className="far fa-comments mr-1"></i>チャット
-                    </a>
-                        <a className="dropdown-item" href="#" onClick={() => { _switchApp("nicoapi") }}>
+                        </a>
+                        <a className="dropdown-item btn-push" href="#" onClick={() => { _switchApp("nicoapi") }}>
                             <i className="fas fa-database mr-1"></i>NicoAPI
-                    </a>
-                        <a className="dropdown-item" href="#" onClick={() => { _switchApp("oszv") }}>
+                        </a>
+                        <a className="dropdown-item btn-push" href="#" onClick={() => { _switchApp("oszv") }}>
                             <i className="fas fa-table mr-1"></i>ウェイターくん
-                    </a>
+                        </a>
                     </div>
                     <div id="account_tsx">widgethead_tsx loading...</div>
                 </div>
@@ -61,7 +61,7 @@ export const AppWidgetHead = () => {
 export const AppWidgetFoot = () => {
     return (
         <div className="d-flex justify-content-between p-2"
-            style={{ color: "gold", backgroundColor: "royalblue", border: "3px double silver" }}>
+            style={{ color: "goldenrod", backgroundColor: "royalblue", border: "3px double silver" }}>
             <div>
                 <b style={{fontSize: "1.5em"}}>Links: </b>
                 <i className="fab fa-wordpress fa-2x fa-btn-goldbadge mr-1"

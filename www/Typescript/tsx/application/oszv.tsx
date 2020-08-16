@@ -234,7 +234,7 @@ export const AppMain = () => {
                 {/*将棋盤のボタン(#A)*/}
                 <div className="oszv-column" style={{ background: "rgba(255,255,255,0.9)" }}>
                     <div className="btn-push">
-                        <a className="" data-toggle="modal" id={"A" + tsuid + "_itemModal"} data-target={"#V" + tsuid + "_itemModal"}
+                        <a className="a-nolink" data-toggle="modal" id={"A" + tsuid + "_itemModal"} data-target={"#V" + tsuid + "_itemModal"}
                             onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
                             {showImage(imageUrl)}
                             <h5 className="d-flex flex-column text-center mt-1">{itemName}</h5>
@@ -418,7 +418,7 @@ export const AppMain = () => {
             <div className="col-12">
                 <div className="oszv-column">
                     <div className="btn-push">
-                        <a className="row" data-toggle="modal" data-target={"#V" + tsuid + "_orderModal"}>
+                        <a className="row a-nolink" data-toggle="modal" data-target={"#V" + tsuid + "_orderModal"}>
                             <div className="col-sm-5 col-lg-3">
                                 {orderStatus == "ordering" ? <h3 style={{ color: "darkcyan" }}>取引中</h3> : <div></div>}
                                 {orderStatus == "canceling" ? <h3 style={{ color: "chocolate" }}>キャンセル申請中</h3> : <div></div>}
@@ -608,22 +608,29 @@ export const AppMain = () => {
         if (showUid != uid)
             return (
                 <div className="text-center" style={{ borderTop: "solid 1px darkblue", borderBottom: "solid 1px darkblue" }}>
-                    <h4>購買客
-                        {"portfolio" in Query2Dict() == false ?
-                            <button className="btn btn-link btn-lg ml-3" onClick={() => { setShowUid(uid) }}>
-                                自分の店舗に行く
-                            </button>
-                            :
-                            <div></div>
-                        }
-                    </h4>
+                    <h4>購買客</h4>
                 </div>
             )
     }
     const dipsShopName = () => {
-        if (showUid == "") return (<h2>店がありません</h2>)
+        if (showUid == "") return (
+            <div>
+                <button className="btn btn-success btn-lg btn-push" type="button"
+                    onClick={() => { updateShop({ "shopName": tmpText }); setTmpText(""); setTmpSwitch(""); }}>
+                    <i className="fas fas fa-running mr-1" style={{ pointerEvents: "none" }}></i>店を探す
+                </button>
+                <button className="btn btn-link btn-lg btn-push ml-3" onClick={() => { setShowUid(uid) }}>
+                    自分の店舗に行く
+                </button>
+            </div>
+        )
         if (dbMypage["shopName"] && uid != showUid)
-            return (<h2><i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage["shopName"]}</h2>)
+            return (
+                <div><h2><i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage["shopName"]}</h2>
+                    <button className="btn btn-link btn-lg btn-push ml-3" onClick={() => { setShowUid(uid) }}>
+                        自分の店舗に行く
+                    </button>
+                </div>)
         if (dbMypage["shopName"] && uid == showUid)
             return (
                 <div>
@@ -631,11 +638,11 @@ export const AppMain = () => {
                         <h2 className="form-inline">
                             <input className="form-control form-control-lg m-1" type="text" placeholder="店舗名" value={tmpText} size={32}
                                 onChange={(evt: any) => { setTmpText(evt.target.value) }} />
-                            <button className="btn btn-success btn-lg m-1" type="button"
+                            <button className="btn btn-success btn-lg btn-push m-1" type="button"
                                 onClick={() => { updateShop({ "shopName": tmpText }); setTmpText(""); setTmpSwitch(""); }}>
                                 <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>変更する
-                                </button>
-                            <button className="btn btn-secondary btn-lg m-1" type="button"
+                            </button>
+                            <button className="btn btn-secondary btn-lg btn-push m-1" type="button"
                                 onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
                                 <i className="fas fa-times mr-1" style={{ pointerEvents: "none" }}></i>変更中止
                                 </button>
@@ -654,6 +661,7 @@ export const AppMain = () => {
                 <button className="btn btn-link mx-2" onClick={() => { updateShop({}) }}>
                     <h3>店を立てる</h3>
                 </button>)
+        setShowUid("")
         return (<h2>店が存在しません</h2>)
     }
     const itemColumn = () => {

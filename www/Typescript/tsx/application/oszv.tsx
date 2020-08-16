@@ -602,14 +602,25 @@ export const AppMain = () => {
                 </div>
             </div>)
     }
+    const dispGuidance = () => {
+        return (
+            <div className="d-flex flex-column text-center p-2"
+                style={{ color: "black", backgroundColor: "azure", border: "3px double silver" }}>
+                <h3>始めまして!</h3>
+                <div>執筆中</div>
+            </div>
+        )
+    }
     const dispPosition = () => {
         if (uid == showUid) return (
-            <h4 className="text-center" style={{ borderTop: "solid 1px firebrick", borderBottom: "solid 1px firebrick" }}>出品店</h4>)
+            <h4 className="text-center" style={{ borderTop: "solid 1px darkblue", borderBottom: "solid 1px darkblue" }}>
+                <i className="far fa-user mr-1"></i>ようこそ {dbMypage["nickname"] ? dbMypage["nickname"] : "名無しの店主さん"} <b>(店主)</b>
+            </h4>)
         if (showUid != uid)
             return (
-                <div className="text-center" style={{ borderTop: "solid 1px darkblue", borderBottom: "solid 1px darkblue" }}>
-                    <h4>購買客</h4>
-                </div>
+                <h4 className="text-center" style={{ borderTop: "solid 1px darkblue", borderBottom: "solid 1px darkblue" }}>
+                    <i className="far fa-user mr-1"></i>ようこそ {dbMypage["nickname"] ? dbMypage["nickname"] : "名無しのお客さん"} <b>(購買客)</b>
+                </h4>
             )
     }
     const dipsShopName = () => {
@@ -665,13 +676,14 @@ export const AppMain = () => {
         return (<h2>店が存在しません</h2>)
     }
     const itemColumn = () => {
+        if (showUid == "") { return dispGuidance() }
         const tmpRecodes = [];
         const tsuids = Object.keys(dbOszv_s).sort();
         if (tsuids.length == 0) return (<h4 className="text-center">商品がありません</h4>)
         for (var i = 0; i < tsuids.length; i++) {
             tmpRecodes.push(itemModal(tsuids[i], dbOszv_s[tsuids[i]]["name"], dbOszv_s[tsuids[i]]["imageUrl"], dbOszv_s[tsuids[i]]["description"]))
         }
-        return (<div className="row">{tmpRecodes}</div>)
+        return (<div>{addItemButtonZwei()}<div className="row">{tmpRecodes}</div></div>)
     }
     const orderColumn = () => {
         const tmpRecodes = [];
@@ -710,7 +722,6 @@ export const AppMain = () => {
                 </ul>
                 <div className="tab-content">
                     <div className="tab-pane fade show active" id="item1" role="tabpanel" aria-labelledby="item1-tab">
-                        {addItemButtonZwei()}
                         <div className="mt-2">{itemColumn()}</div>
                     </div>
                     <div className="tab-pane fade" id="item2" role="tabpanel" aria-labelledby="item2-tab">

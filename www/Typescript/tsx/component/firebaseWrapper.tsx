@@ -230,11 +230,11 @@ export const AppAuth = () => {
                                 <h5 className="modal-title">
                                     ※おためしログイン:
                                 </h5>
-                                <button className="flex-fill btn btn-warning btn-push m-1" type="button" data-dismiss="modal"
+                                <button className="flex-fill btn btn-success btn-push m-1" type="button" data-dismiss="modal"
                                     onClick={() => { easyIn() }}>
                                     <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>EzLogin
                                     </button>
-                                <button className="flex-fill btn btn-warning btn-push m-1" type="button" data-dismiss="modal"
+                                <button className="flex-fill btn btn-success btn-push m-1" type="button" data-dismiss="modal"
                                     onClick={() => { easyIn2() }}>
                                     <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>別垢版
                                 </button>
@@ -297,7 +297,7 @@ export const AppAuth = () => {
                 <div className="d-flex justify-content-between">
                     <div className="ml-auto">
                         <div className="form-inline">
-                            <button className="btn btn-warning btn-push m-1" type="button" onClick={() => { easyIn() }}>
+                            <button className="btn btn-success btn-push m-1" type="button" onClick={() => { easyIn() }}>
                                 <b>
                                     <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>おためしログイン
                                 </b>
@@ -351,7 +351,7 @@ export const needLoginForm = () => {
                     <b>アカウントを新規作成する</b>
                 </button>
                 <p />
-                <button className="btn btn-warning btn-lg btn-push m-1" type="button" data-dismiss="modal"
+                <button className="btn btn-success btn-lg btn-push m-1" type="button" data-dismiss="modal"
                     onClick={() => { easyIn() }}>
                     <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>
                     <b>おためしログイン</b>

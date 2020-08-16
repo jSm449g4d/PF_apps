@@ -626,12 +626,12 @@ export const AppMain = () => {
     const dispPosition = () => {
         if (uid == showUid) return (
             <h4 className="text-center slidein-1" style={{ borderTop: "solid 1px darkred", borderBottom: "solid 1px darkred" }}>
-                ようこそ <i className="far fa-user mr-1"></i>{dbMypage_c["nickname"] ? dbMypage_c["nickname"] : "名無しの店主さん"} <b>(店主)</b>
+                <i className="far fa-user mr-1"></i>{dbMypage_c["nickname"] ? dbMypage_c["nickname"] : "名無しの店主さん"} <b>(店主)</b>
             </h4>)
         if (showUid != uid)
             return (
                 <h4 className="text-center slidein-1" style={{ borderTop: "solid 1px darkblue", borderBottom: "solid 1px darkblue" }}>
-                    ようこそ <i className="far fa-user mr-1"></i>{dbMypage_c["nickname"] ? dbMypage_c["nickname"] : "名無しのお客さん"} <b>(購買客)</b>
+                    <i className="far fa-user mr-1"></i>{dbMypage_c["nickname"] ? dbMypage_c["nickname"] : "名無しのお客さん"} <b>(購買客)</b>
                 </h4>
             )
     }

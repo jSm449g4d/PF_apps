@@ -67,29 +67,28 @@ export const AppMain = () => {
         const carousOSZV = () => {
             return (
                 <div className="text-center p-2" style={topicBackStyle}>
-                    <h5>
-                        ウェイターくん
-                    </h5>
+                    <a className="btn-push" onClick={(evt) => { window.location.href = '/app_tsx.html?application=oszv' }}><h5>
+                        注文受付システム
+                    </h5></a>
                     <div>正式名称: общая система заказа и вызова</div>
                     <div>(注文及び呼び出しの為の汎用システム)</div>
                     <div>
-                        【ネタ】病院アンケートが、ツッコミどころ満載で面白すぎるwwwwwwww<br />
-                        の4:08の発言「医者のアナウンスが早すぎて聞き取れなくて飛ばされた」<br />
                         https://www.youtube.com/watch?v=UfAAooxe_k0<br />
+                        の4:08の発言「医者のアナウンスが早すぎて聞き取れなくて飛ばされた」<br />
                         が開発の契機になっています<br />
                     </div>
                     <b>
-                        開発状況: α版
+                        開発状況: β版
                     </b>
                 </div>
-            )
+            ) 
         }
         const carousNicoapi = () => {
             return (
                 <div className="text-center p-2" style={topicBackStyle}>
-                    <h5>
+                    <a className="btn-push" onClick={(evt) => { window.location.href = '/app_tsx.html?application=nicoapi' }}><h5>
                         Nicoapi
-                    </h5>
+                    </h5></a>
                     <div>
                         ニコニコAPIやなろうAPI等をフォームで叩けるWEBクローラです
                     </div>
@@ -105,9 +104,9 @@ export const AppMain = () => {
         const carousMypage = () => {
             return (
                 <div className="text-center p-2" style={topicBackStyle}>
-                    <h5>
+                    <a className="btn-push" onClick={(evt) => { window.location.href = '/app_tsx.html?application=mypage' }}><h5>
                         Mypage
-                    </h5>
+                    </h5></a>
                     <div>
                         各ユーザー用のページです
                     </div>
@@ -120,9 +119,9 @@ export const AppMain = () => {
         const carousTptef = () => {
             return (
                 <div className="text-center p-2" style={topicBackStyle}>
-                    <h5>
-                        Tptef
-                    </h5>
+                    <a className="btn-push" onClick={(evt) => { window.location.href = '/app_tsx.html?application=tptef' }}><h5>
+                        チャットアプリ
+                    </h5></a>
                     <div>
                         チャットアプリです。ファイルもアップロード出来ます。
                     </div>

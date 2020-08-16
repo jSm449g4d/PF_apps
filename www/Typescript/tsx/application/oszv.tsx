@@ -129,13 +129,7 @@ export const AppMain = () => {
         )
     }
     const addItemButtonZwei = () => {
-        if (showUid != uid) return (
-            <div className="d-flex">
-                <button className="flex-fill btn btn-secondary btn-lg rounded-pill btn-push m-1" type="button"
-                    onClick={() => { updateImageAll(); }}>
-                    <i className="fas fa-redo mr-1" style={{ pointerEvents: "none" }}></i>画像を更新
-                </button>
-            </div>);
+        if (showUid != uid) return (<div></div>);
         return (
             <div>
                 <div className="row">
@@ -656,7 +650,9 @@ export const AppMain = () => {
         if (dbMypage_s["shopName"] && uid != showUid)
             return (
                 <div className="form-inline">
-                    <h2><i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage_s["shopName"]}</h2>
+                    <h2 style={{ fontFamily: "MS Gothic" }}>
+                        <i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage_s["shopName"]}
+                    </h2>
                     {"portfolio" in Query2Dict() == false ?
                         <button className="btn btn-link btn-lg btn-push ml-3" onClick={() => { setShowUid("") }}>
                             店を出る
@@ -683,7 +679,7 @@ export const AppMain = () => {
                                 </button>
                         </h2>
                         :
-                        <h2 className="form-inline">
+                        <h2 className="form-inline" style={{ fontFamily: "MS Gothic" }}>
                             <i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage_s["shopName"]}
                             <i className="fas fa-pencil-alt ml-2 fa-btn"
                                 onClick={() => { setTmpText(dbMypage_s["shopName"]); setTmpSwitch("shopName"); }}></i>
@@ -786,7 +782,7 @@ export const AppMain = () => {
 
 //titleLogo
 export const titleLogo = () => {
-    return (<h3 style={{ fontFamily: "Century", color: "black" }}>受付注文システム</h3>)
+    return (<h3 style={{ fontFamily: "Impact", color: "black" }}>受付注文システム</h3>)
     {/*正式名称 */ }
     //return (<h3 style={{ fontFamily: "Century", color: "black" }}>общая система заказа и вызова</h3>)
 }

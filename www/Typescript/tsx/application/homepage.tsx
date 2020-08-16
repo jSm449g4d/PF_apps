@@ -81,7 +81,7 @@ export const AppMain = () => {
                         開発状況: β版
                     </b>
                 </div>
-            )
+            ) 
         }
         const carousNicoapi = () => {
             return (

@@ -351,8 +351,7 @@ export const AppMain = () => {
             <div className="col-sm-6 col-md-4 col-lg-3">
                 {/*将棋盤のボタン(#A)*/}
                 <div className="btn-col" style={_background}>
-                    <a className="a-nolink"
-                        onClick={() => { setShowUid(_uid) }}>
+                    <a className="a-nolink" onClick={() => { setShowUid(_uid);}}>
                         {showImage(imageUrl)}
                         <h5 className="d-flex flex-column text-center mt-1">{shopName}</h5>
                     </a>
@@ -559,7 +558,7 @@ export const AppMain = () => {
                                     ポートフォリオ評価を簡単にするため作った機能です<br />
                                     ボタン一つでユーザーを変更できます<br />
                                     <p />
-                                    <h5>「<b>本来の仕様</b>」と「<b>ポートフォリオ評価用</b>」の違い</h5>
+                                    <h5>「<b>ポートフォリオ評価用</b>」は機能が限定されています</h5>
                                     <h6>クエリの「<b>portfolio</b>」を削除すると「本来の仕様」に変更出来ます<br /></h6>
                                     <div className="text-left">
                                     </div>
@@ -571,9 +570,9 @@ export const AppMain = () => {
                                     </button>
                                     <div className="collapse" id="oszv_switchAuthHelpCollapse">
                                         <div className="card card-body text-left">
-                                            1. 「本来の仕様」では全てのユーザーが出店できますが、「ポートフォリオ評価用」では出店出来ません<br />
-                                            2. 「本来の仕様」では様々な店に訪れられますが、「ポートフォリオ評価用」では一つの店に固定されます<br />
-                                            3. 「ポートフォリオ評価用」では、簡単のため多数のUIを省略しております<br />
+                                            1. 「ポートフォリオ評価用」では、入れる店が固定されています<br />
+                                            2. 「ポートフォリオ評価用」では、出店は出来ません <br />
+                                            3. 「ポートフォリオ評価用」では、出店や別の店に入る等のUIや機能が省略されています<br />
                                         </div>
                                     </div>
                                 </div>
@@ -652,9 +651,7 @@ export const AppMain = () => {
     }
     const dipsShopName = () => {
         if (showUid == "") return (
-            <button className="btn btn-success btn-lg btn-push ml-3" onClick={() => { setShowUid(uid) }}>
-                自分の店舗に行く
-            </button>
+            <button className="btn btn-success btn-lg btn-push ml-3" onClick={() => { setShowUid(uid) }}>自分の店舗に行く</button>
         )
         if (dbMypage_s["shopName"] && uid != showUid)
             return (
@@ -696,7 +693,7 @@ export const AppMain = () => {
                 <button className="btn btn-link mx-2" onClick={() => { updateShop({}) }}>
                     <h3>店を立てる</h3>
                 </button>)
-        if ("portfolio" in Query2Dict() == false) { setShowUid("") }
+        //if ("portfolio" in Query2Dict() == false) { setShowUid("") }
         return (<h2>店が存在しません</h2>)
     }
     const itemColumn = () => {

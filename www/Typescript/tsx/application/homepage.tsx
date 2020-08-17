@@ -2,9 +2,10 @@ import React from 'react';
 import "../stylecheets/style.sass";
 
 const bgImage: any = {
-    backgroundImage: "url(/static/img/aircraft-2795557_1280.jpg)",
-    backgroundSize: "cover",
-    backgroundAttachment: "fixed",
+    backgroundColor: "lavender"
+    //    backgroundImage: "url(/static/img/aircraft-2795557_1280.jpg)",
+    //    backgroundSize: "cover",
+    //    backgroundAttachment: "fixed",
 }
 
 export const AppMain = () => {
@@ -14,8 +15,8 @@ export const AppMain = () => {
         return (
             <div className="row text-center mt-2">
                 <div className="col-lg-2" />
-                <h1 className="d-none d-md-block col-lg-8 titlelogo">VPSdeWP の ぽ～とふぉりお</h1>
-                <h1 className="d-block d-md-none col-12 text-center titlelogo "><div>VPSdeWP</div><div>の</div><div>ぽ～とふぉりお</div>
+                <h1 className="d-none d-md-block col-lg-8 titlelogo">VPSdeWP の ホームページ</h1>
+                <h1 className="d-block d-md-none col-12 text-center titlelogo "><div>VPSdeWP</div><div>の</div><div>ホームページ</div>
                 </h1>
                 <div className="col-lg-2" >
                     <button className="flex-fill btn btn-info btn-lg btn-push" data-toggle="collapse" data-target="#homepage_ziko">

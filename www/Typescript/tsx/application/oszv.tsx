@@ -345,10 +345,12 @@ export const AppMain = () => {
         )
     }
     const shopModal = (_uid: string, shopName: string, imageUrl: string = "",) => {
+        let _background = { background: "rgba(255,255,255,0.9)" }
+        if (uid == _uid) _background = { background: "rgba(240,220,240,0.9)" }
         return (
             <div className="col-sm-6 col-md-4 col-lg-3">
                 {/*将棋盤のボタン(#A)*/}
-                <div className="btn-col" style={{ background: "rgba(255,255,255,0.9)" }}>
+                <div className="btn-col" style={_background}>
                     <a className="a-nolink"
                         onClick={() => { setShowUid(_uid) }}>
                         {showImage(imageUrl)}
@@ -625,19 +627,32 @@ export const AppMain = () => {
     }
     const dispPosition = () => {
         if (uid == showUid) return (
-            <h4 className="text-center slidein-1" style={{ borderTop: "solid 1px darkred", borderBottom: "solid 1px darkred" }}>
+            <h4 className="text-center" style={{ borderTop: "solid 1px darkred", borderBottom: "solid 1px darkred" }}>
                 <i className="far fa-user mr-1"></i>{dbMypage_c["nickname"] ? dbMypage_c["nickname"] : "名無しの店主さん"} <b>(店主)</b>
             </h4>)
         if (showUid != uid)
             return (
-                <h4 className="text-center slidein-1" style={{ borderTop: "solid 1px darkblue", borderBottom: "solid 1px darkblue" }}>
+                <h4 className="text-center" style={{ borderTop: "solid 1px darkblue", borderBottom: "solid 1px darkblue" }}>
                     <i className="far fa-user mr-1"></i>{dbMypage_c["nickname"] ? dbMypage_c["nickname"] : "名無しのお客さん"} <b>(購買客)</b>
                 </h4>
             )
     }
+    const dispBreadcrumbs = () => {
+        if ("portfolio" in Query2Dict() == true) return (<div></div>)
+        const _breadcrumbs = []; _breadcrumbs.push(<button className="btn btn-link btn-push" onClick={() => { setShowUid("") }}>トップページ</button>)
+        if (showUid != uid && showUid != "") {
+            _breadcrumbs.push(<div>→</div>)
+            _breadcrumbs.push(<button className="btn btn-link" disabled>{dbMypage_s["shopName"]}</button>)
+        }
+        if (showUid == uid && showUid != "") {
+            _breadcrumbs.push(<div>→</div>)
+            _breadcrumbs.push(<button className="btn btn-link" disabled>自分の店舗</button>)
+        }
+        return (<h4 className="form-inline d-flex justify-content-lg-start">{_breadcrumbs}</h4>)
+    }
     const dipsShopName = () => {
         if (showUid == "") return (
-            <button className="btn btn-link btn-lg btn-push ml-3" onClick={() => { setShowUid(uid) }}>
+            <button className="btn btn-success btn-lg btn-push ml-3" onClick={() => { setShowUid(uid) }}>
                 自分の店舗に行く
             </button>
         )
@@ -647,11 +662,6 @@ export const AppMain = () => {
                     <h2 style={{ fontFamily: "MS Gothic" }}>
                         <i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage_s["shopName"]}
                     </h2>
-                    {"portfolio" in Query2Dict() == false ?
-                        <button className="btn btn-link btn-lg btn-push ml-3" onClick={() => { setShowUid("") }}>
-                            店を出る
-                        </button> : <div></div>
-                    }
                 </div>)
         if (dbMypage_s["shopName"] && uid == showUid)
             return (
@@ -677,11 +687,6 @@ export const AppMain = () => {
                             <i className="fas fa-store mr-1" style={{ pointerEvents: "none" }}></i>{dbMypage_s["shopName"]}
                             <i className="fas fa-pencil-alt ml-2 fa-btn"
                                 onClick={() => { setTmpText(dbMypage_s["shopName"]); setTmpSwitch("shopName"); }}></i>
-                            {"portfolio" in Query2Dict() == false ?
-                                <button className="btn btn-link btn-lg btn-push ml-3" onClick={() => { setShowUid("") }}>
-                                    店を出る
-                                </button> : <div></div>
-                            }
                         </h2>
                     }
                 </div>
@@ -732,8 +737,9 @@ export const AppMain = () => {
         return (
             <div>
                 <div className="row">
-                    <div className="col-sm-12 col-lg-8">{dipsShopName()}</div>
-                    <div className="col-sm-12 col-lg-4 text-right">{dispPosition()}</div>
+                    <div className="col-sm-12 col-lg-4 slidein-1-reverse">{dispBreadcrumbs()}</div>
+                    <div className="col-sm-12 col-lg-4 slidein-1-reverse">{dipsShopName()}</div>
+                    <div className="col-sm-12 col-lg-4 text-right slidein-1">{dispPosition()}</div>
                 </div>
                 <ul className="nav nav-tabs nav-fill mb-2 mt-2" role="tablist">
                     <li className="nav-item btn-push">

@@ -109,7 +109,7 @@ export const AppMain = () => {
                                 <h5>注文受付システム</h5>
                                 <button className="btn btn-success btn-lg btn-push m-1"
                                     onClick={(evt) => window.location.href = "/app_tsx.html?application=oszv&portfolio"}>
-                                    ポートフォリオ評価の為にアクセス
+                                    ポートフォリオ評価用
                                 </button>
                                 <div>
                                     「個人~小規模の飲食店等の注文受付Webサービス」を題材に制作しました。

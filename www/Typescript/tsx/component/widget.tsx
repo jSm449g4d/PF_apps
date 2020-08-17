@@ -21,7 +21,7 @@ export const AppWidgetHead = () => {
             <div className="col-sm-12 col-lg-6">
                 <div className="form-inline m-2">
                     <i className="fab fa-react fa-2x fa-spin mr-2" style={{ color: "mediumturquoise" }}></i>
-                    <div id="titlelogo_tsx">タイトルが未設定です</div>
+                    <div className="rotxin-2" id="titlelogo_tsx">タイトル未設定</div>
                 </div>
             </div>
             <div className="col-sm-12 col-lg-6 d-flex justify-content-end">

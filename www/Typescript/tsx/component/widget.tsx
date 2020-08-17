@@ -35,23 +35,23 @@ export const AppWidgetHead = () => {
                         </button>
                     }
                     <div className="dropdown-menu dropdown-menu-lg">
-                        <a className="dropdown-item btn-push px-4 py-3 text-center border-top" href="#"
+                        <a className="dropdown-item btn-push px-4 text-center border-top" style={{ fontSize: "1.5em"}} href="#"
                             onClick={() => { _switchApp("homepage") }}>
                             <i className="fas fa-home mr-1"></i>ホームページ
                         </a>
-                        <a className="dropdown-item btn-push px-4 py-3 text-center border-top" href="#"
+                        <a className="dropdown-item btn-push px-4 text-center border-top" style={{ fontSize: "1.5em"}} href="#"
                             onClick={() => { _switchApp("mypage") }}>
                             <i className="far fa-address-card mr-1"></i>マイページ
                         </a>
-                        <a className="dropdown-item btn-push px-4 py-3 text-center border-top" href="#"
+                        <a className="dropdown-item btn-push px-4 text-center border-top" style={{ fontSize: "1.5em"}} href="#"
                             onClick={() => { _switchApp("tptef") }}>
                             <i className="far fa-comments mr-1"></i>チャット
                         </a>
-                        <a className="dropdown-item btn-push px-4 py-3 text-center border-top" href="#"
+                        <a className="dropdown-item btn-push px-4 text-center border-top" style={{ fontSize: "1.5em"}} href="#"
                             onClick={() => { _switchApp("nicoapi") }}>
                             <i className="fas fa-database mr-1"></i>NicoAPI
                         </a>
-                        <a className="dropdown-item btn-push px-4 py-3 text-center border-top" href="#"
+                        <a className="dropdown-item btn-push px-4 text-center border-top" style={{ fontSize: "1.5em"}} href="#"
                             onClick={() => { _switchApp("oszv") }}>
                             <i className="fas fa-table mr-1"></i>受付注文システム
                         </a>

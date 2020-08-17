@@ -351,7 +351,7 @@ export const AppMain = () => {
             <div className="col-sm-6 col-md-4 col-lg-3 p-1">
                 {/*将棋盤のボタン(#A)*/}
                 <div className="btn-col" style={_background}>
-                    <a className="a-nolink" onClick={() => { setShowUid(_uid);}}>
+                    <a className="a-nolink" onClick={() => { setShowUid(_uid); }}>
                         {showImage(imageUrl)}
                         <h5 className="d-flex flex-column text-center mt-1">{shopName}</h5>
                     </a>
@@ -626,32 +626,38 @@ export const AppMain = () => {
     }
     const dispPosition = () => {
         if (uid == showUid) return (
-            <h4 className="text-center" style={{ borderTop: "solid 1px darkred", borderBottom: "solid 1px darkred" }}>
-                <i className="far fa-user mr-1"></i>{dbMypage_c["nickname"] ? dbMypage_c["nickname"] : "名無しの店主さん"} <b>(店主)</b>
+            <h4 className="text-center">
+                <i className="far fa-user mr-1"></i>{dbMypage_c["nickname"] ? dbMypage_c["nickname"] : "名無しの店主さん"}
+                <b style={{ color: "darkred" }}>(店主)</b>
             </h4>)
         if (showUid != uid)
             return (
-                <h4 className="text-center" style={{ borderTop: "solid 1px darkblue", borderBottom: "solid 1px darkblue" }}>
-                    <i className="far fa-user mr-1"></i>{dbMypage_c["nickname"] ? dbMypage_c["nickname"] : "名無しのお客さん"} <b>(購買客)</b>
+                <h4 className="text-center">
+                    <i className="far fa-user mr-1"></i>{dbMypage_c["nickname"] ? dbMypage_c["nickname"] : "名無しのお客さん"}
+                    <b style={{ color: "darkblue" }}>(購買客)</b>
                 </h4>
             )
     }
     const dispBreadcrumbs = () => {
         if ("portfolio" in Query2Dict() == true) return (<div></div>)
-        const _breadcrumbs = []; _breadcrumbs.push(<button className="btn btn-link btn-push" onClick={() => { setShowUid("") }}>店を選ぶ</button>)
-        if (showUid != uid && showUid != "") {
-            _breadcrumbs.push(<div>→</div>)
-            _breadcrumbs.push(<button className="btn btn-link" disabled>{dbMypage_s["shopName"]}</button>)
+        const _breadcrumbs = []
+        if (showUid == "") {
+            _breadcrumbs.push(<h5>店を選ぶ</h5>); return (<div className="form-inline">{_breadcrumbs}</div>)
         }
-        if (showUid == uid && showUid != "") {
-            _breadcrumbs.push(<div>→</div>)
-            _breadcrumbs.push(<button className="btn btn-link" disabled>自分の店舗</button>)
+        _breadcrumbs.push(<h5 className="btn-link btn-push" onClick={() => { setShowUid("") }}>店を選ぶ</h5>)
+        if (showUid != uid) {
+            _breadcrumbs.push(<h5> → </h5>)
+            _breadcrumbs.push(<h5>{dbMypage_s["shopName"]}</h5>)
         }
-        return (<h4 className="form-inline d-flex justify-content-lg-start">{_breadcrumbs}</h4>)
+        if (showUid == uid) {
+            _breadcrumbs.push(<h5> → </h5>)
+            _breadcrumbs.push(<h5>自分の店舗</h5>)
+        }
+        return (<div className="form-inline">{_breadcrumbs}</div>)
     }
     const dipsShopName = () => {
         if (showUid == "") return (
-            <button className="btn btn-success btn-lg btn-push ml-3" onClick={() => { setShowUid(uid) }}>自分の店舗に行く</button>
+            <button className="btn btn-success btn-lg btn-push" onClick={() => { setShowUid(uid) }}>自分の店舗に行く</button>
         )
         if (dbMypage_s["shopName"] && uid != showUid)
             return (
@@ -733,11 +739,23 @@ export const AppMain = () => {
         if (uid == "") return (<div>{needLoginForm()}</div>)
         return (
             <div>
-                <div className="row">
-                    <div className="col-sm-12 col-lg-4 slidein-1-reverse">{dispBreadcrumbs()}</div>
-                    <div className="col-sm-12 col-lg-4 slidein-1-reverse">{dipsShopName()}</div>
-                    <div className="col-sm-12 col-lg-4 text-right slidein-1">{dispPosition()}</div>
-                </div>
+                <div className="p-3"><div className="row">
+                    <div className="col-sm-12 col-lg-4 slidein-1-reverse p-1">
+                        <div className="d-flex justify-content-center justify-content-lg-start">
+                            {dispBreadcrumbs()}
+                        </div>
+                    </div>
+                    <div className="col-sm-12 col-lg-4 slidein-1-reverse p-1">
+                        <div className="d-flex justify-content-center flex-lg-fill">
+                            {dispPosition()}
+                        </div>
+                    </div>
+                    <div className="col-sm-12 col-lg-4 text-right slidein-1 p-1">
+                        <div className="d-flex justify-content-center justify-content-lg-end">
+                            {dipsShopName()}
+                        </div>
+                    </div>
+                </div></div>
                 <ul className="nav nav-tabs nav-fill mb-2 mt-2" role="tablist">
                     <li className="nav-item btn-push">
                         <a className="nav-link active" id="item1-tab" data-toggle="tab" href="#item1" role="tab" aria-controls="item1" aria-selected="true">

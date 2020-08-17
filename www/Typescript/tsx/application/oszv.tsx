@@ -639,26 +639,27 @@ export const AppMain = () => {
             )
     }
     const dispBreadcrumbs = () => {
-        if ("portfolio" in Query2Dict() == true) return (<div></div>)
+        if ("portfolio" in Query2Dict() == true) return (<div>店の選択 → {dbMypage_s["shopName"]} (固定)</div>)
         const _breadcrumbs = []
         if (showUid == "") {
-            _breadcrumbs.push(<h5>店を選ぶ</h5>); return (<div className="form-inline">{_breadcrumbs}</div>)
+            _breadcrumbs.push(<div>店の選択</div>)
+            _breadcrumbs.push(<div> : </div>)
+            _breadcrumbs.push(<div className="btn btn-success btn-push" onClick={() => { setShowUid(uid) }}>自分の店舗に行く</div>)
+            return (<div className="form-inline">{_breadcrumbs}</div>)
         }
-        _breadcrumbs.push(<h5 className="btn-link btn-push" onClick={() => { setShowUid("") }}>店を選ぶ</h5>)
+        _breadcrumbs.push(<div className="btn-link btn-push" onClick={() => { setShowUid("") }}>店を選ぶ</div>)
         if (showUid != uid) {
-            _breadcrumbs.push(<h5> → </h5>)
-            _breadcrumbs.push(<h5>{dbMypage_s["shopName"]}</h5>)
+            _breadcrumbs.push(<div> → </div>)
+            _breadcrumbs.push(<div>{dbMypage_s["shopName"]}</div>)
         }
         if (showUid == uid) {
-            _breadcrumbs.push(<h5> → </h5>)
-            _breadcrumbs.push(<h5>自分の店舗</h5>)
+            _breadcrumbs.push(<div> → </div>)
+            _breadcrumbs.push(<div>自分の店舗</div>)
         }
         return (<div className="form-inline">{_breadcrumbs}</div>)
     }
     const dipsShopName = () => {
-        if (showUid == "") return (
-            <button className="btn btn-success btn-lg btn-push" onClick={() => { setShowUid(uid) }}>自分の店舗に行く</button>
-        )
+        if (showUid == "") return (<h3>訪れる店を選ぶ</h3>)
         if (dbMypage_s["shopName"] && uid != showUid)
             return (
                 <div className="form-inline">
@@ -739,7 +740,7 @@ export const AppMain = () => {
         if (uid == "") return (<div>{needLoginForm()}</div>)
         return (
             <div>
-                <div className="p-3"><div className="row">
+                <div className="p-1 px-3"><div className="row">
                     <div className="col-sm-12 col-lg-4 slidein-1-reverse p-1">
                         <div className="d-flex justify-content-center justify-content-lg-start">
                             {dispBreadcrumbs()}

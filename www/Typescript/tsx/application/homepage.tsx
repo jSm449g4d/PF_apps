@@ -2,10 +2,10 @@ import React from 'react';
 import "../stylecheets/style.sass";
 
 const bgImage: any = {
-    backgroundColor: "lavender"
-    //    backgroundImage: "url(/static/img/aircraft-2795557_1280.jpg)",
-    //    backgroundSize: "cover",
-    //    backgroundAttachment: "fixed",
+    //backgroundColor: "lavender",
+    backgroundImage: "url(/static/img/aircraft-2795557_1280.jpg)",
+    backgroundSize: "cover",
+    backgroundAttachment: "fixed",
 }
 
 export const AppMain = () => {
@@ -73,7 +73,7 @@ export const AppMain = () => {
                                         チャットアプリです。ファイルもアップロード出来ます。<br />
                                         ユーザー名はMypageから参照されます。
                                     </div>
-                                    <b>開発状況: α版</b>
+                                    <b>開発状況: α版: 利用可</b>
                                 </div>
                             </a>
                         </div>
@@ -86,7 +86,7 @@ export const AppMain = () => {
                                     <div className="flex-grow-1">
                                         各ユーザー用のページです
                                     </div>
-                                    <b>開発状況: α版</b>
+                                    <b>開発状況: α版: 利用可</b>
                                 </div>
                             </a>
                         </div>
@@ -100,7 +100,7 @@ export const AppMain = () => {
                                         ニコニコAPIやなろうAPI等をフォームで叩けるWEBクローラです<br />
                                         データ収集や**禁則事項**な用途等にお使いいただけます
                                     </div>
-                                    <b>開発状況: 凍結中</b>
+                                    <b>開発状況: 凍結中: 動作不安定</b>
                                 </div>
                             </a>
                         </div>
@@ -118,7 +118,7 @@ export const AppMain = () => {
                                     <div className="flex-grow-1">
                                         「個人~小規模の飲食店等の注文受付Webサービス」を題材に制作しました。
                                     </div>
-                                    <b>開発状況: β版</b>
+                                    <b>開発状況: α版: 利用可</b>
                                 </div>
                             </a>
                         </div>
@@ -142,7 +142,7 @@ export const AppMain = () => {
                                     <div className="flex-grow-1">
                                         このサイトのリポジトリです
                                     </div>
-                                    <b>開発状況: β版</b>
+                                    <b>開発状況: β版: 利用可</b>
                                 </div>
                             </a>
                         </div>
@@ -155,7 +155,7 @@ export const AppMain = () => {
                                     <div className="flex-grow-1">
                                         完璧な食事
                                     </div>
-                                    <b>開発状況: 第四世代</b>
+                                    <b>開発状況: 第四世代: 運用中</b>
                                 </div>
                             </a>
                         </div>
@@ -166,11 +166,11 @@ export const AppMain = () => {
     }
 
     return (
-        <div style={bgImage}>
+        <div style={bgImage}><div style={{ background: "rgba(255,255,255,0.5)", }}>
             <div>{titleLogo()}</div>
             <div>{appIndexColumns()}</div>
             <div>{githubIndexColumns()}</div>
-        </div>
+        </div></div>
     );
 };
 

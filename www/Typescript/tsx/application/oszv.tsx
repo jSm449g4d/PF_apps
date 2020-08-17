@@ -539,27 +539,25 @@ export const AppMain = () => {
         return (
             <div className="m-1 p-2" style={{ border: "3px double silver", background: "#001111" }}>
                 <div className="d-flex flex-column text-center">
-                    <h3 style={{ color: "#FF8888" }}>ポートフォリオ用のでデバック機能</h3>
-                    <h4 style={{ color: "#CCFFFF" }}>かんたんアカウント変更
+                    <h3 style={{ color: "#AAFFAA" }}>チュートリアルへようこそ
                         <i className="fas fa-question-circle ml-1 fa-btn-help"
                             data-toggle="modal" data-target={"#oszv_switchAuthHelpModal"}></i>
+                    </h3>
+                    <h4 style={{ color: "#DDFFFF" }}>かんたんアカウント変更
                     </h4>
                     {/*roomのヘルプモーダル*/}
                     <div className="modal fade" id={"oszv_switchAuthHelpModal"} role="dialog" aria-hidden="true">
                         <div className="modal-dialog modal-lg" role="document">
                             <div className="modal-content">
                                 <div className="modal-header d-flex justify-content-between">
-                                    <h4 className="modal-title">かんたんアカウント変更について</h4>
+                                    <h4 className="modal-title">チュートリアルについて</h4>
                                     <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
                                         <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
                                     </button>
                                 </div>
                                 <div className="modal-body d-flex flex-column text-center">
-                                    ポートフォリオ評価を簡単にするため作った機能です<br />
-                                    ボタン一つでユーザーを変更できます<br />
-                                    <p />
-                                    <h5>「<b>ポートフォリオ評価用</b>」は機能が限定されています</h5>
-                                    <h6>クエリの「<b>portfolio</b>」を削除すると「本来の仕様」に変更出来ます<br /></h6>
+                                    <h5>「<b>チュートリアル</b>」は機能が限定されています</h5>
+                                    <h6>クエリの「<b>portfolio</b>」を削除すると「本来の仕様」に変更出来ます。<br /></h6>
                                     <div className="text-left">
                                     </div>
                                     <button className="btn btn-link btn-lg btn-push"
@@ -570,9 +568,11 @@ export const AppMain = () => {
                                     </button>
                                     <div className="collapse" id="oszv_switchAuthHelpCollapse">
                                         <div className="card card-body text-left">
-                                            1. 「ポートフォリオ評価用」では、入れる店が固定されています<br />
-                                            2. 「ポートフォリオ評価用」では、出店は出来ません <br />
-                                            3. 「ポートフォリオ評価用」では、出店や別の店に入る等のUIや機能が省略されています<br />
+                                            1. 「チュートリアル」では、自動的に「簡単ログイン用ユーザー」としてログインされます。<br />
+                                            2. 「チュートリアル」では、自動的に「チュートリアル用店舗」に入店した状態で始まります。<br />
+                                            3. 「チュートリアル」では、別の店に立ち寄れません。<br />
+                                            4. 「チュートリアル」では、自分の店を開けません。<br />
+                                            5. 「チュートリアル」では、UIや機能が省略されています。<br />
                                         </div>
                                     </div>
                                 </div>
@@ -741,6 +741,8 @@ export const AppMain = () => {
         return (
             <div>
                 <div className="p-1 px-3"><div className="row">
+                    {/*http://127.0.0.1:5000/app_tsx.html?application=oszv&portfolio*/}
+                    {"portfolio" in Query2Dict() == true ? <div className="col-12">{switchAuth()}</div> : <div></div>}
                     <div className="col-sm-12 col-lg-4 slidein-1-reverse p-1">
                         <div className="d-flex justify-content-center justify-content-lg-start">
                             {dispBreadcrumbs()}
@@ -778,8 +780,6 @@ export const AppMain = () => {
                     </div>
                     <div className="tab-pane fade" id="item3" role="tabpanel" aria-labelledby="item3-tab">This is a text of item#3.</div>
                 </div>
-                {/*http://127.0.0.1:5000/app_tsx.html?application=oszv&portfolio*/}
-                {"portfolio" in Query2Dict() == true ? <div className="col-12">{switchAuth()}</div> : <div></div>}
             </div>
         )
     }

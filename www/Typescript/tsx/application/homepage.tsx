@@ -38,7 +38,7 @@ export const AppMain = () => {
                         </div>
                         <div>
                             <h5>GCP: Firebase, CloudBuild, CloudRun, CloudFunction</h5>
-                            <h5>ML: Tensorflow2.x, Word2Vec</h5>
+                            <h5>ML: Tensorflow, Word2Vec</h5>
                         </div>
                         <h3 className="mt-3">
                             <i className="fas fa-broadcast-tower mr-1"></i>技術発信:
@@ -70,8 +70,7 @@ export const AppMain = () => {
                                 <div className="d-flex flex-column" style={{ height: "300px" }}>
                                     <h5>チャットアプリ</h5>
                                     <div className="flex-grow-1">
-                                        チャットアプリです。ファイルもアップロード出来ます。<br />
-                                        ユーザー名はMypageから参照されます。
+                                        ファイルのやり取りも可能なチャットルームです<br />
                                     </div>
                                     <b>開発状況: α版: 利用可</b>
                                 </div>
@@ -84,7 +83,7 @@ export const AppMain = () => {
                                 <div className="d-flex flex-column" style={{ height: "300px" }}>
                                     <h5>Mypage</h5>
                                     <div className="flex-grow-1">
-                                        各ユーザー用のページです
+                                        ユーザー名等を変更できます。<br />
                                     </div>
                                     <b>開発状況: α版: 利用可</b>
                                 </div>
@@ -98,7 +97,6 @@ export const AppMain = () => {
                                     <h5>Nicoapi</h5>
                                     <div className="flex-grow-1">
                                         ニコニコAPIやなろうAPI等をフォームで叩けるWEBクローラです<br />
-                                        データ収集や**禁則事項**な用途等にお使いいただけます
                                     </div>
                                     <b>開発状況: 凍結中: 動作不安定</b>
                                 </div>
@@ -116,7 +114,8 @@ export const AppMain = () => {
                                         チュートリアルに進む
                                     </button>
                                     <div className="flex-grow-1">
-                                        「個人~小規模の飲食店等の注文受付Webサービス」を題材に制作しました。
+                                        「個人~小規模の飲食店等の注文受付Webサービス」を題材に制作しました。<br/>
+                                        「チュートリアル」は機能を、「商品の取引」についてのみに限定しています。<br/>
                                     </div>
                                     <b>開発状況: α版: 利用可</b>
                                 </div>

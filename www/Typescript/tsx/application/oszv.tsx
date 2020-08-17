@@ -233,7 +233,7 @@ export const AppMain = () => {
             return (<div></div>)
         }
         return (
-            <div className="col-sm-6 col-md-4 col-lg-3">
+            <div className="col-sm-6 col-md-4 col-lg-3 p-1">
                 {/*将棋盤のボタン(#A)*/}
                 <div className="btn-col" style={{ background: "rgba(255,255,255,0.9)" }}>
                     <a className="a-nolink" data-toggle="modal" id={"A" + tsuid + "_itemModal"} data-target={"#V" + tsuid + "_itemModal"}
@@ -348,7 +348,7 @@ export const AppMain = () => {
         let _background = { background: "rgba(255,255,255,0.9)" }
         if (uid == _uid) _background = { background: "rgba(240,220,240,0.9)" }
         return (
-            <div className="col-sm-6 col-md-4 col-lg-3">
+            <div className="col-sm-6 col-md-4 col-lg-3 p-1">
                 {/*将棋盤のボタン(#A)*/}
                 <div className="btn-col" style={_background}>
                     <a className="a-nolink" onClick={() => { setShowUid(_uid);}}>
@@ -638,7 +638,7 @@ export const AppMain = () => {
     }
     const dispBreadcrumbs = () => {
         if ("portfolio" in Query2Dict() == true) return (<div></div>)
-        const _breadcrumbs = []; _breadcrumbs.push(<button className="btn btn-link btn-push" onClick={() => { setShowUid("") }}>トップページ</button>)
+        const _breadcrumbs = []; _breadcrumbs.push(<button className="btn btn-link btn-push" onClick={() => { setShowUid("") }}>店を選ぶ</button>)
         if (showUid != uid && showUid != "") {
             _breadcrumbs.push(<div>→</div>)
             _breadcrumbs.push(<button className="btn btn-link" disabled>{dbMypage_s["shopName"]}</button>)
@@ -703,7 +703,7 @@ export const AppMain = () => {
         for (var i = 0; i < tsuids.length; i++) {
             tmpRecodes.push(itemModal(tsuids[i], dbOszv_s[tsuids[i]]["name"], dbOszv_s[tsuids[i]]["imageUrl"], dbOszv_s[tsuids[i]]["description"]))
         }
-        return (<div className="row">{tmpRecodes}</div>)
+        return (<div className="p-3"><div className="row">{tmpRecodes}</div></div>)
     }
     const orderColumn = () => {
         const tmpRecodes = [];
@@ -726,7 +726,7 @@ export const AppMain = () => {
         for (var i = 0; i < _uids.length; i++) {
             tmpRecodes.push(shopModal(_uids[i], dbAppindex_oszv_shop[_uids[i]]["shopName"], dbAppindex_oszv_shop[_uids[i]]["imageUrl"]))
         }
-        return (<div className="row">{tmpRecodes}</div>)
+        return (<div className="p-3"><div className="row">{tmpRecodes}</div></div>)
     }
     const appBody = () => {
         console.log("oszv_appBodyReload")

@@ -20,7 +20,7 @@ export const AppMain = () => {
                 </h1>
                 <div className="col-lg-2" >
                     <button className="flex-fill btn btn-info btn-lg btn-push" data-toggle="collapse" data-target="#homepage_ziko">
-                        <i className="fas fa-person-booth mr-1" style={{ pointerEvents: "none" }}></i>自己紹介
+                        <i className="fas fa-person-booth mr-1" style={{ pointerEvents: "none" }}></i>使用技術
                     </button>
                 </div>
                 <div className="collapse col-md-12" id="homepage_ziko">
@@ -67,39 +67,41 @@ export const AppMain = () => {
                     <div className="col-sm-6 col-md-4 col-lg-3 p-1 fadein-1">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
                             <a className="a-nolink" onClick={(evt) => { window.location.href = '/app_tsx.html?application=tptef' }}>
-                                <h5>チャットアプリ</h5>
-                                <div>
-                                    チャットアプリです。ファイルもアップロード出来ます。
-                            </div>
-                                <div>
-                                    ユーザー名はMypageから参照されます。
-                            </div>
-                                <b>開発状況: α版</b>
+                                <div className="d-flex flex-column" style={{ height: "300px" }}>
+                                    <h5>チャットアプリ</h5>
+                                    <div className="flex-grow-1">
+                                        チャットアプリです。ファイルもアップロード出来ます。<br />
+                                        ユーザー名はMypageから参照されます。
+                                    </div>
+                                    <b>開発状況: α版</b>
+                                </div>
                             </a>
                         </div>
                     </div>
                     <div className="col-sm-6 col-md-4 col-lg-3 p-1 fadein-2">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
                             <a className="a-nolink" onClick={(evt) => { window.location.href = '/app_tsx.html?application=mypage' }}>
-                                <h5>Mypage</h5>
-                                <div>
-                                    各ユーザー用のページです
+                                <div className="d-flex flex-column" style={{ height: "300px" }}>
+                                    <h5>Mypage</h5>
+                                    <div className="flex-grow-1">
+                                        各ユーザー用のページです
+                                    </div>
+                                    <b>開発状況: α版</b>
                                 </div>
-                                <b>開発状況: α版</b>
                             </a>
                         </div>
                     </div>
                     <div className="col-sm-6 col-md-4 col-lg-3 p-1 fadein-3">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
                             <a className="a-nolink" onClick={(evt) => { window.location.href = '/app_tsx.html?application=nicoapi' }}>
-                                <h5>Nicoapi</h5>
-                                <div>
-                                    ニコニコAPIやなろうAPI等をフォームで叩けるWEBクローラです
+                                <div className="d-flex flex-column" style={{ height: "300px" }}>
+                                    <h5>Nicoapi</h5>
+                                    <div className="flex-grow-1">
+                                        ニコニコAPIやなろうAPI等をフォームで叩けるWEBクローラです<br />
+                                        データ収集や**禁則事項**な用途等にお使いいただけます
+                                    </div>
+                                    <b>開発状況: 凍結中</b>
                                 </div>
-                                <div>
-                                    データ収集や**禁則事項**な用途等にお使いいただけます
-                                </div>
-                                <b>開発状況: 凍結中</b>
                             </a>
                         </div>
                     </div>
@@ -107,15 +109,17 @@ export const AppMain = () => {
                     <div className="col-sm-6 col-md-4 col-lg-3 p-1 fadein-4">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
                             <a className="a-nolink" onClick={(evt) => { setTimeout(() => window.location.href = '/app_tsx.html?application=oszv', 500) }}>
-                                <h5>注文受付システム</h5>
-                                <button className="btn btn-success btn-lg btn-push m-1"
-                                    onClick={(evt) => window.location.href = "/app_tsx.html?application=oszv&portfolio"}>
-                                    ポートフォリオ評価用
-                                </button>
-                                <div>
-                                    「個人~小規模の飲食店等の注文受付Webサービス」を題材に制作しました。
+                                <div className="d-flex flex-column" style={{ height: "300px" }}>
+                                    <h5>注文受付システム</h5>
+                                    <button className="btn btn-success btn-lg btn-push rounded-pill m-1"
+                                        onClick={(evt) => window.location.href = "/app_tsx.html?application=oszv&portfolio"}>
+                                        チュートリアルに進む
+                                    </button>
+                                    <div className="flex-grow-1">
+                                        「個人~小規模の飲食店等の注文受付Webサービス」を題材に制作しました。
+                                    </div>
+                                    <b>開発状況: β版</b>
                                 </div>
-                                <b>開発状況: β版</b>
                             </a>
                         </div>
                     </div>
@@ -133,22 +137,26 @@ export const AppMain = () => {
                     <div className="col-sm-6 col-md-4 col-lg-3 p-1 fadein-1">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
                             <a className="a-nolink" onClick={(evt) => { window.location.href = 'https://github.com/jSm449g4d/PF_apps' }}>
-                                <h5>PF_apps</h5>
-                                <div>
-                                    このサイトのリポジトリです
+                                <div className="d-flex flex-column" style={{ height: "200px" }}>
+                                    <h5>PF_apps</h5>
+                                    <div className="flex-grow-1">
+                                        このサイトのリポジトリです
+                                    </div>
+                                    <b>開発状況: β版</b>
                                 </div>
-                                <b>開発状況: β版</b>
                             </a>
                         </div>
                     </div>
                     <div className="col-sm-6 col-md-4 col-lg-3 p-1 fadein-2">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
                             <a className="a-nolink" onClick={(evt) => { window.location.href = 'https://github.com/jSm449g4d/hleb' }}>
-                                <h5>хлеб (半完全栄養食)</h5>
-                                <div>
-                                    完璧な食事
+                                <div className="d-flex flex-column" style={{ height: "200px" }}>
+                                    <h5>хлеб (半完全栄養食)</h5>
+                                    <div className="flex-grow-1">
+                                        完璧な食事
+                                    </div>
+                                    <b>開発状況: 第四世代</b>
                                 </div>
-                                <b>開発状況: 第四世代</b>
                             </a>
                         </div>
                     </div>

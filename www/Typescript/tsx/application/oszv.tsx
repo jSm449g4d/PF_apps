@@ -670,7 +670,7 @@ export const AppMain = () => {
         return (<div className="form-inline">{_breadcrumbs}</div>)
     }
     const dipsShopName = () => {
-        if (showUid == "") return (<h3>訪れる店を選択</h3>)
+        if (showUid == "") return (<h3><i className="fas fa-walking mr-1"></i>訪れる店を選択</h3>)
         if (dbMypage_s["shopName"] && uid != showUid)
             return (
                 <div className="form-inline">

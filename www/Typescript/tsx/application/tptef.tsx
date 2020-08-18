@@ -48,25 +48,25 @@ export const AppMain = () => {
         for (var i = 0; i < tsuids.length; i++) {
             const tmpData = [];
             tmpData.push(
-                <div className="col-12">
-                    <h5 className="text-center"
-                        style={{ background: "linear-gradient(rgba(60,60,60,0), rgba(60,60,60,0.15))" }}>
+                <div className="col-12 p-1 border"
+                    style={{ background: "linear-gradient(rgba(60,60,60,0), rgba(60,60,60,0.15))" }}>
+                    <h5 className="text-center">
                         <i className="far fa-user mr-1"></i>{dbTptef[tsuids[i]]["handlename"]}{"   uid: "}{tsuids[i].split("_")[1]}
                     </h5>
                 </div>)
             tmpData.push(
-                <div className="col-sm-12 col-lg-2"><div className="text-center">
+                <div className="col-sm-12 col-lg-2 p-1 border"><div className="text-center">
                     {Unixtime2String(Number(tsuids[i].split("_")[0]))}
                 </div></div>)
             tmpData.push(
-                <div className="col-sm-12 col-lg-8"><div className="text-center">
+                <div className="col-sm-12 col-lg-8 p-1 border"><div className="text-center">
                     {dbTptef[tsuids[i]]["content"]}
                 </div></div>)
             const tmpDatum = [];
             //attachment download button
             if (dbTptef[tsuids[i]]["attachment"] != "")
                 tmpDatum.push(
-                    <button key={1} className="btn btn-primary btn-push m-1"
+                    <button key={1} className="flex-fill btn btn-primary btn-push m-1"
                         onClick={(evt: any) => {
                             dispatchTptef({
                                 type: "download",
@@ -76,18 +76,26 @@ export const AppMain = () => {
                         }}
                         name={dbTptef[tsuids[i]]["attachment"]}>
                         <i className="fas fa-paperclip mr-1" style={{ pointerEvents: "none" }}></i>
-                        {dbTptef[tsuids[i]]["attachment"].split("/").pop().slice(0, 16)}</button>)
+                        {dbTptef[tsuids[i]]["attachment"].split("/").pop().slice(0, 16)}
+                    </button>)
             //delete button
             if (tsuids[i].split("_")[1] == uid)
                 tmpDatum.push(
-                    <button key={2} className="btn btn-outline-danger rounded-pill btn-push m-1"
+                    <button key={2} className="flex-fill btn btn-outline-danger rounded-pill btn-push m-1"
                         onClick={(evt: any) => { deleteRemark(evt.target.name) }} name={tsuids[i]}>
-                        <i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Delete</button>)
-            tmpData.push(<div className="col-sm-12 col-lg-2 text-center">{tmpDatum}</div>)
+                        <i className="far fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>Delete
+                    </button>)
+            if (tmpDatum.length > 0)
+                tmpData.push(
+                    <div className="col-sm-12 col-lg-2 p-1 border">
+                        <div className="d-flex flex-column">
+                            {tmpDatum}
+                        </div>
+                    </div>)
             tmpRecord.push(
                 <div style={{
                     border: "1px inset silver", borderRadius: "5px", marginBottom: "3px", boxShadow: "2px 2px 1px rgba(60,60,60,0.2)"
-                }}><div className="row">{tmpData}</div></div>)
+                }}><div className="row p-1 px-3">{tmpData}</div></div>)
         }
         return (<div>{tmpRecord}</div>)
     }
@@ -132,43 +140,62 @@ export const AppMain = () => {
             <div>
                 <div>
                     {tmpSwitch == "room" ?
-                        <div className="text-center m-1">
-                            <input className="form-control form-control-lg m-1" type="text" placeholder="部屋を指定してください" value={tmpText}
-                                onChange={(evt: any) => { setTmpText(evt.target.value) }} />
-                            <button className="btn btn-success btn-lg m-1" type="button"
-                                onClick={() => {
-                                    if (tmpText != "") { setRoom(tmpText); }; setTmpText(""); setTmpSwitch("");
-                                }}>
-                                <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>別の部屋に移動
-                                </button>
-                            <button className="btn btn-secondary btn-lg m-1" type="button"
-                                onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
-                                <i className="fas fa-times mr-1" style={{ pointerEvents: "none" }}></i>部屋にとどまる
-                                </button>
+                        <div className="row p-1 px-3">
+                            <div className="col-12 col-lg-6 p-1">
+                                <input className="flex-fill form-control form-control-lg" type="text" placeholder="部屋を指定してください" value={tmpText}
+                                    onChange={(evt: any) => { setTmpText(evt.target.value) }} />
+                            </div>
+                            <div className="col-12 col-lg-6 p-1">
+                                <div className="form-inline d-flex justify-content-between">
+                                    {tmpText == "" ?
+                                        <button className="flex-fill btn btn-success btn-lg btn-push m-1" type="button" disabled>
+                                            ×部屋名が未入力
+                                        </button>
+                                        :
+                                        <button className="flex-fill btn btn-success btn-lg btn-push m-1" type="button"
+                                            onClick={() => {
+                                                if (tmpText != "") { setRoom(tmpText); }; setTmpText(""); setTmpSwitch("");
+                                            }}>
+                                            <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>部屋を移動
+                                        </button>
+                                    }
+                                    <button className="flex-fill btn btn-secondary btn-lg btn-push m-1" type="button"
+                                        onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
+                                        <i className="fas fa-times mr-1" style={{ pointerEvents: "none" }}></i>部屋に留まる
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                         :
-                        <div className="d-flex justify-content-center text-center m-1 tptef-room" style={{ color: "black" }}>
-                            <div className="form-inline">
-                                <h2><i className="fab fa-houzz mr-1" style={{ pointerEvents: "none" }}></i>{room}</h2>
-                                <button className="btn btn-link btn-lg m-1" type="button"
-                                    onClick={() => { setTmpText(room); setTmpSwitch("room"); }}>
-                                    <i className="fas fa-exchange-alt mr-1" style={{ pointerEvents: "none" }}></i>部屋を移動
-                                </button>
-                                <i className="fas fa-question-circle fa-2x mx-1 fa-btn-help"
-                                    data-toggle="modal" data-target={"#tptef_roomHelpModal"}>
-                                </i>
-                                {/*roomのヘルプモーダル*/}
-                                <div className="modal fade" id={"tptef_roomHelpModal"} role="dialog" aria-hidden="true">
-                                    <div className="modal-dialog modal-lg" role="document">
-                                        <div className="modal-content">
-                                            <div className="modal-header d-flex justify-content-between">
-                                                <h4 className="modal-title">部屋(Room)とは</h4>
-                                                <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
-                                                    <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
-                                                </button>
-                                            </div>
-                                            <div className="modal-body d-flex flex-column text-center">
-                                                チャットルームの部屋です。<br />
+                        <div className="row p-1 px-3">
+                            <div className="col-12 col-lg-3 p-1"></div>
+                            <h2 className="col-12 col-lg-6 p-1 text-center tptef-room"
+                                style={{ fontFamily: "Impact", color: "black", textShadow: "4px 4px 1px rgba(60,60,60,0.3)" }}>
+                                <i className="fab fa-houzz mr-1" style={{ pointerEvents: "none" }}></i>{room}
+                            </h2>
+                            <div className="col-12 col-lg-3 p-1">
+                                <div className="d-flex justify-content-center justify-content-lg-end form-inline">
+                                    <button className="btn btn-link btn-lg m-1" type="button"
+                                        onClick={() => { setTmpText(room); setTmpSwitch("room"); }}>
+                                        <i className="fas fa-exchange-alt mr-1" style={{ pointerEvents: "none" }}></i>部屋を移動
+                                    </button>
+                                    <i className="fas fa-question-circle fa-2x mx-1 fa-btn-help"
+                                        data-toggle="modal" data-target={"#tptef_roomHelpModal"}>
+                                    </i>
+                                    {/*roomのヘルプモーダル*/}
+                                    <div className="modal fade" id={"tptef_roomHelpModal"} role="dialog" aria-hidden="true">
+                                        <div className="modal-dialog modal-lg" role="document">
+                                            <div className="modal-content">
+                                                <div className="modal-header d-flex justify-content-between">
+                                                    <h4 className="modal-title">部屋(Room)とは</h4>
+                                                    <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
+                                                        <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
+                                                    </button>
+                                                </div>
+                                                <div className="modal-body d-flex flex-column text-center">
+                                                    チャットルームの部屋です。<br />
+                                                    完全一致で該当の部屋に移動します。<br />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

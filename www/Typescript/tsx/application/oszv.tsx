@@ -798,7 +798,7 @@ export const AppMain = () => {
 
 //titleLogo
 export const titleLogo = () => {
-    return (<h3 style={{ fontFamily: "Impact", color: "black" }}>受付注文システム</h3>)
+    return (<div style={{ fontFamily: "Impact", color: "black" }}>受付注文システム</div>)
     {/*正式名称 */ }
-    //return (<h3 style={{ fontFamily: "Century", color: "black" }}>общая система заказа и вызова</h3>)
+    //return (<div style={{ fontFamily: "Century", color: "black" }}>общая система заказа и вызова</div>)
 }

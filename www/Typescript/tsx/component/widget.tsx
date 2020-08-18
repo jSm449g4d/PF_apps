@@ -17,49 +17,52 @@ export const AppWidgetHead = () => {
         })
     }
     return (
-        <div className="p-1 px-3"><div className="row" style={{ borderBottom: "3px double gray" }}>
-            <div className="col-sm-12 col-lg-6 p-1">
-                <h2 className="form-inline d-flex justify-content-center justify-content-lg-start">
-                    <i className="fab fa-react fa-spin mr-2" style={{ color: "mediumturquoise" }}></i>
-                    <div className="rotxin-2" id="titlelogo_tsx">タイトル未設定</div>
-                </h2>
-            </div>
-            <div className="col-sm-12 col-lg-6 p-1">
-                <div className="form-inline d-flex justify-content-between justify-content-lg-end">
-                    {/*ポートフォリオの場合、アプリ一覧を操作不能にします */}
-                    {Query2Dict()["portfolio"] ?
-                        <div></div>
-                        :
-                        <button className="btn btn-link dropdown-toggle m-2 mr-3" type="button" data-toggle="dropdown">
-                            <b>アプリ一覧</b>
-                        </button>
-                    }
-                    <div className="dropdown-menu dropdown-menu-lg">
-                        <a className="dropdown-item btn-push px-4 text-center border-top" style={{ fontSize: "1.5em" }} href="#"
-                            onClick={() => { _switchApp("homepage") }}>
-                            <i className="fas fa-home mr-1"></i>ホームページ
-                        </a>
-                        <a className="dropdown-item btn-push px-4 text-center border-top" style={{ fontSize: "1.5em" }} href="#"
-                            onClick={() => { _switchApp("mypage") }}>
-                            <i className="far fa-address-card mr-1"></i>マイページ
-                        </a>
-                        <a className="dropdown-item btn-push px-4 text-center border-top" style={{ fontSize: "1.5em" }} href="#"
-                            onClick={() => { _switchApp("tptef") }}>
-                            <i className="far fa-comments mr-1"></i>チャット
-                        </a>
-                        <a className="dropdown-item btn-push px-4 text-center border-top" style={{ fontSize: "1.5em" }} href="#"
-                            onClick={() => { _switchApp("nicoapi") }}>
-                            <i className="fas fa-database mr-1"></i>NicoAPI
-                        </a>
-                        <a className="dropdown-item btn-push px-4 text-center border-top" style={{ fontSize: "1.5em" }} href="#"
-                            onClick={() => { _switchApp("oszv") }}>
-                            <i className="fas fa-table mr-1"></i>受付注文システム
-                        </a>
-                    </div>
-                    <div id="account_tsx">widgethead_tsx loading...</div>
+        <div style={{ borderBottom: "3px double gray", background: "linear-gradient(rgba(60,60,60,0),rgba(60,60,60,0.1)" }}>
+            <div className="row p-1 px-3">
+                <div className="col-sm-12 col-lg-6 p-1">
+                    <h2 className="d-flex justify-content-center justify-content-lg-start">
+                        <div className="form-inline">
+                            <i className="fab fa-react fa-spin" style={{ color: "mediumturquoise" }}></i>
+                            <div className="rotxin-2" id="titlelogo_tsx">タイトル未設定</div>
+                        </div>
+                    </h2>
                 </div>
-            </div>
-        </div></div>
+                <div className="col-sm-12 col-lg-6 p-1">
+                    <div className="form-inline d-flex justify-content-between justify-content-lg-end">
+                        {/*ポートフォリオの場合、アプリ一覧を操作不能にします */}
+                        {Query2Dict()["portfolio"] ?
+                            <div></div>
+                            :
+                            <button className="btn btn-link dropdown-toggle mx-2 mr-3" type="button" data-toggle="dropdown">
+                                <b>アプリ一覧</b>
+                            </button>
+                        }
+                        <div className="dropdown-menu dropdown-menu-lg">
+                            <a className="dropdown-item btn-push px-4 text-center border-top" style={{ fontSize: "1.5em" }} href="#"
+                                onClick={() => { _switchApp("homepage") }}>
+                                <i className="fas fa-home mr-1"></i>ホームページ
+                        </a>
+                            <a className="dropdown-item btn-push px-4 text-center border-top" style={{ fontSize: "1.5em" }} href="#"
+                                onClick={() => { _switchApp("mypage") }}>
+                                <i className="far fa-address-card mr-1"></i>マイページ
+                        </a>
+                            <a className="dropdown-item btn-push px-4 text-center border-top" style={{ fontSize: "1.5em" }} href="#"
+                                onClick={() => { _switchApp("tptef") }}>
+                                <i className="far fa-comments mr-1"></i>チャット
+                        </a>
+                            <a className="dropdown-item btn-push px-4 text-center border-top" style={{ fontSize: "1.5em" }} href="#"
+                                onClick={() => { _switchApp("nicoapi") }}>
+                                <i className="fas fa-database mr-1"></i>NicoAPI
+                        </a>
+                            <a className="dropdown-item btn-push px-4 text-center border-top" style={{ fontSize: "1.5em" }} href="#"
+                                onClick={() => { _switchApp("oszv") }}>
+                                <i className="fas fa-table mr-1"></i>受付注文システム
+                        </a>
+                        </div>
+                        <div id="account_tsx">widgethead_tsx loading...</div>
+                    </div>
+                </div>
+            </div></div>
     );
 }
 

@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { checkMailAddress } from "./util_tsx";
-import ReactDOM from "react-dom";
 import firebase from 'firebase/app';
 import "firebase/analytics";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
-import { string } from 'prop-types';
 
 
 firebase.initializeApp({
@@ -145,7 +143,7 @@ export const AppAuth = () => {
         return (
             <div>
                 {/*Button*/}
-                <button type="button" className="btn btn-link btn-push m-2" data-toggle="modal" data-target={"#signin_modal"}>
+                <button type="button" className="btn btn-link btn-push" data-toggle="modal" data-target={"#signin_modal"}>
                     <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>
                     <b>ログイン</b>
                 </button>
@@ -247,8 +245,10 @@ export const AppAuth = () => {
     }
     const config = () => {
         return (
-            <div className="p-2">
-                <i className="fas fa-cog fa-2x fa-btn" data-toggle="modal" data-target="#config_modal"></i>
+            <div>
+                <button type="button" className="btn btn-link btn-push" data-toggle="modal" data-target="#config_modal">
+                    <i className="fas fa-cog mr-1" style={{ pointerEvents: "none" }}></i><b>設定</b>
+                </button>
                 <div className="modal fade" id="config_modal" role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
@@ -297,7 +297,7 @@ export const AppAuth = () => {
                 <div className="d-flex justify-content-between">
                     <div className="ml-auto">
                         <div className="form-inline">
-                            <button className="btn btn-success btn-push m-1" type="button" onClick={() => { easyIn() }}>
+                            <button className="btn btn-success btn-push" type="button" onClick={() => { easyIn() }}>
                                 <b>
                                     <i className="fas fa-sign-in-alt mr-1" style={{ pointerEvents: "none" }}></i>おためしログイン
                                 </b>

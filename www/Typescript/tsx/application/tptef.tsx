@@ -183,7 +183,7 @@ export const AppMain = () => {
         )
     }
     return (
-        <div className="p-2 bg-light">
+        <div>
             {appBody()}
         </div>
     )
@@ -191,5 +191,5 @@ export const AppMain = () => {
 
 //titleLogo
 export const titleLogo = () => {
-    return (<h3 style={{ fontFamily: "Impact", color: "black" }}>チャットアプリ</h3>)
+    return (<div style={{ fontFamily: "Impact", color: "black" }}>チャットアプリ</div>)
 }

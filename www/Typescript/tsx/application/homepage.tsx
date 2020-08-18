@@ -175,5 +175,5 @@ export const AppMain = () => {
 
 //titleLogo
 export const titleLogo = () => {
-    return (<h3 style={{ fontFamily: "Impact", color: "black" }}>ホームページ</h3>)
+    return (<div style={{ fontFamily: "Impact", color: "black" }}>ホームページ</div>)
 }

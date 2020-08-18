@@ -436,7 +436,7 @@ export const AppMain = () => {
         )
     }
     return (
-        <div className="p-1 bg-light">
+        <div>
             <div>{appBody()}</div>
         </div>
     );

@@ -345,15 +345,22 @@ export const AppMain = () => {
         )
     }
     const shopModal = (_uid: string, shopName: string, imageUrl: string = "",) => {
-        let _background = { background: "rgba(255,255,255,0.9)" }
-        if (uid == _uid) _background = { background: "rgba(240,220,240,0.9)" }
+        if (uid == _uid)
+            return (
+                <div className="col-sm-6 col-md-4 col-lg-3 p-1">
+                    <div className="btn-col" style={{ background: "rgba(240,220,240,0.9)" }}>
+                        <a className="a-nolink" onClick={() => { setShowUid(_uid); }}>
+                            {showImage(imageUrl)}
+                            <h5 className="text-center mt-1">{shopName}<b style={{ color: "darkred" }}>(自店)</b></h5>
+                        </a>
+                    </div>
+                </div>)
         return (
             <div className="col-sm-6 col-md-4 col-lg-3 p-1">
-                {/*将棋盤のボタン(#A)*/}
-                <div className="btn-col" style={_background}>
+                <div className="btn-col" style={{ background: "rgba(255,255,255,0.9)" }}>
                     <a className="a-nolink" onClick={() => { setShowUid(_uid); }}>
                         {showImage(imageUrl)}
-                        <h5 className="d-flex flex-column text-center mt-1">{shopName}</h5>
+                        <h5 className=" text-center mt-1">{shopName}</h5>
                     </a>
                 </div>
             </div>)
@@ -625,7 +632,11 @@ export const AppMain = () => {
         )
     }
     const dispPosition = () => {
-        if (uid == showUid) return (
+        if (showUid == "") return (
+            <h4 className="text-center">
+                <i className="far fa-user mr-1"></i>{dbMypage_c["nickname"] ? dbMypage_c["nickname"] : "名無しの店主さん"}
+            </h4>)
+        if (showUid == uid) return (
             <h4 className="text-center">
                 <i className="far fa-user mr-1"></i>{dbMypage_c["nickname"] ? dbMypage_c["nickname"] : "名無しの店主さん"}
                 <b style={{ color: "darkred" }}>(店主)</b>
@@ -644,10 +655,10 @@ export const AppMain = () => {
         if (showUid == "") {
             _breadcrumbs.push(<div>店の選択</div>)
             _breadcrumbs.push(<div> : </div>)
-            _breadcrumbs.push(<div className="btn btn-success btn-push" onClick={() => { setShowUid(uid) }}>自分の店舗に行く</div>)
+            _breadcrumbs.push(<div className="btn btn-success btn-push" onClick={() => { setShowUid(uid) }}>自分の店舗へ</div>)
             return (<div className="form-inline">{_breadcrumbs}</div>)
         }
-        _breadcrumbs.push(<div className="btn-link btn-push" onClick={() => { setShowUid("") }}>店を選ぶ</div>)
+        _breadcrumbs.push(<div className="btn-link btn-push" onClick={() => { setShowUid("") }}>店の選択</div>)
         if (showUid != uid) {
             _breadcrumbs.push(<div> → </div>)
             _breadcrumbs.push(<div>{dbMypage_s["shopName"]}</div>)
@@ -783,17 +794,12 @@ export const AppMain = () => {
             </div>
         )
     }
-    return (
-        <div className="p-1">
-            {showUid != uid ?
-                <div>
-                    {appBody()}
-                </div> :
-                <div style={{ backgroundColor: "rgba(240,220,240,0.3)" }}>
-                    {appBody()}
-                </div>}
-        </div>
-    )
+    const backImageRender = () => {
+        if (showUid == "") return (<div style={{ backgroundColor: "rgba(220,240,220,0.3)" }}>{appBody()}</div>)
+        if (showUid == uid) return (<div style={{ backgroundColor: "rgba(240,220,240,0.3)" }}>{appBody()}</div>)
+        if (showUid != uid) return (<div>{appBody()}</div>)
+    }
+    return (<div>{backImageRender()}</div>)
 };
 
 //titleLogo

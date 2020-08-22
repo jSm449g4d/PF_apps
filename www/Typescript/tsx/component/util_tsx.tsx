@@ -1,3 +1,4 @@
+import { string } from "prop-types";
 
 // To prevent high freq access
 export class stopf5_tsx {
@@ -46,7 +47,7 @@ export const checkMailAddress = (mailAddress: string) => {
 }
 export const Unixtime2String=(unixtime:number=0)=>{
     const now: Date = new Date(unixtime);
-    const timestamp = now.getFullYear() + "年 " + now.getMonth() +
+    const timestamp = now.getFullYear() + "年 " + String(now.getMonth()+1) +
         "月 " + now.getDate() + "日 " + now.getHours() + ": " + now.getMinutes() + ": " + now.getSeconds();
     return timestamp
 }

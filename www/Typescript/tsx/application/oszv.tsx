@@ -89,7 +89,7 @@ export const AppMain = () => {
     const uploadImage = (tsuid: string, imageUrl = "") => {
         if (showUid != uid) return (<div></div>);
         return (
-            <div className="m-2">
+            <div className="my-1">
                 {/*削除*/}
                 {imageUrl == "" ?
                     <div className="d-flex flex-column text-center">
@@ -106,9 +106,9 @@ export const AppMain = () => {
                             }} />
                     </div>
                     :
-                    <div className="d-flex justify-content-between text-center">
+                    <div className="row p-1 px-3">
                         {/*アップロード*/}
-                        <button className="flex-fill btn btn-warning btn-lg mx-1" type="button"
+                        <button className="col-6 p-1 flex-fill btn btn-warning btn-lg" type="button"
                             onClick={(evt) => { $(document.getElementById("Uc" + tsuid + "_uploadImage")).click() }
                             }>
                             <i className="fas fa-upload mr-1" style={{ pointerEvents: "none" }}></i>画像を投稿
@@ -119,7 +119,7 @@ export const AppMain = () => {
                                 updateItem(tsuid, { "imageUrl": evt.target.files[0].name })
                                 setTimeout(() => updateImage(tsuid), 2000)
                             }} />
-                        <button className="flex-fill btn btn-outline-danger btn-lg mx-1" type="button"
+                        <button className="col-6 p-1 flex-fill btn btn-outline-danger btn-lg" type="button"
                             onClick={(evt) => {
                                 dispatchOszv_s({ type: "strageDelete", fileName: tsuid + ".img" })
                                 setTimeout(() => updateImage(tsuid), 2000)
@@ -557,7 +557,7 @@ export const AppMain = () => {
                 </div>)
         }
         return (
-            <div className="m-1 p-2" style={{ border: "3px double silver", background: "#001111" }}>
+            <div className="m-1 p-2 slidein-1-reverse" style={{ border: "3px double silver", background: "#001111" }}>
                 <div className="d-flex flex-column text-center">
                     <h3 style={{ color: "#AAFFAA" }}>チュートリアルへようこそ
                         <i className="fas fa-question-circle ml-1 fa-btn-help"

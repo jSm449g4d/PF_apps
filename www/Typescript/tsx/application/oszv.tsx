@@ -9,6 +9,9 @@ export const AppMain = () => {
     const [showUid, setShowUid] = useState("showuid" in Query2Dict() == false ? uid : Query2Dict()["showuid"])
     const [tmpText, setTmpText] = useState("")
     const [tmpSwitch, setTmpSwitch] = useState("")
+    const [orderCnechboxOrdering, setOrderCnechboxOrdering] = useState(true)
+    const [orderCnechboxCancel, setOrderCnechboxCancel] = useState(true)
+    const [orderCnechboxAccepted, setOrderCnechboxAccepted] = useState(true)
 
     const [dbOszv_s, dispatchOszv_s] = useDb()
     const [dbOszv_c, dispatchOszv_c] = useDb()
@@ -166,7 +169,9 @@ export const AppMain = () => {
                     "message": message,
                     "imageUrl": imageUrl,
                     "status": "ordering",
-                    "description": description
+                    "description": description,
+                    "clientName": dbMypage_c["nickname"],
+                    "shopName": dbMypage_s["shopName"],
                 }
             }
         })
@@ -180,7 +185,9 @@ export const AppMain = () => {
                     "message": message,
                     "imageUrl": imageUrl,
                     "status": "ordering",
-                    "description": description
+                    "description": description,
+                    "clientName": dbMypage_c["nickname"],
+                    "shopName": dbMypage_s["shopName"],
                 }
             }
         })
@@ -365,7 +372,8 @@ export const AppMain = () => {
                 </div>
             </div>)
     }
-    const orderModal = (tsuid: string, orderName: string, orderMessage: string, orderImage: string = "", orderStatus: string = "", orderDescription: string = "") => {
+    const orderModal = (tsuid: string, orderName: string, orderMessage: string, orderImage: string = "",
+        orderStatus: string = "", orderDescription: string = "", clientorShopName: string = "") => {
         const tailConsoleButtons = []
         if (orderStatus == "ordering" && uid != showUid) tailConsoleButtons.push(
             <div className="d-flex flex-column text-center">
@@ -437,7 +445,7 @@ export const AppMain = () => {
             </div>)
 
         return (
-            <div className="col-12">
+            <div className="col-12 p-1">
                 <div className="btn-col">
                     <a className="row a-nolink" data-toggle="modal" data-target={"#V" + tsuid + "_orderModal"}>
                         <div className="col-sm-5 col-lg-3">
@@ -446,8 +454,13 @@ export const AppMain = () => {
                             {orderStatus == "canceled" ? <h3 style={{ color: "darkred" }}>キャンセル済</h3> : <div></div>}
                             {orderStatus == "accepted" ? <h3 style={{ color: "darkblue" }}>取引済</h3> : <div></div>}
                         </div>
-                        <h4 className="col-sm-7 col-lg-6">{orderName}</h4>
-                        <h5 className="col-sm-12 col-lg-3">{Unixtime2String(Number(tsuid.split("_")[0]))}</h5>
+                        <h4 className="col-sm-6 col-lg-6">{orderName}</h4>
+                        <h5 className="col-sm-6 col-lg-3 tent-center">
+                            {clientorShopName}
+                        </h5>
+                        <h5 className="col-sm-4 col-lg-12 tent-center">
+                            {Unixtime2String(Number(tsuid.split("_")[0]))}
+                        </h5>
                         <h6 className="col-sm-12 col-lg-12">メッセージ: {orderMessage}</h6>
                     </a>
                 </div>
@@ -725,17 +738,51 @@ export const AppMain = () => {
     }
     const orderColumn = () => {
         const tmpRecodes = [];
+        tmpRecodes.push(
+            <div className="col-12 p-1">
+                <div className="d-flex justify-content-between text-center">
+                    <h4>取引状況フィルタ</h4>
+                    <div className="form-check">
+                        <input className="form-check-input" type="checkbox" id="oszv_check1a"
+                            defaultChecked={true} checked={orderCnechboxOrdering}
+                            onChange={evt => setOrderCnechboxOrdering(!orderCnechboxOrdering)} />
+                        <label style={{ color: "darkcyan" }} htmlFor="oszv_check1a"><h5>取引中</h5></label>
+                    </div>
+                    <div className="form-check">
+                        <input className="form-check-input" type="checkbox" id="oszv_check1b"
+                            defaultChecked={true} checked={orderCnechboxCancel}
+                            onChange={evt => setOrderCnechboxCancel(!orderCnechboxCancel)} />
+                        <label style={{ color: "darkred" }} htmlFor="oszv_check1b"><h5>キャンセル</h5></label>
+                    </div>
+                    <div className="form-check">
+                        <input className="form-check-input" type="checkbox" id="oszv_check1c"
+                            defaultChecked={true} checked={orderCnechboxAccepted}
+                            onChange={evt => setOrderCnechboxAccepted(!orderCnechboxAccepted)} />
+                        <label style={{ color: "darkblue" }} htmlFor="oszv_check1c"><h5>取引後</h5></label>
+                    </div>
+                </div>
+            </div>)
         const tsuids = Object.keys(dbOszv_c).sort((a: string, b: string) => {
             return Number(b.split("_")[0]) - Number(a.split("_")[0])
         });
         for (var i = 0; i < tsuids.length; i++) {
             if (uid != showUid && tsuids[i].split("_")[1] != uid) continue
             if (uid == showUid && tsuids[i].split("_")[1] == uid) continue
+            //alert(dbOszv_c[tsuids[i]]["status"])
+            if (orderCnechboxOrdering == false && "ordering" == String(dbOszv_c[tsuids[i]]["status"])) continue
+            if (orderCnechboxCancel == false &&  String(dbOszv_c[tsuids[i]]["status"]).match("cancel")) continue
+            if (orderCnechboxAccepted == false && "accepted" == String(dbOszv_c[tsuids[i]]["status"])) continue
+            //if ("ordering" in dbOszv_c[tsuids[i]]["status"] && orderCnechboxOrdering == false) continue
+            //if ("cancel" in dbOszv_c[tsuids[i]]["status"] && orderCnechboxCancel == false) continue
+            //if ("accepted" in dbOszv_c[tsuids[i]]["status"] && orderCnechboxAccepted == false) continue
+            let clientOrShopName = "販売店: " + dbOszv_c[tsuids[i]]["shopName"]
+            if (uid == showUid) clientOrShopName = "購入者: " + dbOszv_c[tsuids[i]]["clientName"]
             tmpRecodes.push(orderModal(tsuids[i], dbOszv_c[tsuids[i]]["name"], dbOszv_c[tsuids[i]]["message"],
-                dbOszv_c[tsuids[i]]["imageUrl"], dbOszv_c[tsuids[i]]["status"], dbOszv_c[tsuids[i]]["description"]))
+                dbOszv_c[tsuids[i]]["imageUrl"], dbOszv_c[tsuids[i]]["status"], dbOszv_c[tsuids[i]]["description"],
+                clientOrShopName))
         }
         if (tmpRecodes.length == 0) return (<h4 className="text-center">注文履歴ががありません</h4>)
-        return (<div className="row">{tmpRecodes}</div>)
+        return (<div className="row p-1 px-3">{tmpRecodes}</div>)
     }
     const shopColumn = () => {
         const tmpRecodes = [];

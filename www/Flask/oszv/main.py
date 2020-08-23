@@ -37,14 +37,18 @@ def postFunc(request):
         _dataDict = json.loads(request.get_data())
         _docRef = db.document(_dataDict["uri"])
         # Confirm permission
-        if(_dataDict["uri"].startswith("oszv_c") == False):
-            return json.dumps("invalid url", ensure_ascii=False), 200
-        # Operation
-        if(_dataDict["type"] == "create"):
-            _docRef.set(_dataDict["recodes"], merge=True)
-        if(_dataDict["type"] == "delete"):
-            _docRef.set({list(_dataDict["recodes"])[0]: DELETE_FIELD}, merge=True)
-        return json.dumps("OK", ensure_ascii=False), 200
+        if(_dataDict["uri"].startswith("oszv_c") == True):
+            # Operation
+            if(_dataDict["type"] == "create"):
+                _docRef.set(_dataDict["recodes"], merge=True)
+            if(_dataDict["type"] == "delete"):
+                _docRef.set({list(_dataDict["recodes"])[0]: DELETE_FIELD}, merge=True)
+            return json.dumps("OK", ensure_ascii=False), 200
+        if(_dataDict["uri"].startswith("mypage") == True):
+            # Operation
+            if(_dataDict["type"] == "called"):
+                _docRef.set({"announce":"called"}, merge=True)
+            return json.dumps("OK", ensure_ascii=False), 200
     except:
         return json.dumps("error on postFunc", ensure_ascii=False), 200
 

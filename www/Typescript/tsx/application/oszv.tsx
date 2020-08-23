@@ -409,7 +409,18 @@ export const AppMain = () => {
                     onClick={() => { updateOrder(tsuid, { "status": "accepted" }); }}>
                     <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>取引を承認
                 </button>
-                <button className="btn btn-warning btn-lg m-1" type="button" data-dismiss="modal"
+                <button className="btn btn-warning btn-lg my-1" type="button" data-dismiss="modal"
+                    onClick={() => {
+                        new Audio("/static/audio/calling.mp3").play()
+                        dbOperate({
+                            type: "called",
+                            uri: "mypage/" + tsuid.split("_")[1],
+                            recodes: { }
+                        })
+                    }}>
+                    <i className="fas fa-bell mr-1" style={{ pointerEvents: "none" }}></i>呼び出し
+                </button>
+                <button className="btn btn-warning btn-lg my-1" type="button" data-dismiss="modal"
                     onClick={() => { updateOrder(tsuid, { "status": "canceled" }); }}>
                     <i className="fas fa-exclamation-triangle mr-1" style={{ pointerEvents: "none" }}></i>取引キャンセル
                 </button>
@@ -424,7 +435,18 @@ export const AppMain = () => {
                     onClick={() => { updateOrder(tsuid, { "status": "accepted" }); }}>
                     <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>取引を承認
                 </button>
-                <button className="btn btn-warning btn-lg m-1" type="button" data-dismiss="modal"
+                <button className="btn btn-warning btn-lg my-1" type="button" data-dismiss="modal"
+                    onClick={() => {
+                        new Audio("/static/audio/calling.mp3").play()
+                        dbOperate({
+                            type: "called",
+                            uri: "mypage/" + tsuid.split("_")[1],
+                            recodes: { }
+                        })
+                    }}>
+                    <i className="fas fa-bell mr-1" style={{ pointerEvents: "none" }}></i>呼び出し
+                </button>
+                <button className="btn btn-warning btn-lg my-1" type="button" data-dismiss="modal"
                     onClick={() => { updateOrder(tsuid, { "status": "canceled" }); }}>
                     <i className="fas fa-exclamation-triangle mr-1" style={{ pointerEvents: "none" }}></i>取引キャンセル
                 </button>
@@ -438,6 +460,17 @@ export const AppMain = () => {
             </div>)
         if (orderStatus == "accepted" && uid == showUid) tailConsoleButtons.push(
             <div className="d-flex flex-column text-center">
+                <button className="btn btn-warning btn-lg my-1" type="button" data-dismiss="modal"
+                    onClick={() => {
+                        new Audio("/static/audio/calling.mp3").play()
+                        dbOperate({
+                            type: "called",
+                            uri: "mypage/" + tsuid.split("_")[1],
+                            recodes: { }
+                        })
+                    }}>
+                    <i className="fas fa-bell mr-1" style={{ pointerEvents: "none" }}></i>呼び出し
+                </button>
                 <button className="btn btn-danger btn-lg m-2" type="button" data-dismiss="modal"
                     onClick={() => { deleteOrder(tsuid) }}>
                     <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
@@ -770,11 +803,8 @@ export const AppMain = () => {
             if (uid == showUid && tsuids[i].split("_")[1] == uid) continue
             //alert(dbOszv_c[tsuids[i]]["status"])
             if (orderCnechboxOrdering == false && "ordering" == String(dbOszv_c[tsuids[i]]["status"])) continue
-            if (orderCnechboxCancel == false &&  String(dbOszv_c[tsuids[i]]["status"]).match("cancel")) continue
+            if (orderCnechboxCancel == false && String(dbOszv_c[tsuids[i]]["status"]).match("cancel")) continue
             if (orderCnechboxAccepted == false && "accepted" == String(dbOszv_c[tsuids[i]]["status"])) continue
-            //if ("ordering" in dbOszv_c[tsuids[i]]["status"] && orderCnechboxOrdering == false) continue
-            //if ("cancel" in dbOszv_c[tsuids[i]]["status"] && orderCnechboxCancel == false) continue
-            //if ("accepted" in dbOszv_c[tsuids[i]]["status"] && orderCnechboxAccepted == false) continue
             let clientOrShopName = "販売店: " + dbOszv_c[tsuids[i]]["shopName"]
             if (uid == showUid) clientOrShopName = "購入者: " + dbOszv_c[tsuids[i]]["clientName"]
             tmpRecodes.push(orderModal(tsuids[i], dbOszv_c[tsuids[i]]["name"], dbOszv_c[tsuids[i]]["message"],
@@ -796,6 +826,10 @@ export const AppMain = () => {
     const appBody = () => {
         console.log("oszv_appBodyReload")
         if (uid == "") return (<div>{needLoginForm()}</div>)
+        if (dbMypage_c["announce"] == "called") {
+            dispatchMypage_c({ type: "create", recodes: { "announce": "" }, merge: true })
+            new Audio("/static/audio/called.mp3").play()
+        }
         return (
             <div>
                 <div className="p-1 px-3"><div className="row">

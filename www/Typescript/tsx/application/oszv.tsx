@@ -12,6 +12,7 @@ export const AppMain = () => {
     const [orderCnechboxOrdering, setOrderCnechboxOrdering] = useState(true)
     const [orderCnechboxCancel, setOrderCnechboxCancel] = useState(true)
     const [orderCnechboxAccepted, setOrderCnechboxAccepted] = useState(true)
+    const [soundVolume, setSoundVolume] = useState(100)
 
     const [dbOszv_s, dispatchOszv_s] = useDb()
     const [dbOszv_c, dispatchOszv_c] = useDb()
@@ -25,6 +26,14 @@ export const AppMain = () => {
     useEffect(() => { dispatchMypage_c({ type: "setUri", uri: "mypage/" + uid }); }, [uid])
     useEffect(() => { dispatchAppindex_oszv_tag({ type: "setUri", uri: "appindex/oszv_tag" }); }, [uid])
     useEffect(() => { dispatchAppindex_oszv_shop({ type: "setUri", uri: "appindex/oszv_shop" }); }, [uid])
+    useEffect(() => {
+        if (soundVolume != 0 && dbMypage_c["announce"] == "called") new Audio("/static/audio/called.mp3").play()
+        if (soundVolume != 0 && dbMypage_c["announce"] == "gotOrder") new Audio("/static/audio/gotOrder.mp3").play()
+        if (soundVolume != 0 && dbMypage_c["announce"] == "nurseCall") new Audio("/static/audio/nurseCall.mp3").play()
+        if (soundVolume != 0 && dbMypage_c["announce"] != "") {
+            setTimeout(() => dispatchMypage_c({ type: "create", recodes: { "announce": "" }, merge: true }), 1000)
+        }
+    }, [dbMypage_c["announce"]])
 
 
     const updateShop = (addDict: any) => {
@@ -826,32 +835,53 @@ export const AppMain = () => {
         }
         return (<div className="p-3"><div className="row">{tmpRecodes}</div></div>)
     }
-    const appBody = () => {
-        console.log("oszv_appBodyReload")
-        if (uid == "") return (<div>{needLoginForm()}</div>)
-        if (dbMypage_c["announce"] == "called") {
-            dispatchMypage_c({ type: "create", recodes: { "announce": "" }, merge: true })
-            new Audio("/static/audio/called.mp3").play()
-            $('#oszv_calledModal').modal();
-        }
-        if (dbMypage_c["announce"] == "gotOrder") {
-            dispatchMypage_c({ type: "create", recodes: { "announce": "" }, merge: true })
-            new Audio("/static/audio/gotOrder.mp3").play()
-        }
+    const nurseCallModal = () => {
+        if (showUid == "" || uid == showUid) return (<div></div>)
         return (
-            <div>
-                {/*called*/}
-                <div className="modal fade" id={"oszv_calledModal"} role="dialog" aria-hidden="true">
+            <div className="d-flex flex-column">
+                {/*将棋盤のボタン(#A)*/}
+                <button className="btn btn-warning rounded-pill btn-lg btn-push"
+                    data-toggle="modal" data-target={"#oszv_nurseCallConfirm"}>
+                    <i className="fas fa-bell mr-1" style={{ pointerEvents: "none" }}></i>呼び出し
+                </button>
+                <div className="modal fade" id={"oszv_nurseCallConfirm"} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
                             <div className="modal-header d-flex justify-content-between">
-                                <h4 className="modal-title">呼び出し</h4>
+                                <h3 className="modal-title">呼び出し確認</h3>
+                                <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
+                                    <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <div className="d-flex flex-column text-center">
+                                    <button className="btn btn-success btn-lg m-1" type="button" data-dismiss="modal"
+                                        onClick={(evt) => {
+                                            $("#oszv_nurseCallConfirm_C").modal()
+                                            dbOperate({ type: "nurseCall", uri: "mypage/" + showUid, recodes: {} })
+                                        }}>
+                                        <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>呼び出す
+                                    </button>
+                                    <button className="btn btn-outline-secondary btn-lg m-1" type="button" data-dismiss="modal">
+                                        中止
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {/*注文確認(#C)*/}
+                <div className="modal fade" id={"oszv_nurseCallConfirm_C"} role="dialog" aria-hidden="true">
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header d-flex justify-content-between">
+                                <h4 className="modal-title">呼び出し確認</h4>
                                 <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
                                     <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
                                 </button>
                             </div>
                             <div className="modal-body d-flex flex-column text-center">
-                                <h5>商品一覧をご確認ください</h5>
+                                <h5>呼び出しました</h5>
                                 <p />
                                 <button className="btn btn-outline-secondary btn-lg" type="button" data-dismiss="modal">
                                     戻る
@@ -860,7 +890,26 @@ export const AppMain = () => {
                         </div>
                     </div>
                 </div>
-
+            </div>
+        )
+    }
+    const announceSound = () => {
+        if (soundVolume == 0) return (
+            <button className="btn btn-outline-dark btn-lg btn-push" type="button"
+                onClick={() => { setSoundVolume(100) }}>
+                <i className="fas fa-volume-mute mr-1" style={{ pointerEvents: "none" }}></i>音OFF
+            </button>)
+        return (
+            <button className="btn btn-light btn-lg btn-push m-1" type="button"
+                onClick={() => { setSoundVolume(0) }}>
+                <i className="fas fa-volume-up mr-1" style={{ pointerEvents: "none" }}></i>音ON
+            </button>)
+    }
+    const appBody = () => {
+        console.log("oszv_appBodyReload")
+        if (uid == "") return (<div>{needLoginForm()}</div>)
+        return (
+            <div>
                 <div className="p-1 px-3"><div className="row">
                     {/*http://127.0.0.1:5000/app_tsx.html?application=oszv&portfolio*/}
                     {"portfolio" in Query2Dict() == true ? <div className="col-12">{switchAuth()}</div> : <div></div>}
@@ -877,6 +926,13 @@ export const AppMain = () => {
                     <div className="col-sm-12 col-lg-4 text-right slidein-1 p-1">
                         <div className="d-flex justify-content-center justify-content-lg-end">
                             {dipsShopName()}
+                        </div>
+                    </div>
+                    <div className="col-12 text-right slidein-1 p-1">
+                        <div className="row p-1 px-3">
+                            <div className="col-3 p-1 d-flex flex-column"></div>
+                            <div className="col-6 p-1 d-flex flex-column">{nurseCallModal()}</div>
+                            <div className="col-3 p-1 d-flex flex-column">{announceSound()}</div>
                         </div>
                     </div>
                 </div></div>

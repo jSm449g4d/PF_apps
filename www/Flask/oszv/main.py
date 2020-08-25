@@ -52,6 +52,9 @@ def postFunc(request):
             if(_dataDict["type"] == "gotOrder"):
                 _docRef.set({"announce":"gotOrder"}, merge=True)
                 return json.dumps("gotOrder_OK", ensure_ascii=False), 200
+            if(_dataDict["type"] == "nurseCall"):
+                _docRef.set({"announce":"nurseCall"}, merge=True)
+                return json.dumps("nurseCall_OK", ensure_ascii=False), 200
     except:
         return json.dumps("error on postFunc", ensure_ascii=False), 200
 

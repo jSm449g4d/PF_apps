@@ -12,7 +12,7 @@ export const AppMain = () => {
     const [orderCnechboxOrdering, setOrderCnechboxOrdering] = useState(true)
     const [orderCnechboxCancel, setOrderCnechboxCancel] = useState(true)
     const [orderCnechboxAccepted, setOrderCnechboxAccepted] = useState(true)
-    const [soundVolume, setSoundVolume] = useState(100)
+    const [soundVolume, setSoundVolume] = useState(0)
 
     const [dbOszv_s, dispatchOszv_s] = useDb()
     const [dbOszv_c, dispatchOszv_c] = useDb()
@@ -152,7 +152,7 @@ export const AppMain = () => {
                             onClick={() => {
                                 const _tsuid = Date.now().toString() + "_" + uid
                                 updateItem(_tsuid, { "name": "新しい商品", "imageUrl": "", "description": "詳細はありません" })
-                                setTimeout(() => document.getElementById("A" + _tsuid + "_itemModal").click(), 800)
+                                setTimeout(() => $("#oszv_itemClientModal_V" + _tsuid).modal(), 800)
                             }}>
                             <b>+商品を追加</b>
                         </button>
@@ -217,14 +217,75 @@ export const AppMain = () => {
             recodes: { [tsuid]: "dbFieldDelete" }
         })
     }
-    const itemModal = (tsuid: string, itemName: string, imageUrl: string = "", itemDescription: string = "") => {
+    const itemClientModal = (tsuid: string, itemName: string, imageUrl: string = "", itemDescription: string = "") => {
+        return (
+            <div className="col-sm-6 col-md-4 col-lg-3 p-1">
+                {/*将棋盤のボタン(#A)*/}
+                <div className="btn-col" style={{ background: "rgba(255,255,255,0.9)" }}>
+                    <a className="a-nolink" data-toggle="modal" id={"oszv_itemClientModal_A" + tsuid} data-target={"#oszv_itemClientModal_V" + tsuid}
+                        onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
+                        {showImage(imageUrl)}
+                        <h5 className="d-flex flex-column text-center mt-1">{itemName}</h5>
+                    </a>
+                </div>
+                {/*注文モーダル*/}
+                <div className="modal fade" id={"oszv_itemClientModal_V" + tsuid} role="dialog" aria-hidden="true">
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header d-flex justify-content-between">
+                                <h3 className="modal-title">
+                                    <i className="fas fa-utensils mr-1" style={{ pointerEvents: "none" }}></i>{itemName}
+                                </h3>
+                                <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
+                                    <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                {showImage(imageUrl, "300px")}
+                                <div className="m-1 d-flex flex-column text-center" style={{ backgroundColor: "beige", border: "3px double silver" }}>
+                                    <h4>商品詳細</h4>
+                                    {itemDescription}
+                                </div>
+                                <div className="d-flex flex-column text-center">
+                                    <button className="btn btn-success btn-lg m-1" type="button" data-dismiss="modal"
+                                        onClick={(evt) => {
+                                            addOrder(tsuid, itemName, "メッセージはありません", imageUrl, itemDescription);
+                                            $("#oszv_itemClientModal_C" + tsuid).modal();
+                                            dbOperate({ type: "gotOrder", uri: "mypage/" + showUid, recodes: {} })
+                                        }}>
+                                        <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>注文
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {/*注文確認*/}
+                <div className="modal fade" id={"oszv_itemClientModal_C" + tsuid} role="dialog" aria-hidden="true">
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header d-flex justify-content-between">
+                                <h4 className="modal-title">注文確認</h4>
+                                <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
+                                    <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
+                                </button>
+                            </div>
+                            <div className="modal-body d-flex flex-column text-center">
+                                <h5>注文を確定しました</h5>
+                                <p />
+                                <button className="btn btn-outline-secondary btn-lg" type="button" data-dismiss="modal">
+                                    戻る
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+    const itemOwnerModal = (tsuid: string, itemName: string, imageUrl: string = "", itemDescription: string = "") => {
         const showDescription = (_itemDescription: string = "") => {
-            if (uid != showUid) return (
-                <div className="m-1 d-flex flex-column text-center" style={{ backgroundColor: "beige", border: "3px double silver" }}>
-                    <h4>商品詳細</h4>
-                    {_itemDescription}
-                </div>)
-            if (uid == showUid && tmpSwitch == "itemDescription") return (
+            if (tmpSwitch == "itemDescription") return (
                 <div className="m-1 d-flex flex-column text-center" style={{ backgroundColor: "beige", border: "3px double silver" }}>
                     <h4>商品詳細</h4>
                     <textarea className="form-control m-1" rows={5} value={tmpText}
@@ -240,7 +301,7 @@ export const AppMain = () => {
                     </button>
                     </div>
                 </div>)
-            if (uid == showUid) return (
+            return (
                 <div className="m-1 d-flex flex-column text-center" style={{ backgroundColor: "beige", border: "3px double silver" }}>
                     <h4>商品詳細
                         <i className="fas fa-pencil-alt ml-2 fa-btn"
@@ -248,48 +309,55 @@ export const AppMain = () => {
                     </h4>
                     {_itemDescription}
                 </div>)
-            return (<div></div>)
+        }
+        const submitButton = () => {
+            if (itemName == "新しい商品") return (
+                <button className="btn btn-success btn-lg my-1" type="button" disabled>
+                    ×商品名を入力してください
+                </button>)
+            return (
+                <div className="d-flex flex-column text-center my-1">
+                    {uploadImage(tsuid, imageUrl)}
+                    <button className="btn btn-success btn-lg btn-push" type="button" data-dismiss="modal"
+                        onClick={(evt) => { updateImage(tsuid) }}>
+                        <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>編集完了
+                </button>
+                </div>)
         }
         return (
             <div className="col-sm-6 col-md-4 col-lg-3 p-1">
                 {/*将棋盤のボタン(#A)*/}
                 <div className="btn-col" style={{ background: "rgba(255,255,255,0.9)" }}>
-                    <a className="a-nolink" data-toggle="modal" id={"A" + tsuid + "_itemModal"} data-target={"#V" + tsuid + "_itemModal"}
+                    <a className="a-nolink" data-toggle="modal" id={"oszv_itemClientModal_A" + tsuid} data-target={"#oszv_itemClientModal_V" + tsuid}
                         onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
                         {showImage(imageUrl)}
                         <h5 className="d-flex flex-column text-center mt-1">{itemName}</h5>
                     </a>
                 </div>
                 {/*注文モーダル(#V)*/}
-                <div className="modal fade" id={"V" + tsuid + "_itemModal"} role="dialog" aria-hidden="true">
+                <div className="modal fade" id={"oszv_itemClientModal_V" + tsuid} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
-                            <div className="modal-header d-flex">
-                                <h3 className="modal-title flex-grow-1">
-                                    {uid != showUid ?
-                                        <div><i className="fas fa-utensils mr-1" style={{ pointerEvents: "none" }}></i>{itemName}</div>
+                            <div className="modal-header d-flex justify-content-between">
+                                <h3 className="modal-title">
+                                    {tmpSwitch == "itemName" ?
+                                        <div className="form-inline">
+                                            <input className="form-control form-control-lg m-1" type="text" placeholder="商品名" value={tmpText}
+                                                onChange={(evt: any) => { setTmpText(evt.target.value) }} />
+                                            <button className="btn btn-success btn-lg m-1" type="button"
+                                                onClick={() => { updateItem(tsuid, { "name": tmpText }); setTmpText(""); setTmpSwitch(""); }}>
+                                                変更
+                                            </button>
+                                            <button className="btn btn-secondary btn-lg m-1" type="button"
+                                                onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
+                                                変更中止
+                                            </button>
+                                        </div>
                                         :
-                                        <div className="">
-                                            {tmpSwitch == "itemName" ?
-                                                <div className="form-inline">
-                                                    <input className="form-control form-control-lg m-1" type="text" placeholder="商品名" value={tmpText}
-                                                        onChange={(evt: any) => { setTmpText(evt.target.value) }} />
-                                                    <button className="btn btn-success btn-lg m-1" type="button"
-                                                        onClick={() => { updateItem(tsuid, { "name": tmpText }); setTmpText(""); setTmpSwitch(""); }}>
-                                                        変更
-                                                    </button>
-                                                    <button className="btn btn-secondary btn-lg m-1" type="button"
-                                                        onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
-                                                        変更中止
-                                                    </button>
-                                                </div>
-                                                :
-                                                <div>
-                                                    <i className="fas fa-utensils mr-1" style={{ pointerEvents: "none" }}></i>{itemName}
-                                                    <i className="fas fa-pencil-alt ml-2 fa-btn"
-                                                        onClick={() => { setTmpText(itemName); setTmpSwitch("itemName"); }}></i>
-                                                </div>
-                                            }
+                                        <div>
+                                            <i className="fas fa-utensils mr-1" style={{ pointerEvents: "none" }}></i>{itemName}
+                                            <i className="fas fa-pencil-alt ml-2 fa-btn"
+                                                onClick={() => { setTmpText(itemName); setTmpSwitch("itemName"); }}></i>
                                         </div>
                                     }
                                 </h3>
@@ -300,62 +368,16 @@ export const AppMain = () => {
                             <div className="modal-body">
                                 {showImage(imageUrl, "300px")}
                                 {showDescription(itemDescription)}
-                                {uid != showUid ?
-                                    <div className="d-flex flex-column text-center">
-                                        <button className="btn btn-success btn-lg m-1" type="button" data-dismiss="modal"
-                                            onClick={(evt) => {
-                                                addOrder(tsuid, itemName, "メッセージはありません", imageUrl, itemDescription);
-                                                $(document.getElementById("Cc" + tsuid + "_itemModal")).click();
-                                                dbOperate({ type: "gotOrder", uri: "mypage/" + showUid, recodes: {} })
-                                            }}>
-                                            <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>注文
-                                        </button>
-                                        <button type="button" id={"Cc" + tsuid + "_itemModal"} className="d-none" data-toggle="modal" data-target={"#C" + tsuid + "_itemModal"} />
-                                    </div>
-                                    :
-                                    <div className="d-flex flex-column text-center">
-                                        {itemName == "新しい商品" ?
-                                            <button className="btn btn-success btn-lg m-2" type="button" disabled>
-                                                ×商品名を入力してください
-                                            </button>
-                                            :
-                                            <div className="d-flex flex-column text-center">
-                                                {uploadImage(tsuid, imageUrl)}
-                                                <button className="btn btn-success btn-lg m-2" type="button" data-dismiss="modal"
-                                                    onClick={(evt) => { updateImage(tsuid) }}>
-                                                    <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>編集完了
-                                                </button>
-                                            </div>
-                                        }
-                                        <button className="btn btn-danger btn-lg m-2" type="button" data-dismiss="modal"
-                                            onClick={(evt) => {
-                                                dispatchOszv_s({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true });
-                                                dispatchOszv_s({ type: "strageDelete", fileName: tsuid + ".img" })
-                                            }}>
-                                            <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
-                                        </button>
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {/*注文確認(#C)*/}
-                <div className="modal fade" id={"C" + tsuid + "_itemModal"} role="dialog" aria-hidden="true">
-                    <div className="modal-dialog modal-lg" role="document">
-                        <div className="modal-content">
-                            <div className="modal-header d-flex justify-content-between">
-                                <h4 className="modal-title">注文確認</h4>
-                                <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
-                                    <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
-                                </button>
-                            </div>
-                            <div className="modal-body d-flex flex-column text-center">
-                                <h5>注文を確定しました</h5>
-                                <p />
-                                <button className="btn btn-outline-secondary btn-lg" type="button" data-dismiss="modal">
-                                    戻る
-                                </button>
+                                <div className="d-flex flex-column text-center">
+                                    {submitButton()}
+                                    <button className="btn btn-danger btn-lg my-1" type="button" data-dismiss="modal"
+                                        onClick={(evt) => {
+                                            dispatchOszv_s({ type: "create", recodes: { [tsuid]: dbFieldDelete }, merge: true });
+                                            dispatchOszv_s({ type: "strageDelete", fileName: tsuid + ".img" })
+                                        }}>
+                                        <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -680,15 +702,6 @@ export const AppMain = () => {
                 </div>
             </div>)
     }
-    const dispGuidance = () => {
-        return (
-            <div className="d-flex flex-column text-center p-2"
-                style={{ color: "black", backgroundColor: "azure", border: "3px double silver" }}>
-                <h3>始めまして!</h3>
-                <div>執筆中</div>
-            </div>
-        )
-    }
     const dispPosition = () => {
         if (showUid == "") return (
             <h4 className="text-center">
@@ -776,8 +789,11 @@ export const AppMain = () => {
         const tmpRecodes = [];
         const tsuids = Object.keys(dbOszv_s).sort();
         if (tsuids.length == 0) return (<h4 className="text-center">商品がありません</h4>)
-        for (var i = 0; i < tsuids.length; i++) {
-            tmpRecodes.push(itemModal(tsuids[i], dbOszv_s[tsuids[i]]["name"], dbOszv_s[tsuids[i]]["imageUrl"], dbOszv_s[tsuids[i]]["description"]))
+        if (uid == showUid) for (var i = 0; i < tsuids.length; i++) {
+            tmpRecodes.push(itemOwnerModal(tsuids[i], dbOszv_s[tsuids[i]]["name"], dbOszv_s[tsuids[i]]["imageUrl"], dbOszv_s[tsuids[i]]["description"]))
+        }
+        if (uid != showUid) for (var i = 0; i < tsuids.length; i++) {
+            tmpRecodes.push(itemClientModal(tsuids[i], dbOszv_s[tsuids[i]]["name"], dbOszv_s[tsuids[i]]["imageUrl"], dbOszv_s[tsuids[i]]["description"]))
         }
         return (<div className="p-3"><div className="row">{tmpRecodes}</div></div>)
     }

@@ -43,12 +43,15 @@ def postFunc(request):
                 _docRef.set(_dataDict["recodes"], merge=True)
             if(_dataDict["type"] == "delete"):
                 _docRef.set({list(_dataDict["recodes"])[0]: DELETE_FIELD}, merge=True)
-            return json.dumps("OK", ensure_ascii=False), 200
+            return json.dumps("oszv_c_OK", ensure_ascii=False), 200
         if(_dataDict["uri"].startswith("mypage") == True):
             # Operation
             if(_dataDict["type"] == "called"):
                 _docRef.set({"announce":"called"}, merge=True)
-            return json.dumps("OK", ensure_ascii=False), 200
+                return json.dumps("called_OK", ensure_ascii=False), 200
+            if(_dataDict["type"] == "gotOrder"):
+                _docRef.set({"announce":"gotOrder"}, merge=True)
+                return json.dumps("gotOrder_OK", ensure_ascii=False), 200
     except:
         return json.dumps("error on postFunc", ensure_ascii=False), 200
 

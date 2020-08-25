@@ -44,9 +44,11 @@ export const AppMain = () => {
         // access to backend
         const xhr: XMLHttpRequest = new XMLHttpRequest();
         xhr.open("POST", "/Flask/oszv/main.py", true);
+        xhr.ontimeout = () => console.error("The request timed out.");
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) console.log(xhr.responseText);
         };
+        xhr.timeout = 10000;
         xhr.send(JSON.stringify(sendCreate));
     }
     const updateOrder = (tsuid: string, addDict: any) => {
@@ -295,6 +297,7 @@ export const AppMain = () => {
                                             onClick={(evt) => {
                                                 addOrder(tsuid, itemName, "メッセージはありません", imageUrl, itemDescription);
                                                 $(document.getElementById("Cc" + tsuid + "_itemModal")).click();
+                                                dbOperate({ type: "gotOrder", uri: "mypage/" + showUid, recodes: {} })
                                             }}>
                                             <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>注文
                                         </button>
@@ -415,7 +418,7 @@ export const AppMain = () => {
                         dbOperate({
                             type: "called",
                             uri: "mypage/" + tsuid.split("_")[1],
-                            recodes: { }
+                            recodes: {}
                         })
                     }}>
                     <i className="fas fa-bell mr-1" style={{ pointerEvents: "none" }}></i>呼び出し
@@ -441,7 +444,7 @@ export const AppMain = () => {
                         dbOperate({
                             type: "called",
                             uri: "mypage/" + tsuid.split("_")[1],
-                            recodes: { }
+                            recodes: {}
                         })
                     }}>
                     <i className="fas fa-bell mr-1" style={{ pointerEvents: "none" }}></i>呼び出し
@@ -466,7 +469,7 @@ export const AppMain = () => {
                         dbOperate({
                             type: "called",
                             uri: "mypage/" + tsuid.split("_")[1],
-                            recodes: { }
+                            recodes: {}
                         })
                     }}>
                     <i className="fas fa-bell mr-1" style={{ pointerEvents: "none" }}></i>呼び出し
@@ -829,9 +832,35 @@ export const AppMain = () => {
         if (dbMypage_c["announce"] == "called") {
             dispatchMypage_c({ type: "create", recodes: { "announce": "" }, merge: true })
             new Audio("/static/audio/called.mp3").play()
+            $('#oszv_calledModal').modal();
+        }
+        if (dbMypage_c["announce"] == "gotOrder") {
+            dispatchMypage_c({ type: "create", recodes: { "announce": "" }, merge: true })
+            new Audio("/static/audio/gotOrder.mp3").play()
         }
         return (
             <div>
+                {/*called*/}
+                <div className="modal fade" id={"oszv_calledModal"} role="dialog" aria-hidden="true">
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header d-flex justify-content-between">
+                                <h4 className="modal-title">呼び出し</h4>
+                                <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
+                                    <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
+                                </button>
+                            </div>
+                            <div className="modal-body d-flex flex-column text-center">
+                                <h5>商品一覧をご確認ください</h5>
+                                <p />
+                                <button className="btn btn-outline-secondary btn-lg" type="button" data-dismiss="modal">
+                                    戻る
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div className="p-1 px-3"><div className="row">
                     {/*http://127.0.0.1:5000/app_tsx.html?application=oszv&portfolio*/}
                     {"portfolio" in Query2Dict() == true ? <div className="col-12">{switchAuth()}</div> : <div></div>}
@@ -872,7 +901,7 @@ export const AppMain = () => {
                     </div>
                     <div className="tab-pane fade" id="item3" role="tabpanel" aria-labelledby="item3-tab">This is a text of item#3.</div>
                 </div>
-            </div>
+            </div >
         )
     }
     const backImageRender = () => {

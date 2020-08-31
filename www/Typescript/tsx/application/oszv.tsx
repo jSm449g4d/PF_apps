@@ -286,15 +286,12 @@ export const AppMain = () => {
                                     <h4>商品詳細</h4>
                                     {itemDescription}
                                 </div>
-                                <div className="m-1 d-flex flex-column text-center" style={{ backgroundColor: "lightcyan", border: "3px double silver" }}>
-                                    <h4>個数</h4>
-                                    <div className="m-1 d-flex justify-content-between">
-                                        <button className="btn btn-danger btn-push" type="button"
-                                            onClick={(evt) => { if (1 < tmpAmount) setTmpAmount(tmpAmount - 1) }}>-減少</button>
-                                        <h4>{tmpAmount}</h4>
-                                        <button className="btn btn-primary btn-push" type="button"
-                                            onClick={(evt) => { if (10 > tmpAmount) setTmpAmount(tmpAmount + 1) }}>+追加</button>
-                                    </div>
+                                <div className="m-1 d-flex justify-content-between" style={{ backgroundColor: "lightcyan", border: "3px double silver" }}>
+                                    <button className="btn btn-danger btn-push" type="button"
+                                        onClick={(evt) => { if (1 < tmpAmount) setTmpAmount(tmpAmount - 1) }}>-減少</button>
+                                    <h4>個数：{tmpAmount}</h4>
+                                    <button className="btn btn-primary btn-push" type="button"
+                                        onClick={(evt) => { if (10 > tmpAmount) setTmpAmount(tmpAmount + 1) }}>+追加</button>
                                 </div>
                                 <div className="d-flex flex-column text-center">
                                     <button className="btn btn-success btn-lg btn-push m-1" type="button" data-dismiss="modal"
@@ -710,7 +707,7 @@ export const AppMain = () => {
                                     <div className="collapse" id="oszv_switchAuthHelpCollapse">
                                         <div className="card card-body text-left">
                                             1. 「チュートリアル」では、自動的に「簡単ログイン用ユーザー」としてログインされます。<br />
-                                            2. 「チュートリアル」では、UIや機能が省略されています。<br />
+                                            2. 「チュートリアル」では、一部UIや機能が省略されています。<br />
                                         </div>
                                     </div>
                                 </div>

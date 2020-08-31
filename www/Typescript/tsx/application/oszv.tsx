@@ -13,6 +13,7 @@ export const AppMain = () => {
     const [orderCnechboxCancel, setOrderCnechboxCancel] = useState(true)
     const [orderCnechboxAccepted, setOrderCnechboxAccepted] = useState(true)
     const [soundVolume, setSoundVolume] = useState(0)
+    const [tmpAmount, setTmpAmount] = useState(1)
 
     const [dbOszv_s, dispatchOszv_s] = useDb()
     const [dbOszv_c, dispatchOszv_c] = useDb()
@@ -144,15 +145,50 @@ export const AppMain = () => {
     }
     const addItemButtonZwei = () => {
         if (showUid != uid) return (<div></div>);
+        const _r = () => {
+            return (
+                <div className="modal fade" id={"oszv_itemClientModal_N"} role="dialog" aria-hidden="true">
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header d-flex justify-content-between">
+                                <h3 className="modal-title">
+                                    新商品の追加
+                                </h3>
+                            </div>
+                            <div className="modal-body">
+                                <div className="d-flex flex-column text-center">
+                                    <input className="form-control form-control-lg m-1" type="text" placeholder="商品名" value={tmpText} size={32}
+                                        onChange={(evt: any) => { setTmpText(evt.target.value) }} />
+                                </div>
+                                <div className="d-flex flex-column text-center">
+                                    {tmpText == "" ? <div></div> :
+                                        <button className="btn btn-success btn-lg btn-push my-1" type="button" data-dismiss="modal"
+                                            onClick={() => {
+                                                const _tsuid = Date.now().toString() + "_" + uid
+                                                updateItem(_tsuid, { "name": tmpText, "imageUrl": "", "description": "詳細はありません" });
+                                                setTmpText(""); setTmpSwitch("");
+                                            }}>
+                                            追加する
+                                    </button>
+                                    }
+                                    <button className="btn btn-danger btn-lg btn-push my-1" type="button" data-dismiss="modal"
+                                        onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
+                                        <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>中止
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>)
+        }
         return (
             <div>
                 <div className="row">
                     <div className="col-sm-12 col-md-7 col-lg-9 d-flex flex-column">
                         <button className="btn btn-primary btn-lg rounded-pill btn-push m-1" data-toggle="modal" data-target={"#V" + "_addItemModal"}
                             onClick={() => {
-                                const _tsuid = Date.now().toString() + "_" + uid
-                                updateItem(_tsuid, { "name": "新しい商品", "imageUrl": "", "description": "詳細はありません" })
-                                setTimeout(() => $("#oszv_itemClientModal_V" + _tsuid).modal(), 800)
+                                setTmpText("新商品"); setTmpSwitch("newName")
+                                $("#oszv_itemClientModal_N").modal()
                             }}>
                             <b>+商品を追加</b>
                         </button>
@@ -164,10 +200,12 @@ export const AppMain = () => {
                         </button>
                     </div>
                 </div>
+                {_r()}
             </div>
+
         )
     }
-    const addOrder = (itemTsuid: string = "nullPoi", name: string = "新しい注文", message: string = "無し", imageUrl: string = "", description: string = "") => {
+    const addOrder = (itemTsuid: string = "nullPoi", name: string = "新しい注文", amount: string = "1", message: string = "無し", imageUrl: string = "", description: string = "") => {
         if (showUid == uid) return false;
         const tsuid: string = Date.now().toString() + "_" + uid
         dbOperate({
@@ -177,6 +215,7 @@ export const AppMain = () => {
                 [tsuid]: {
                     "itemTsuid": itemTsuid,
                     "name": name,
+                    "amount": amount,
                     "message": message,
                     "imageUrl": imageUrl,
                     "status": "ordering",
@@ -193,6 +232,7 @@ export const AppMain = () => {
                 [tsuid]: {
                     "itemTsuid": itemTsuid,
                     "name": name,
+                    "amount": amount,
                     "message": message,
                     "imageUrl": imageUrl,
                     "status": "ordering",
@@ -246,12 +286,23 @@ export const AppMain = () => {
                                     <h4>商品詳細</h4>
                                     {itemDescription}
                                 </div>
+                                <div className="m-1 d-flex flex-column text-center" style={{ backgroundColor: "lightcyan", border: "3px double silver" }}>
+                                    <h4>個数</h4>
+                                    <div className="m-1 d-flex justify-content-between">
+                                        <button className="btn btn-danger btn-push" type="button"
+                                            onClick={(evt) => { if (1 < tmpAmount) setTmpAmount(tmpAmount - 1) }}>-減少</button>
+                                        <h4>{tmpAmount}</h4>
+                                        <button className="btn btn-primary btn-push" type="button"
+                                            onClick={(evt) => { if (10 > tmpAmount) setTmpAmount(tmpAmount + 1) }}>+追加</button>
+                                    </div>
+                                </div>
                                 <div className="d-flex flex-column text-center">
-                                    <button className="btn btn-success btn-lg m-1" type="button" data-dismiss="modal"
+                                    <button className="btn btn-success btn-lg btn-push m-1" type="button" data-dismiss="modal"
                                         onClick={(evt) => {
-                                            addOrder(tsuid, itemName, "メッセージはありません", imageUrl, itemDescription);
+                                            addOrder(tsuid, itemName, String(tmpAmount), "メッセージはありません", imageUrl, itemDescription);
                                             $("#oszv_itemClientModal_C" + tsuid).modal();
                                             dbOperate({ type: "gotOrder", uri: "mypage/" + showUid, recodes: {} })
+                                            setTmpAmount(1)
                                         }}>
                                         <i className="fas fa-check mr-1" style={{ pointerEvents: "none" }}></i>注文
                                     </button>
@@ -406,7 +457,7 @@ export const AppMain = () => {
                 </div>
             </div>)
     }
-    const orderModal = (tsuid: string, orderName: string, orderMessage: string, orderImage: string = "",
+    const orderModal = (tsuid: string, orderName: string, orderAmount: string = "1", orderMessage: string = "", orderImage: string = "",
         orderStatus: string = "", orderDescription: string = "", clientorShopName: string = "") => {
         const tailConsoleButtons = []
         if (orderStatus == "ordering" && uid != showUid) tailConsoleButtons.push(
@@ -521,7 +572,9 @@ export const AppMain = () => {
                             {orderStatus == "canceled" ? <h3 style={{ color: "darkred" }}>キャンセル済</h3> : <div></div>}
                             {orderStatus == "accepted" ? <h3 style={{ color: "darkblue" }}>取引済</h3> : <div></div>}
                         </div>
-                        <h4 className="col-sm-6 col-lg-6">{orderName}</h4>
+                        <h4 className="col-sm-6 col-lg-6">
+                            {orderAmount == "1" ? <div>{orderName}</div> : <div>{orderName}{orderAmount}[個]</div>}
+                        </h4>
                         <h5 className="col-sm-6 col-lg-3 tent-center">
                             {clientorShopName}
                         </h5>
@@ -535,7 +588,9 @@ export const AppMain = () => {
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
                             <div className="modal-header justify-content-between">
-                                <h4 className="modal-title">{orderName}</h4>
+                                <h4 className="modal-title">
+                                    {orderAmount == "1" ? <div>{orderName}</div> : <div>{orderName}{orderAmount}[個]</div>}
+                                </h4>
                                 <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
                                     <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
                                 </button>
@@ -835,7 +890,7 @@ export const AppMain = () => {
             if (orderCnechboxAccepted == false && "accepted" == String(dbOszv_c[tsuids[i]]["status"])) continue
             let clientOrShopName = "販売店: " + dbOszv_c[tsuids[i]]["shopName"]
             if (uid == showUid) clientOrShopName = "購入者: " + dbOszv_c[tsuids[i]]["clientName"]
-            tmpRecodes.push(orderModal(tsuids[i], dbOszv_c[tsuids[i]]["name"], dbOszv_c[tsuids[i]]["message"],
+            tmpRecodes.push(orderModal(tsuids[i], dbOszv_c[tsuids[i]]["name"], dbOszv_c[tsuids[i]]["amount"], dbOszv_c[tsuids[i]]["message"],
                 dbOszv_c[tsuids[i]]["imageUrl"], dbOszv_c[tsuids[i]]["status"], dbOszv_c[tsuids[i]]["description"],
                 clientOrShopName))
         }

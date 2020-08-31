@@ -83,22 +83,9 @@ export const AppMain = () => {
                                 <div className="d-flex flex-column" style={{ height: "300px" }}>
                                     <h5>Mypage</h5>
                                     <div className="flex-grow-1">
-                                        ユーザー名等を変更できます。<br />
+                                        ユーザー名やアカウントを管理します<br />
                                     </div>
                                     <b>開発状況: α版: 利用可</b>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div className="col-sm-6 col-md-4 col-lg-3 p-1 fadein-3">
-                        <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
-                            <a className="a-nolink" onClick={(evt) => { window.location.href = '/app_tsx.html?application=nicoapi' }}>
-                                <div className="d-flex flex-column" style={{ height: "300px" }}>
-                                    <h5>Nicoapi</h5>
-                                    <div className="flex-grow-1">
-                                        ニコニコAPIやなろうAPI等をフォームで叩けるWEBクローラです<br />
-                                    </div>
-                                    <b>開発状況: 凍結中: 動作不安定</b>
                                 </div>
                             </a>
                         </div>

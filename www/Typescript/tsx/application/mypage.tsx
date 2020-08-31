@@ -148,16 +148,15 @@ export const AppMain = () => {
         if (uid == "") return (<div>{needLoginForm()}</div>)
         if (dbMypage["nickname"] == null) return (<div>{createMypage()}</div>)
         return (
-            <div className="p-2" style={{ backgroundColor: "lavender", border: "3px double silver" }}>
+            <div className="p-1" style={{ backgroundColor: "lavender", border: "3px double silver" }}>
                 <div className="row">
                     <h2 className="col-12 text-center">{dispNickname()}</h2>
                     <div className="col-sm-12 col-lg-3">{showIcon()}</div>
                     <div className="col-sm-12 col-lg-9">
-                        <div className="p-1 text-center" style={{ backgroundColor: "rgba(255,255,255,0.5)" }}>
-                            {dispProfile()}
+                        <div className="p-1 text-center" style={{ backgroundColor: "rgba(255,255,255,0.5)", border: "solid silver" }}>
+                            {dispProfile()}{dispShop()}
                         </div>
                     </div>
-                    <div className="col-sm-12 col-lg-12">{dispShop()}</div>
                 </div>
                 {showUid == uid ?
                     <div />

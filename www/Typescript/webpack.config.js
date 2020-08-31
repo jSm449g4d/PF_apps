@@ -1,6 +1,5 @@
 const path = require("path");
 const entry = require("webpack-glob-entry");
-const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: entry("./tsx/index.tsx"),
@@ -27,12 +26,6 @@ module.exports = {
       },
     ],
   },
-
-  plugins: [
-    new CopyPlugin({
-      patterns: [{ from: "./html/**/*", to: "./" }],
-    }),
-  ],
 
   externals: {
     react: "React",

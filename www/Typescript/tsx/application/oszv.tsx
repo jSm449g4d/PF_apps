@@ -286,15 +286,12 @@ export const AppMain = () => {
                                     <h4>商品詳細</h4>
                                     {itemDescription}
                                 </div>
-                                <div className="m-1 d-flex flex-column text-center" style={{ backgroundColor: "lightcyan", border: "3px double silver" }}>
-                                    <h4>個数</h4>
-                                    <div className="m-1 d-flex justify-content-between">
-                                        <button className="btn btn-danger btn-push" type="button"
-                                            onClick={(evt) => { if (1 < tmpAmount) setTmpAmount(tmpAmount - 1) }}>-減少</button>
-                                        <h4>{tmpAmount}</h4>
-                                        <button className="btn btn-primary btn-push" type="button"
-                                            onClick={(evt) => { if (10 > tmpAmount) setTmpAmount(tmpAmount + 1) }}>+追加</button>
-                                    </div>
+                                <div className="m-1 d-flex justify-content-between" style={{ backgroundColor: "lightcyan", border: "3px double silver" }}>
+                                    <button className="btn btn-danger btn-push" type="button"
+                                        onClick={(evt) => { if (1 < tmpAmount) setTmpAmount(tmpAmount - 1) }}>-減少</button>
+                                    <h4>個数：{tmpAmount}</h4>
+                                    <button className="btn btn-primary btn-push" type="button"
+                                        onClick={(evt) => { if (10 > tmpAmount) setTmpAmount(tmpAmount + 1) }}>+追加</button>
                                 </div>
                                 <div className="d-flex flex-column text-center">
                                     <button className="btn btn-success btn-lg btn-push m-1" type="button" data-dismiss="modal"
@@ -496,7 +493,7 @@ export const AppMain = () => {
                 </button>
                 <button className="btn btn-warning btn-lg my-1" type="button" data-dismiss="modal"
                     onClick={() => {
-                        new Audio("/static/audio/calling.mp3").play()
+                        if (soundVolume != 0) new Audio("/static/audio/calling.mp3").play()
                         dbOperate({
                             type: "called",
                             uri: "mypage/" + tsuid.split("_")[1],
@@ -522,7 +519,7 @@ export const AppMain = () => {
                 </button>
                 <button className="btn btn-warning btn-lg my-1" type="button" data-dismiss="modal"
                     onClick={() => {
-                        new Audio("/static/audio/calling.mp3").play()
+                        if (soundVolume != 0) new Audio("/static/audio/calling.mp3").play()
                         dbOperate({
                             type: "called",
                             uri: "mypage/" + tsuid.split("_")[1],
@@ -547,7 +544,7 @@ export const AppMain = () => {
             <div className="d-flex flex-column text-center">
                 <button className="btn btn-warning btn-lg my-1" type="button" data-dismiss="modal"
                     onClick={() => {
-                        new Audio("/static/audio/calling.mp3").play()
+                        if (soundVolume != 0) new Audio("/static/audio/calling.mp3").play()
                         dbOperate({
                             type: "called",
                             uri: "mypage/" + tsuid.split("_")[1],
@@ -710,8 +707,7 @@ export const AppMain = () => {
                                     <div className="collapse" id="oszv_switchAuthHelpCollapse">
                                         <div className="card card-body text-left">
                                             1. 「チュートリアル」では、自動的に「簡単ログイン用ユーザー」としてログインされます。<br />
-                                            2. 「チュートリアル」では、自動的に「チュートリアル用店舗」に入店した状態で始まります。<br />
-                                            5. 「チュートリアル」では、UIや機能が省略されています。<br />
+                                            2. 「チュートリアル」では、一部UIや機能が省略されています。<br />
                                         </div>
                                     </div>
                                 </div>
@@ -777,10 +773,10 @@ export const AppMain = () => {
         if (showUid == "") {
             _breadcrumbs.push(<div>店の選択</div>)
             _breadcrumbs.push(<div> : </div>)
-            _breadcrumbs.push(<div className="btn btn-link btn-push" onClick={() => { setShowUid(uid) }}>自分の店舗へ</div>)
+            _breadcrumbs.push(<h4 className="btn-link btn-push" onClick={() => { setShowUid(uid) }}>自分の店舗へ</h4>)
             return (<div className="form-inline">{_breadcrumbs}</div>)
         }
-        _breadcrumbs.push(<div className="btn btn-link btn-push" onClick={() => { setShowUid("") }}>店の選択</div>)
+        _breadcrumbs.push(<h4 className="btn-link btn-push" onClick={() => { setShowUid("") }}>店の選択</h4>)
         if (showUid != uid) {
             _breadcrumbs.push(<div> → </div>)
             _breadcrumbs.push(<div>{dbMypage_s["shopName"]}</div>)
@@ -789,7 +785,7 @@ export const AppMain = () => {
             _breadcrumbs.push(<div> → </div>)
             _breadcrumbs.push(<div>自分の店舗</div>)
         }
-        return (<h5 className="form-inline">{_breadcrumbs}</h5>)
+        return (<div className="form-inline">{_breadcrumbs}</div>)
     }
     const dipsShopName = () => {
         if (showUid == "") return (<h3><i className="fas fa-walking mr-1"></i>訪れる店を選択</h3>)

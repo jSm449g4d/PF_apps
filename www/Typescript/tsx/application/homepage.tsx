@@ -20,7 +20,7 @@ export const AppMain = () => {
                 </h1>
                 <div className="col-lg-2" >
                     <button className="flex-fill btn btn-info btn-lg btn-push" data-toggle="collapse" data-target="#homepage_ziko">
-                        <i className="fas fa-person-booth mr-1" style={{ pointerEvents: "none" }}></i>使用技術
+                        <i className="fas fa-person-booth mr-1" style={{ pointerEvents: "none" }}></i>マイスキル
                     </button>
                 </div>
                 <div className="collapse col-md-12" id="homepage_ziko">
@@ -64,23 +64,23 @@ export const AppMain = () => {
                     <div className="col-12 slidein-1">
                         <h4 style={{ backgroundColor: "rgba(250,250,250,0.8)", }}>アプリ一覧</h4>
                     </div>
-                    <div className="col-sm-6 col-md-4 col-lg-3 p-1 fadein-1">
+                    <div className="col-sm-6 col-md-4 p-1 fadein-1">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
                             <a className="a-nolink" onClick={(evt) => { window.location.href = '/app_tsx.html?application=tptef' }}>
-                                <div className="d-flex flex-column" style={{ height: "300px" }}>
+                                <div className="d-flex flex-column" style={{ height: "200px" }}>
                                     <h5>チャットアプリ</h5>
                                     <div className="flex-grow-1">
-                                        ファイルのやり取りも可能なチャットルームです<br />
+                                        ファイルのやり取り可能なチャットルーム<br />
                                     </div>
                                     <b>開発状況: α版: 利用可</b>
                                 </div>
                             </a>
                         </div>
                     </div>
-                    <div className="col-sm-6 col-md-4 col-lg-3 p-1 fadein-2">
+                    <div className="col-sm-6 col-md-4 p-1 fadein-2">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
                             <a className="a-nolink" onClick={(evt) => { window.location.href = '/app_tsx.html?application=mypage' }}>
-                                <div className="d-flex flex-column" style={{ height: "300px" }}>
+                                <div className="d-flex flex-column" style={{ height: "200px" }}>
                                     <h5>Mypage</h5>
                                     <div className="flex-grow-1">
                                         ユーザー名やアカウントを管理します<br />
@@ -91,18 +91,18 @@ export const AppMain = () => {
                         </div>
                     </div>
                     {/*ボタンinボタンは、setTimeoutで遅延させることで順序を付けられる*/}
-                    <div className="col-sm-6 col-md-4 col-lg-3 p-1 fadein-4">
+                    <div className="col-sm-6 col-md-4 p-1 fadein-4">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
                             <a className="a-nolink" onClick={(evt) => { setTimeout(() => window.location.href = '/app_tsx.html?application=oszv', 500) }}>
-                                <div className="d-flex flex-column" style={{ height: "300px" }}>
+                                <div className="d-flex flex-column" style={{ height: "200px" }}>
                                     <h5>注文受付システム</h5>
                                     <button className="btn btn-success btn-lg btn-push rounded-pill m-1"
                                         onClick={(evt) => window.location.href = "/app_tsx.html?application=oszv&portfolio"}>
                                         チュートリアルに進む
                                     </button>
                                     <div className="flex-grow-1">
-                                        「個人~小規模の飲食店等の注文受付Webサービス」を題材に制作しました。<br/>
-                                        「チュートリアル」は機能を、「商品の取引」についてのみに限定しています。<br/>
+                                        「個人~小規模の飲食店」を想定<br/>
+                                        「チュートリアル」は一部UIを省略しています<br/>
                                     </div>
                                     <b>開発状況: α版: 利用可</b>
                                 </div>
@@ -139,7 +139,8 @@ export const AppMain = () => {
                                 <div className="d-flex flex-column" style={{ height: "200px" }}>
                                     <h5>хлеб (半完全栄養食)</h5>
                                     <div className="flex-grow-1">
-                                        完璧な食事
+                                        私の日常食について
+                                        <img className="img-fluid" src="/static/img/hleb.jpg" style={{ height: 100, objectFit: "contain" }} />
                                     </div>
                                     <b>開発状況: 第四世代: 運用中</b>
                                 </div>

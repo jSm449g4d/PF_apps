@@ -20,7 +20,7 @@ export const AppMain = () => {
                 </h1>
                 <div className="col-lg-2" >
                     <button className="flex-fill btn btn-info btn-lg btn-push" data-toggle="collapse" data-target="#homepage_ziko">
-                        <i className="fas fa-person-booth mr-1" style={{ pointerEvents: "none" }}></i>使用技術
+                        <i className="fas fa-person-booth mr-1" style={{ pointerEvents: "none" }}></i>マイスキル
                     </button>
                 </div>
                 <div className="collapse col-md-12" id="homepage_ziko">
@@ -83,7 +83,7 @@ export const AppMain = () => {
                                 <div className="d-flex flex-column" style={{ height: "300px" }}>
                                     <h5>Mypage</h5>
                                     <div className="flex-grow-1">
-                                        ユーザー名やアカウントを管理します<br />
+                                        チャットアプリや注文受付システムで使用する、ユーザー名やアカウントを管理します<br />
                                     </div>
                                     <b>開発状況: α版: 利用可</b>
                                 </div>
@@ -101,8 +101,8 @@ export const AppMain = () => {
                                         チュートリアルに進む
                                     </button>
                                     <div className="flex-grow-1">
-                                        「個人~小規模の飲食店等の注文受付Webサービス」を題材に制作しました。<br/>
-                                        「チュートリアル」は機能を、「商品の取引」についてのみに限定しています。<br/>
+                                        「個人~小規模の飲食店等の注文受付システム」を題材に制作しました。<br/>
+                                        「チュートリアル」は一部UIを省略しています<br/>
                                     </div>
                                     <b>開発状況: α版: 利用可</b>
                                 </div>
@@ -139,7 +139,8 @@ export const AppMain = () => {
                                 <div className="d-flex flex-column" style={{ height: "200px" }}>
                                     <h5>хлеб (半完全栄養食)</h5>
                                     <div className="flex-grow-1">
-                                        完璧な食事
+                                        私の日常食について
+                                        <img className="img-fluid" src="/static/img/hleb.jpg" style={{ height: 100, objectFit: "contain" }} />
                                     </div>
                                     <b>開発状況: 第四世代: 運用中</b>
                                 </div>

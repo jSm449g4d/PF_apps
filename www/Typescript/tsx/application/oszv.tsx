@@ -147,7 +147,7 @@ export const AppMain = () => {
         if (showUid != uid) return (<div></div>);
         const _r = () => {
             return (
-                <div className="modal fade" id={"oszv_itemClientModal_N"} role="dialog" aria-hidden="true">
+                <div className="modal fade" id={"oszv_itemModal_N"} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
                             <div className="modal-header d-flex justify-content-between">
@@ -167,6 +167,7 @@ export const AppMain = () => {
                                                 const _tsuid = Date.now().toString() + "_" + uid
                                                 updateItem(_tsuid, { "name": tmpText, "imageUrl": "", "description": "詳細はありません" });
                                                 setTmpText(""); setTmpSwitch("");
+                                                setTimeout(()=>$("#oszv_itemModal_V"+_tsuid).modal(),800)                                                
                                             }}>
                                             追加する
                                     </button>
@@ -188,7 +189,7 @@ export const AppMain = () => {
                         <button className="btn btn-primary btn-lg rounded-pill btn-push m-1" data-toggle="modal" data-target={"#V" + "_addItemModal"}
                             onClick={() => {
                                 setTmpText(""); setTmpSwitch("newName")
-                                $("#oszv_itemClientModal_N").modal()
+                                $("#oszv_itemModal_N").modal()
                             }}>
                             <b>+商品を追加</b>
                         </button>
@@ -376,14 +377,14 @@ export const AppMain = () => {
             <div className="col-sm-6 col-md-4 col-lg-3 p-1">
                 {/*将棋盤のボタン(#A)*/}
                 <div className="btn-col" style={{ background: "rgba(255,255,255,0.9)" }}>
-                    <a className="a-nolink" data-toggle="modal" id={"oszv_itemClientModal_A" + tsuid} data-target={"#oszv_itemClientModal_V" + tsuid}
+                    <a className="a-nolink" data-toggle="modal" id={"oszv_itemModal_A" + tsuid} data-target={"#oszv_itemModal_V" + tsuid}
                         onClick={() => { setTmpText(""); setTmpSwitch(""); }}>
                         {showImage(imageUrl)}
                         <h5 className="d-flex flex-column text-center mt-1">{itemName}</h5>
                     </a>
                 </div>
                 {/*注文モーダル(#V)*/}
-                <div className="modal fade" id={"oszv_itemClientModal_V" + tsuid} role="dialog" aria-hidden="true">
+                <div className="modal fade" id={"oszv_itemModal_V" + tsuid} role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
                             <div className="modal-header d-flex justify-content-between">
@@ -531,6 +532,10 @@ export const AppMain = () => {
                 <button className="btn btn-warning btn-lg my-1" type="button" data-dismiss="modal"
                     onClick={() => { updateOrder(tsuid, { "status": "canceled" }); }}>
                     <i className="fas fa-exclamation-triangle mr-1" style={{ pointerEvents: "none" }}></i>取引キャンセル
+                </button>                
+                <button className="btn btn-danger btn-lg m-2" type="button" data-dismiss="modal"
+                    onClick={() => { deleteOrder(tsuid) }}>
+                    <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
                 </button>
             </div>)
         if (orderStatus == "canceled" && uid == showUid) tailConsoleButtons.push(

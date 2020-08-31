@@ -42,7 +42,7 @@ export const AppMain = () => {
         dispatchMypage_s({ type: "create", recodes: Object.assign({ "shopName": "新しい店" }, addDict), merge: true })
         dispatchAppindex_oszv_shop({
             type: "create", recodes: {
-                [uid]: Object.assign({ "shopName": "新しい店", "imageUrl": "" }, addDict),
+                [uid]: Object.assign({ "shopName": "新しい店", "iconUrl": "" }, addDict),
             }, merge: true
         });
     }
@@ -436,13 +436,13 @@ export const AppMain = () => {
             </div>
         )
     }
-    const shopModal = (_uid: string, shopName: string, imageUrl: string = "",) => {
+    const shopModal = (_uid: string, shopName: string, iconUrl: string = "",) => {
         if (uid == _uid)
             return (
                 <div className="col-sm-6 col-md-4 col-lg-3 p-1">
                     <div className="btn-col" style={{ background: "rgba(240,220,240,0.9)" }}>
                         <a className="a-nolink" onClick={() => { setShowUid(_uid); }}>
-                            {showImage(imageUrl)}
+                            {showImage(iconUrl)}
                             <h5 className="text-center mt-1">{shopName}<b style={{ color: "darkred" }}>(自店)</b></h5>
                         </a>
                     </div>
@@ -451,7 +451,7 @@ export const AppMain = () => {
             <div className="col-sm-6 col-md-4 col-lg-3 p-1">
                 <div className="btn-col" style={{ background: "rgba(255,255,255,0.9)" }}>
                     <a className="a-nolink" onClick={() => { setShowUid(_uid); }}>
-                        {showImage(imageUrl)}
+                        {showImage(iconUrl)}
                         <h5 className=" text-center mt-1">{shopName}</h5>
                     </a>
                 </div>
@@ -813,7 +813,7 @@ export const AppMain = () => {
                                 onChange={(evt: any) => { setTmpText(evt.target.value) }} />
                             <button className="btn btn-success btn-lg btn-push m-1" type="button"
                                 onClick={() => {
-                                    updateShop({ "shopName": tmpText });
+                                    updateShop({ "shopName": tmpText, "iconUrl": dbMypage_s["iconUrl"] });
                                     setTmpText(""); setTmpSwitch("");
                                 }}>
                                 <i className="fas fa-paper-plane mr-1" style={{ pointerEvents: "none" }}></i>変更する
@@ -834,7 +834,7 @@ export const AppMain = () => {
             )
         if (showUid == uid)
             return (
-                <button className="btn btn-link mx-2" onClick={() => { updateShop({}) }}>
+                <button className="btn btn-link mx-2" onClick={() => { updateShop({ "iconUrl": dbMypage_s["iconUrl"] }) }}>
                     <h3>店を立てる</h3>
                 </button>)
         //if ("portfolio" in Query2Dict() == false) { setShowUid("") }
@@ -902,7 +902,7 @@ export const AppMain = () => {
         const _uids = Object.keys(dbAppindex_oszv_shop).sort();
         if (_uids.length == 0) return (<h4 className="text-center">誰も出店していません</h4>)
         for (var i = 0; i < _uids.length; i++) {
-            tmpRecodes.push(shopModal(_uids[i], dbAppindex_oszv_shop[_uids[i]]["shopName"], dbAppindex_oszv_shop[_uids[i]]["imageUrl"]))
+            tmpRecodes.push(shopModal(_uids[i], dbAppindex_oszv_shop[_uids[i]]["shopName"], dbAppindex_oszv_shop[_uids[i]]["iconUrl"]))
         }
         return (<div className="p-3"><div className="row">{tmpRecodes}</div></div>)
     }

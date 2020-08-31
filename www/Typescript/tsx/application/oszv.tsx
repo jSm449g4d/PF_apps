@@ -187,7 +187,7 @@ export const AppMain = () => {
                     <div className="col-sm-12 col-md-7 col-lg-9 d-flex flex-column">
                         <button className="btn btn-primary btn-lg rounded-pill btn-push m-1" data-toggle="modal" data-target={"#V" + "_addItemModal"}
                             onClick={() => {
-                                setTmpText("新商品"); setTmpSwitch("newName")
+                                setTmpText(""); setTmpSwitch("newName")
                                 $("#oszv_itemClientModal_N").modal()
                             }}>
                             <b>+商品を追加</b>

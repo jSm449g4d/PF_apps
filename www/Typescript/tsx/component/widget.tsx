@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from "react-dom";
 import { AppAuth } from "./firebaseWrapper";
 import { stopf5, Query2Dict } from "./util_tsx";
 require.context('../application/', true, /\.ts(x?)$/)
 
 export const AppWidgetHead = () => {
+    const [switchAppButton, setSwitchAppButton] = useState(0)
     useEffect(() => ReactDOM.render(<AppAuth />, document.getElementById("account_tsx")), [])
     // functions
     const _switchApp = (application: string) => {
@@ -15,6 +16,22 @@ export const AppWidgetHead = () => {
             ReactDOM.unmountComponentAtNode(document.getElementById("titlelogo_tsx"));
             ReactDOM.render(<module.titleLogo />, document.getElementById("titlelogo_tsx"));
         })
+    }
+    const _switchButton = () => {
+        if (switchAppButton == 0)
+            return (
+                <button className="btn btn-outline-primary btn-push btn-lg mx-2 mr-3"
+                    onClick={() => { _switchApp("mypage"); setSwitchAppButton(1); }}>
+                    <i className="far fa-address-card mr-1"></i>マイページへ
+                </button>
+            )
+        if (switchAppButton == 1)
+            return (
+                <button className="btn btn-outline-primary btn-push btn-lg mx-2 mr-3"
+                    onClick={() => { _switchApp(Query2Dict()["application"]); setSwitchAppButton(0); }}>
+                    <i className="far fa-arrow-alt-circle-left mr-1">マイページを離れる</i>
+                </button>
+            )
     }
     return (
         <div style={{ borderBottom: "3px double gray", background: "linear-gradient(rgba(60,60,60,0),rgba(60,60,60,0.1)" }}>
@@ -31,7 +48,7 @@ export const AppWidgetHead = () => {
                     <div className="form-inline d-flex justify-content-between justify-content-lg-end">
                         {/*ポートフォリオの場合、アプリ一覧を操作不能にします */}
                         {Query2Dict()["portfolio"] ?
-                            <div></div>
+                            <div>{_switchButton()}</div>
                             :
                             <button className="btn btn-link dropdown-toggle mx-2 mr-3" type="button" data-toggle="dropdown">
                                 <b>アプリ一覧</b>

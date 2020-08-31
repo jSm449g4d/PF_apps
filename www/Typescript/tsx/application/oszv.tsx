@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { dbFieldDelete, useAuth, useDb, needLoginForm, easyIn } from "../component/firebaseWrapper";
+import { dbFieldDelete, useAuth, useDb, needLoginForm, easyIn,easyIn2 } from "../component/firebaseWrapper";
 import { stopf5, Query2Dict, Unixtime2String } from "../component/util_tsx";
 import "../stylecheets/style.sass";
 
@@ -34,7 +34,6 @@ export const AppMain = () => {
             setTimeout(() => dispatchMypage_c({ type: "create", recodes: { "announce": "" }, merge: true }), 1000)
         }
     }, [dbMypage_c["announce"]])
-
 
     const updateShop = (addDict: any) => {
         if (showUid != uid) return false;
@@ -701,17 +700,27 @@ export const AppMain = () => {
                         </button>
                         :
                         <button className="flex-fill btn btn-primary btn-lg btn-push m-1"
-                            onClick={() => { easyIn("client@mail.com", "abcdef"); setUserSelect(1); }}>
+                            onClick={() => { easyIn2(); setUserSelect(1); }}>
                             <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購買客2
                         </button>
                     }
                     {userSelect == 2 ?
+                        <button className="flex-fill btn btn-primary btn-lg m-1" disabled>
+                            <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購買客3(選択中)
+                        </button>
+                        :
+                        <button className="flex-fill btn btn-primary btn-lg btn-push m-1"
+                            onClick={() => { easyIn("client@mail.com", "abcdef"); setUserSelect(2); }}>
+                            <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購買客3
+                        </button>
+                    }
+                    {userSelect == 3 ?
                         <button className="flex-fill btn btn-danger btn-lg m-1" disabled>
                             <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>出品店1(選択中)
                         </button>
                         :
                         <button className="flex-fill btn btn-danger btn-lg btn-push m-1"
-                            onClick={() => { easyIn("owner@mail.com", "abcdef"); setUserSelect(2); }}>
+                            onClick={() => { easyIn("owner@mail.com", "abcdef"); setUserSelect(3); }}>
                             <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>出品店1
                         </button>
                     }

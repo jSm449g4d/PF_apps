@@ -98,11 +98,11 @@ export const AppMain = () => {
                                     <h5>注文受付システム</h5>
                                     <button className="btn btn-success btn-lg btn-push rounded-pill m-1"
                                         onClick={(evt) => window.location.href = "/app_tsx.html?application=oszv&portfolio"}>
-                                        チュートリアルに進む
+                                        評価モードに進む
                                     </button>
                                     <div className="flex-grow-1">
                                         「個人~小規模の飲食店」を想定<br/>
-                                        「チュートリアル」は一部UIを省略しています<br/>
+                                        「評価モード」は一部UIを省略しています<br/>
                                     </div>
                                     <b>開発状況: α版: 利用可</b>
                                 </div>

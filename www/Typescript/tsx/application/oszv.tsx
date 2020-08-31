@@ -40,7 +40,7 @@ export const AppMain = () => {
         dispatchMypage_s({ type: "create", recodes: Object.assign({ "shopName": "新しい店" }, addDict), merge: true })
         dispatchAppindex_oszv_shop({
             type: "create", recodes: {
-                [uid]: Object.assign({ "shopName": "新しい店", "iconUrl": "" }, addDict),
+                [uid]: Object.assign({ "shopName": "新しい店", "iconUrl": "","tag":"" }, addDict),
             }, merge: true
         });
     }
@@ -645,7 +645,7 @@ export const AppMain = () => {
         return (
             <div className="m-1 p-2 slidein-1-reverse" style={{ border: "3px double silver", background: "#001111" }}>
                 <div className="d-flex flex-column text-center">
-                    <h3 style={{ color: "#AAFFAA" }}>チュートリアルへようこそ
+                    <h3 style={{ color: "#AAFFAA" }}>評価モードへようこそ
                         <i className="fas fa-question-circle ml-1 fa-btn-help"
                             data-toggle="modal" data-target={"#oszv_switchAuthHelpModal"}></i>
                     </h3>
@@ -656,13 +656,13 @@ export const AppMain = () => {
                         <div className="modal-dialog modal-lg" role="document">
                             <div className="modal-content">
                                 <div className="modal-header d-flex justify-content-between">
-                                    <h4 className="modal-title">チュートリアルについて</h4>
+                                    <h4 className="modal-title">評価モードについて</h4>
                                     <button className="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
                                         <i className="fas fa-times" style={{ pointerEvents: "none" }}></i>
                                     </button>
                                 </div>
                                 <div className="modal-body d-flex flex-column text-center">
-                                    <h5>「<b>チュートリアル</b>」は機能が限定されています</h5>
+                                    <h5>「<b>評価モード</b>」は機能が限定されています</h5>
                                     <h6>クエリの「<b>portfolio</b>」を削除すると「本来の仕様」に変更出来ます。<br /></h6>
                                     <div className="text-left">
                                     </div>
@@ -674,8 +674,8 @@ export const AppMain = () => {
                                     </button>
                                     <div className="collapse" id="oszv_switchAuthHelpCollapse">
                                         <div className="card card-body text-left">
-                                            1. 「チュートリアル」では、自動的に「簡単ログイン用ユーザー」としてログインされます。<br />
-                                            2. 「チュートリアル」では、一部UIや機能が省略されています。<br />
+                                            1. 「評価モード」では、自動的に「簡単ログイン用ユーザー」としてログインされます。<br />
+                                            2. 「評価モード」では、一部UIや機能が省略されています。<br />
                                         </div>
                                     </div>
                                 </div>

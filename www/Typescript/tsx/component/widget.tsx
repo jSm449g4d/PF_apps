@@ -51,10 +51,6 @@ export const AppWidgetHead = () => {
                                 <i className="far fa-comments mr-1"></i>チャット
                         </a>
                             <a className="dropdown-item btn-push px-4 text-center border-top" style={{ fontSize: "1.5em" }} href="#"
-                                onClick={() => { _switchApp("nicoapi") }}>
-                                <i className="fas fa-database mr-1"></i>NicoAPI
-                        </a>
-                            <a className="dropdown-item btn-push px-4 text-center border-top" style={{ fontSize: "1.5em" }} href="#"
                                 onClick={() => { _switchApp("oszv") }}>
                                 <i className="fas fa-table mr-1"></i>受付注文システム
                         </a>

@@ -665,7 +665,6 @@ export const AppMain = () => {
                             </button>
                         </div>
                     </div>)
-            if (dbAppindex_oszv_tag["portfolioShopUid"] != showUid) { setShowUid(dbAppindex_oszv_tag["portfolioShopUid"]) }
             if (("debug" in Query2Dict()) == false) return (<div></div>)
             return (
                 <div className="m-1 p-2" style={{ border: "3px double silver", background: "darkblue", color: "white" }}>
@@ -712,8 +711,6 @@ export const AppMain = () => {
                                         <div className="card card-body text-left">
                                             1. 「チュートリアル」では、自動的に「簡単ログイン用ユーザー」としてログインされます。<br />
                                             2. 「チュートリアル」では、自動的に「チュートリアル用店舗」に入店した状態で始まります。<br />
-                                            3. 「チュートリアル」では、別の店に立ち寄れません。<br />
-                                            4. 「チュートリアル」では、自分の店を開けません。<br />
                                             5. 「チュートリアル」では、UIや機能が省略されています。<br />
                                         </div>
                                     </div>
@@ -776,15 +773,14 @@ export const AppMain = () => {
             )
     }
     const dispBreadcrumbs = () => {
-        if ("portfolio" in Query2Dict() == true) return (<div>店の選択 → {dbMypage_s["shopName"]} (固定)</div>)
         const _breadcrumbs = []
         if (showUid == "") {
             _breadcrumbs.push(<div>店の選択</div>)
             _breadcrumbs.push(<div> : </div>)
-            _breadcrumbs.push(<div className="btn btn-success btn-push" onClick={() => { setShowUid(uid) }}>自分の店舗へ</div>)
+            _breadcrumbs.push(<div className="btn btn-link btn-push" onClick={() => { setShowUid(uid) }}>自分の店舗へ</div>)
             return (<div className="form-inline">{_breadcrumbs}</div>)
         }
-        _breadcrumbs.push(<div className="btn-link btn-push" onClick={() => { setShowUid("") }}>店の選択</div>)
+        _breadcrumbs.push(<div className="btn btn-link btn-push" onClick={() => { setShowUid("") }}>店の選択</div>)
         if (showUid != uid) {
             _breadcrumbs.push(<div> → </div>)
             _breadcrumbs.push(<div>{dbMypage_s["shopName"]}</div>)
@@ -793,7 +789,7 @@ export const AppMain = () => {
             _breadcrumbs.push(<div> → </div>)
             _breadcrumbs.push(<div>自分の店舗</div>)
         }
-        return (<div className="form-inline">{_breadcrumbs}</div>)
+        return (<h5 className="form-inline">{_breadcrumbs}</h5>)
     }
     const dipsShopName = () => {
         if (showUid == "") return (<h3><i className="fas fa-walking mr-1"></i>訪れる店を選択</h3>)
@@ -834,7 +830,7 @@ export const AppMain = () => {
             )
         if (showUid == uid)
             return (
-                <button className="btn btn-link mx-2" onClick={() => { updateShop({ "iconUrl": dbMypage_s["iconUrl"] }) }}>
+                <button className="btn btn-success btn-push" onClick={() => { updateShop({ "iconUrl": dbMypage_s["iconUrl"] }) }}>
                     <h3>店を立てる</h3>
                 </button>)
         //if ("portfolio" in Query2Dict() == false) { setShowUid("") }
@@ -971,7 +967,7 @@ export const AppMain = () => {
                 <i className="fas fa-volume-mute mr-1" style={{ pointerEvents: "none" }}></i>音OFF
             </button>)
         return (
-            <button className="btn btn-light btn-lg btn-push m-1" type="button"
+            <button className="btn btn-light btn-lg btn-push" type="button"
                 onClick={() => { setSoundVolume(0) }}>
                 <i className="fas fa-volume-up mr-1" style={{ pointerEvents: "none" }}></i>音ON
             </button>)

@@ -14,18 +14,17 @@ export const AppMain = () => {
     const [orderCnechboxAccepted, setOrderCnechboxAccepted] = useState(true)
     const [soundVolume, setSoundVolume] = useState(0)
     const [tmpAmount, setTmpAmount] = useState(1)
+    const [userSelect, setUserSelect] = useState(0)
 
     const [dbOszv_s, dispatchOszv_s] = useDb()
     const [dbOszv_c, dispatchOszv_c] = useDb()
     const [dbMypage_s, dispatchMypage_s] = useDb() //notTsuidDb
     const [dbMypage_c, dispatchMypage_c] = useDb() //notTsuidDb
-    const [dbAppindex_oszv_tag, dispatchAppindex_oszv_tag] = useDb() //notTsuidDb
     const [dbAppindex_oszv_shop, dispatchAppindex_oszv_shop] = useDb() //notTsuidDb
     useEffect(() => { dispatchOszv_s({ type: "setUri", uri: "oszv_s/" + showUid }); }, [showUid])
     useEffect(() => { dispatchOszv_c({ type: "setUri", uri: "oszv_c/" + uid }); }, [uid])
     useEffect(() => { dispatchMypage_s({ type: "setUri", uri: "mypage/" + showUid }); }, [showUid])
     useEffect(() => { dispatchMypage_c({ type: "setUri", uri: "mypage/" + uid }); }, [uid])
-    useEffect(() => { dispatchAppindex_oszv_tag({ type: "setUri", uri: "appindex/oszv_tag" }); }, [uid])
     useEffect(() => { dispatchAppindex_oszv_shop({ type: "setUri", uri: "appindex/oszv_shop" }); }, [uid])
     useEffect(() => {
         if (soundVolume != 0 && dbMypage_c["announce"] == "called") new Audio("/static/audio/called.mp3").play()
@@ -167,7 +166,7 @@ export const AppMain = () => {
                                                 const _tsuid = Date.now().toString() + "_" + uid
                                                 updateItem(_tsuid, { "name": tmpText, "imageUrl": "", "description": "詳細はありません" });
                                                 setTmpText(""); setTmpSwitch("");
-                                                setTimeout(()=>$("#oszv_itemModal_V"+_tsuid).modal(),800)                                                
+                                                setTimeout(() => $("#oszv_itemModal_V" + _tsuid).modal(), 800)
                                             }}>
                                             追加する
                                     </button>
@@ -532,7 +531,7 @@ export const AppMain = () => {
                 <button className="btn btn-warning btn-lg my-1" type="button" data-dismiss="modal"
                     onClick={() => { updateOrder(tsuid, { "status": "canceled" }); }}>
                     <i className="fas fa-exclamation-triangle mr-1" style={{ pointerEvents: "none" }}></i>取引キャンセル
-                </button>                
+                </button>
                 <button className="btn btn-danger btn-lg m-2" type="button" data-dismiss="modal"
                     onClick={() => { deleteOrder(tsuid) }}>
                     <i className="fas fa-trash-alt mr-1" style={{ pointerEvents: "none" }}></i>削除
@@ -644,41 +643,6 @@ export const AppMain = () => {
     }
     // renders
     const switchAuth = () => {
-        const checkPortfolioShopUid = () => {
-            if (dbAppindex_oszv_tag["portfolioShopUid"] == null || dbAppindex_oszv_tag["portfolioShopUid"] == "")
-                return (
-                    <div className="m-1 p-2" style={{ border: "3px double silver", background: "darkblue", color: "white" }}>
-                        <div className="d-flex flex-column text-center">
-                            <h3 style={{ color: "red" }}><i className="fas fa-hard-hat mr-1"></i>«portfolioShopUid» не ставится</h3>
-                            <h4>процедура</h4>
-                            <div>1. Нажмите «出品者1»</div>
-                            <button className="btn btn-warning btn-lg m-1"
-                                onClick={() => { dispatchAppindex_oszv_tag({ type: "create", recodes: { "portfolioShopUid": uid }, merge: true }) }}>
-                                2. регистр «PortfolioShopUid == uid»
-                            </button>
-                            <h5>Дополнительные настройки</h5>
-                            <button className="btn btn-warning btn-lg m-1"
-                                onClick={() => { dispatchAppindex_oszv_tag({ type: "create", recodes: { "PortfolioClientOdinUid": uid }, merge: true }) }}>
-                                Ex. регистр «PortfolioClientOdinUid == uid»
-                            </button>
-                            <button className="btn btn-warning btn-lg m-1"
-                                onClick={() => { dispatchAppindex_oszv_tag({ type: "create", recodes: { "PortfolioClientDvaUid": uid }, merge: true }) }}>
-                                Ex. регистр «PortfolioClientDvaUid == uid»
-                            </button>
-                        </div>
-                    </div>)
-            if (("debug" in Query2Dict()) == false) return (<div></div>)
-            return (
-                <div className="m-1 p-2" style={{ border: "3px double silver", background: "darkblue", color: "white" }}>
-                    <div className="d-flex flex-column text-center">
-                        <h3 style={{ color: "red" }}><i className="fas fa-hard-hat mr-1"></i>Сбросить «portfolioShopUid»</h3>
-                        <button className="btn btn-warning btn-lg m-1"
-                            onClick={() => { dispatchAppindex_oszv_tag({ type: "create", recodes: { "portfolioShopUid": "" }, merge: true }) }}>
-                            регистр «PortfolioShopUid == ""»
-                        </button>
-                    </div>
-                </div>)
-        }
         return (
             <div className="m-1 p-2 slidein-1-reverse" style={{ border: "3px double silver", background: "#001111" }}>
                 <div className="d-flex flex-column text-center">
@@ -720,35 +684,34 @@ export const AppMain = () => {
                         </div>
                     </div>
                 </div>
-                {checkPortfolioShopUid()}
                 <div className="d-flex justify-content-between">
-                    {dbAppindex_oszv_tag["PortfolioClientOdinUid"] == uid ?
+                    {userSelect == 0 ?
                         <button className="flex-fill btn btn-primary btn-lg m-1" disabled>
                             <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購買客1(選択中)
                         </button>
                         :
                         <button className="flex-fill btn btn-primary btn-lg btn-push m-1"
-                            onClick={() => { easyIn(); }}>
+                            onClick={() => { easyIn(); setUserSelect(0); }}>
                             <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購買客1
                         </button>
                     }
-                    {dbAppindex_oszv_tag["PortfolioClientDvaUid"] == uid ?
+                    {userSelect == 1 ?
                         <button className="flex-fill btn btn-primary btn-lg m-1" disabled>
                             <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購買客2(選択中)
                         </button>
                         :
                         <button className="flex-fill btn btn-primary btn-lg btn-push m-1"
-                            onClick={() => { easyIn("client@mail.com", "abcdef"); }}>
+                            onClick={() => { easyIn("client@mail.com", "abcdef"); setUserSelect(1); }}>
                             <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>購買客2
                         </button>
                     }
-                    {dbAppindex_oszv_tag["portfolioShopUid"] == uid ?
+                    {userSelect == 2 ?
                         <button className="flex-fill btn btn-danger btn-lg m-1" disabled>
                             <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>出品店1(選択中)
                         </button>
                         :
                         <button className="flex-fill btn btn-danger btn-lg btn-push m-1"
-                            onClick={() => { easyIn("owner@mail.com", "abcdef"); }}>
+                            onClick={() => { easyIn("owner@mail.com", "abcdef"); setUserSelect(2); }}>
                             <i className="far fa-user mr-1" style={{ pointerEvents: "none" }}></i>出品店1
                         </button>
                     }
@@ -776,19 +739,18 @@ export const AppMain = () => {
     const dispBreadcrumbs = () => {
         const _breadcrumbs = []
         if (showUid == "") {
-            _breadcrumbs.push(<div>店の選択</div>)
-            _breadcrumbs.push(<div> : </div>)
-            _breadcrumbs.push(<h4 className="btn-link btn-push" onClick={() => { setShowUid(uid) }}>自分の店舗へ</h4>)
-            return (<div className="form-inline">{_breadcrumbs}</div>)
+            _breadcrumbs.push(<h5>店の選択</h5>)
+            _breadcrumbs.push(<h5 className="btn btn-success btn-push ml-2" onClick={() => { setShowUid(uid) }}>自分の店舗へ</h5>)
+            return (<h5 className="form-inline">{_breadcrumbs}</h5>)
         }
-        _breadcrumbs.push(<h4 className="btn-link btn-push" onClick={() => { setShowUid("") }}>店の選択</h4>)
+        _breadcrumbs.push(<h5 className="btn-link btn-push" onClick={() => { setShowUid("") }}>店の選択</h5>)
         if (showUid != uid) {
-            _breadcrumbs.push(<div> → </div>)
-            _breadcrumbs.push(<div>{dbMypage_s["shopName"]}</div>)
+            _breadcrumbs.push(<h5> → </h5>)
+            _breadcrumbs.push(<h5>{dbMypage_s["shopName"]}</h5>)
         }
         if (showUid == uid) {
-            _breadcrumbs.push(<div> → </div>)
-            _breadcrumbs.push(<div>自分の店舗</div>)
+            _breadcrumbs.push(<h5> → </h5>)
+            _breadcrumbs.push(<h5>自分の店舗</h5>)
         }
         return (<div className="form-inline">{_breadcrumbs}</div>)
     }
@@ -988,12 +950,12 @@ export const AppMain = () => {
                     </div>
                     <div className="col-sm-12 col-lg-4 slidein-1-reverse p-1">
                         <div className="d-flex justify-content-center flex-lg-fill">
-                            {dispPosition()}
+                            {dipsShopName()}
                         </div>
                     </div>
                     <div className="col-sm-12 col-lg-4 text-right slidein-1 p-1">
                         <div className="d-flex justify-content-center justify-content-lg-end">
-                            {dipsShopName()}
+                            {dispPosition()}
                         </div>
                     </div>
                     <div className="col-12 text-right slidein-1 p-1">

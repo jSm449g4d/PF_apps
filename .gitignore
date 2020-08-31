@@ -20,6 +20,7 @@ __pycache__/
 # server
 tmp/
 db/
+db.sqlite3
 
 # VScode
 .vscode/

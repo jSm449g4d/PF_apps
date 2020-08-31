@@ -4,6 +4,8 @@ setuptools
 
 # server
 flask
+flask-login
+SQLAlchemy
 psutil
 waitress
 

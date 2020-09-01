@@ -56,7 +56,7 @@ https://huxiin.ga/wordpress/?p=2485
 商品名を入力して新商品を追加すると、新商品の詳細を入力するモーダルが開きます。  
 **画像**や**詳細**を入力してください。  
 また、商品一覧→商品を選択することで、いつでも商品の詳細設定が出来ます。  
-|||
+|商品追加前|商品追加後|
 |---|---|
 |![](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_willadditem.png)|![](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_additem.png)|
 

@@ -18,11 +18,11 @@
 
 # 注文受付システム  
 ![2](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_front.png)  
-本番環境   
+- 本番環境   
 https://huxiin.ga/app_tsx.html?application=oszv&portfolio  
-テスト環境  
+- テスト環境  
 https://sfb-tlnesjcoqq-an.a.run.app/app_tsx.html?application=oszv&portfolio  
-このアプリの記事  
+- このアプリの記事  
 https://huxiin.ga/wordpress/?p=2485  
 ## 説明  
 飲食店での使用を想定した、注文や受付を行うWebサービスです。  

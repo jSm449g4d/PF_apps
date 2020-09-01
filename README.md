@@ -33,7 +33,6 @@ https://huxiin.ga/wordpress/?p=2485
 上のURLからページにジャンプしてください(評価モードで自動ログインします)。  
 適当な店(**今回は居酒屋**)に入店します。  
 店を出たい場合、左上のパンくずリストから出ることができます。  
-![7](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_pan.png)  
 ### 注文編(客側)  
 ![3](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_inned.png)  
 商品を選ぶとモーダルが開き、注文が可能です。  

@@ -50,9 +50,8 @@ https://huxiin.ga/wordpress/?p=2485
 ### マイページ(開発中の機能)  
 **マイページ**から店の画像やユーザー名を変更できます。  
 ※2020/09/01現在、「自分の店→店の名前を変える」を行わないと、店の画像の更新が反映されません  
-上画像: **評価モード**でマイページへ飛ぶ  
-下画像: **本来の仕様**でマイページで飛ぶ  
-![8](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_maiA.png)  
-![9](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_maiB.png)  
-![10](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_maiDa.png)  
+|**評価モード**でマイページへ飛ぶ  |**本来の仕様**でマイページで飛ぶ |
+|---|---|
+|![8](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_maiA.png)|![9](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_maiB.png)|
 
+![10](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_maiDa.png)  

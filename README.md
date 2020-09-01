@@ -50,7 +50,7 @@ https://huxiin.ga/wordpress/?p=2485
 呼び出しすると、客側に「ピンポーン、呼び出しですー」というアナウンスが鳴ります(客側が**音をON**にしている場合)。 
 |||
 |---|---|
-|[](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_orderedselect.png)|![](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_ordered.png)|
+|![](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_orderedselect.png)|![](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_ordered.png)|
 
 ### 新商品追加(店側)  
 商品一覧→「+商品を追加」というボタンを押すと、新商品追加モーダルが開きます。  

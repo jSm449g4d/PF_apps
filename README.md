@@ -1,15 +1,19 @@
-## 全体構成
+# 全体構成  
 ![1](https://github.com/jSm449g4d/PF_apps/blob/master/assets/sikumi.png)  
-**使用技術**  
-クラウド  
- GCP: Firestore, GCS, CloudBuild, CloudRun(テスト環境)  
- VPS: Ubuntu+Apache2.4(本番環境)  
-フロントエンド  
+## 使用技術   
+### インフラ  
+- テスト環境: GCP(Cloudbuild, CloudRun) + Debian + Waitress  
+- 本番環境: VPS + Ubuntu20.04 + Apache2.4  
+### フロントエンド  
  React(Typescript)  
-バックエンド  
- Flask(Python), Firebase
-その他  
- Sass,Docker,bootstrap4,fontawesome
+### バックエンド  
+- Flask(Python)
+- Firebase(Firestore, GCS)
+### その他  
+- Sass
+- Docker
+- bootstrap4
+- fontawesome
 
 # 注文受付システム  
 ![2](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_front.png)  

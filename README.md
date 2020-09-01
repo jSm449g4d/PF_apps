@@ -5,13 +5,14 @@
 - テスト環境: GCP(Cloudbuild, CloudRun) + Debian + Waitress  
 - 本番環境: VPS + Ubuntu20.04 + Apache2.4  
 ### フロントエンド  
- React(Typescript)  
+- React(Typescript)  
 ### バックエンド  
 - Flask(Python)
 - Firebase(Firestore, GCS)
 ### その他  
 - Sass
 - Docker
+- Webpack4
 - bootstrap4
 - fontawesome
 

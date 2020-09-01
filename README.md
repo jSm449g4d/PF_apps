@@ -2,6 +2,7 @@
 ![1](https://github.com/jSm449g4d/PF_apps/blob/master/assets/sikumi.png)  
 ## 使用技術   
 ### インフラ  
+- 開発環境: Windows10 + anaconda + Waitress/Flask
 - テスト環境: GCP(Cloudbuild, CloudRun) + Debian + Waitress/Flask  
 - 本番環境: VPS + Ubuntu20.04 + Apache2.4  
 ### フロントエンド  

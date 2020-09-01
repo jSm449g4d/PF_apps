@@ -67,9 +67,10 @@ export const AppMain = () => {
                     <div className="col-sm-6 col-md-4 p-1 fadein-1">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
                             <a className="a-nolink" onClick={(evt) => { window.location.href = '/app_tsx.html?application=tptef' }}>
-                                <div className="d-flex flex-column" style={{ height: "200px" }}>
+                                <div className="d-flex flex-column" style={{ height: "350px" }}>
                                     <h5>チャットアプリ</h5>
-                                    <div className="flex-grow-1">
+                                    <div className="d-flex flex-column flex-grow-1">
+                                        <img className="img-fluid" src="/static/img/hp_tptef.png" style={{ height: 150, objectFit: "contain" }} />
                                         ファイルのやり取り可能なチャットルーム<br />
                                     </div>
                                     <b>開発状況: α版: 利用可</b>
@@ -80,9 +81,10 @@ export const AppMain = () => {
                     <div className="col-sm-6 col-md-4 p-1 fadein-2">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
                             <a className="a-nolink" onClick={(evt) => { window.location.href = '/app_tsx.html?application=mypage' }}>
-                                <div className="d-flex flex-column" style={{ height: "200px" }}>
+                                <div className="d-flex flex-column" style={{ height: "350px" }}>
                                     <h5>Mypage</h5>
-                                    <div className="flex-grow-1">
+                                    <div className="d-flex flex-column flex-grow-1">
+                                        <img className="img-fluid" src="/static/img/hp_mypage.png" style={{ height: 150, objectFit: "contain" }} />
                                         ユーザー名やアカウントを管理します<br />
                                     </div>
                                     <b>開発状況: α版: 利用可</b>
@@ -94,15 +96,16 @@ export const AppMain = () => {
                     <div className="col-sm-6 col-md-4 p-1 fadein-4">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
                             <a className="a-nolink" onClick={(evt) => { setTimeout(() => window.location.href = '/app_tsx.html?application=oszv', 500) }}>
-                                <div className="d-flex flex-column" style={{ height: "200px" }}>
+                                <div className="d-flex flex-column" style={{ height: "350px" }}>
                                     <h5>注文受付システム</h5>
-                                    <button className="btn btn-success btn-lg btn-push rounded-pill m-1"
-                                        onClick={(evt) => window.location.href = "/app_tsx.html?application=oszv&portfolio"}>
-                                        評価モードに進む
-                                    </button>
-                                    <div className="flex-grow-1">
-                                        「個人~小規模の飲食店」を想定<br/>
-                                        「評価モード」は一部UIを省略しています<br/>
+                                    <div className="d-flex flex-column flex-grow-1">
+                                        <img className="img-fluid" src="/static/img/hp_oszv.png" style={{ height: 150, objectFit: "contain" }} />
+                                        「個人~小規模の飲食店」を想定<br />
+                                        「評価モード」は一部UIを省略しています<br />
+                                        <button className="btn btn-success btn-lg btn-push rounded-pill m-1"
+                                            onClick={(evt) => window.location.href = "/app_tsx.html?application=oszv&portfolio"}>
+                                            評価モードに進む
+                                        </button>
                                     </div>
                                     <b>開発状況: α版: 利用可</b>
                                 </div>
@@ -120,27 +123,42 @@ export const AppMain = () => {
                     <div className="col-12 slidein-1">
                         <h4 style={{ backgroundColor: "rgba(225,160,225,0.8)", }}>Github一覧</h4>
                     </div>
-                    <div className="col-sm-6 col-md-4 col-lg-3 p-1 fadein-1">
+                    <div className="col-sm-6 col-md-4 p-1 fadein-2">
+                        <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
+                            <a className="a-nolink" onClick={(evt) => { window.location.href = 'https://github.com/jSm449g4d/Research' }}>
+                                <div className="d-flex flex-column" style={{ height: "350px" }}>
+                                    <h5>研究</h5>
+                                    <div className="d-flex flex-column flex-grow-1">
+                                        <img className="img-fluid" src="/static/img/hp_research.png" style={{ height: 150, objectFit: "contain" }} />
+                                        限られたデータを元に画像の高画質化を行う機械学習モデルの開発<br />
+                                    </div>
+                                    <b>開発状況: 研究中</b>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div className="col-sm-6 col-md-4 p-1 fadein-1">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
                             <a className="a-nolink" onClick={(evt) => { window.location.href = 'https://github.com/jSm449g4d/PF_apps' }}>
-                                <div className="d-flex flex-column" style={{ height: "200px" }}>
+                                <div className="d-flex flex-column" style={{ height: "350px" }}>
                                     <h5>PF_apps</h5>
-                                    <div className="flex-grow-1">
-                                        このサイトのリポジトリです
+                                    <div className="d-flex flex-column flex-grow-1">
+                                        <img className="img-fluid" src="/static/img/hp_pf_apps.png" style={{ height: 150, objectFit: "contain" }} />
+                                        このサイトのリポジトリです<br />
                                     </div>
                                     <b>開発状況: β版: 利用可</b>
                                 </div>
                             </a>
                         </div>
                     </div>
-                    <div className="col-sm-6 col-md-4 col-lg-3 p-1 fadein-2">
+                    <div className="col-sm-6 col-md-4 p-1 fadein-2">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
                             <a className="a-nolink" onClick={(evt) => { window.location.href = 'https://github.com/jSm449g4d/hleb' }}>
-                                <div className="d-flex flex-column" style={{ height: "200px" }}>
+                                <div className="d-flex flex-column" style={{ height: "350px" }}>
                                     <h5>хлеб (半完全栄養食)</h5>
-                                    <div className="flex-grow-1">
-                                        私の日常食について
-                                        <img className="img-fluid" src="/static/img/hleb.jpg" style={{ height: 100, objectFit: "contain" }} />
+                                    <div className="d-flex flex-column flex-grow-1">
+                                        <img className="img-fluid" src="/static/img/hleb.jpg" style={{ height: 150, objectFit: "contain" }} />
+                                        私の日常食について<br />
                                     </div>
                                     <b>開発状況: 第四世代: 運用中</b>
                                 </div>

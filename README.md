@@ -26,7 +26,9 @@ https://huxiin.ga/wordpress/?p=2485
 ## 使い方  
 ### 入店編(客側)  
 上のURLからページにジャンプしてください(評価モードで自動ログインします)。  
-適当な店(**今回は居酒屋**)に入店します。
+適当な店(**今回は居酒屋**)に入店します。  
+店を出たい場合、左上のパンくずリストから出ることができます。  
+![7](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_pan.png)  
 ### 注文編(客側)  
 ![3](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_inned.png)  
 商品を選ぶとモーダルが開き、注文が可能です。  
@@ -34,14 +36,23 @@ https://huxiin.ga/wordpress/?p=2485
 注文履歴→注文を選んでキャンセル申請できまます(**一度注文した場合、店側の了承が無いと消せない設定です**)  
 ![4](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_ordering.png)  
 ### 受注編(店側)  
-かんたんアカウント変更から店主のアカウント(**今回は出品店1**)を選択して、アカウント変更します  
-※**評価モード**(クエリにportfolioが付いている)でない場合、店側のアカウントでログイン操作をする必要があります  
+かんたんアカウント変更から店主のアカウント(**今回は出品店1**)を選択して、アカウント変更します。  
+※**評価モード**(クエリにportfolioが付いている)でない場合、店側のアカウントでログイン操作をする必要があります。  
 注文履歴→注文を選んで**取引承認**、**キャンセル**、**呼び出し**等の操作が可能です  
 呼び出しすると、客側に「ピンポーン、呼び出しですー」というアナウンスが鳴ります(客側が**音をON**にしている場合)。 
 ![5](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_ordered.png)  
 ### 新商品追加(店側)  
 商品一覧→「+商品を追加」というボタンを押すと、新商品追加モーダルが開きます。  
 商品名を入力して新商品を追加すると、新商品の詳細を入力するモーダルが開きます。  
-**画像**や**詳細**を入力してください。
+**画像**や**詳細**を入力してください。  
 また、商品一覧→商品を選択することで、いつでも商品の詳細設定が出来ます。  
 ![6](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_additem.png)  
+### マイページ(開発中の機能)  
+**マイページ**から店の画像やユーザー名を変更できます。  
+※2020/09/01現在、「自分の店→店の名前を変える」を行わないと、店の画像の更新が反映されません  
+上画像: **評価モード**でマイページへ飛ぶ  
+下画像: **本来の仕様**でマイページで飛ぶ  
+![8](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_maiA.png)  
+![9](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_maiB.png)  
+![10](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_maiDa.png)  
+

@@ -43,13 +43,14 @@ export const AppMain = () => {
                     <li>2015/3  普通自動二輪免許</li>
                     <li>2007/8  アマチュア無線技士4級</li>
                     <h4 className="mt-2">スキルセット</h4>
-                    <li><i className="fab fa-ubuntu mr-1"></i>Ubuntu</li>
                     <li><i className="fab fa-react mr-1"></i>React/Typescript</li>
                     <li><i className="fab fa-python mr-1"></i>Flask/Python</li>
+                    <li><i className="fab fa-cuttlefish mr-1"></i>C++</li>
+                    <li><i className="fab fa-ubuntu mr-1"></i>Ubuntu</li>
                     <li><i className="fab fa-docker mr-1"></i>Docker</li>
                     <li><i className="fab fa-bootstrap mr-1"></i>Bootstrap4</li>
                     <li><i className="fab fa-sass mr-1"></i>Sass</li>
-                    <li>GCP: Firebase, CloudBuild, CloudRun, CloudFunction</li>
+                    <li>GCP: Firestore, GCS, CloudBuild, CloudRun, CloudFunction</li>
                     <li>ML: Tensorflow, Word2Vec, scikit-learn</li>
                     <h4 className="mt-2"><i className="fas fa-broadcast-tower mr-1"></i>Links
                         <a className="btn btn-link btn-lg btn-push" href="https://huxiin.ga/wordpress/"><b>

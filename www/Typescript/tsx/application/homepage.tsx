@@ -30,7 +30,7 @@ export const AppMain = () => {
                     <h3 className="mt-2">
                         <i className="fas fa-person-booth mr-1"></i>自己紹介
                     </h3>
-                    <h4 className="mt-2">本名: 石原正敏</h4>
+                    <h4 className="mt-2">名前: 石原正敏</h4>
                     <h5 className="mt-2">現所属: 東京都立大学大学院システムデザイン学部 石川研究室</h5>
                     <h4 className="mt-2">履歴</h4>
                     <li>2022/3  東京都立大学大学院システムデザイン学部卒業予定</li>
@@ -41,22 +41,23 @@ export const AppMain = () => {
                     <li>2018/1  TOEIC 660点</li>
                     <li>2017/3  準中型免許</li>
                     <li>2015/3  普通自動二輪免許</li>
+                    <li>2007/8  アマチュア無線技士4級</li>
                     <h4 className="mt-2">スキルセット</h4>
-                    <h5 style={{ pointerEvents: "none" }}>
-                        <i className="fab fa-ubuntu mr-1"></i>
-                        <i className="fab fa-react mr-1"></i>
-                        <i className="fab fa-python mr-1"></i>
-                        <i className="fab fa-bootstrap mr-1"></i>
-                        <i className="fab fa-docker mr-1"></i>
-                        <i className="fab fa-sass mr-1"></i>
-                    </h5>
-                    <li>GCP: Firebase, CloudBuild, CloudRun, CloudFunction</li>
+                    <li><i className="fab fa-react mr-1"></i>React/Typescript</li>
+                    <li><i className="fab fa-python mr-1"></i>Flask/Python</li>
+                    <li><i className="fab fa-cuttlefish mr-1"></i>C++</li>
+                    <li><i className="fab fa-ubuntu mr-1"></i>Ubuntu</li>
+                    <li><i className="fab fa-docker mr-1"></i>Docker</li>
+                    <li><i className="fab fa-bootstrap mr-1"></i>Bootstrap4</li>
+                    <li><i className="fab fa-sass mr-1"></i>Sass</li>
+                    <li>GCP: Firestore, GCS, CloudBuild, CloudRun, CloudFunction</li>
                     <li>ML: Tensorflow, Word2Vec, scikit-learn</li>
-                    <h4 className="mt-2"><i className="fas fa-broadcast-tower mr-1"></i>Links</h4>
-                    <a className="btn btn-link btn-lg btn-push" href="https://huxiin.ga/wordpress/"><b>
-                        <i className="fab fa-wordpress mr-1"></i>https://huxiin.ga/wordpress/</b></a>
-                    <a className="btn btn-link btn-lg btn-push" href="https://github.com/jSm449g4d/"><b>
-                        <i className="fab fa-github mr-1"></i>https://github.com/jSm449g4d/</b></a>
+                    <h4 className="mt-2"><i className="fas fa-broadcast-tower mr-1"></i>Links
+                        <a className="btn btn-link btn-lg btn-push" href="https://huxiin.ga/wordpress/"><b>
+                            <i className="fab fa-wordpress mr-1"></i>https://huxiin.ga/wordpress/</b></a>
+                        <a className="btn btn-link btn-lg btn-push" href="https://github.com/jSm449g4d/"><b>
+                            <i className="fab fa-github mr-1"></i>https://github.com/jSm449g4d/</b></a>
+                    </h4>
                     <h5>連絡先: masatoshi.ishihara@mbr.nifty.com</h5>
                 </ul>
             </div>
@@ -136,7 +137,12 @@ export const AppMain = () => {
                                     <h5>研究</h5>
                                     <div className="d-flex flex-column flex-grow-1">
                                         <img className="img-fluid" src="/static/img/hp_research.png" style={{ height: 150, objectFit: "contain" }} />
-                                        限られたデータを元に画像の高画質化を行う機械学習モデルの開発<br />
+                                        限られたデータを元に画像の高画質化を行う<br />機械学習モデルの開発<br />
+                                        <ul>
+                                            <li>自己教師あり学習</li>
+                                            <li>U-Netを元にした新モデル</li>
+                                            <li>DIV2K/火星画像</li>
+                                        </ul>
                                     </div>
                                     <b>開発状況: 研究中</b>
                                 </div>
@@ -150,7 +156,12 @@ export const AppMain = () => {
                                     <h5>PF_apps</h5>
                                     <div className="d-flex flex-column flex-grow-1">
                                         <img className="img-fluid" src="/static/img/hp_pf_apps.png" style={{ height: 150, objectFit: "contain" }} />
-                                        このサイトのリポジトリです<br />
+                                        このサイトのリポジトリです
+                                        <ul>
+                                            <li>React/Typescript</li>
+                                            <li>Flask/Python</li>
+                                            <li>Firebase</li>
+                                        </ul>
                                     </div>
                                     <b>開発状況: β版: 利用可</b>
                                 </div>

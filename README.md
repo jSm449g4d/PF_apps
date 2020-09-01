@@ -4,7 +4,7 @@
 ### インフラ  
 - 開発環境: Windows10 + anaconda + Waitress/Flask
 - テスト環境: GCP(Cloudbuild, CloudRun) + Debian + Waitress/Flask  
-- 本番環境: VPS + Ubuntu20.04 + Apache2.4  
+- 本番環境: VPS + Ubuntu20.04 + Apache2.4 & Waitress/Flask
 ### フロントエンド  
 - React(Typescript)  
 ### バックエンド  

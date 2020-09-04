@@ -111,7 +111,6 @@ def show(request):
 
     if request.method == "POST":
         return json.dumps(statusDict, ensure_ascii=False), 200
-
     # showStatus
     statusLines: str = "<h6 class='text-center'>==STATUS==</h6>"
     for key, value in statusDict.items():

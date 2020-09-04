@@ -16,3 +16,4 @@ BeautifulSoup4
 janome
 urllib3
 certifi
+PyJWT

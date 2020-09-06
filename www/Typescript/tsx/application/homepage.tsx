@@ -50,6 +50,7 @@ export const AppMain = () => {
                     <li><i className="fab fa-docker mr-1"></i>Docker</li>
                     <li><i className="fab fa-bootstrap mr-1"></i>Bootstrap4</li>
                     <li><i className="fab fa-sass mr-1"></i>Sass</li>
+                    <li><i className="fas fa-database mr-1"></i>SQLite3</li>
                     <li>GCP: Firestore, GCS, CloudBuild, CloudRun, CloudFunction</li>
                     <li>ML: Tensorflow, Word2Vec, scikit-learn</li>
                     <h4 className="mt-2"><i className="fas fa-broadcast-tower mr-1"></i>Links
@@ -139,8 +140,9 @@ export const AppMain = () => {
                                         <img className="img-fluid" src="/static/img/hp_research.png" style={{ height: 150, objectFit: "contain" }} />
                                         限られたデータを元に画像の高画質化を行う<br />機械学習モデルの開発<br />
                                         <ul>
-                                            <li>自己教師あり学習</li>
-                                            <li>U-Netを元にした新モデル</li>
+                                            <li>超解像/ノイズ除去</li>
+                                            <li>少ない画像数(100-1000枚)</li>
+                                            <li>U-Net+Inception+VDSRな新モデル</li>
                                             <li>DIV2K/火星画像</li>
                                         </ul>
                                     </div>

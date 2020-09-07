@@ -7,6 +7,7 @@ import json
 from google.cloud import firestore
 from google.cloud import storage as firestorage
 
+GCP_key="./keys/FirebaseAdminKey.json"
 access_counter = 0
 try:
     db = firestore.Client.from_service_account_json(GCP_key)

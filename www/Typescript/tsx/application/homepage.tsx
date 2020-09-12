@@ -36,6 +36,12 @@ export const AppMain = () => {
                     <li>2022/3  東京都立大学大学院システムデザイン学部卒業予定</li>
                     <li>2018/3  法政大学理工学部機械工学科卒業</li>
                     <li>2014/3  東京成徳大学高校高等部卒業</li>
+                    <details><summary>大学院時代の<b>謎の二年間</b>について</summary>
+                        <ul>
+                            <li>2018/4-2019/3: 大学院進学に向けての浪人(AIの研究やりたかったので)</li>
+                            <li>2020/10-2021/9: もっと研究したかったから休学(就活と研究両方は忙しすぎ)</li>
+                        </ul>
+                    </details>
                     <h4 className="mt-2">資格</h4>
                     <li>2018/11 基本情報技術者試験</li>
                     <li>2018/1  TOEIC 660点</li>
@@ -75,11 +81,12 @@ export const AppMain = () => {
                     <div className="col-sm-6 col-md-4 p-1 fadein-1">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
                             <a className="a-nolink" onClick={(evt) => { window.location.href = '/app_tsx.html?application=tptef' }}>
-                                <div className="d-flex flex-column" style={{ height: "350px" }}>
+                                <div className="d-flex flex-column" style={{ height: "380px" }}>
                                     <h5>チャットアプリ</h5>
                                     <div className="d-flex flex-column flex-grow-1">
                                         <img className="img-fluid" src="/static/img/hp_tptef.png" style={{ height: 150, objectFit: "contain" }} />
                                         ファイルのやり取り可能なチャットルーム<br />
+                                        何かと利用頻度は高め<br />
                                     </div>
                                     <b>開発状況: α版: 利用可</b>
                                 </div>
@@ -89,11 +96,12 @@ export const AppMain = () => {
                     <div className="col-sm-6 col-md-4 p-1 fadein-2">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
                             <a className="a-nolink" onClick={(evt) => { window.location.href = '/app_tsx.html?application=mypage' }}>
-                                <div className="d-flex flex-column" style={{ height: "350px" }}>
+                                <div className="d-flex flex-column" style={{ height: "380px" }}>
                                     <h5>Mypage</h5>
                                     <div className="d-flex flex-column flex-grow-1">
                                         <img className="img-fluid" src="/static/img/hp_mypage.png" style={{ height: 150, objectFit: "contain" }} />
-                                        ユーザー名やアカウントを管理します<br />
+                                        ユーザー名やアカウントを管理<br />
+                                        他のWebアプリで参照されます<br />
                                     </div>
                                     <b>開発状況: α版: 利用可</b>
                                 </div>
@@ -101,14 +109,14 @@ export const AppMain = () => {
                         </div>
                     </div>
                     {/*ボタンinボタンは、setTimeoutで遅延させることで順序を付けられる*/}
-                    <div className="col-sm-6 col-md-4 p-1 fadein-4">
+                    <div className="col-sm-6 col-md-4 p-1 fadein-3">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
                             <a className="a-nolink" onClick={(evt) => { setTimeout(() => window.location.href = '/app_tsx.html?application=oszv', 500) }}>
-                                <div className="d-flex flex-column" style={{ height: "350px" }}>
+                                <div className="d-flex flex-column" style={{ height: "380px" }}>
                                     <h5>注文受付システム</h5>
                                     <div className="d-flex flex-column flex-grow-1">
                                         <img className="img-fluid" src="/static/img/hp_oszv.png" style={{ height: 150, objectFit: "contain" }} />
-                                        「個人~小規模の飲食店」を想定<br />
+                                        飲食店等の受付や注文をスムーズにして、暮らしを便利にする!<br />
                                         「評価モード」は一部UIを省略しています<br />
                                         <button className="btn btn-success btn-lg btn-push rounded-pill m-1"
                                             onClick={(evt) => window.location.href = "/app_tsx.html?application=oszv&portfolio"}>
@@ -116,6 +124,22 @@ export const AppMain = () => {
                                         </button>
                                     </div>
                                     <b>開発状況: α版: 利用可</b>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div className="col-sm-6 col-md-4 p-1 fadein-4">
+                        <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
+                            <a className="a-nolink" onClick={(evt) => { window.location.href = 'https://sh2-tlnesjcoqq-an.a.run.app/' }}>
+                                <div className="d-flex flex-column" style={{ height: "380px" }}>
+                                    <h5>Flask通信</h5>
+                                    <div className="d-flex flex-column flex-grow-1">
+                                        <img className="img-fluid" src="" style={{ height: 150, objectFit: "contain" }} />
+                                        「時間を軸とした、ホットのキーワードの可視化」<br />
+                                        キーワード検索で、何時どれだけ記事にされたか<br />
+                                        どんな記事があったのかが分かります!<br />
+                                    </div>
+                                    <b>開発状況: 2020/09/16完成に向けて開発中!</b>
                                 </div>
                             </a>
                         </div>
@@ -131,7 +155,7 @@ export const AppMain = () => {
                     <div className="col-12 slidein-1">
                         <h4 style={{ backgroundColor: "rgba(225,160,225,0.8)", }}>Github一覧</h4>
                     </div>
-                    <div className="col-sm-6 col-md-4 p-1 fadein-2">
+                    <div className="col-sm-6 col-md-4 p-1 fadein-1">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
                             <a className="a-nolink" onClick={(evt) => { window.location.href = 'https://github.com/jSm449g4d/Research' }}>
                                 <div className="d-flex flex-column" style={{ height: "380px" }}>
@@ -151,14 +175,14 @@ export const AppMain = () => {
                             </a>
                         </div>
                     </div>
-                    <div className="col-sm-6 col-md-4 p-1 fadein-1">
+                    <div className="col-sm-6 col-md-4 p-1 fadein-2">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
                             <a className="a-nolink" onClick={(evt) => { window.location.href = 'https://github.com/jSm449g4d/PF_apps' }}>
                                 <div className="d-flex flex-column" style={{ height: "380px" }}>
                                     <h5>PF_apps</h5>
                                     <div className="d-flex flex-column flex-grow-1">
                                         <img className="img-fluid" src="/static/img/hp_pf_apps.png" style={{ height: 150, objectFit: "contain" }} />
-                                        このサイトのリポジトリです
+                                        このホームページとWebアプリ
                                         <ul>
                                             <li>React/Typescript</li>
                                             <li>Flask/Python</li>
@@ -170,7 +194,27 @@ export const AppMain = () => {
                             </a>
                         </div>
                     </div>
-                    <div className="col-sm-6 col-md-4 p-1 fadein-2">
+                    <div className="col-sm-6 col-md-4 p-1 fadein-3">
+                        <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
+                            <a className="a-nolink" onClick={(evt) => { window.location.href = 'https://github.com/jSm449g4d/summerhackathon_vol2' }}>
+                                <div className="d-flex flex-column" style={{ height: "380px" }}>
+                                    <h5>Flask通信</h5>
+                                    <div className="d-flex flex-column flex-grow-1">
+                                        <img className="img-fluid" src="/static/img/hakka.png" style={{ height: 150, objectFit: "contain" }} />
+                                        2020/09/09~16に開催されたハッカソン!!
+                                        <ul>
+                                            <li>チーム開発</li>
+                                            <li>情報可視化で世の中を便利に!</li>
+                                            <li>何時どれだけ、どんな記事?</li>
+                                            <li>キーワード検索</li>
+                                        </ul>
+                                    </div>
+                                    <b>開発状況: 2020/09/16完成に向けて開発中!</b>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div className="col-sm-6 col-md-4 p-1 fadein-4">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
                             <a className="a-nolink" onClick={(evt) => { window.location.href = 'https://github.com/jSm449g4d/hleb' }}>
                                 <div className="d-flex flex-column" style={{ height: "380px" }}>

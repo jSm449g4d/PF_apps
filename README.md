@@ -1,4 +1,9 @@
-# 全体構成  
+# ホームページとWebアプリ 
+ホームページに、色々なWebアプリをどんどん追加する構成です  
+## アプリ一覧
+- 注文受付システム  
+- チャットアプリ  
+## 全体構成  
 ![1](https://github.com/jSm449g4d/PF_apps/blob/master/assets/sikumi.png)  
 ## 使用技術   
 ### インフラ  
@@ -16,18 +21,51 @@
 - bootstrap4
 - fontawesome
 
+## ディレクトリ構成
+summerhackathon_vol2/  
+┣www/ (アプリ本体)  
+┃┣html/ (公開ファイル置き場)  
+┃┃┣static/(静的ファイル置き場)  
+┃┃┃┣src/(アプリ本体のスクリプト置き場)  
+┃┃┃┗img/(アプリで使う画像置き場)  
+┃┃┣main.html (アプリ本体ののhtml)  
+┃┃┣favicon.ico (ファビコン)  
+┃┃┗robots.txt (googleクローラー等への指示)  
+┃┣Typescript/ (フロントエンド関係)  
+┃┃┣tsx/ (フロントエンドソースコード置き場)  
+┃┃┃┣applicaton (Webアプリ本体)  
+┃┃┃┣component (Webアプリで使うコンポーネント置き場)  
+┃┃┃┣stylecheets (sass置き場)  
+┃┃┃┗index.tsx (main.htmlから呼び出される基幹)  
+┃┃┣tsconfig.json (Typescript設定)  
+┃┃┗webpack.config.js (Webpack設定)  
+┃┣Flask/ (バックエンドAPI置き場)  
+┃┃┗requirements.txt (必要なライブラリ一覧)  
+┃┣Dockerfile (環境構築方法の記述,CaaSへのデプロイ用)  
+┃┣wsgi_h.py (変数置き場(Redux的なやつ))  
+┃┗wsgi.py (Flask鯖本体/ルーティング等の処理実装箇所)  
+┣assets (README.mdで使う画像置き場)  
+┣.gitignore (git pushでpushしたくないファイル一覧)  
+┣cloudbuild.yaml (CaaSへのデプロイ指示書)  
+┣LICENSE (MIT: ご自由にお使いください)  
+┗README.md この文書  
+
+
 # 注文受付システム  
 ![2](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_front.png)  
+## ミッション
+飲食店等の受付や注文をスムーズにして、暮らしを便利にする!  
+## どんなアプリ?
+飲食店での使用を想定した、注文や受付を行うWebサービスです。  
+ユーザーは**商品を注文**したり、**店員を呼び出し**たり、**出店したり**できます。  
+※2020/09/01現在も開発は続いているので、仕様変更したらごめんなさい。  
+## URL
 - 本番環境   
 https://huxiin.ga/app_tsx.html?application=oszv&portfolio  
 - テスト環境(**本番環境が動かなかったら、こちらをお試しください**)  
 https://sfb-tlnesjcoqq-an.a.run.app/app_tsx.html?application=oszv&portfolio  
 - このアプリの記事  
 https://huxiin.ga/wordpress/?p=2485  
-## 説明  
-飲食店での使用を想定した、注文や受付を行うWebサービスです。  
-ユーザーは**商品を注文**したり、**店員を呼び出し**たり、**出店したり**できます。  
-※2020/09/01現在も開発は続いているので、仕様変更したらごめんなさい。  
 ## 使い方  
 ### 入店編(客側)  
 上のURLからページにジャンプしてください(評価モードで自動ログインします)。  

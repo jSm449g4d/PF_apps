@@ -22,7 +22,7 @@
 - fontawesome
 
 ## ディレクトリ構成
-summerhackathon_vol2/  
+PF_apps/  
 ┣www/ (アプリ本体)  
 ┃┣html/ (公開ファイル置き場)  
 ┃┃┣static/(静的ファイル置き場)  

@@ -11,11 +11,11 @@ RUN apt update -q;apt upgrade -yq
 WORKDIR $APP/html/static
 RUN apt install npm -yq
 RUN npm install -g npm
-RUN npm install --save jquery@3.5.1 popper.js@1.16.1 bootstrap react react-dom react-bootstrap firebase && \
+RUN npm install --save jquery@3.5.1 popper.js@1.16.1 bootstrap react react-dom react-bootstrap firebase js-cookie && \
     npm install @fortawesome/fontawesome-free lazysizes
 # Typescript
 WORKDIR $APP/Typescript
-RUN npm install --save-dev @types/jquery @types/popper.js @types/bootstrap && \
+RUN npm install --save-dev @types/jquery @types/popper.js @types/bootstrap @types/js-cookie && \
     npm install --save-dev @types/react @types/react-dom @types/react-bootstrap  @types/firebase
 # Webpack
 RUN npm install --save-dev typescript webpack webpack-cli @types/webpack-env @types/webpack-env webpack-glob-entry && \

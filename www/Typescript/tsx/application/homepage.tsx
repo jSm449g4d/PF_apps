@@ -134,7 +134,7 @@ export const AppMain = () => {
                                 <div className="d-flex flex-column" style={{ height: "380px" }}>
                                     <h5>Flask通信</h5>
                                     <div className="d-flex flex-column flex-grow-1">
-                                        <img className="img-fluid" src="" style={{ height: 150, objectFit: "contain" }} />
+                                        <img className="img-fluid" src="/static/img/hp_hakka.png" style={{ height: 150, objectFit: "contain" }} />
                                         「時間を軸とした、ホットのキーワードの可視化」<br />
                                         キーワード検索で、何時どれだけ記事にされたか<br />
                                         どんな記事があったのかが分かります!<br />

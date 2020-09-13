@@ -51,7 +51,7 @@ PF_apps/
 ┗README.md この文書  
 
 ### Q.どうして↑の様なディレクトリ構成になったの?
-A. Apache2.4と共存させるため
+A. Apache2.4と共存させるため  
 詳しくは「ディレクトリの再利用化」にて→https://huxiin.ga/wordpress/?p=2361
 
 # 注文受付システム  

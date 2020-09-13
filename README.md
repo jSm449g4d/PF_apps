@@ -50,6 +50,9 @@ PF_apps/
 ┣LICENSE (MIT: ご自由にお使いください)  
 ┗README.md この文書  
 
+### Q.どうして↑の様なディレクトリ構成になったの?
+A. Apache2.4と共存させるため
+詳しくは「ディレクトリの再利用化」にて→https://huxiin.ga/wordpress/?p=2361
 
 # 注文受付システム  
 ![2](https://github.com/jSm449g4d/PF_apps/blob/master/assets/oszv_front.png)  

@@ -12,11 +12,11 @@ WORKDIR $APP/html/static
 RUN apt install npm -yq
 RUN npm install -g npm
 RUN npm install --save jquery@3.5.1 popper.js@1.16.1 bootstrap react react-dom react-bootstrap firebase js-cookie && \
-    npm install @fortawesome/fontawesome-free lazysizes
+    npm install @fortawesome/fontawesome-free lazysizes prop-types recharts moment
 # Typescript
 WORKDIR $APP/Typescript
 RUN npm install --save-dev @types/jquery @types/popper.js @types/bootstrap @types/js-cookie && \
-    npm install --save-dev @types/react @types/react-dom @types/react-bootstrap  @types/firebase
+    npm install --save-dev @types/react @types/react-dom @types/react-bootstrap @types/recharts @types/moment @types/firebase
 # Webpack
 RUN npm install --save-dev typescript webpack webpack-cli @types/webpack-env @types/webpack-env webpack-glob-entry && \
     npm install --save-dev ts-loader source-map-loader style-loader css-loader copy-webpack-plugin && \

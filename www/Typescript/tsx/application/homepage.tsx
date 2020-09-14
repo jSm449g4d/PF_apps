@@ -1,5 +1,6 @@
 import React from 'react';
 import "../stylecheets/style.sass";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts'
 
 const bgImage: any = {
     //backgroundColor: "lavender",
@@ -12,10 +13,16 @@ export const AppMain = () => {
     // functions
     // renders
     const titleLogo = () => {
+        $('[data-toggle="homepage_titleLogo_tooltip"]').tooltip()
         return (
             <div className="row text-center mt-2">
                 <div className="col-lg-2" />
-                <h1 className="d-none d-md-block col-lg-8 titlelogo">VPSdeWP の ホームページ</h1>
+                <h1 className="d-none d-md-block col-lg-8 titlelogo btn-push" data-toggle="homepage_titleLogo_tooltip" data-placement="bottom" title="敗戦国の末路"
+                    onClick={(evt) => {
+                        window.location.href = 'https://www.youtube.com/watch?v=_fj9U6pVNkM&ab_channel=%E9%88%B4%E6%9C%A8%E3%82%86%E3%82%86%E3%81%86%E3%81%9F'
+                    }}>
+                    VPSdeWP の ホームページ
+                </h1>
                 <h1 className="d-block d-md-none col-12 text-center titlelogo "><div>VPSdeWP</div><div>の</div><div>ホームページ</div>
                 </h1>
                 <div className="col-lg-2" >
@@ -38,7 +45,7 @@ export const AppMain = () => {
                     <li>2014/3  東京成徳大学高校高等部卒業</li>
                     <details><summary>大学院時代の<b>謎の二年間</b>について</summary>
                         <ul>
-                            <li>2018/4-2019/3: 浪人: AIの研究をするために大学院進学に向けての浪人</li>
+                            <li>2018/4-2019/3: 浪人: AIの研究をするために大学院進学に向けて</li>
                             <li>2020/10-2021/9: 休学: もっと研究を掘り下げたい</li>
                         </ul>
                     </details>
@@ -80,7 +87,7 @@ export const AppMain = () => {
                     </div>
                     <div className="col-sm-6 col-md-4 p-1 fadein-1">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
-                            <a className="a-nolink" onClick={(evt) => { window.location.href = '/app_tsx.html?application=tptef' }}>
+                            <a className="a-nolink" href='/app_tsx.html?application=tptef'>
                                 <div className="d-flex flex-column" style={{ height: "380px" }}>
                                     <h5>チャットアプリ</h5>
                                     <div className="d-flex flex-column flex-grow-1">
@@ -95,7 +102,7 @@ export const AppMain = () => {
                     </div>
                     <div className="col-sm-6 col-md-4 p-1 fadein-2">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
-                            <a className="a-nolink" onClick={(evt) => { window.location.href = '/app_tsx.html?application=mypage' }}>
+                            <a className="a-nolink" href='/app_tsx.html?application=mypage' >
                                 <div className="d-flex flex-column" style={{ height: "380px" }}>
                                     <h5>Mypage</h5>
                                     <div className="d-flex flex-column flex-grow-1">
@@ -130,7 +137,7 @@ export const AppMain = () => {
                     </div>
                     <div className="col-sm-6 col-md-4 p-1 fadein-4">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
-                            <a className="a-nolink" onClick={(evt) => { window.location.href = 'https://sh2-tlnesjcoqq-an.a.run.app/' }}>
+                            <a className="a-nolink" href='https://sh2-tlnesjcoqq-an.a.run.app/'>
                                 <div className="d-flex flex-column" style={{ height: "380px" }}>
                                     <h5>Flask通信</h5>
                                     <div className="d-flex flex-column flex-grow-1">
@@ -157,7 +164,7 @@ export const AppMain = () => {
                     </div>
                     <div className="col-sm-6 col-md-4 p-1 fadein-1">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
-                            <a className="a-nolink" onClick={(evt) => { window.location.href = 'https://github.com/jSm449g4d/Research' }}>
+                            <a className="a-nolink" href='https://github.com/jSm449g4d/Research' >
                                 <div className="d-flex flex-column" style={{ height: "380px" }}>
                                     <h5>研究</h5>
                                     <div className="d-flex flex-column flex-grow-1">
@@ -177,7 +184,7 @@ export const AppMain = () => {
                     </div>
                     <div className="col-sm-6 col-md-4 p-1 fadein-2">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
-                            <a className="a-nolink" onClick={(evt) => { window.location.href = 'https://github.com/jSm449g4d/PF_apps' }}>
+                            <a className="a-nolink" href='https://github.com/jSm449g4d/PF_apps'>
                                 <div className="d-flex flex-column" style={{ height: "380px" }}>
                                     <h5>PF_apps</h5>
                                     <div className="d-flex flex-column flex-grow-1">
@@ -196,7 +203,7 @@ export const AppMain = () => {
                     </div>
                     <div className="col-sm-6 col-md-4 p-1 fadein-3">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
-                            <a className="a-nolink" onClick={(evt) => { window.location.href = 'https://github.com/jSm449g4d/summerhackathon_vol2' }}>
+                            <a className="a-nolink" href='https://github.com/jSm449g4d/summerhackathon_vol2' >
                                 <div className="d-flex flex-column" style={{ height: "380px" }}>
                                     <h5>Flask通信</h5>
                                     <div className="d-flex flex-column flex-grow-1">
@@ -216,7 +223,7 @@ export const AppMain = () => {
                     </div>
                     <div className="col-sm-6 col-md-4 p-1 fadein-4">
                         <div className="btn-col" style={{ background: "rgba(255,255,255,0.6)" }}>
-                            <a className="a-nolink" onClick={(evt) => { window.location.href = 'https://github.com/jSm449g4d/hleb' }}>
+                            <a className="a-nolink" href='https://github.com/jSm449g4d/hleb' >
                                 <div className="d-flex flex-column" style={{ height: "380px" }}>
                                     <h5>хлеб (半完全栄養食)</h5>
                                     <div className="d-flex flex-column flex-grow-1">

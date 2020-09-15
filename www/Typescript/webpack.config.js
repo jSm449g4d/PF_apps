@@ -32,6 +32,7 @@ module.exports = {
     "react-dom": "ReactDOM",
     'recharts':'Recharts',
     'moment':'moment',
+    'crypto-js':'CryptoJS',
     "firebase/app": "firebase",
     "firebase/analytics": "firebase",
     "firebase/auth": "firebase",

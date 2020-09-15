@@ -13,14 +13,10 @@ export const AppMain = () => {
     // functions
     // renders
     const titleLogo = () => {
-        $('[data-toggle="homepage_titleLogo_tooltip"]').tooltip()
         return (
             <div className="row text-center mt-2">
                 <div className="col-lg-2" />
-                <h1 className="d-none d-md-block col-lg-8 titlelogo btn-push" data-toggle="homepage_titleLogo_tooltip" data-placement="bottom" title="敗戦国の末路"
-                    onClick={(evt) => {
-                        window.location.href = 'https://www.youtube.com/watch?v=_fj9U6pVNkM&ab_channel=%E9%88%B4%E6%9C%A8%E3%82%86%E3%82%86%E3%81%86%E3%81%9F'
-                    }}>
+                <h1 className="d-none d-md-block col-lg-8 titlelogo" >
                     VPSdeWP の ホームページ
                 </h1>
                 <h1 className="d-block d-md-none col-12 text-center titlelogo "><div>VPSdeWP</div><div>の</div><div>ホームページ</div>

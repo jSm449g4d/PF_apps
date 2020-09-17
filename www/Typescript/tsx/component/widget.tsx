@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { AppAuth } from "./firebaseWrapper";
 import { stopf5, Query2Dict } from "./util_tsx";
 import CryptoJS from 'crypto-js';
+import Cookies from 'js-cookie';
 require.context('../application/', true, /\.ts(x?)$/)
 
 export const WidgetHead = () => {
@@ -33,8 +34,13 @@ export const WidgetHead = () => {
                 </button>
             )
     }
-    const _signup = (uid: string = "test_uid", pass: string = "test_pass") => {
-        const _sendCreate: any = { login: { uid: uid, passhash: CryptoJS.SHA256('sha256').toString(CryptoJS.enc.Hex) } }
+    const _signin = (uid: string = "test_uid", pass: string = "test_pass") => {
+        Cookies.set("wsgi_login", { uid: uid, passhash: CryptoJS.SHA256(pass).toString(CryptoJS.enc.Hex) })
+    }
+    const _signout = (uid: string = "test_uid", pass: string = "test_pass") => {
+        Cookies.set("wsgi_login", {})
+    }
+    const _signup = () => {
         const xhr: XMLHttpRequest = new XMLHttpRequest();
         xhr.open("POST", "/Flask/login/main.py", true);
         xhr.ontimeout = () => console.error("The request timed out.");
@@ -42,10 +48,7 @@ export const WidgetHead = () => {
         xhr.onload = () => {
             if (xhr.readyState === 4 && xhr.status === 200) console.log(xhr.responseText);
         };
-        xhr.send(JSON.stringify(_sendCreate));
-    }
-    const _signin = (uid: string = "test_uid", pass: string = "test_pass") => {
-
+        xhr.send(JSON.stringify({}));
     }
     return (
         <div style={{ borderBottom: "3px double gray", background: "linear-gradient(rgba(60,60,60,0),rgba(60,60,60,0.1)" }}>
@@ -94,13 +97,17 @@ export const WidgetHead = () => {
                                         <div>ようこそ</div>
                                         kari
                                     </h6>
-                                    <button className="btn btn-secondary btn-push mx-1" type="button" onClick={() => { _signup() }}>
+                                    <button className="btn btn-secondary btn-push mx-1" type="button" onClick={() => { _signin() }}>
                                         <i className="fas fa-sign-out-alt mr-1" style={{ pointerEvents: "none" }}></i>
                                         <b>サインイン</b>
                                     </button>
-                                    <button className="btn btn-secondary btn-push mx-1" type="button" onClick={() => { _signin() }}>
+                                    <button className="btn btn-secondary btn-push mx-1" type="button" onClick={() => { _signup() }}>
                                         <i className="fas fa-sign-out-alt mr-1" style={{ pointerEvents: "none" }}></i>
                                         <b>サインアップ</b>
+                                    </button>
+                                    <button className="btn btn-secondary btn-push mx-1" type="button" onClick={() => { _signout() }}>
+                                        <i className="fas fa-sign-out-alt mr-1" style={{ pointerEvents: "none" }}></i>
+                                        <b>サインアウト</b>
                                     </button>
                                     config
                                 </div>

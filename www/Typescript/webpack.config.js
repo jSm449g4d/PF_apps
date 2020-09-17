@@ -33,6 +33,7 @@ module.exports = {
     'recharts':'Recharts',
     'moment':'moment',
     'crypto-js':'CryptoJS',
+    'js-cookie':'Cookies',
     "firebase/app": "firebase",
     "firebase/analytics": "firebase",
     "firebase/auth": "firebase",

@@ -6,7 +6,7 @@ import importlib
 import json
 import threading
 import time
-from urllib import parse
+import urllib
 # Additional
 import flask
 import urllib3
@@ -29,7 +29,7 @@ class Users(Base):
 Base.metadata.create_all(engine)
 session = Session( bind = engine,autocommit = False, autoflush = True)
 
-def check_auth(uid:string,pashhash:string):
+def check_auth(uid,pashhash):
     _user=session.query(Users).filter(Users.uid==uid)
     if _user.count()==1:
         if _user.first().passhash==pashhash:
@@ -39,14 +39,15 @@ def check_auth(uid:string,pashhash:string):
 def show(request):
     _dataDict = json.loads(request.get_data())
 
-    _user=request.cookies.get('wsgi_login')
+    print(request.cookies.get('wsgi_login'))
+
+    print(_user)
+    print(_user["uid"])
     if session.query(Users).filter(Users.uid==_user["uid"]).count()==1:
         return flask.make_response("already_account_exist"),200
     session.add(Users(uid=_user["uid"],passhash=_user["passhash"]))
     session.commit()
     return flask.make_response("account_created"),200
-        
-
     
 
 #    if ("login" in _dataDict):

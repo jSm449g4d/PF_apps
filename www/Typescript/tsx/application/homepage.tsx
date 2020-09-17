@@ -67,6 +67,8 @@ export const AppMain = () => {
                             <i className="fab fa-wordpress mr-1"></i>https://huxiin.ga/wordpress/</b></a>
                         <a className="btn btn-link btn-lg btn-push" href="https://github.com/jSm449g4d/"><b>
                             <i className="fab fa-github mr-1"></i>https://github.com/jSm449g4d/</b></a>
+                        <a className="btn btn-link btn-lg btn-push" href="https://www.wantedly.com/users/123640147"><b>
+                            https://www.wantedly.com/users/123640147</b></a>
                     </h4>
                     <h5>連絡先: masatoshi.ishihara@mbr.nifty.com</h5>
                 </ul>
@@ -142,7 +144,7 @@ export const AppMain = () => {
                                         キーワード検索で、何時どれだけ記事にされたか<br />
                                         どんな記事があったのかが分かります!<br />
                                     </div>
-                                    <b>開発状況: 2020/09/16完成に向けて開発中!</b>
+                                    <b>開発状況: 完成!</b>
                                 </div>
                             </a>
                         </div>
@@ -204,7 +206,7 @@ export const AppMain = () => {
                                     <h5>Flask通信</h5>
                                     <div className="d-flex flex-column flex-grow-1">
                                         <img className="img-fluid" src="/static/img/hakka.png" style={{ height: 150, objectFit: "contain" }} />
-                                        2020/09/09~16に開催されたハッカソン!!
+                                        2020/09/09~16に開催されたハッカソンの<b>入選</b>作品!!
                                         <ul>
                                             <li>チーム開発</li>
                                             <li>情報可視化で世の中を便利に!</li>
@@ -212,7 +214,7 @@ export const AppMain = () => {
                                             <li>キーワード検索</li>
                                         </ul>
                                     </div>
-                                    <b>開発状況: 2020/09/16完成に向けて開発中!</b>
+                                    <b>開発状況: 完成!</b>
                                 </div>
                             </a>
                         </div>

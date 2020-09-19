@@ -167,7 +167,7 @@ export const AppMain = () => {
                                     <h5>研究</h5>
                                     <div className="d-flex flex-column flex-grow-1">
                                         <img className="img-fluid" src="/static/img/hp_research.png" style={{ height: 150, objectFit: "contain" }} />
-                                        限られたデータを元に画像の高画質化を行う<br />機械学習モデルの開発<br />
+                                            深層学習による少数学習データでの<br />2次元データの高品質化手法の提案<br />
                                         <ul>
                                             <li>超解像/ノイズ除去</li>
                                             <li>少ない画像数(100-1000枚)</li>

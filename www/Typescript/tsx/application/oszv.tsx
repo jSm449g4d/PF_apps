@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { dbFieldDelete, useAuth, useDb, needLoginForm, easyIn,easyIn2 } from "../component/firebaseWrapper";
+import { dbFieldDelete, useAuth, useDb, needLoginForm, easyIn, easyIn2 } from "../component/firebaseWrapper";
 import { stopf5, Query2Dict, Unixtime2String } from "../component/util_tsx";
 import "../stylecheets/style.sass";
 
@@ -40,7 +40,7 @@ export const AppMain = () => {
         dispatchMypage_s({ type: "create", recodes: Object.assign({ "shopName": "新しい店" }, addDict), merge: true })
         dispatchAppindex_oszv_shop({
             type: "create", recodes: {
-                [uid]: Object.assign({ "shopName": "新しい店", "iconUrl": "","tag":"" }, addDict),
+                [uid]: Object.assign({ "shopName": "新しい店", "iconUrl": "", "tag": "" }, addDict),
             }, merge: true
         });
     }
@@ -649,8 +649,7 @@ export const AppMain = () => {
                         <i className="fas fa-question-circle ml-1 fa-btn-help"
                             data-toggle="modal" data-target={"#oszv_switchAuthHelpModal"}></i>
                     </h3>
-                    <h4 style={{ color: "#DDFFFF" }}>かんたんアカウント変更
-                    </h4>
+                    <h4 style={{ color: "#DDFFFF" }}>かんたんアカウント変更</h4>
                     {/*roomのヘルプモーダル*/}
                     <div className="modal fade" id={"oszv_switchAuthHelpModal"} role="dialog" aria-hidden="true">
                         <div className="modal-dialog modal-lg" role="document">
@@ -682,6 +681,11 @@ export const AppMain = () => {
                             </div>
                         </div>
                     </div>
+
+                    <h5 >
+                        <a className="btn btn-warning btn-lg btn-push" href="https://github.com/jSm449g4d/PF_apps"><b>
+                            <i className="fab fa-github mr-1"></i>このアプリの使い方(Readme)</b></a>
+                    </h5>
                 </div>
                 <div className="d-flex justify-content-between">
                     {userSelect == 0 ?

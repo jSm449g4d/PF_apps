@@ -42,7 +42,7 @@ export const AppMain = () => {
                     <details><summary>大学院時代の<b>謎の二年間</b>について</summary>
                         <ul>
                             <li>2018/4-2019/3: 浪人: AIの研究をするために大学院進学に向けて</li>
-                            <li>2020/10-2021/9: 休学: もっと研究を掘り下げたい</li>
+                            <li>2020/10-2021/9: 休学: 進路再考のため</li>
                         </ul>
                     </details>
                     <h4 className="mt-2">資格</h4>

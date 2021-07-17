@@ -253,7 +253,6 @@ export const AppMain = () => {
                 <a className="btn btn-link btn-lg btn-push" href="#homepage_appIndexColumns"><b>自作アプリ</b></a>
                 <a className="btn btn-link btn-lg btn-push" href="#homepage_githubColumns"><b>Github</b></a>
             </div>
-            <div id="homepage_aboutMe">{aboutMe()}</div>
             <div id="homepage_appIndexColumns">{appIndexColumns()}</div>
             <div id="homepage_githubColumns">{githubIndexColumns()}</div>
         </div></div>

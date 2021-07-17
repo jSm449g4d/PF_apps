@@ -7,7 +7,6 @@ himitu/
 
 # Javascript/Typescript
 node_modules/
-package-lock.json
 src/
 
 # Python

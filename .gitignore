@@ -6,6 +6,7 @@ www.zip.tmp
 himitu/
 
 # Javascript/Typescript
+package-lock.json
 node_modules/
 src/
 

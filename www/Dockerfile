@@ -11,11 +11,11 @@ RUN apt update -q;apt upgrade -yq
 WORKDIR $APP/html/static
 RUN apt install npm -yq
 RUN npm install -g npm
-RUN npm ci
+RUN npm install
 
 # Typescript
 WORKDIR $APP/Typescript
-RUN npm ci
+RUN npm install
 RUN npx webpack
 
 # Python3

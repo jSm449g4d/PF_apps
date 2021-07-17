@@ -43,3 +43,4 @@ steps:
         - --memory
         - 2Gi
         - --allow-unauthenticated
+timeout: 1000s
